@@ -51,5 +51,6 @@ public class InterfaceGraphique implements Runnable {
 		// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(500, 500);
 		frame.setVisible(true);
+		frame.setAlwaysOnTop(true); // Ajoutez cette ligne pour bloquer la fenêtre au premier plan
 	}
 }

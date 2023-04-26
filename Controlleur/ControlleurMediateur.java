@@ -5,6 +5,7 @@ import java.util.Scanner;
 import Modele.Coordonne;
 import Modele.Jeu;
 import Modele.Pion;
+import Modele.TypePion;
 import Vues.CollecteurEvenements;
 
 
@@ -19,7 +20,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	Joueurs[][] joueurs;
 	int [] typeJoueur;
 	int joueurCourant = 0; //joueur qui commence
-	final int lenteurAttente = 50;
+	final int lenteurAttente = 20;
 	int decompte;
 
     public ControlleurMediateur(Jeu j)  {
@@ -43,20 +44,32 @@ public class ControlleurMediateur implements CollecteurEvenements {
         
         Scanner scanner = new Scanner(System.in);
         //System.out.println();
-        System.out.print("Entrez les coordonnées x y : ");
+        System.out.print("Entrez les coordonnées du pion de votre choix x y : ");
         l = scanner.nextInt();
         c = scanner.nextInt();
-        
+
         Pion p = jeu.n.getPion(l,c);
-        ArrayList<Coordonne> liste_depl = p.getDeplacement(jeu.n.plateau); // A REVOIR ICI
-        p.affiche_liste_deplacement(liste_depl);
-		//scanner.close();
+		ArrayList<Pion> pions_dispo = getPionsDispo(joueurCourant);
+
+		if (check_clic(pions_dispo, p)){ //Vérifie que le Pions choisit est bien de notre Type, joueur 0 implique de jouer les Attaquants et joueur 1 implique de jouer Defenseurs et Roi
+			
+			if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(l, c)){
+				System.out.println(jeu.n);
+				changeJoueur();
+			}else{
+				System.out.println("Coup invalide");
+			}
+		}
         
-		if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(l, c)){
-            System.out.println(jeu.n);
-			changeJoueur();
-        }
 	}
+
+	// @Override
+	// public void clicSouris(int l, int c) { //origine
+	// 	if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(l, c)){
+    //         //System.out.println(jeu.n);
+	// 		changeJoueur();
+    //     }
+	// }
 
     void changeJoueur() {
 		joueurCourant = (joueurCourant + 1) % joueurs.length;
@@ -69,16 +82,15 @@ public class ControlleurMediateur implements CollecteurEvenements {
         if (jeu.enCours()) {
 			if (decompte == 0) {
 				int type = typeJoueur[joueurCourant];
-                //System.out.println("Le type: " + type);
 
 				// Lorsque le temps est écoulé on le transmet au joueur courant.
 				// Si un coup a été joué (IA) on change de joueur.
-				if (joueurs[joueurCourant][type].tempsEcoule()) {
+				if (joueurs[joueurCourant][type].tempsEcoule()) { //Un humain renvoi tjr false, une IA renvoi vrai lorsquelle a joué(jeu effectué dans tempsEcoule())
 					changeJoueur();
 				} else {
 				// Sinon on indique au joueur qui ne réagit pas au temps (humain) qu'on l'attend.
-                    affiche_pions_dispo(joueurCourant);
-					System.out.println("On vous attend, joueur " + joueurs[joueurCourant][type].numJ);
+					System.out.println("On vous attend, joueur " + joueurs[joueurCourant][type].numJ + " OUBLIEZ PAS DE CLIQUER :)");
+					affiche_pions_dispo(joueurCourant);
 					decompte = lenteurAttente;
 				}
 			} else {
@@ -87,57 +99,53 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		}
     }
 
-    public void affiche_pions_dispo(int j){
-		ArrayList<Pion> liste ;
-        TypePion t;
-        switch(j){
-            case 0:
-                t = TypePion.ATTAQUANT;
-				liste = jeu.n.getPions(t);
-                break;
-            case 1:
-                t = TypePion.DEFENSEUR;
-				TypePion t1 = TypePion.ROI;
-				liste = jeu.n.getPions(t);
-                ArrayList<Pion> liste2 = jeu.n.getPions(t1);
-                liste.addAll(liste2); // concaténation de list2 à la fin de list1
-				break;
 
+	public TypePion typePion_JC(int JC){
+		switch (JC){
+			case 0:
+				return TypePion.ATTAQUANT;
+			case 1:
+				return TypePion.DEFENSEUR;
 			default:
-				System.out.println("Joueur inconnu");
-				return;
-            
+				System.out.println("Joueur courant inconnu");
+				return null;
+		}
+	}
+
+	public ArrayList<Pion> getPionsDispo(int JoueurCourant){
+		ArrayList<Pion> liste ;
+        TypePion t = typePion_JC(joueurCourant);
+
+		liste = jeu.n.getPions(t);
+
+        if (t == TypePion.DEFENSEUR){
+			TypePion t1 = TypePion.ROI;
+            ArrayList<Pion> liste2 = jeu.n.getPions(t1);
+            liste.addAll(liste2); // concaténation de list2 à la fin de list1        
         }
-        
-        System.out.print("{ ");
+
+		return liste;
+	}
+
+	//Prends un joueur et affiche sa liste de pions dispos
+    public void affiche_pions_dispo(int j){
+		
+		ArrayList<Pion> liste = getPionsDispo(j) ;
+        System.out.print("Pions disponibles { ");
         for(Pion p : liste){
             System.out.print("(" + p.getX() + "," + p.getY() +") ");
         }
         System.out.println("}");
     }
 
-/*
-//On affiche les pions disponibles du joueurs 0 ou 1
-
-	public void affiche_pions_dispo(int j){
-		TypePion t;
-		switch(j){
-			case 0:
-				t = TypePion.ATTAQUANT;
-				break;
-			case 1:
-				t = TypePion.DEFENSEUR;
-				break;
+	//Ici on alterne liste de pion et de coordonne c'est pas bien
+	public boolean check_clic(ArrayList<Pion> liste, Pion p) { 
+		if(p.estCorrect()){ //Inutile normalement
+			return liste.contains(p);
 		}
-		ArrayList<Coordonne> liste = jeu.n.getPions(t);
-		System.out.print("{ ");
-		for(Coordonne c : liste){
-			System.out.println("(" + c.getX() + "," + c.getY() +") ");
-		}
-		System.out.print(" }");
+		return false;
 	}
-*/
 
-
+	
 
 }

@@ -1,7 +1,6 @@
 package Modele;
 import java.util.ArrayList;
 
-import Controlleur.TypePion;
 import Modele.Pion;
 import Modele.Roi;
 
@@ -79,6 +78,7 @@ public class Niveau {
         return plateau[x][y];
     }
 
+
     //On regarde si la case est vide
     public boolean estVide(int x, int y) {
         return plateau[x][y] == null;
@@ -104,6 +104,7 @@ public class Niveau {
         plateau[x][y] = null;
     }
 
+    //Renvoi la liste d'un seul type de joueur.
     public ArrayList<Pion> getPions(TypePion type){
         ArrayList<Pion> liste = new ArrayList<>();
         for (int x=0; x<taille; x++){
@@ -144,16 +145,6 @@ public class Niveau {
         p.coordonne = dst;
     }
 
-    // public void affiche_liste_deplacement(ArrayList<Coordonne> liste){
-    //     System.out.print("{ ");
-    //     for(Coordonne c : liste){
-    //         System.out.println("(" + c.getX() + "," + c.getY() +") ");
-    //     }
-    //     System.out.print(" }");
-    // }
 
-
-    
-    
 
 }

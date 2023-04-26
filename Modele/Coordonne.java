@@ -17,6 +17,15 @@ public class Coordonne {
         return this.y;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (!(obj instanceof Coordonne)) return false;
+        
+        Coordonne other = (Coordonne) obj;
+        return this.x == other.x && this.y == other.y;
+    }
+
     public String toString(){
         return "(" + this.x + ", " + this.y + ")";
     }

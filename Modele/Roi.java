@@ -2,8 +2,6 @@ package Modele;
 
 import java.util.ArrayList;
 
-import Controlleur.TypePion;
-
 public class Roi extends Pion {
 
     public Roi(int x, int y) {

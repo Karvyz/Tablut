@@ -18,10 +18,21 @@ public class Jeu extends Observable{
 	 */
 	public void nouvellePartie() {
 		this.n = new Niveau();
-        joueurCourant = 0; //Surement useless;
+        joueurCourant = 0;
         enCours = true;
         metAJour();
 	}
+
+    public void jouer(Coordonne depart, Coordonne arrive){
+        n.deplace_pion(depart, arrive);
+        System.out.println("Le joueur " + joueurCourant + " a déplacé le piont Noir de (" + depart.getX() +"," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() +")");
+        
+        //TODO test si une partie est finie;
+        
+        joueurCourant = (joueurCourant + 1) %2;
+        metAJour();
+    }
+
 
     public boolean enCours(){
         return enCours;

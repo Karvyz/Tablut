@@ -1,4 +1,4 @@
-package Controlleur;
+package Modele;
 
 public enum TypePion {
     ATTAQUANT,
