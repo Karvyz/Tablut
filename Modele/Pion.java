@@ -19,6 +19,11 @@ public class Pion {
         this.type = type;
     }
 
+    public Pion(Coordonne coordonne, TypePion type){
+        this.coordonne = coordonne;
+        this.type = type;
+    }
+
 
     public TypePion getType() {
         return type;
