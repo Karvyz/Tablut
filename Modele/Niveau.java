@@ -86,16 +86,25 @@ public class Niveau {
 
     //On regarde si la case est noire
     public boolean estAttaquant(int x, int y) {
+        if (plateau[x][y] == null) {
+            return false;
+        }
         return plateau[x][y].getType() == TypePion.ATTAQUANT;
     }
 
     //On regarde si la case est blanche
     public boolean estDefenseur(int x, int y) {
+        if (plateau[x][y] == null) {
+            return false;
+        }
         return plateau[x][y].getType() == TypePion.DEFENSEUR;
     }
 
     //On regarde si la case est le roi
     public boolean estRoi(int x, int y) {
+        if (plateau[x][y] == null) {
+            return false;
+        }
         return plateau[x][y].getType() == TypePion.ROI;
     }
 
