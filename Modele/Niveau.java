@@ -11,8 +11,7 @@ public class Niveau {
     int taille = 9;
 
     Pion [][] plateau = new Pion[taille][taille];
-    int [][] pos_attaquants = new int[][] {{0,3}, {0,4}, {0,5}, {1,4}, {3,0}, {4,0}, {5,0}, {4,1}, {8,3}, {8,4}, {8,5}, {7,4}, {4,7}, {3,8}, {4,8}, {5,8}};
-    int [][] pos_defenseurs = new int[][] {{2,4}, {3,4}, {4,2}, {4,3}, {5,4}, {6,4}, {4,5}, {4,6}};
+
 
 
     //On creer le plateau de jeu
@@ -22,7 +21,8 @@ public class Niveau {
 
     //On initialise le plateau de jeu
     public void init_Niveau() {
-
+        int [][] pos_attaquants = new int[][] {{0,3}, {0,4}, {0,5}, {1,4}, {3,0}, {4,0}, {5,0}, {4,1}, {8,3}, {8,4}, {8,5}, {7,4}, {4,7}, {3,8}, {4,8}, {5,8}};
+        int [][] pos_defenseurs = new int[][] {{2,4}, {3,4}, {4,2}, {4,3}, {5,4}, {6,4}, {4,5}, {4,6}};
 
         for (int i = 0; i < taille; i++) {
             for (int j = 0; j < taille; j++) {
@@ -30,7 +30,7 @@ public class Niveau {
             }
         }
 
-        Roi r = new Roi(4, 4, ROI);
+        Roi r = new Roi(4, 4);
         plateau[4][4] = r;
 
         for(int i=0; i<16; i++){
@@ -49,7 +49,6 @@ public class Niveau {
     }
 
     public String toString() {
-        System.out.println("HELLOOO");
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < taille; i++) {
             for (int j = 0; j < taille; j++) {
@@ -66,7 +65,6 @@ public class Niveau {
             }
             sb.append("\n");
         }
-        System.out.println(sb);
         return sb.toString();
     }
 
@@ -189,7 +187,7 @@ public class Niveau {
 
     // public int[][] depl(int x1, int y1){
     //     //on regarde si le pion est bien un pion
-    //     if(estBlanc(x1, y1) || estNoir(x1, y1)){
+    //     if(estBlanc(x1, Unnamedy1) || estNoir(x1, y1)){
     //         //on liste les déplacements possibles
     //         int[][] depl = new int[8][2];
     //         int i = 0;
