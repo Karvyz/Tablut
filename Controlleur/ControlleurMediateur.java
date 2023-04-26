@@ -1,5 +1,10 @@
 package Controlleur;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import Modele.Coordonne;
 import Modele.Jeu;
+import Modele.Pion;
 import Vues.CollecteurEvenements;
 
 
@@ -29,15 +34,28 @@ public class ControlleurMediateur implements CollecteurEvenements {
             joueurs[i][DIFFCILE] = new IA_difficile(i, jeu);
 			typeJoueur[i] = HUMAIN; //type 
 		}
-        typeJoueur[1] = FACILE; //type 
 	}
 
     @Override
 	public void clicSouris(int l, int c) {
 		// Lors d'un clic, on le transmet au joueur courant.
 		// Si un coup a effectivement été joué (humain, coup valide), on change de joueur.
-		if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(l, c))
+        
+        Scanner scanner = new Scanner(System.in);
+        //System.out.println();
+        System.out.print("Entrez les coordonnées x y : ");
+        l = scanner.nextInt();
+        c = scanner.nextInt();
+        
+        Pion p = jeu.n.getPion(l,c);
+        ArrayList<Coordonne> liste_depl = p.getDeplacement(jeu.n.plateau); // A REVOIR ICI
+        p.affiche_liste_deplacement(liste_depl);
+		//scanner.close();
+        
+		if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(l, c)){
+            System.out.println(jeu.n);
 			changeJoueur();
+        }
 	}
 
     void changeJoueur() {
@@ -46,12 +64,12 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	}
 
     public void tictac(){
-        System.out.println(joueurCourant);
+        //System.out.println(joueurCourant);
 
         if (jeu.enCours()) {
 			if (decompte == 0) {
 				int type = typeJoueur[joueurCourant];
-                System.out.println("Le type: " + type);
+                //System.out.println("Le type: " + type);
 
 				// Lorsque le temps est écoulé on le transmet au joueur courant.
 				// Si un coup a été joué (IA) on change de joueur.
@@ -59,6 +77,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 					changeJoueur();
 				} else {
 				// Sinon on indique au joueur qui ne réagit pas au temps (humain) qu'on l'attend.
+                    affiche_pions_dispo(joueurCourant);
 					System.out.println("On vous attend, joueur " + joueurs[joueurCourant][type].numJ);
 					decompte = lenteurAttente;
 				}
@@ -68,7 +87,56 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		}
     }
 
+    public void affiche_pions_dispo(int j){
+		ArrayList<Pion> liste ;
+        TypePion t;
+        switch(j){
+            case 0:
+                t = TypePion.ATTAQUANT;
+				liste = jeu.n.getPions(t);
+                break;
+            case 1:
+                t = TypePion.DEFENSEUR;
+				TypePion t1 = TypePion.ROI;
+				liste = jeu.n.getPions(t);
+                ArrayList<Pion> liste2 = jeu.n.getPions(t1);
+                liste.addAll(liste2); // concaténation de list2 à la fin de list1
+				break;
 
+			default:
+				System.out.println("Joueur inconnu");
+				return;
+            
+        }
+        
+        System.out.print("{ ");
+        for(Pion p : liste){
+            System.out.print("(" + p.getX() + "," + p.getY() +") ");
+        }
+        System.out.println("}");
+    }
+
+/*
+//On affiche les pions disponibles du joueurs 0 ou 1
+
+	public void affiche_pions_dispo(int j){
+		TypePion t;
+		switch(j){
+			case 0:
+				t = TypePion.ATTAQUANT;
+				break;
+			case 1:
+				t = TypePion.DEFENSEUR;
+				break;
+		}
+		ArrayList<Coordonne> liste = jeu.n.getPions(t);
+		System.out.print("{ ");
+		for(Coordonne c : liste){
+			System.out.println("(" + c.getX() + "," + c.getY() +") ");
+		}
+		System.out.print(" }");
+	}
+*/
 
 
 

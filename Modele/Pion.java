@@ -2,12 +2,8 @@ package Modele;
 
 import Modele.Coordonne;
 import java.util.ArrayList;
+import Controlleur.TypePion;
 
-enum TypePion {
-    ATTAQUANT,
-    DEFENSEUR,
-    ROI
-}
 
 public class Pion {
     Coordonne coordonne;
@@ -98,6 +94,14 @@ public class Pion {
         getDeplacementVerticaList(plateau, deplacement);
         getDeplacementHorizontaleList(plateau, deplacement);
         return deplacement;
+    }
+
+    public void affiche_liste_deplacement(ArrayList<Coordonne> liste){
+        System.out.print("{ ");
+        for(Coordonne c : liste){
+            System.out.print("(" + c.getX() + "," + c.getY() +") ");
+        }
+        System.out.println(" }");
     }
 
 

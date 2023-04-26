@@ -1,6 +1,7 @@
 package Modele;
 import java.util.ArrayList;
 
+import Controlleur.TypePion;
 import Modele.Pion;
 import Modele.Roi;
 
@@ -10,7 +11,7 @@ public class Niveau {
     public static final int ROI = 2;
     int taille = 9;
 
-    Pion [][] plateau = new Pion[taille][taille];
+    public Pion [][] plateau = new Pion[taille][taille];
 
 
 
@@ -72,6 +73,10 @@ public class Niveau {
     //On regarde la taille du plateau
     public int getTaille() {
         return taille;
+    }
+
+    public Pion getPion(int x,int y){
+        return plateau[x][y];
     }
 
     //On regarde si la case est vide
@@ -138,6 +143,14 @@ public class Niveau {
         plateau[dst.x][dst.y] = p;
         p.coordonne = dst;
     }
+
+    // public void affiche_liste_deplacement(ArrayList<Coordonne> liste){
+    //     System.out.print("{ ");
+    //     for(Coordonne c : liste){
+    //         System.out.println("(" + c.getX() + "," + c.getY() +") ");
+    //     }
+    //     System.out.print(" }");
+    // }
 
 
     
