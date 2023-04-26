@@ -10,8 +10,8 @@ public class Roi extends Pion {
     }
 
     private ArrayList<Coordonne> getDeplacementVerticaList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
-        int x = this.x;
-        int y = this.y;
+        int x = coordonne.x;
+        int y = coordonne.y;
         int i = 1;
         //On regarde les cases en haut
         while(x-i >= 0 && plateau[x-i][y] == null){
@@ -28,8 +28,8 @@ public class Roi extends Pion {
     }
 
     private ArrayList<Coordonne> getDeplacementHorizontaleList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
-        int x = this.x;
-        int y = this.y;
+        int x = coordonne.x;
+        int y = coordonne.y;
         int i = 1;
         //On regarde les cases à gauche
         while(y-i >= 0 && plateau[x][y-i] == null){

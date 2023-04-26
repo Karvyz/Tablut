@@ -10,14 +10,12 @@ enum TypePion {
 }
 
 public class Pion {
-    int x;
-    int y;
+    Coordonne coordonne;
     TypePion type; //0 pion Noir, 1 pion Blanc, 
 
 
     public Pion(int x, int y, TypePion type){
-        this.x = x;
-        this.y = y;
+        coordonne = new Coordonne(x, y);
         this.type = type;
     }
 
@@ -27,11 +25,11 @@ public class Pion {
     }
 
     public int getX(){
-        return this.x;
+        return this.coordonne.x;
     }
 
     public int getY(){
-        return this.y;
+        return this.coordonne.y;
     }
 
     private boolean emplacementValide(int x, int y) {
@@ -43,8 +41,8 @@ public class Pion {
     }
 
     private ArrayList<Coordonne> getDeplacementVerticaList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
-        int x = this.x;
-        int y = this.y;
+        int x = coordonne.x;
+        int y = coordonne.y;
         int i = 1;
         //On regarde les cases en haut
         while(x-i >= 0 && plateau[x-i][y] == null){
@@ -63,8 +61,8 @@ public class Pion {
     }
 
     private ArrayList<Coordonne> getDeplacementHorizontaleList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
-        int x = this.x;
-        int y = this.y;
+        int x = coordonne.x;
+        int y = coordonne.y;
         int i = 1;
         //On regarde les cases à gauche
         while(y-i >= 0 && plateau[x][y-i] == null){
