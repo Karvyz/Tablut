@@ -114,134 +114,33 @@ public class Niveau {
         return liste;
     }
 
-    // //On regarde si le déplacement horizontal est possible
-    // public boolean deplaceH(int x1, int y1, int y2){
-    //     if (y1<y2){
-    //         for (int i = y1+1; i < y2; i++) {
-    //             iintf (!estVide(x1, i)){
-    //                 return false;
-    //             }
-    //         }
-    //         return true;
-    //     }
-    //     else{
-    //         for (int i = y1-1; i > y2; i--) {
-    //             if (!estVide(x1, i)){
-    //                 return false;
-    //             }
-    //         }
-    //         return true;
-    //     }
-    // }
+    //On regarde si la case est une forteresse
+    public boolean estFortresse(int x, int y){
+        if (x == 0 || x == 8){
+            if (y == 0 || y == 8){
+                return true;
+            }
+        }
+        return false;
+    }
 
-    // //On regarde si le déplacement vertical est possible
-    // public boolean deplaceV(int x1, int y1, int x2){
-    //     if (x1<x2){
-    //         for (int i = x1+1; i < x2; i++) {
-    //             if (!estVide(i, y1)){
-    //                 return false;
-    //             }
-    //         }
-    //         return true;
-    //     }
-    //     else{
-    //         for (int i = x1-1; i > x2; i--) {
-    //             if (!estVide(i, y1)){
-    //                 return false;
-    //             }
-    //         }
-    //         return true;
-    //     }
-    // }
+    //On regarde si la case est un konakis
+    public boolean estKonakis(int x, int y){
+        if (x==4 && y==4){
+            return true;
+        }
+        return false;
+    }
 
-    // //On regarde si le déplacement est possible
-    // public boolean deplace(int x1, int y1, int x2, int y2){
-    //     if (x1 == x2){
-    //         return deplaceH(x1, y1, y2);
-    //     }
-    //     else if (y1 == y2){
-    //         return deplaceV(x1, y1, x2);
-    //     }
-    //     else{
-    //         return false;
-    //     }
-    // }
+    public void deplace_pion(Coordonne depart, Coordonne dst){
+        Pion p = plateau[depart.x][depart.y];
+        setVide(depart.x, depart.y);
+        plateau[dst.x][dst.y] = p;
+        p.coordonne = dst;
+    }
 
-    // //On regarde si la case est une forteresse
-    // public boolean estFortresse(int x, int y){
-    //     if (x == 0 || x == 8){
-    //         if (y == 0 || y == 8){
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
 
-    // //On regarde si la case est un konakis
-    // public boolean estKonakis(int x, int y){
-    //     if (x==4 && y==4){
-    //         return true;
-    //     }
-    //     return false;
-    // }
-
-    // public int[][] depl(int x1, int y1){
-    //     //on regarde si le pion est bien un pion
-    //     if(estBlanc(x1, Unnamedy1) || estNoir(x1, y1)){
-    //         //on liste les déplacements possibles
-    //         int[][] depl = new int[8][2];
-    //         int i = 0;
-    //         //on regarde si le pion peut se déplacer a l'horizontale
-    //         for (int j = 0; j < taille; j++) {
-    //             //on verifie que la case n'est pas une fortresse ou un konakis
-    //             if (deplaceH(x1, y1, j) && !estFortresse(x1, j) && !estKonakis(x1, j)){
-    //                 depl[i][0] = x1;
-    //                 depl[i][1] = j;
-    //                 i++;
-    //             }
-    //         }
-    //         //on regarde si le pion peut se déplacer a la verticale
-    //         for (int j = 0; j < taille; j++) {
-    //             //on verifie que la case n'est pas une fortresse ou un konakis
-    //             if (deplaceV(x1, y1, j) && !estFortresse(j, y1) && !estKonakis(j, y1)){
-    //                 depl[i][0] = j;
-    //                 depl[i][1] = y1;
-    //                 i++;
-    //             }
-    //         }
-    //         //on renvoie les déplacements possibles
-    //         return depl;
-    //     }
-    //     else if(estRoi(x1, y1)){
-    //         //on liste les déplacements possibles
-    //         int[][] depl = new int[8][2];
-    //         int i = 0;
-    //         //on regarde si le pion peut se déplacer a l'horizontale
-    //         for (int j = 0; j < taille; j++) {
-    //             //on verifie que la case n'a pas de pion sur le chemin
-    //             if (deplaceH(x1, y1, j)){
-    //                 depl[i][0] = x1;
-    //                 depl[i][1] = j;
-    //                 i++;
-    //             }
-    //         }
-    //         //on regarde si le pion peut se déplacer a la verticale
-    //         for (int j = 0; j < taille; j++) {
-    //             //on verifie que la case n'a pas de pion sur le chemin
-    //             if (deplaceV(x1, y1, j) ){
-    //                 depl[i][0] = j;
-    //                 depl[i][1] = y1;
-    //                 i++;
-    //             }
-    //         }
-    //         //on renvoie les déplacements possibles
-    //         return depl;
-    //     }
-    //     //si ce n'est pas un pion on renvoie null
-    //     else{
-    //         System.out.println("Ce n'est pas un pion");
-    //         return null;
-    //     }
-    // }
+    
+    
 
 }

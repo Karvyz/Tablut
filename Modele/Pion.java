@@ -37,12 +37,20 @@ public class Pion {
         return this.coordonne.y;
     }
 
+    public void setX(int x){
+        this.coordonne.x = x;
+    }
+
+    public void setY(int y){
+        this.coordonne.y = y;
+    }
+
     private boolean emplacementValide(int x, int y) {
         if (x == 0 && (y == 0 || y == 8))
             return false;
         if (x == 8 && (y == 0 || y == 8))
             return false;
-        return x != 5 || y != 5;
+        return x != 4 || y != 4;
     }
 
     private ArrayList<Coordonne> getDeplacementVerticaList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
@@ -87,8 +95,8 @@ public class Pion {
 
     public ArrayList<Coordonne> getDeplacement(Pion[][] plateau){
         ArrayList<Coordonne> deplacement = new ArrayList<Coordonne>();
-        deplacement = getDeplacementVerticaList(plateau, deplacement);
-        deplacement = getDeplacementHorizontaleList(plateau, deplacement);
+        getDeplacementVerticaList(plateau, deplacement);
+        getDeplacementHorizontaleList(plateau, deplacement);
         return deplacement;
     }
 
