@@ -71,8 +71,6 @@ public class Pion {
     }
 
     public ArrayList<Coordonne> getDeplacement(Pion[][] plateau){
-        int x = this.x;
-        int y = this.y;
         ArrayList<Coordonne> deplacement = new ArrayList<Coordonne>();
         deplacement = getDeplacementVerticaList(plateau, deplacement);
         deplacement = getDeplacementHorizontaleList(plateau, deplacement);
