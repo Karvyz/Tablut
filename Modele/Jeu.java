@@ -1,6 +1,8 @@
 package Modele;
 
-public class Jeu {
+import Patterns.Observable;
+
+public class Jeu extends Observable{
 
     Niveau n;
     int joueurCourant;
@@ -16,8 +18,9 @@ public class Jeu {
 	 */
 	public void nouvellePartie() {
 		this.n = new Niveau();
-        joueurCourant = 0;
+        joueurCourant = 0; //Surement useless;
         enCours = true;
+        metAJour();
 	}
 
     public boolean enCours(){

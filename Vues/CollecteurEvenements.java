@@ -1,9 +1,11 @@
 package Vues;
 
 public interface CollecteurEvenements {
-    // void clicSouris(int l, int c);
-    // void tictac();
+
+    void tictac();
     // void changeJoueur(int j, int t);
     // void changeTaille(int t);
+
+    void clicSouris(int l, int c);
 }
 
