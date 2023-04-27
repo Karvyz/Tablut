@@ -284,6 +284,58 @@ public class Niveau {
     }
 
 
+    public boolean check_clic_selection_dest(Pion selec, int x, int y){
+		ArrayList<Coordonne> liste_depl = selec.getDeplacement(plateau);
+		if (liste_depl.isEmpty()){ //Aucun coup possible pour ce pion
+			return false;
+		}
+		Coordonne arrive = new Coordonne(x, y);
+		if(liste_depl.contains(arrive)){
+			return true;
+		}
+		return false;
+	}
+
+    public boolean check_clic_selection_pion(Pion p, int JC) { 
+		if (p != null){
+			ArrayList<Pion> pions_dispo = getPionsDispo(JC); 
+			return pions_dispo.contains(p);
+		}
+		//}
+		return false;
+	}
+
+    public ArrayList<Pion> getPionsDispo(int JC){
+		ArrayList<Pion> liste ;
+        TypePion t = typePion_JC(JC);
+
+		liste = getPions(t);
+
+        if (t == TypePion.DEFENSEUR){
+			TypePion t1 = TypePion.ROI;
+            ArrayList<Pion> liste2 = getPions(t1);
+            liste.addAll(liste2); // concaténation de list2 à la fin de list1        
+        }
+
+		return liste;
+	}
+
+    public boolean PlusdePion(int JC){
+		return getPionsDispo(JC).isEmpty();
+	}
+
+    public TypePion typePion_JC(int JC){
+		switch (JC){
+			case 0:
+				return TypePion.ATTAQUANT;
+			case 1:
+				return TypePion.DEFENSEUR;
+			default:
+				System.out.println("Joueur courant inconnu");
+				return null;
+		}
+	}
+
     //On regarde si on a mangé le roi
     public boolean AMangerRoi(Coordonne dplc){
         if(estRoi(dplc.x+1,dplc.y)){
