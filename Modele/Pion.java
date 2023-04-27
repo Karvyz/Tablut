@@ -1,52 +1,52 @@
 package Modele;
 
+import Modele.Coordonne;
 import java.util.ArrayList;
 
-public class Pion {
-    public Coordonne coordonne;
-    private TypePion type;
+public class Pion implements Cloneable {
+    Coordonne coordonne;
+    TypePion type; //0 pion Noir, 1 pion Blanc, 
 
-    Pion(Coordonne coordonne, TypePion type) {
+
+    public Pion(int x, int y, TypePion type){
+        coordonne = new Coordonne(x, y);
+        this.type = type;
+    }
+
+    public Pion(Coordonne coordonne, TypePion type){
         this.coordonne = coordonne;
         this.type = type;
     }
 
-    Pion(int x, int y, TypePion type) {
-        new Pion(new Coordonne(x, y), type);
+    public Pion(Pion p){
+        this.coordonne = new Coordonne(p.coordonne);
+        this.type = p.type;
     }
 
-    public void setType(TypePion type){
-        this.type = type;
-    }
 
     public TypePion getType() {
         return type;
     }
-    
+
     public int getX(){
         return this.coordonne.x;
     }
-    
+
     public int getY(){
         return this.coordonne.y;
     }
-    
+
+    public Coordonne getCoordonne(){
+        return coordonne;
+    }
+
     public void setX(int x){
         this.coordonne.x = x;
     }
-    
+
     public void setY(int y){
         this.coordonne.y = y;
     }
-
-    @Override
-    public String toString() {
-        return "Pion sélectionné (" + this.coordonne.x + ", " + this.coordonne.y + ") ";
-    }
-
-    // public boolean estCorrect() { //Normalment inutile car gérer par l'IHM
-    //     return (getX()>=0 && getX()<9 && getY()>=0 && getY()<9);
-    // }
 
     private boolean emplacementValide(int x, int y) {
         if (x == 0 && (y == 0 || y == 8))
@@ -56,7 +56,7 @@ public class Pion {
         return x != 4 || y != 4;
     }
 
-    private void getDeplacementVerticaList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
+    private ArrayList<Coordonne> getDeplacementVerticaList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
         int x = coordonne.x;
         int y = coordonne.y;
         int i = 1;
@@ -73,9 +73,10 @@ public class Pion {
                 deplacement.add(new Coordonne(x+i, y));
             i++;
         }
+        return deplacement;
     }
 
-    private void getDeplacementHorizontaleList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
+    private ArrayList<Coordonne> getDeplacementHorizontaleList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
         int x = coordonne.x;
         int y = coordonne.y;
         int i = 1;
@@ -92,6 +93,7 @@ public class Pion {
                 deplacement.add(new Coordonne(x, y + i));
             i++;
         }
+        return deplacement;
     }
 
     public ArrayList<Coordonne> getDeplacement(Pion[][] plateau){
@@ -99,13 +101,5 @@ public class Pion {
         getDeplacementVerticaList(plateau, deplacement);
         getDeplacementHorizontaleList(plateau, deplacement);
         return deplacement;
-    }
-
-    public void affiche_liste_deplacement(ArrayList<Coordonne> liste){
-        System.out.print("Déplacements possibles { ");
-        for(Coordonne c : liste){
-            System.out.print("(" + c.getX() + "," + c.getY() +") ");
-        }
-        System.out.println("}");
     }
 }
