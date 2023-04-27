@@ -52,7 +52,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		ArrayList<Pion> pions_dispo = getPionsDispo(joueurCourant);
 
 		if (check_clic(pions_dispo, p)){ //Vérifie que le Pions choisit est bien de notre Type, joueur 0 implique de jouer les Attaquants et joueur 1 implique de jouer Defenseurs et Roi
-			
 			if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(l, c)){
 				System.out.println(jeu.n);
 				changeJoueur();
@@ -140,8 +139,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 
 	//Ici on alterne liste de pion et de coordonne c'est pas bien
 	public boolean check_clic(ArrayList<Pion> liste, Pion p) { 
-		//if(p.estCorrect()){ //Inutile normalement
-		if (!jeu.n.estVide(p))
+		if (p != null)
 			return liste.contains(p);
 		//}
 		return false;

@@ -93,31 +93,57 @@ public class Niveau {
 
     //On regarde si la case est noire
     public boolean estAttaquant(int x, int y) {
-        if (plateau[x][y] == null) {
+        if (!estCorrect(x,y) || plateau[x][y] == null) {
             return false;
         }
         return plateau[x][y].getType() == TypePion.ATTAQUANT;
     }
 
+    public boolean estAttaquant(Pion p) {
+        if (p == null) {
+            return false;
+        }
+        return p.getType() == TypePion.ATTAQUANT;
+    }
+
     //On regarde si la case est blanche
     public boolean estDefenseur(int x, int y) {
-        if (plateau[x][y] == null) {
+        if (!estCorrect(x,y) || plateau[x][y] == null) {
             return false;
         }
         return plateau[x][y].getType() == TypePion.DEFENSEUR;
     }
 
+    //On regarde si la case est blanche
+    public boolean estDefenseur(Pion p) {
+        if (p == null) {
+            return false;
+        }
+        return p.getType() == TypePion.DEFENSEUR;
+    }
+
     //On regarde si la case est le roi
     public boolean estRoi(int x, int y) {
-        if (plateau[x][y] == null) {
+        if (!estCorrect(x,y) || plateau[x][y] == null) {
             return false;
         }
         return plateau[x][y].getType() == TypePion.ROI;
     }
 
+    public boolean estRoi(Pion p) {
+        if (p == null) {
+            return false;
+        }
+        return p.getType() == TypePion.ROI;
+    }
+
     //On place une case vide sur le plateau aux coordonnées x et y (cas ou on capture par exemple)
     public void setVide(int x, int y) {
         plateau[x][y] = null;
+    }
+
+    public boolean estCorrect(int x, int y){
+        return x>=0 && x<9 && y>=0 && y<9;
     }
 
     //Renvoi la liste d'un seul type de joueur.
@@ -160,65 +186,67 @@ public class Niveau {
         setVide(depart.x, depart.y);
         plateau[dst.x][dst.y] = p;
         p.coordonne = dst;
-        AMangerPion(dst);
-        if(estAttaquant(dst.x, dst.y)){
-            PartieFinie = AMangerRoi(dst);
+        AMangerPion(p);
+        if(estAttaquant(p)){
+            if( AMangerRoi(dst))
+                System.out.println("PARTIE FINI CAR ROI CAPTURE");
         }
-        if (estRoi(dst.x,dst.y)){
-            PartieFinie = estFortresse(dst.x, dst.y);
+        if (estRoi(p)){
+           if (estFortresse(dst.x, dst.y))
+            System.out.println("PARTIE FINI CAR ROI EVADE");
         }
 
     }
 
-    public boolean AMangerPion(Coordonne dplc){
-        if (estAttaquant(dplc.x, dplc.y)){
-            if (estDefenseur(dplc.x+1,dplc.y)){
-                if(estAttaquant(dplc.x+2,dplc.y)){
-                    setVide(dplc.x+1,dplc.y);
+    public boolean AMangerPion(Pion p){
+        if (estAttaquant(p)){
+            if (estDefenseur(p.getX()+1,p.getY())){
+                if(estAttaquant(p.getX()+2,p.getY())){
+                    setVide(p.getX()+1,p.getY());
                     return true;
                 }
             }
-            else if (estDefenseur(dplc.x-1,dplc.y)){
-                if(estAttaquant(dplc.x-2,dplc.y)){
-                    setVide(dplc.x-1,dplc.y);
+            if (estDefenseur(p.getX()-1, p.getY())){
+                if(estAttaquant(p.getX()-2,p.getY())){
+                    setVide(p.getX()-1,p.getY());
                     return true;
                 }
             }
-            else if (estDefenseur(dplc.x,dplc.y+1)){
-                if(estAttaquant(dplc.x,dplc.y+2)){
-                    setVide(dplc.x,dplc.y+1);
+            if (estDefenseur(p.getX(),p.getY()+1)){
+                if(estAttaquant(p.getX(),p.getY()+2)){
+                    setVide(p.getX(),p.getY()+1);
                     return true;
                 }
             }
-            else if (estDefenseur(dplc.x,dplc.y-1)){
-                if(estAttaquant(dplc.x,dplc.y-2)){
-                    setVide(dplc.x,dplc.y-1);
+            if (estDefenseur(p.getX(),p.getY()-1)){
+                if(estAttaquant(p.getX(),p.getY()-2)){
+                    setVide(p.getX(),p.getY()-1);
                     return true;
                 }
             }  
         }    
-        else if (estDefenseur(dplc.x, dplc.y)){
-            if(estAttaquant(dplc.x+1,dplc.y)){
-                if(estDefenseur(dplc.x+2,dplc.y)){
-                    setVide(dplc.x+1,dplc.y);
+        else if (estDefenseur(p)){
+            if(estAttaquant(p.getX()+1,p.getY())){
+                if(estDefenseur(p.getX()+2,p.getY())){
+                    setVide(p.getX()+1,p.getY());
                     return true;
                 }
             }
-            else if (estAttaquant(dplc.x-1,dplc.y)){
-                if(estDefenseur(dplc.x-2,dplc.y)){
-                    setVide(dplc.x-1,dplc.y);
+            if (estAttaquant(p.getX()-1,p.getY())){
+                if(estDefenseur(p.getX()-2,p.getY())){
+                    setVide(p.getX()-1,p.getY());
                     return true;
                 }
             }
-            else if (estAttaquant(dplc.x,dplc.y+1)){
-                if(estDefenseur(dplc.x,dplc.y+2)){
-                    setVide(dplc.x,dplc.y+1);
+            if (estAttaquant(p.getX(),p.getY()+1)){
+                if(estDefenseur(p.getX(),p.getY()+2)){
+                    setVide(p.getX(),p.getY()+1);
                     return true;
                 }
             }
-            else if (estAttaquant(dplc.x,dplc.y-1)){
-                if(estDefenseur(dplc.x,dplc.y-2)){
-                    setVide(dplc.x,dplc.y-1);
+            if (estAttaquant(p.getX(),p.getY()-1)){
+                if(estDefenseur(p.getX(),p.getY()-2)){
+                    setVide(p.getX(),p.getY()-1);
                     return true;
                 }
             }      
