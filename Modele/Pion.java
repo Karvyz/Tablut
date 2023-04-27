@@ -40,9 +40,9 @@ public class Pion {
         this.coordonne.y = y;
     }
     
-    public boolean estCorrect() { //Normalment inutile car gérer par l'IHM
-        return (getX()>=0 && getX()<9 && getY()>=0 && getY()<9);
-    }
+    // public boolean estCorrect() { //Normalment inutile car gérer par l'IHM
+    //     return (getX()>=0 && getX()<9 && getY()>=0 && getY()<9);
+    // }
 
     private boolean emplacementValide(int x, int y) {
         if (x == 0 && (y == 0 || y == 8))

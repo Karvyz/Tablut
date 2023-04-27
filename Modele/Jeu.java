@@ -33,6 +33,9 @@ public class Jeu extends Observable{
         metAJour();
     }
 
+    //On regarde si le joueur a manger un pion adverse
+    
+
 
     public boolean enCours(){
         return enCours;

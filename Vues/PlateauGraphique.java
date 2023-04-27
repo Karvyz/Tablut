@@ -7,15 +7,15 @@ import Patterns.Observateur;
 import javax.swing.*;
 import java.awt.*;
 
-public class NiveauGraphique extends JComponent implements Observateur {
+public class PlateauGraphique extends JComponent implements Observateur {
 	Jeu jeu;
 	int largeurCase, hauteurCase;
 
-	public NiveauGraphique(Jeu j) {
+	public PlateauGraphique(Jeu j) {
 		jeu = j;
 		jeu.ajouteObservateur(this);
-		largeurCase = 50;
-        hauteurCase = 50;
+		largeurCase = 48;
+        hauteurCase = 48;
         setPreferredSize(new Dimension(450, 450));
     }
 

@@ -42,11 +42,11 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		// Lors d'un clic, on le transmet au joueur courant.
 		// Si un coup a effectivement été joué (humain, coup valide), on change de joueur.
         
-        Scanner scanner = new Scanner(System.in);
-        //System.out.println();
-        System.out.print("Entrez les coordonnées du pion de votre choix x y : ");
-        l = scanner.nextInt();
-        c = scanner.nextInt();
+        // Scanner scanner = new Scanner(System.in);
+        // //System.out.println();
+        // System.out.print("Entrez les coordonnées du pion de votre choix x y : ");
+        // l = scanner.nextInt();
+        // c = scanner.nextInt();
 
         Pion p = jeu.n.getPion(l,c);
 		ArrayList<Pion> pions_dispo = getPionsDispo(joueurCourant);
@@ -140,9 +140,10 @@ public class ControlleurMediateur implements CollecteurEvenements {
 
 	//Ici on alterne liste de pion et de coordonne c'est pas bien
 	public boolean check_clic(ArrayList<Pion> liste, Pion p) { 
-		if(p.estCorrect()){ //Inutile normalement
+		//if(p.estCorrect()){ //Inutile normalement
+		if (!jeu.n.estVide(p))
 			return liste.contains(p);
-		}
+		//}
 		return false;
 	}
 

@@ -83,6 +83,13 @@ public class Niveau {
     public boolean estVide(int x, int y) {
         return plateau[x][y] == null;
     }
+    //On regarde si la case est vide
+    public boolean estVide(Pion p) {
+        if (plateau[p.getX()][p.getY()] == null){
+            return true;
+        }
+        return false;
+    }
 
     //On regarde si la case est noire
     public boolean estAttaquant(int x, int y) {
@@ -149,11 +156,123 @@ public class Niveau {
 
     public void deplace_pion(Coordonne depart, Coordonne dst){
         Pion p = plateau[depart.x][depart.y];
+        boolean PartieFinie = false;
         setVide(depart.x, depart.y);
         plateau[dst.x][dst.y] = p;
         p.coordonne = dst;
+        AMangerPion(dst);
+        if(estAttaquant(dst.x, dst.y)){
+            PartieFinie = AMangerRoi(dst);
+        }
+        if (estRoi(dst.x,dst.y)){
+            PartieFinie = estFortresse(dst.x, dst.y);
+        }
+
+    }
+
+    public boolean AMangerPion(Coordonne dplc){
+        if (estAttaquant(dplc.x, dplc.y)){
+            if (estDefenseur(dplc.x+1,dplc.y)){
+                if(estAttaquant(dplc.x+2,dplc.y)){
+                    setVide(dplc.x+1,dplc.y);
+                    return true;
+                }
+            }
+            else if (estDefenseur(dplc.x-1,dplc.y)){
+                if(estAttaquant(dplc.x-2,dplc.y)){
+                    setVide(dplc.x-1,dplc.y);
+                    return true;
+                }
+            }
+            else if (estDefenseur(dplc.x,dplc.y+1)){
+                if(estAttaquant(dplc.x,dplc.y+2)){
+                    setVide(dplc.x,dplc.y+1);
+                    return true;
+                }
+            }
+            else if (estDefenseur(dplc.x,dplc.y-1)){
+                if(estAttaquant(dplc.x,dplc.y-2)){
+                    setVide(dplc.x,dplc.y-1);
+                    return true;
+                }
+            }  
+        }    
+        else if (estDefenseur(dplc.x, dplc.y)){
+            if(estAttaquant(dplc.x+1,dplc.y)){
+                if(estDefenseur(dplc.x+2,dplc.y)){
+                    setVide(dplc.x+1,dplc.y);
+                    return true;
+                }
+            }
+            else if (estAttaquant(dplc.x-1,dplc.y)){
+                if(estDefenseur(dplc.x-2,dplc.y)){
+                    setVide(dplc.x-1,dplc.y);
+                    return true;
+                }
+            }
+            else if (estAttaquant(dplc.x,dplc.y+1)){
+                if(estDefenseur(dplc.x,dplc.y+2)){
+                    setVide(dplc.x,dplc.y+1);
+                    return true;
+                }
+            }
+            else if (estAttaquant(dplc.x,dplc.y-1)){
+                if(estDefenseur(dplc.x,dplc.y-2)){
+                    setVide(dplc.x,dplc.y-1);
+                    return true;
+                }
+            }      
+        }         
+        return false;
     }
 
 
+    //On regarde si la case est contre le bord
+    public boolean estContreBord(int x, int y){
+        if (x == 0 || x == 8){
+            return true;
+        }
+        else if (y == 0 || y == 8){
+            return true;
+        }
+        return false;
+    }
+
+    //On regarde si on a mangé le roi
+    public boolean AMangerRoi(Coordonne dplc){
+        if(estRoi(dplc.x+1,dplc.y)){
+            if(estContreBord(dplc.x+1,dplc.y) && estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y-1)){
+                return true;
+            }
+            else if (estAttaquant(dplc.x+2,dplc.y) && estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y-1)){
+                return true;
+            }
+        }
+        else if (estRoi(dplc.x-1,dplc.y)){
+            if(estContreBord(dplc.x-1,dplc.y) && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y-1)){
+                return true;
+            }
+            else if (estAttaquant(dplc.x-2,dplc.y) && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y-1)){
+                return true;
+            }
+        }
+        else if (estRoi(dplc.x,dplc.y+1)){
+            if(estContreBord(dplc.x,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y+1)){
+                return true;
+            }
+            else if (estAttaquant(dplc.x,dplc.y+2) && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y+1)){
+                return true;
+            }
+        }
+        else if (estRoi(dplc.x,dplc.y-1)){
+            if(estContreBord(dplc.x,dplc.y-1) && estAttaquant(dplc.x-1,dplc.y-1) && estAttaquant(dplc.x+1,dplc.y-1)){
+                return true;
+            }
+            else if (estAttaquant(dplc.x,dplc.y-2) && estAttaquant(dplc.x-1,dplc.y-1) && estAttaquant(dplc.x+1,dplc.y-1)){
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
