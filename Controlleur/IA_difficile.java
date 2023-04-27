@@ -15,6 +15,8 @@ public class IA_difficile extends IA{
 
     @Override
     boolean tempsEcoule() {
+        nevaluation = 0;
+        long l = System.currentTimeMillis();
         //Code de l'IA renvoyer vrai une fois que le coup est joué
         TypePion current_type = ((jeu.getJoueurCourant()) % 2 ) == 0 ? TypePion.ATTAQUANT : TypePion.DEFENSEUR;
         ArrayList<Pion> pions = jeu.n.getPions(current_type);
@@ -35,7 +37,7 @@ public class IA_difficile extends IA{
                 }
             }
         }
-        System.out.println(nevaluation + " evalutations");
+        System.out.println(nevaluation + " evalutations en " + (System.currentTimeMillis() -l ) + "ms");
         return true;
     }
 
