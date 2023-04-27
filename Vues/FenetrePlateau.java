@@ -29,6 +29,7 @@ public class FenetrePlateau extends JFrame implements Observateur{
 		for (int i=0; i<2; i++) {
 			barre.add(new JLabel("Joueur " + (i+1)));
 			JToggleButton but = new JToggleButton("IA");
+			but.addActionListener(new AdaptateurJoueur(control, but, i));
 			barre.add(but);
 		}
 		barre.add(Box.createGlue());

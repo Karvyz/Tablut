@@ -112,6 +112,12 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		}
     }
 
+	@Override
+	public void changeJoueur(int j, int t) {
+		System.out.println("Nouveau type " + t + " pour le joueur " + j);
+		typeJoueur[j] = t;
+	}
+
 
 	public TypePion typePion_JC(int JC){
 		switch (JC){
