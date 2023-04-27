@@ -1,13 +1,11 @@
 
-import Modele.Coordonne;
 import Modele.Jeu;
-import Modele.Niveau;
+
 import Controlleur.ControlleurMediateur;
 import Vues.CollecteurEvenements;
 import Vues.InterfaceGraphique;
 
-import java.security.InvalidParameterException;
-import java.util.Iterator;
+
 
 public class Tablut{
     public static void main(String[] args) {

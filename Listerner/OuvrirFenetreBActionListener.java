@@ -1,12 +1,9 @@
 package Listerner;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import Modele.Jeu;
-import Modele.Pion;
-import Patterns.Observateur;
 import Vues.CollecteurEvenements;
 import Vues.FenetrePlateau;
 

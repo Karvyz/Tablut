@@ -1,8 +1,6 @@
 package Modele;
 import java.util.ArrayList;
 
-import Modele.Pion;
-import Modele.Roi;
 
 public class Niveau {
     public static final int NOIR = 0;
@@ -180,46 +178,49 @@ public class Niveau {
         return false;
     }
 
-    public void deplace_pion(Coordonne depart, Coordonne dst){
+
+
+    //int = 0 coup joué , 1 noir on gagné, 2 blanc on gagné
+    public int deplace_pion(Coordonne depart, Coordonne dst){
         Pion p = plateau[depart.x][depart.y];
-        boolean PartieFinie = false;
         setVide(depart.x, depart.y);
         plateau[dst.x][dst.y] = p;
         p.coordonne = dst;
         AMangerPion(p);
         if(estAttaquant(p)){
             if( AMangerRoi(dst))
-                System.out.println("PARTIE FINI CAR ROI CAPTURE");
+                return 1;
         }
         if (estRoi(p)){
            if (estFortresse(dst.x, dst.y))
-            System.out.println("PARTIE FINI CAR ROI EVADE");
+            return 2;
         }
+        return 0;
 
     }
 
     public boolean AMangerPion(Pion p){
         if (estAttaquant(p)){
             if (estDefenseur(p.getX()+1,p.getY())){
-                if(estAttaquant(p.getX()+2,p.getY())){
+                if(estAttaquant(p.getX()+2,p.getY())||estFortresse(p.getX()+2, p.getY())){
                     setVide(p.getX()+1,p.getY());
                     return true;
                 }
             }
             if (estDefenseur(p.getX()-1, p.getY())){
-                if(estAttaquant(p.getX()-2,p.getY())){
+                if(estAttaquant(p.getX()-2,p.getY())||estFortresse(p.getX()-2, p.getY())){
                     setVide(p.getX()-1,p.getY());
                     return true;
                 }
             }
             if (estDefenseur(p.getX(),p.getY()+1)){
-                if(estAttaquant(p.getX(),p.getY()+2)){
+                if(estAttaquant(p.getX(),p.getY()+2)||estFortresse(p.getX(), p.getY()+2)){
                     setVide(p.getX(),p.getY()+1);
                     return true;
                 }
             }
             if (estDefenseur(p.getX(),p.getY()-1)){
-                if(estAttaquant(p.getX(),p.getY()-2)){
+                if(estAttaquant(p.getX(),p.getY()-2) || estFortresse(p.getX(), p.getY()-2)){
                     setVide(p.getX(),p.getY()-1);
                     return true;
                 }
@@ -227,25 +228,25 @@ public class Niveau {
         }    
         else if (estDefenseur(p)){
             if(estAttaquant(p.getX()+1,p.getY())){
-                if(estDefenseur(p.getX()+2,p.getY())){
+                if(estDefenseur(p.getX()+2,p.getY()) || estFortresse(p.getX()+2, p.getY())){
                     setVide(p.getX()+1,p.getY());
                     return true;
                 }
             }
             if (estAttaquant(p.getX()-1,p.getY())){
-                if(estDefenseur(p.getX()-2,p.getY())){
+                if(estDefenseur(p.getX()-2,p.getY()) || estFortresse(p.getX()-2, p.getY())){
                     setVide(p.getX()-1,p.getY());
                     return true;
                 }
             }
             if (estAttaquant(p.getX(),p.getY()+1)){
-                if(estDefenseur(p.getX(),p.getY()+2)){
+                if(estDefenseur(p.getX(),p.getY()+2) || estFortresse(p.getX(), p.getY()+2)){
                     setVide(p.getX(),p.getY()+1);
                     return true;
                 }
             }
             if (estAttaquant(p.getX(),p.getY()-1)){
-                if(estDefenseur(p.getX(),p.getY()-2)){
+                if(estDefenseur(p.getX(),p.getY()-2) || estFortresse(p.getX(), p.getY()-2)){
                     setVide(p.getX(),p.getY()-1);
                     return true;
                 }
@@ -266,38 +267,87 @@ public class Niveau {
         return false;
     }
 
+    //On regarde si le pion est contre une forteresse
+    public boolean estContreFortresse(int x, int y){
+        if (x==0 && y==1 || x==0 && y==7 || x==1 && y==0 || x==1 && y==8 || x==7 && y==0 || x==7 && y==8 || x==8 && y==1 || x==8 && y==7){
+            return true;
+        }
+        return false;
+    }
+
+    //On regarde si il est contre le trone
+    public boolean estContreTrone(int x, int y){
+        if (x==4 && y==3 || x==4 && y==4 || x==3 && y==4 || x==5 && y==4){
+            return true;
+        }
+        return false;
+    }
+
     //On regarde si on a mangé le roi
     public boolean AMangerRoi(Coordonne dplc){
         if(estRoi(dplc.x+1,dplc.y)){
-            if(estContreBord(dplc.x+1,dplc.y) && estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y-1)){
-                return true;
+            if(estContreBord(dplc.x+1,dplc.y)){
+                if( (estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y-1)) || ((estContreFortresse(dplc.x+1, dplc.y)&&(estAttaquant(dplc.x+1,dplc.y+1) || estAttaquant(dplc.x+1,dplc.y-1))))){
+                    return true;
+                }
             }
             else if (estAttaquant(dplc.x+2,dplc.y) && estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y-1)){
                 return true;
             }
+            else if(estContreTrone(dplc.x+1,dplc.y)){
+                if(estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y-1)){
+                    return true;
+                }
+            }
         }
         else if (estRoi(dplc.x-1,dplc.y)){
-            if(estContreBord(dplc.x-1,dplc.y) && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y-1)){
+            if(estContreBord(dplc.x-1,dplc.y)){
+                if( (estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y-1)) || (estContreFortresse(dplc.x-1, dplc.y)&&(estAttaquant(dplc.x-1,dplc.y+1) || estAttaquant(dplc.x-1,dplc.y-1)))){
+                    return true;
+                }
                 return true;
             }
             else if (estAttaquant(dplc.x-2,dplc.y) && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y-1)){
                 return true;
             }
+            else if(estContreTrone(dplc.x-1,dplc.y)){
+                if(estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y-1)){
+                    return true;
+                }
+            }
+
         }
         else if (estRoi(dplc.x,dplc.y+1)){
-            if(estContreBord(dplc.x,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y+1)){
-                return true;
+            if(estContreBord(dplc.x,dplc.y+1)){
+                if( (estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y+1)) || (estContreFortresse(dplc.x, dplc.y+1)&&(estAttaquant(dplc.x+1,dplc.y+1) || estAttaquant(dplc.x-1,dplc.y+1)))){
+                    return true;
+                }
             }
             else if (estAttaquant(dplc.x,dplc.y+2) && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y+1)){
                 return true;
             }
+            else if(estContreTrone(dplc.x,dplc.y+1)){
+                if(estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y+1)){
+                    return true;
+                }
+            }
         }
         else if (estRoi(dplc.x,dplc.y-1)){
-            if(estContreBord(dplc.x,dplc.y-1) && estAttaquant(dplc.x-1,dplc.y-1) && estAttaquant(dplc.x+1,dplc.y-1)){
+            if(estContreBord(dplc.x,dplc.y-1)){
+                if( (estAttaquant(dplc.x+1,dplc.y-1) && estAttaquant(dplc.x-1,dplc.y-1)) || (estContreFortresse(dplc.x, dplc.y-1)&&(estAttaquant(dplc.x+1,dplc.y-1) || estAttaquant(dplc.x-1,dplc.y-1)))){
+                    return true;
+                }
+            }
+            else if (estAttaquant(dplc.x,dplc.y-2) && estAttaquant(dplc.x-1,dplc.y-1) && estAttaquant(dplc.x+1,dplc.y-1)){
                 return true;
             }
             else if (estAttaquant(dplc.x,dplc.y-2) && estAttaquant(dplc.x-1,dplc.y-1) && estAttaquant(dplc.x+1,dplc.y-1)){
                 return true;
+            }
+            else if (estContreTrone(dplc.x,dplc.y-1)){
+                if(estAttaquant(dplc.x+1,dplc.y-1) && estAttaquant(dplc.x-1,dplc.y-1)){
+                    return true;
+                }
             }
         }
         return false;

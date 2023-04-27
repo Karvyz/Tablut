@@ -4,10 +4,6 @@ import Modele.Jeu;
 
 import javax.swing.*;
 
-import Listerner.OuvrirFenetreBActionListener;
-
-import java.awt.*;
-
 public class InterfaceGraphique implements Runnable {
 	Jeu j;
 	CollecteurEvenements control;

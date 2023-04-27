@@ -1,6 +1,5 @@
 package Modele;
 
-import Modele.Coordonne;
 import java.util.ArrayList;
 
 

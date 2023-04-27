@@ -1,6 +1,5 @@
 package Controlleur;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import Modele.Coordonne;
 import Modele.Jeu;
@@ -23,6 +22,11 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	final int lenteurAttente = 20;
 	int decompte;
 
+	public boolean pionSelec = false;
+	public boolean deplSelec = false;
+	public Pion selectionne;
+
+
     public ControlleurMediateur(Jeu j)  {
         System.out.println(joueurCourant);
 		jeu = j;
@@ -35,28 +39,33 @@ public class ControlleurMediateur implements CollecteurEvenements {
             joueurs[i][DIFFCILE] = new IA_difficile(i, jeu);
 			typeJoueur[i] = HUMAIN; //type 
 		}
+
 	}
 
     @Override
 	public void clicSouris(int l, int c) {
 		// Lors d'un clic, on le transmet au joueur courant.
 		// Si un coup a effectivement été joué (humain, coup valide), on change de joueur.
-        
-        // Scanner scanner = new Scanner(System.in);
-        // //System.out.println();
-        // System.out.print("Entrez les coordonnées du pion de votre choix x y : ");
-        // l = scanner.nextInt();
-        // c = scanner.nextInt();
 
-        Pion p = jeu.n.getPion(l,c);
-		ArrayList<Pion> pions_dispo = getPionsDispo(joueurCourant);
-
-		if (check_clic(pions_dispo, p)){ //Vérifie que le Pions choisit est bien de notre Type, joueur 0 implique de jouer les Attaquants et joueur 1 implique de jouer Defenseurs et Roi
-			if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(l, c)){
-				System.out.println(jeu.n);
-				changeJoueur();
-			}else{
-				System.out.println("Coup invalide");
+        Pion caseSelec = jeu.n.getPion(l,c);
+		if (caseSelec == null && pionSelec == true){ //ICI on cherche a déplacer
+			// caseSelec.setX(l);
+			// caseSelec.setY(c);
+			if(check_clic_selection_dest(l, c)){
+				Coordonne depart = new Coordonne(selectionne.getX(), selectionne.getY());
+				Coordonne arrive = new Coordonne(l, c);
+				if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(depart, arrive )){
+					changeJoueur();
+				}else{
+					System.out.println("Coup invalide");
+				}
+			}
+		} 
+		else{
+			if (check_clic_selection_pion(caseSelec)){ //Vérifie que le Pions choisit est bien de notre Type, joueur 0 implique de jouer les Attaquants et joueur 1 implique de jouer Defenseurs et Roi
+				pionSelec = true;
+				selectionne = caseSelec;
+				//Ici soit on peut choisir un autre pion, soit faut cliquer une dest
 			}
 		}
         
@@ -88,8 +97,11 @@ public class ControlleurMediateur implements CollecteurEvenements {
 					changeJoueur();
 				} else {
 				// Sinon on indique au joueur qui ne réagit pas au temps (humain) qu'on l'attend.
-					System.out.println("On vous attend, joueur " + joueurs[joueurCourant][type].numJ + " OUBLIEZ PAS DE CLIQUER :)");
-					affiche_pions_dispo(joueurCourant);
+					if (joueurs[joueurCourant][type].numJ == 0)
+						System.out.println("On vous attend, joueur " + joueurs[joueurCourant][type].numJ + " Vous devez déplacer un pion noir ");
+					else
+						System.out.println("On vous attend, joueur " + joueurs[joueurCourant][type].numJ + " Vous devez déplacer un pion blanc ou le roi");
+
 					decompte = lenteurAttente;
 				}
 			} else {
@@ -138,10 +150,28 @@ public class ControlleurMediateur implements CollecteurEvenements {
     }
 
 	//Ici on alterne liste de pion et de coordonne c'est pas bien
-	public boolean check_clic(ArrayList<Pion> liste, Pion p) { 
-		if (p != null)
-			return liste.contains(p);
+	public boolean check_clic_selection_pion(Pion p) { 
+		if (p != null){
+			ArrayList<Pion> pions_dispo = getPionsDispo(joueurCourant); 
+			return pions_dispo.contains(p);
+		}
 		//}
+		return false;
+	}
+
+	public boolean check_Deplacement(ArrayList<Coordonne> liste, Coordonne p) {
+		return liste.contains(p);
+	}
+
+	public boolean check_clic_selection_dest(int x, int y){
+		ArrayList<Coordonne> liste_depl = selectionne.getDeplacement(jeu.n.plateau);
+		if (liste_depl.isEmpty()){ //Aucun coup possible pour ce pion
+			return false;
+		}
+		Coordonne arrive = new Coordonne(x, y);
+		if(check_Deplacement(liste_depl, arrive)){
+			return true;
+		}
 		return false;
 	}
 
