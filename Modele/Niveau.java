@@ -2,7 +2,10 @@ package Modele;
 import java.util.ArrayList;
 
 
-public class Niveau implements Cloneable{
+public class Niveau {
+    public static final int NOIR = 0;
+    public static final int BLANC = 1;
+    public static final int ROI = 2;
     int taille = 9;
 
     public Pion [][] plateau = new Pion[taille][taille];
@@ -16,41 +19,30 @@ public class Niveau implements Cloneable{
 
     //On initialise le plateau de jeu
     public void init_Niveau() {
-        String[] tab = {"   AAA   ",
-                        "    A    ",
-                        "    D    ",
-                        "A   D   A",
-                        "AADDRDDAA",
-                        "A   D   A",
-                        "    D    ",
-                        "    A    ",
-                        "   AAA   "};
-//        String[] tab = {"        D",
-//                        "         ",
-//                        "         ",
-//                        "         ",
-//                        "         ",
-//                        "         ",
-//                        "         ",
-//                        "A        ",
-//                        "A      RD"};
+        int [][] pos_attaquants = new int[][] {{0,3}, {0,4}, {0,5}, {1,4}, {3,0}, {4,0}, {5,0}, {4,1}, {8,3}, {8,4}, {8,5}, {7,4}, {4,7}, {3,8}, {4,8}, {5,8}};
+        int [][] pos_defenseurs = new int[][] {{2,4}, {3,4}, {4,2}, {4,3}, {5,4}, {6,4}, {4,5}, {4,6}};
 
         for (int i = 0; i < taille; i++) {
             for (int j = 0; j < taille; j++) {
-                switch (tab[i].charAt(j)){
-                    case 'R':
-                        plateau[i][j] = new Roi(i,j);
-                        break;
-                    case 'A':
-                        plateau[i][j] = new Pion(i,j, TypePion.ATTAQUANT);
-                        break;
-                    case 'D':
-                        plateau[i][j] = new Pion(i,j,TypePion.DEFENSEUR);
-                        break;
-                    default:
-                        plateau[i][j] = null;
-                }
+                plateau[i][j] = null;
             }
+        }
+
+        Roi r = new Roi(4, 4);
+        plateau[4][4] = r;
+
+        for(int i=0; i<16; i++){
+            int x = pos_attaquants[i][0];
+            int y= pos_attaquants[i][1];
+            Pion p = new Pion(x, y, TypePion.ATTAQUANT);
+            plateau[x][y] = p;
+        }
+
+        for(int i=0; i<8; i++){
+            int x = pos_defenseurs[i][0];
+            int y= pos_defenseurs[i][1];
+            Pion p = new Pion(x, y, TypePion.DEFENSEUR);
+            plateau[x][y] = p;
         }
     }
 
@@ -95,10 +87,6 @@ public class Niveau implements Cloneable{
             return true;
         }
         return false;
-    }
-
-    public TypePion typePion(int x, int y) {
-        return plateau[x][y].getType();
     }
 
     //On regarde si la case est noire
@@ -166,8 +154,6 @@ public class Niveau implements Cloneable{
                     if (type == courant.getType()){
                         liste.add(courant);
                     }
-                    if (type == TypePion.DEFENSEUR && courant.type == TypePion.ROI)
-                        liste.add(courant);
                 }
             }
         }
@@ -290,21 +276,65 @@ public class Niveau implements Cloneable{
     }
 
     //On regarde si il est contre le trone
-    public int estContreTrone(int x, int y){
-        if (x==4 && y==3 ){
-            return 1;
+    public boolean estContreTrone(int x, int y){
+        if (x==4 && y==3 || x==4 && y==4 || x==3 && y==4 || x==5 && y==4){
+            return true;
         }
-        else if (x==4 && y==5){
-            return 2;
-        }
-        else if (x==3 && y==4){
-            return 3;
-        }
-        else if (x==5 && y==4){
-            return 4;
-        }
-        return 0;
+        return false;
     }
+
+
+    public boolean check_clic_selection_dest(Pion selec, int x, int y){
+		ArrayList<Coordonne> liste_depl = selec.getDeplacement(plateau);
+		if (liste_depl.isEmpty()){ //Aucun coup possible pour ce pion
+			return false;
+		}
+		Coordonne arrive = new Coordonne(x, y);
+		if(liste_depl.contains(arrive)){
+			return true;
+		}
+		return false;
+	}
+
+    public boolean check_clic_selection_pion(Pion p, int JC) { 
+		if (p != null){
+			ArrayList<Pion> pions_dispo = getPionsDispo(JC); 
+			return pions_dispo.contains(p);
+		}
+		//}
+		return false;
+	}
+
+    public ArrayList<Pion> getPionsDispo(int JC){
+		ArrayList<Pion> liste ;
+        TypePion t = typePion_JC(JC);
+
+		liste = getPions(t);
+
+        if (t == TypePion.DEFENSEUR){
+			TypePion t1 = TypePion.ROI;
+            ArrayList<Pion> liste2 = getPions(t1);
+            liste.addAll(liste2); // concaténation de list2 à la fin de list1        
+        }
+
+		return liste;
+	}
+
+    public boolean PlusdePion(int JC){
+		return getPionsDispo(JC).isEmpty();
+	}
+
+    public TypePion typePion_JC(int JC){
+		switch (JC){
+			case 0:
+				return TypePion.ATTAQUANT;
+			case 1:
+				return TypePion.DEFENSEUR;
+			default:
+				System.out.println("Joueur courant inconnu");
+				return null;
+		}
+	}
 
     //On regarde si on a mangé le roi
     public boolean AMangerRoi(Coordonne dplc){
@@ -317,14 +347,8 @@ public class Niveau implements Cloneable{
             else if (estAttaquant(dplc.x+2,dplc.y) && estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y-1)){
                 return true;
             }
-            else if(estContreTrone(dplc.x+1,dplc.y)!=0){
-                if(estContreTrone(dplc.x+1,dplc.y)==1 && estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y-1)){
-                    return true;
-                }
-                if(estContreTrone(dplc.x+1,dplc.y)==3 && estAttaquant(dplc.x+2,dplc.y) && estAttaquant(dplc.x+1,dplc.y-1)){
-                    return true;
-                }
-                if(estContreTrone(dplc.x+1,dplc.y)==4 && estAttaquant(dplc.x+2,dplc.y) && estAttaquant(dplc.x+1,dplc.y+1)){
+            else if(estContreTrone(dplc.x+1,dplc.y)){
+                if(estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y-1)){
                     return true;
                 }
             }
@@ -339,14 +363,8 @@ public class Niveau implements Cloneable{
             else if (estAttaquant(dplc.x-2,dplc.y) && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y-1)){
                 return true;
             }
-            else if(estContreTrone(dplc.x-1,dplc.y)!=0){
-                if(estContreTrone(dplc.x-1,dplc.y)==2 && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y-1)){
-                    return true;
-                }
-                if(estContreTrone(dplc.x-1,dplc.y)==3 && estAttaquant(dplc.x-2,dplc.y) && estAttaquant(dplc.x-1,dplc.y-1)){
-                    return true;
-                }
-                if(estContreTrone(dplc.x-1,dplc.y)==4 && estAttaquant(dplc.x-2,dplc.y) && estAttaquant(dplc.x-1,dplc.y+1)){
+            else if(estContreTrone(dplc.x-1,dplc.y)){
+                if(estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y-1)){
                     return true;
                 }
             }
@@ -361,14 +379,8 @@ public class Niveau implements Cloneable{
             else if (estAttaquant(dplc.x,dplc.y+2) && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y+1)){
                 return true;
             }
-            else if(estContreTrone(dplc.x,dplc.y+1)!=0){
-                if(estContreTrone(dplc.x,dplc.y+1)==1 && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x,dplc.y+2)){
-                    return true;
-                }
-                if(estContreTrone(dplc.x,dplc.y+1)==2 && estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x,dplc.y+2)){
-                    return true;
-                }
-                if(estContreTrone(dplc.x,dplc.y+1)==3 && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y+1)){
+            else if(estContreTrone(dplc.x,dplc.y+1)){
+                if(estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y+1)){
                     return true;
                 }
             }
@@ -385,14 +397,8 @@ public class Niveau implements Cloneable{
             else if (estAttaquant(dplc.x,dplc.y-2) && estAttaquant(dplc.x-1,dplc.y-1) && estAttaquant(dplc.x+1,dplc.y-1)){
                 return true;
             }
-            else if (estContreTrone(dplc.x,dplc.y-1)!=0){
-                if(estContreTrone(dplc.x,dplc.y-1)==1 && estAttaquant(dplc.x,dplc.y-2) && estAttaquant(dplc.x-1,dplc.y-1)){
-                    return true;
-                }
-                if(estContreTrone(dplc.x,dplc.y-1)==2 && estAttaquant(dplc.x,dplc.y-2) && estAttaquant(dplc.x+1,dplc.y-1)){
-                    return true;
-                }
-                if(estContreTrone(dplc.x,dplc.y-1)==4 && estAttaquant(dplc.x-1,dplc.y-1) && estAttaquant(dplc.x+1,dplc.y-1)){
+            else if (estContreTrone(dplc.x,dplc.y-1)){
+                if(estAttaquant(dplc.x+1,dplc.y-1) && estAttaquant(dplc.x-1,dplc.y-1)){
                     return true;
                 }
             }
@@ -400,21 +406,4 @@ public class Niveau implements Cloneable{
         return false;
     }
 
-    @Override
-    public Niveau clone() {
-        try {
-            Niveau clone = (Niveau) super.clone();
-            clone.plateau = new Pion[taille][taille];
-            for (int i = 0; i < taille; i++) {
-                for (int j = 0; j < taille; j++) {
-                    if (plateau[i][j] != null) {
-                        clone.plateau[i][j] = plateau[i][j].clone();
-                    }
-                }
-            }
-            return clone;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
-    }
 }
