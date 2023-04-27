@@ -20,7 +20,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	Joueurs[][] joueurs;
 	int [] typeJoueur;
 	int joueurCourant = 0; //joueur qui commence
-	final int lenteurAttente = 20;
+	final int lenteurAttente = 1;
 	int decompte;
 
     public ControlleurMediateur(Jeu j)  {
@@ -33,8 +33,9 @@ public class ControlleurMediateur implements CollecteurEvenements {
 			joueurs[i][FACILE] = new IA_facile(i, jeu);
             joueurs[i][MOYEN] = new IA_moyen(i, jeu);
             joueurs[i][DIFFCILE] = new IA_difficile(i, jeu);
-			typeJoueur[i] = DIFFCILE; //type
+			typeJoueur[i] = FACILE; //type
 		}
+		typeJoueur[0] = DIFFCILE;
 	}
 
     @Override
