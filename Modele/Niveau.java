@@ -4,19 +4,30 @@ import java.util.ArrayList;
 import Modele.Pion;
 import Modele.Roi;
 
-public class Niveau {
+public class Niveau implements Cloneable{
     public static final int NOIR = 0;
     public static final int BLANC = 1;
     public static final int ROI = 2;
     int taille = 9;
 
-    Pion [][] plateau = new Pion[taille][taille];
+    public Pion [][] plateau = new Pion[taille][taille];
 
 
 
     //On creer le plateau de jeu
     public Niveau() {
         init_Niveau();
+    }
+
+    public Niveau(Niveau n) {
+        plateau = new Pion[taille][taille];
+        for (int i = 0; i < taille; i++) {
+            for (int j = 0; j < taille; j++) {
+                if (n.plateau[i][j] != null) {
+                    plateau[i][j] = new Pion(n.plateau[i][j]);
+                }
+            }
+        }
     }
 
     //On initialise le plateau de jeu
@@ -79,6 +90,10 @@ public class Niveau {
         return plateau[x][y] == null;
     }
 
+    public TypePion typePion(int x, int y) {
+        return plateau[x][y].getType();
+    }
+
     //On regarde si la case est noire
     public boolean estAttaquant(int x, int y) {
         return plateau[x][y].getType() == TypePion.ATTAQUANT;
@@ -138,9 +153,4 @@ public class Niveau {
         plateau[dst.x][dst.y] = p;
         p.coordonne = dst;
     }
-
-
-    
-    
-
 }

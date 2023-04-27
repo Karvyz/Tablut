@@ -3,13 +3,7 @@ package Modele;
 import Modele.Coordonne;
 import java.util.ArrayList;
 
-enum TypePion {
-    ATTAQUANT,
-    DEFENSEUR,
-    ROI
-}
-
-public class Pion {
+public class Pion implements Cloneable {
     Coordonne coordonne;
     TypePion type; //0 pion Noir, 1 pion Blanc, 
 
@@ -24,6 +18,11 @@ public class Pion {
         this.type = type;
     }
 
+    public Pion(Pion p){
+        this.coordonne = new Coordonne(p.coordonne);
+        this.type = p.type;
+    }
+
 
     public TypePion getType() {
         return type;
@@ -35,6 +34,10 @@ public class Pion {
 
     public int getY(){
         return this.coordonne.y;
+    }
+
+    public Coordonne getCoordonne(){
+        return coordonne;
     }
 
     public void setX(int x){
@@ -99,6 +102,4 @@ public class Pion {
         getDeplacementHorizontaleList(plateau, deplacement);
         return deplacement;
     }
-
-
 }
