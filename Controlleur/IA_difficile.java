@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class IA_difficile extends IA{
 
     int nevaluation = 0;
-    static int MAX_DEPTH = 4;
+    static int MAX_DEPTH = 3;
 
     public IA_difficile(int num, Jeu jeu) {
         super(num, jeu);
@@ -20,23 +20,25 @@ public class IA_difficile extends IA{
         //Code de l'IA renvoyer vrai une fois que le coup est joué
         TypePion current_type = ((jeu.getJoueurCourant()) % 2 ) == 0 ? TypePion.ATTAQUANT : TypePion.DEFENSEUR;
         ArrayList<Pion> pions = jeu.n.getPions(current_type);
+        if (current_type == TypePion.DEFENSEUR)
+            pions.addAll(jeu.n.getPions(TypePion.ROI));
         int valeur_retour = Integer.MIN_VALUE;
+        Coordonne pion_depart = new Coordonne(0,0);;
+        Coordonne pion_arrivee = new Coordonne(0,0);
         for (Pion pion : pions) {
             ArrayList<Coordonne> deplacements = pion.getDeplacement(jeu.n.plateau);
             for (Coordonne deplacement : deplacements) {
                 Niveau clone = new Niveau(jeu.n);
                 clone.deplace_pion(pion.getCoordonne(), deplacement);
-//                if (MAX_DEPTH - 1 == 0) {
-//                    return evaluation(clone);
-//                }
-//                else {
-                    int tmp = analyse_recursive(clone, 1);
-                    if (tmp > valeur_retour){
-                        valeur_retour = tmp;
-//                    }
+                int tmp = analyse_recursive(clone, 1);
+                if (tmp > valeur_retour){
+                    valeur_retour = tmp;
+                    pion_depart = pion.getCoordonne();
+                    pion_arrivee = deplacement;
                 }
             }
         }
+        jeu.jouer(pion_depart, pion_arrivee);
         System.out.println(nevaluation + " evalutations en " + (System.currentTimeMillis() -l ) + "ms");
         return true;
     }

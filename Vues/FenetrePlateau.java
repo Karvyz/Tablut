@@ -38,7 +38,7 @@ public class FenetrePlateau extends JFrame implements Observateur{
         btnOuvrirFenetreB.addActionListener(new OuvrirFenetreBActionListener(jeu, control));
         add(btnOuvrirFenetreB, BorderLayout.SOUTH);
         barre.add(btnOuvrirFenetreB);
-        
+
 		Timer chrono = new Timer( 200, new AdaptateurTemps(control));
 		chrono.start();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
