@@ -1,6 +1,7 @@
 package Modele;
 import java.util.ArrayList;
 
+import Controlleur.TypePion;
 import Modele.Pion;
 import Modele.Roi;
 
@@ -83,6 +84,10 @@ public class Niveau implements Cloneable{
     //On regarde la taille du plateau
     public int getTaille() {
         return taille;
+    }
+
+    public Pion getPion(int x,int y){
+        return plateau[x][y];
     }
 
     //On regarde si la case est vide

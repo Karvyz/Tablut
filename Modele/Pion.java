@@ -2,8 +2,9 @@ package Modele;
 
 import Modele.Coordonne;
 import java.util.ArrayList;
+import Controlleur.TypePion;
 
-public class Pion implements Cloneable {
+public class Pion {
     Coordonne coordonne;
     TypePion type; //0 pion Noir, 1 pion Blanc, 
 
@@ -102,4 +103,13 @@ public class Pion implements Cloneable {
         getDeplacementHorizontaleList(plateau, deplacement);
         return deplacement;
     }
+
+    public void affiche_liste_deplacement(ArrayList<Coordonne> liste){
+        System.out.print("{ ");
+        for(Coordonne c : liste){
+            System.out.print("(" + c.getX() + "," + c.getY() +") ");
+        }
+        System.out.println(" }");
+    }
+
 }
