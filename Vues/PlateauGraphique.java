@@ -1,7 +1,6 @@
 package Vues;
 
 import Modele.Jeu;
-import Modele.Pion;
 import Patterns.Observateur;
 
 import javax.swing.*;

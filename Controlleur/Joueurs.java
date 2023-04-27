@@ -1,5 +1,6 @@
 package Controlleur;
 
+import Modele.Coordonne;
 import Modele.Jeu;
 
 abstract class Joueurs {
@@ -13,7 +14,7 @@ abstract class Joueurs {
 
     // Méthode appelée pour tous les joueurs lors d'un clic sur le plateau
 	// Si un joueur n'est pas concerné, il lui suffit de l'ignorer
-	boolean jeu(int i, int j) {
+	boolean jeu(Coordonne i, Coordonne j) {
 		return false;
 	}
 

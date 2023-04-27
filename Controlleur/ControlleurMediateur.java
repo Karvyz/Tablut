@@ -1,6 +1,5 @@
 package Controlleur;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import Modele.Coordonne;
 import Modele.Jeu;
@@ -23,6 +22,12 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	final int lenteurAttente = 1;
 	int decompte;
 
+	public boolean pionSelec = false;
+	public boolean deplSelec = false;
+	public boolean coupValide = false;
+	public Pion selectionne;
+
+
     public ControlleurMediateur(Jeu j)  {
         System.out.println(joueurCourant);
 		jeu = j;
@@ -42,34 +47,34 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	public void clicSouris(int l, int c) {
 		// Lors d'un clic, on le transmet au joueur courant.
 		// Si un coup a effectivement été joué (humain, coup valide), on change de joueur.
-        
-        // Scanner scanner = new Scanner(System.in);
-        // //System.out.println();
-        // System.out.print("Entrez les coordonnées du pion de votre choix x y : ");
-        // l = scanner.nextInt();
-        // c = scanner.nextInt();
 
-        Pion p = jeu.n.getPion(l,c);
-		ArrayList<Pion> pions_dispo = getPionsDispo(joueurCourant);
-
-		if (check_clic(pions_dispo, p)){ //Vérifie que le Pions choisit est bien de notre Type, joueur 0 implique de jouer les Attaquants et joueur 1 implique de jouer Defenseurs et Roi
-			if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(l, c)){
-				System.out.println(jeu.n);
-				changeJoueur();
+        Pion caseSelec = jeu.n.getPion(l,c);
+		if (caseSelec == null && pionSelec == true){ //ICI on cherche a déplacer
+			Coordonne depart = new Coordonne(selectionne.getX(), selectionne.getY());
+			Coordonne arrive = new Coordonne(l, c);
+			if(!check_clic_selection_dest(l, c)){
+				System.out.println("Destination invalide");
 			}else{
-				System.out.println("Coup invalide");
+				if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(depart, arrive )){
+					changeJoueur();
+					deplSelec = true;
+					pionSelec = false; //PASSER A FALSE SEULEMENT SI ON VALIDE LE coup
+				}else{
+					System.out.println("Coup invalide");
+				}
+			}
+		} 
+		else{ //Selection du pion 
+			if (check_clic_selection_pion(caseSelec)){ //Vérifie que le Pions choisit est bien de notre Type, joueur 0 implique de jouer les Attaquants et joueur 1 implique de jouer Defenseurs et Roi
+				System.out.println(caseSelec);
+				pionSelec = true;
+				selectionne = caseSelec;
+			}
+			else{
+				System.out.println("Ce pion n'est pas valide");
 			}
 		}
-        
 	}
-
-	// @Override
-	// public void clicSouris(int l, int c) { //origine
-	// 	if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(l, c)){
-    //         //System.out.println(jeu.n);
-	// 		changeJoueur();
-    //     }
-	// }
 
     void changeJoueur() {
 		joueurCourant = (joueurCourant + 1) % joueurs.length;
@@ -80,21 +85,29 @@ public class ControlleurMediateur implements CollecteurEvenements {
         //System.out.println(joueurCourant);
 
         if (jeu.enCours()) {
-			if (decompte == 0) {
-				int type = typeJoueur[joueurCourant];
-
-				// Lorsque le temps est écoulé on le transmet au joueur courant.
-				// Si un coup a été joué (IA) on change de joueur.
-				if (joueurs[joueurCourant][type].tempsEcoule()) { //Un humain renvoi tjr false, une IA renvoi vrai lorsquelle a joué(jeu effectué dans tempsEcoule())
-					changeJoueur();
+			if(PlusdePion(joueurCourant)){
+				jeu.enCours = false;
+				System.out.println("Le joueur blanc a gagné car l'attaquant n'a plus de pion");
+			}else{
+				if (decompte == 0) {
+					int type = typeJoueur[joueurCourant];
+	
+					// Lorsque le temps est écoulé on le transmet au joueur courant.
+					// Si un coup a été joué (IA) on change de joueur.
+					if (joueurs[joueurCourant][type].tempsEcoule()) { //Un humain renvoi tjr false, une IA renvoi vrai lorsquelle a joué(jeu effectué dans tempsEcoule())
+						changeJoueur();
+					} else {
+					// Sinon on indique au joueur qui ne réagit pas au temps (humain) qu'on l'attend.
+						if (joueurs[joueurCourant][type].numJ == 0)
+							System.out.println("On vous attend, joueur " + joueurs[joueurCourant][type].numJ + " Vous devez déplacer un pion noir ");
+						else
+							System.out.println("On vous attend, joueur " + joueurs[joueurCourant][type].numJ + " Vous devez déplacer un pion blanc ou le roi");
+	
+						decompte = lenteurAttente;
+					}
 				} else {
-				// Sinon on indique au joueur qui ne réagit pas au temps (humain) qu'on l'attend.
-					System.out.println("On vous attend, joueur " + joueurs[joueurCourant][type].numJ + " OUBLIEZ PAS DE CLIQUER :)");
-					affiche_pions_dispo(joueurCourant);
-					decompte = lenteurAttente;
+					decompte--;
 				}
-			} else {
-				decompte--;
 			}
 		}
     }
@@ -127,6 +140,10 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		return liste;
 	}
 
+	public boolean PlusdePion(int JC){
+		return getPionsDispo(JC).isEmpty();
+	}
+
 	//Prends un joueur et affiche sa liste de pions dispos
     public void affiche_pions_dispo(int j){
 		
@@ -139,10 +156,28 @@ public class ControlleurMediateur implements CollecteurEvenements {
     }
 
 	//Ici on alterne liste de pion et de coordonne c'est pas bien
-	public boolean check_clic(ArrayList<Pion> liste, Pion p) { 
-		if (p != null)
-			return liste.contains(p);
+	public boolean check_clic_selection_pion(Pion p) { 
+		if (p != null){
+			ArrayList<Pion> pions_dispo = getPionsDispo(joueurCourant); 
+			return pions_dispo.contains(p);
+		}
 		//}
+		return false;
+	}
+
+	public boolean check_Deplacement(ArrayList<Coordonne> liste, Coordonne p) {
+		return liste.contains(p);
+	}
+
+	public boolean check_clic_selection_dest(int x, int y){
+		ArrayList<Coordonne> liste_depl = selectionne.getDeplacement(jeu.n.plateau);
+		if (liste_depl.isEmpty()){ //Aucun coup possible pour ce pion
+			return false;
+		}
+		Coordonne arrive = new Coordonne(x, y);
+		if(check_Deplacement(liste_depl, arrive)){
+			return true;
+		}
 		return false;
 	}
 
