@@ -199,30 +199,30 @@ public class Niveau {
 
     }
 
-    public boolean AMangerPion(Pion p){
+    public void AMangerPion(Pion p){
         if (estAttaquant(p)){
             if (estDefenseur(p.getX()+1,p.getY())){
                 if(estAttaquant(p.getX()+2,p.getY())||estFortresse(p.getX()+2, p.getY())){
                     setVide(p.getX()+1,p.getY());
-                    return true;
+                  
                 }
             }
             if (estDefenseur(p.getX()-1, p.getY())){
                 if(estAttaquant(p.getX()-2,p.getY())||estFortresse(p.getX()-2, p.getY())){
                     setVide(p.getX()-1,p.getY());
-                    return true;
+
                 }
             }
             if (estDefenseur(p.getX(),p.getY()+1)){
                 if(estAttaquant(p.getX(),p.getY()+2)||estFortresse(p.getX(), p.getY()+2)){
                     setVide(p.getX(),p.getY()+1);
-                    return true;
+    
                 }
             }
             if (estDefenseur(p.getX(),p.getY()-1)){
                 if(estAttaquant(p.getX(),p.getY()-2) || estFortresse(p.getX(), p.getY()-2)){
                     setVide(p.getX(),p.getY()-1);
-                    return true;
+          
                 }
             }  
         }    
@@ -230,29 +230,29 @@ public class Niveau {
             if(estAttaquant(p.getX()+1,p.getY())){
                 if(estDefenseur(p.getX()+2,p.getY()) || estFortresse(p.getX()+2, p.getY())){
                     setVide(p.getX()+1,p.getY());
-                    return true;
+             
                 }
             }
             if (estAttaquant(p.getX()-1,p.getY())){
                 if(estDefenseur(p.getX()-2,p.getY()) || estFortresse(p.getX()-2, p.getY())){
                     setVide(p.getX()-1,p.getY());
-                    return true;
+                
                 }
             }
             if (estAttaquant(p.getX(),p.getY()+1)){
                 if(estDefenseur(p.getX(),p.getY()+2) || estFortresse(p.getX(), p.getY()+2)){
                     setVide(p.getX(),p.getY()+1);
-                    return true;
+          
                 }
             }
             if (estAttaquant(p.getX(),p.getY()-1)){
                 if(estDefenseur(p.getX(),p.getY()-2) || estFortresse(p.getX(), p.getY()-2)){
                     setVide(p.getX(),p.getY()-1);
-                    return true;
+                
                 }
             }      
         }         
-        return false;
+
     }
 
 
@@ -282,6 +282,7 @@ public class Niveau {
         }
         return false;
     }
+
 
     //On regarde si on a mangé le roi
     public boolean AMangerRoi(Coordonne dplc){

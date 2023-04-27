@@ -23,6 +23,7 @@ public class Jeu extends Observable{
         metAJour();
 	}
 
+
     public void jouer(Coordonne depart, Coordonne arrive){
         int i = n.deplace_pion(depart, arrive);
         System.out.println("Le joueur " + joueurCourant + " a déplacé le piont Noir de (" + depart.getX() +"," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() +")");

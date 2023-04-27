@@ -15,14 +15,7 @@ public class Humain extends Joueurs {
     // Méthode appelée pour tous les joueurs lors d'un clic sur le plateau
 	// Si un joueur n'est pas concerné, il lui suffit de l'ignorer
 	boolean jeu(Coordonne depart, Coordonne arrive) {
-        // Coordonne depart = new Coordonne(l, c);
-        // Pion p = jeu.n.getPion(l,c);
-        // ArrayList<Coordonne> liste_depl = p.getDeplacement(jeu.n.plateau);
-        // p.affiche_liste_deplacement(liste_depl);
-        // if (liste_depl.isEmpty()){ //Aucun coup possible pour ce pion
-        //     return false;
-        // }
-        // Coordonne arrive = demandeDepl();
+
      
         //if(check_Deplacement(liste_depl, arrive))
         jeu.jouer(depart, arrive); 

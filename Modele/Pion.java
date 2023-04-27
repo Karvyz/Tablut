@@ -38,7 +38,11 @@ public class Pion {
     public void setY(int y){
         this.coordonne.y = y;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Pion selectionne (" + this.coordonne.x + ", " + this.coordonne.y + ")";
+    }
     // public boolean estCorrect() { //Normalment inutile car gérer par l'IHM
     //     return (getX()>=0 && getX()<9 && getY()>=0 && getY()<9);
     // }
