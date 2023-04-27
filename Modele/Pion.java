@@ -2,7 +2,6 @@ package Modele;
 
 import Modele.Coordonne;
 import java.util.ArrayList;
-import Controlleur.TypePion;
 
 public class Pion {
     Coordonne coordonne;
@@ -28,11 +27,11 @@ public class Pion {
     public TypePion getType() {
         return type;
     }
-
+    
     public int getX(){
         return this.coordonne.x;
     }
-
+    
     public int getY(){
         return this.coordonne.y;
     }
@@ -44,10 +43,14 @@ public class Pion {
     public void setX(int x){
         this.coordonne.x = x;
     }
-
+    
     public void setY(int y){
         this.coordonne.y = y;
     }
+    
+    // public boolean estCorrect() { //Normalment inutile car gérer par l'IHM
+    //     return (getX()>=0 && getX()<9 && getY()>=0 && getY()<9);
+    // }
 
     private boolean emplacementValide(int x, int y) {
         if (x == 0 && (y == 0 || y == 8))
@@ -105,11 +108,12 @@ public class Pion {
     }
 
     public void affiche_liste_deplacement(ArrayList<Coordonne> liste){
-        System.out.print("{ ");
+        System.out.print("Déplacements possibles { ");
         for(Coordonne c : liste){
             System.out.print("(" + c.getX() + "," + c.getY() +") ");
         }
-        System.out.println(" }");
+        System.out.println("}");
     }
+
 
 }

@@ -6,10 +6,12 @@ import java.awt.event.MouseEvent;
 
 public class AdaptateurSouris extends MouseAdapter {
 	//NiveauGraphique niv;
+	PlateauGraphique plateau;
 	CollecteurEvenements control;
 
-	AdaptateurSouris(CollecteurEvenements c) {
+	AdaptateurSouris(PlateauGraphique p, CollecteurEvenements c) {
 		control = c;
+		plateau = p;
 	}
 
 	// AdaptateurSouris(NiveauGraphique n, CollecteurEvenements c) {
@@ -19,8 +21,9 @@ public class AdaptateurSouris extends MouseAdapter {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		int l = e.getY();
-		int c = e.getX() ;
+		int l = e.getY() / plateau.hauteurCase;
+		int c = e.getX() / plateau.largeurCase;
+		System.out.println("Clic en (" + l +"," + c +")");
 		control.clicSouris(l, c);
 	}
 }
