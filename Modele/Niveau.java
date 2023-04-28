@@ -16,26 +16,10 @@ public class Niveau {
     public Niveau() {
         init_Niveau();
     }
-
-    public Niveau(Niveau niveau) {
-        this.taille = niveau.taille;
-        this.plateau = new Pion[taille][taille];
-        for (int i = 0; i < taille; i++) {
-            for (int j = 0; j < taille; j++) {
-                if (niveau.plateau[i][j] != null) {
-                    this.plateau[i][j] = niveau.plateau[i][j].clone();
-                }
-            }
-        }
-    }
-
-
-
-    public void setPlateau(Pion[][] plateau) {
-        this.plateau = plateau;
-    }
-
-
+    
+    
+    
+    
     //On initialise le plateau de jeu
     public void init_Niveau() {
         int [][] pos_attaquants = new int[][] {{0,3}, {0,4}, {0,5}, {1,4}, {3,0}, {4,0}, {5,0}, {4,1}, {8,3}, {8,4}, {8,5}, {7,4}, {4,7}, {3,8}, {4,8}, {5,8}};
@@ -49,14 +33,14 @@ public class Niveau {
 
         Roi r = new Roi(4, 4);
         plateau[4][4] = r;
-
+        
         for(int i=0; i<16; i++){
             int x = pos_attaquants[i][0];
             int y= pos_attaquants[i][1];
             Pion p = new Pion(x, y, TypePion.ATTAQUANT);
             plateau[x][y] = p;
         }
-
+        
         for(int i=0; i<8; i++){
             int x = pos_defenseurs[i][0];
             int y= pos_defenseurs[i][1];
@@ -64,18 +48,33 @@ public class Niveau {
             plateau[x][y] = p;
         }
     }
+    
 
-    public Niveau clone() {
-        Niveau clone = new Niveau();
-        for (int i = 0; i < taille; i++) {
-            for (int j = 0; j < taille; j++) {
-                if (plateau[i][j] != null) {
-                    clone.plateau[i][j] = plateau[i][j].clone();
+
+    // Crée une copie profonde de l'objet Niveau
+    public Niveau copy() {
+        Niveau copiedNiveau = new Niveau();
+        copiedNiveau.taille = this.taille;
+
+        for (int i = 0; i < this.taille; i++) {
+            for (int j = 0; j < this.taille; j++) {
+                if (this.plateau[i][j] != null) {
+                    if (this.plateau[i][j] instanceof Roi) {
+                        Roi copiedRoi = new Roi(this.plateau[i][j].getX(), this.plateau[i][j].getY());
+                        copiedNiveau.plateau[i][j] = copiedRoi;
+                    } else {
+                        Pion copiedPion = new Pion(this.plateau[i][j].getX(), this.plateau[i][j].getY(), this.plateau[i][j].getType());
+                        copiedNiveau.plateau[i][j] = copiedPion;
+                    }
+                } else {
+                    copiedNiveau.plateau[i][j] = null;
                 }
             }
         }
-        return clone;
+        return copiedNiveau;
     }
+
+
 
     public String toString() {
         StringBuilder sb = new StringBuilder();

@@ -10,7 +10,6 @@ public class Jeu extends Observable{
 
     public Jeu(){
         nouvellePartie();
-        System.out.println(n);
     }
     
     /**
