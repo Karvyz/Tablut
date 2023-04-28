@@ -25,7 +25,7 @@ public class Jeu extends Observable{
 
     public void jouer(Coordonne depart, Coordonne arrive){
         int i = n.deplace_pion(depart, arrive);
-        System.out.println("Le joueur " + joueurCourant + " a déplacé le piont Noir de (" + depart.getX() +"," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() +")");
+        System.out.println("Déplacement du pion de (" + depart.getX() +"," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() +")");
         if (i > 0){
             enCours = false;
             if (i == 1)
