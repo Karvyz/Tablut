@@ -22,26 +22,31 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	final int lenteurAttente = 20;
 	int decompte;
 
-	public boolean pionSelec = false;
-	public boolean deplSelec = false;
-	public boolean coupValide = false;
+	
 	public Pion selectionne;
+	private boolean pionSelec = false;
+	private boolean deplSelec = false;
+	private boolean coupValide = false;
+	
 
-
-    public ControlleurMediateur(Jeu j)  {
-        System.out.println(joueurCourant);
+	public ControlleurMediateur(Jeu j)  {
+		System.out.println(joueurCourant);
 		jeu = j;
 		joueurs = new Joueurs[2][4];
 		typeJoueur = new int[4];
 		for (int i = 0; i < joueurs.length; i++) {
 			joueurs[i][HUMAIN] = new Humain(i, jeu);
 			joueurs[i][FACILE] = new IA_facile(i, jeu);
-            joueurs[i][MOYEN] = new IA_moyen(i, jeu);
-            joueurs[i][DIFFCILE] = new IA_difficile(i, jeu);
+			joueurs[i][MOYEN] = new IA_moyen(i, jeu);
+			joueurs[i][DIFFCILE] = new IA_difficile(i, jeu);
 			typeJoueur[i] = HUMAIN; //type 
 		}
 
 	}
+	
+	
+
+
 
     @Override
 	public void clicSouris(int l, int c) {
@@ -117,6 +122,29 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	public void changeJoueur(int j, int t) {
 		System.out.println("Nouveau type " + t + " pour le joueur " + j);
 		typeJoueur[j] = t;
+	}
+
+	public boolean isPionSelec() { //renvoi true si pionSelec = true
+		return pionSelec;
+	}
+	public void setPionSelec(boolean pionSelec) { //change la valeur boolenne de pionSelec
+		this.pionSelec = pionSelec;
+	}
+	
+	public boolean isDeplSelec() {
+		return deplSelec;
+	}
+
+	public void setDeplSelec(boolean deplSelec) {
+		this.deplSelec = deplSelec;
+	}
+
+	public boolean isCoupValide() {
+		return coupValide;
+	}
+
+	public void setCoupValide(boolean coupValide) {
+		this.coupValide = coupValide;
 	}
 
 }

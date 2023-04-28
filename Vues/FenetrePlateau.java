@@ -2,7 +2,7 @@ package Vues;
 
 import javax.swing.*;
 
-import Listerner.OuvrirFenetreBActionListener;
+import Listerner.ClickListener;
 
 import java.awt.BorderLayout;
 
@@ -35,10 +35,12 @@ public class FenetrePlateau extends JFrame implements Observateur{
 		barre.add(Box.createGlue());
 		frame.add(barre, BorderLayout.LINE_END);
 
-        JButton btnOuvrirFenetreB = new JButton("Fen B");
-        btnOuvrirFenetreB.addActionListener(new OuvrirFenetreBActionListener(jeu, control));
-        add(btnOuvrirFenetreB, BorderLayout.SOUTH);
-        barre.add(btnOuvrirFenetreB);
+        JButton btnValide = new JButton("Valide");// Creer le bouton Valide
+		btnValide.setName("btnValide"); //Important de définir le nom pour le retrouvé dans ClickListener
+        ClickListener clickListener2 = new ClickListener(0, btnValide, control); //ajoute l'action en cas de clique
+		btnValide.addActionListener(clickListener2);
+        add(btnValide, BorderLayout.SOUTH); //Ajoute le bouton a la fenetre
+        barre.add(btnValide); // Place le bouton
         
 		Timer chrono = new Timer( 200, new AdaptateurTemps(control));
 		chrono.start();
