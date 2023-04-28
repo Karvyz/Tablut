@@ -48,6 +48,26 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	}
 	
 
+	@Override
+	public void dragANDdrop(Coordonne src, Coordonne dst){
+		Pion depart = jeu.n.getPion(src.getX(), src.getY());
+		if (jeu.n.check_clic_selection_pion(depart, joueurCourant)){ //Vérifie que le Pions choisit est bien de notre Type, joueur 0 implique de jouer les Attaquants et joueur 1 implique de jouer Defenseurs et Roi
+			if(jeu.n.check_clic_selection_dest(selectionne, dst.getX(), dst.getY())){
+				if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(src, dst) )// MODIF de jeu.n ici
+					changeJoueur();
+				else
+					System.out.println("Coup invalide");
+			}
+			else{
+				System.out.println("Destination invalide"); //a ce stade on a toujours un pion selectionne
+			}
+		}
+		else{
+			System.out.println("Pion d'origine incorrect");
+		}
+
+	}
+
     @Override
 	public void clicSouris(int l, int c) {
 		// Lors d'un clic, on le transmet au joueur courant.

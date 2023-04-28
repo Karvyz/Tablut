@@ -1,5 +1,7 @@
 package Vues;
 
+import Modele.Coordonne;
+
 public interface CollecteurEvenements {
 
     void tictac();
@@ -7,5 +9,6 @@ public interface CollecteurEvenements {
     // void changeTaille(int t);
 
     void clicSouris(int l, int c);
+    void dragANDdrop(Coordonne coordonne, Coordonne coordonne2);
 }
 
