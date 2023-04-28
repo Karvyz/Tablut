@@ -3,7 +3,7 @@ package Modele;
 import java.util.ArrayList;
 
 
-public class Pion {
+public class Pion implements Cloneable{
     Coordonne coordonne;
     TypePion type; //0 pion Noir, 1 pion Blanc, 
 
@@ -18,6 +18,17 @@ public class Pion {
         this.type = type;
     }
 
+    @Override
+    public Pion clone() {
+        try {
+            Pion copie = (Pion) super.clone();
+            copie.coordonne = new Coordonne(this.coordonne.getX(), this.coordonne.getY());
+            copie.type = this.type; // Pas besoin de cloner si TypePion est une enum ou un type immuable
+            return copie;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError("La classe Pion doit être cloneable", e);
+        }
+    }
 
     public TypePion getType() {
         return type;
@@ -41,7 +52,7 @@ public class Pion {
 
     @Override
     public String toString() {
-        return "Pion selectionne (" + this.coordonne.x + ", " + this.coordonne.y + ")";
+        return "Pion selectionne (" + this.coordonne.x + ", " + this.coordonne.y + ", type=" + this.getType() + ")";
     }
     // public boolean estCorrect() { //Normalment inutile car gérer par l'IHM
     //     return (getX()>=0 && getX()<9 && getY()>=0 && getY()<9);
@@ -110,6 +121,14 @@ public class Pion {
         System.out.println("}");
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+
+        Pion other = (Pion) obj;
+        return this.coordonne.equals(other.coordonne) && this.type == other.type;
+    }
 
 
 }

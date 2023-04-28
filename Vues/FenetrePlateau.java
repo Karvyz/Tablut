@@ -37,7 +37,7 @@ public class FenetrePlateau extends JFrame implements Observateur{
 
         JButton btnValide = new JButton("Valide");// Creer le bouton Valide
 		btnValide.setName("btnValide"); //Important de définir le nom pour le retrouvé dans ClickListener
-        ClickListener clickListener2 = new ClickListener(0, btnValide, control); //ajoute l'action en cas de clique
+        ClickListener clickListener2 = new ClickListener(0, btnValide, control, j); //ajoute l'action en cas de clique
 		btnValide.addActionListener(clickListener2);
         add(btnValide, BorderLayout.SOUTH); //Ajoute le bouton a la fenetre
         barre.add(btnValide); // Place le bouton

@@ -17,6 +17,25 @@ public class Niveau {
         init_Niveau();
     }
 
+    public Niveau(Niveau niveau) {
+        this.taille = niveau.taille;
+        this.plateau = new Pion[taille][taille];
+        for (int i = 0; i < taille; i++) {
+            for (int j = 0; j < taille; j++) {
+                if (niveau.plateau[i][j] != null) {
+                    this.plateau[i][j] = niveau.plateau[i][j].clone();
+                }
+            }
+        }
+    }
+
+
+
+    public void setPlateau(Pion[][] plateau) {
+        this.plateau = plateau;
+    }
+
+
     //On initialise le plateau de jeu
     public void init_Niveau() {
         int [][] pos_attaquants = new int[][] {{0,3}, {0,4}, {0,5}, {1,4}, {3,0}, {4,0}, {5,0}, {4,1}, {8,3}, {8,4}, {8,5}, {7,4}, {4,7}, {3,8}, {4,8}, {5,8}};
@@ -46,6 +65,18 @@ public class Niveau {
         }
     }
 
+    public Niveau clone() {
+        Niveau clone = new Niveau();
+        for (int i = 0; i < taille; i++) {
+            for (int j = 0; j < taille; j++) {
+                if (plateau[i][j] != null) {
+                    clone.plateau[i][j] = plateau[i][j].clone();
+                }
+            }
+        }
+        return clone;
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < taille; i++) {
@@ -65,6 +96,34 @@ public class Niveau {
         }
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Niveau other = (Niveau) obj;
+
+        for (int i = 0; i < taille; i++) {
+            for (int j = 0; j < taille; j++) {
+                Pion p1 = this.plateau[i][j];
+                Pion p2 = other.plateau[i][j];
+
+                if (p1 == null && p2 != null || p1 != null && p2 == null) {
+                    return false;
+                }
+                if (p1 != null && !p1.equals(p2)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    
 
 
     //On regarde la taille du plateau
@@ -182,9 +241,13 @@ public class Niveau {
 
     //int = 0 coup joué , 1 noir on gagné, 2 blanc on gagné
     public int deplace_pion(Coordonne depart, Coordonne dst){
+
         Pion p = plateau[depart.x][depart.y];
         setVide(depart.x, depart.y);
         plateau[dst.x][dst.y] = p;
+
+        // if(p == null)
+        //     System.out.println("OKKK");
         p.coordonne = dst;
         AMangerPion(p);
         if(estAttaquant(p)){
@@ -192,9 +255,10 @@ public class Niveau {
                 return 1;
         }
         if (estRoi(p)){
-           if (estFortresse(dst.x, dst.y))
+            if (estFortresse(dst.x, dst.y))
             return 2;
         }
+       //}
         return 0;
 
     }

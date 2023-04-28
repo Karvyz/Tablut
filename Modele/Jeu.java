@@ -37,13 +37,15 @@ public class Jeu extends Observable{
         
         //TODO test si une partie est finie;
         
-        joueurCourant = (joueurCourant + 1) %2;
+        
         metAJour();
     }
 
     //On regarde si le joueur a manger un pion adverse
     
-
+    public void joueurSuivant(){
+        joueurCourant = (joueurCourant + 1) %2;
+    }
 
     public boolean enCours(){
         return enCours;
