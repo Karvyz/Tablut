@@ -26,7 +26,7 @@ public class ClickListener implements ActionListener {
             case 0: //FenetrePlateau
                 if (button.getName().equals("btnValide")) {
                     if (cm.isPionSelec() && cm.isDeplSelec()){
-                        cm.setCoupValide(true);
+                        //cm.setCoupValide(true);
                         cm.changeJoueur();
                         j.joueurSuivant();
                         cm.setPionSelec(false);
