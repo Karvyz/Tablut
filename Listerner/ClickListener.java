@@ -31,6 +31,7 @@ public class ClickListener implements ActionListener {
                         j.joueurSuivant();
                         cm.setPionSelec(false);
                         cm.setDeplSelec(false);
+                        System.out.println("Coup validé");
                     }
                     else{
                         System.out.println("Aucun déplacement choisis");

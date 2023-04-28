@@ -245,8 +245,6 @@ public class Niveau {
         setVide(depart.x, depart.y);
         plateau[dst.x][dst.y] = p;
 
-        // if(p == null)
-        //     System.out.println("OKKK");
         p.coordonne = dst;
         AMangerPion(p);
         if(estAttaquant(p)){

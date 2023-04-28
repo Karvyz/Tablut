@@ -34,7 +34,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	
 
 	public ControlleurMediateur(Jeu j)  {
-		System.out.println(joueurCourant);
 		jeu = j;
 		joueurs = new Joueurs[2][4];
 		typeJoueur = new int[4];
