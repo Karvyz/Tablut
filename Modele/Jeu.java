@@ -5,7 +5,7 @@ import Patterns.Observable;
 public class Jeu extends Observable{
 
     public Niveau n;
-    int joueurCourant;
+    public int joueurCourant;
     public boolean enCours = false;
 
     public Jeu(){
