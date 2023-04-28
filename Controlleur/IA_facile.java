@@ -19,8 +19,6 @@ public class IA_facile extends IA {
     boolean tempsEcoule() {
         TypePion current_type = ((jeu.getJoueurCourant()) % 2 ) == 0 ? TypePion.ATTAQUANT : TypePion.DEFENSEUR;
         ArrayList<Pion> pions = jeu.n.getPions(current_type);
-        if (current_type == TypePion.DEFENSEUR)
-            pions.addAll(jeu.n.getPions(TypePion.ROI));
         Pion pion;
         ArrayList<Coordonne> deplacements;
         do {

@@ -14,14 +14,14 @@ public class Jeu extends Observable{
     }
     
     /**
-	 * Crée une nouvelle partie de taille par défaut
-	 */
-	public void nouvellePartie() {
-		this.n = new Niveau();
+     * Crée une nouvelle partie de taille par défaut
+     */
+    public void nouvellePartie() {
+        this.n = new Niveau();
         joueurCourant = 0;
         enCours = true;
         metAJour();
-	}
+    }
 
     public int getJoueurCourant() { return joueurCourant;}
 
@@ -34,6 +34,7 @@ public class Jeu extends Observable{
                 System.out.println("PARTIE FINI CAR ROI CAPTURE");
             else
                 System.out.println("PARTIE FINI CAR ROI EVADE");
+            System.out.println(n);
         }
         
         //TODO test si une partie est finie;
