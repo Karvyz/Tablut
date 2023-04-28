@@ -275,15 +275,6 @@ public class Niveau {
         return false;
     }
 
-    //On regarde si il est contre le trone
-    public boolean estContreTrone(int x, int y){
-        if (x==4 && y==3 || x==4 && y==4 || x==3 && y==4 || x==5 && y==4){
-            return true;
-        }
-        return false;
-    }
-
-
     public boolean check_clic_selection_dest(Pion selec, int x, int y){
 		ArrayList<Coordonne> liste_depl = selec.getDeplacement(plateau);
 		if (liste_depl.isEmpty()){ //Aucun coup possible pour ce pion
@@ -336,6 +327,28 @@ public class Niveau {
 		}
 	}
 
+    
+    //On regarde si il est contre le trone
+    public int estContreTrone(int x, int y){
+        if (x==4 && y==3 ){
+            System.out.println("trone 3");
+            return 3;
+        }
+        else if (x==4 && y==5){
+            System.out.println("trone 4");
+            return 4;
+        }
+        else if (x==3 && y==4){
+            System.out.println("trone 1");
+            return 1;
+        }
+        else if (x==5 && y==4){
+            System.out.println("trone 2");
+            return 2;
+        }
+        return 0;
+    }
+
     //On regarde si on a mangé le roi
     public boolean AMangerRoi(Coordonne dplc){
         if(estRoi(dplc.x+1,dplc.y)){
@@ -347,8 +360,14 @@ public class Niveau {
             else if (estAttaquant(dplc.x+2,dplc.y) && estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y-1)){
                 return true;
             }
-            else if(estContreTrone(dplc.x+1,dplc.y)){
-                if(estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y-1)){
+            else if(estContreTrone(dplc.x+1,dplc.y)!=0){
+                if(estContreTrone(dplc.x+1,dplc.y)==1 && estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y-1)){
+                    return true;
+                }
+                if(estContreTrone(dplc.x+1,dplc.y)==3 && estAttaquant(dplc.x+2,dplc.y) && estAttaquant(dplc.x+1,dplc.y-1)){
+                    return true;
+                }
+                if(estContreTrone(dplc.x+1,dplc.y)==4 && estAttaquant(dplc.x+2,dplc.y) && estAttaquant(dplc.x+1,dplc.y+1)){
                     return true;
                 }
             }
@@ -363,8 +382,14 @@ public class Niveau {
             else if (estAttaquant(dplc.x-2,dplc.y) && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y-1)){
                 return true;
             }
-            else if(estContreTrone(dplc.x-1,dplc.y)){
-                if(estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y-1)){
+            else if(estContreTrone(dplc.x-1,dplc.y)!=0){
+                if(estContreTrone(dplc.x-1,dplc.y)==2 && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y-1)){
+                    return true;
+                }
+                if(estContreTrone(dplc.x-1,dplc.y)==3 && estAttaquant(dplc.x-2,dplc.y) && estAttaquant(dplc.x-1,dplc.y-1)){
+                    return true;
+                }
+                if(estContreTrone(dplc.x-1,dplc.y)==4 && estAttaquant(dplc.x-2,dplc.y) && estAttaquant(dplc.x-1,dplc.y+1)){
                     return true;
                 }
             }
@@ -379,8 +404,14 @@ public class Niveau {
             else if (estAttaquant(dplc.x,dplc.y+2) && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y+1)){
                 return true;
             }
-            else if(estContreTrone(dplc.x,dplc.y+1)){
-                if(estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y+1)){
+            else if(estContreTrone(dplc.x,dplc.y+1)!=0){
+                if(estContreTrone(dplc.x,dplc.y+1)==1 && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x,dplc.y+2)){
+                    return true;
+                }
+                if(estContreTrone(dplc.x,dplc.y+1)==2 && estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x,dplc.y+2)){
+                    return true;
+                }
+                if(estContreTrone(dplc.x,dplc.y+1)==3 && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y+1)){
                     return true;
                 }
             }
@@ -397,8 +428,14 @@ public class Niveau {
             else if (estAttaquant(dplc.x,dplc.y-2) && estAttaquant(dplc.x-1,dplc.y-1) && estAttaquant(dplc.x+1,dplc.y-1)){
                 return true;
             }
-            else if (estContreTrone(dplc.x,dplc.y-1)){
-                if(estAttaquant(dplc.x+1,dplc.y-1) && estAttaquant(dplc.x-1,dplc.y-1)){
+            else if (estContreTrone(dplc.x,dplc.y-1)!=0){
+                if(estContreTrone(dplc.x,dplc.y-1)==1 && estAttaquant(dplc.x,dplc.y-2) && estAttaquant(dplc.x-1,dplc.y-1)){
+                    return true;
+                }
+                if(estContreTrone(dplc.x,dplc.y-1)==2 && estAttaquant(dplc.x,dplc.y-2) && estAttaquant(dplc.x+1,dplc.y-1)){
+                    return true;
+                }
+                if(estContreTrone(dplc.x,dplc.y-1)==4 && estAttaquant(dplc.x-1,dplc.y-1) && estAttaquant(dplc.x+1,dplc.y-1)){
                     return true;
                 }
             }
