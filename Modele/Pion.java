@@ -2,7 +2,8 @@ package Modele;
 
 import java.util.ArrayList;
 
-public class Pion implements Cloneable {
+
+public class Pion implements Cloneable{
     Coordonne coordonne;
     TypePion type; //0 pion Noir, 1 pion Blanc, 
 
@@ -17,11 +18,17 @@ public class Pion implements Cloneable {
         this.type = type;
     }
 
-    public Pion(Pion p){
-        this.coordonne = new Coordonne(p.coordonne);
-        this.type = p.type;
+    @Override
+    public Pion clone() {
+        try {
+            Pion copie = (Pion) super.clone();
+            copie.coordonne = new Coordonne(this.coordonne.getX(), this.coordonne.getY());
+            copie.type = this.type; // Pas besoin de cloner si TypePion est une enum ou un type immuable
+            return copie;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError("La classe Pion doit être cloneable", e);
+        }
     }
-
 
     public TypePion getType() {
         return type;
@@ -34,11 +41,7 @@ public class Pion implements Cloneable {
     public int getY(){
         return this.coordonne.y;
     }
-
-    public Coordonne getCoordonne(){
-        return coordonne;
-    }
-
+    
     public void setX(int x){
         this.coordonne.x = x;
     }
@@ -49,7 +52,7 @@ public class Pion implements Cloneable {
 
     @Override
     public String toString() {
-        return "Pion selectionne (" + this.coordonne.x + ", " + this.coordonne.y + ")";
+        return "Pion selectionne (" + this.coordonne.x + ", " + this.coordonne.y + ", type=" + this.getType() + ")";
     }
     // public boolean estCorrect() { //Normalment inutile car gérer par l'IHM
     //     return (getX()>=0 && getX()<9 && getY()>=0 && getY()<9);
@@ -118,13 +121,14 @@ public class Pion implements Cloneable {
         System.out.println("}");
     }
 
-
     @Override
-    public Pion clone() {
-        try {
-            return (Pion) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+
+        Pion other = (Pion) obj;
+        return this.coordonne.equals(other.coordonne) && this.type == other.type;
     }
+
+
 }

@@ -4,17 +4,20 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import Controlleur.ControlleurMediateur;
+import Modele.Jeu;
 import Vues.CollecteurEvenements;
 
 public class ClickListener implements ActionListener {
     private int interfaceNum;
     private JButton button;
     ControlleurMediateur cm ;
+    Jeu j;
 
-    public ClickListener(int interfaceNum, JButton button, CollecteurEvenements control) {
+    public ClickListener(int interfaceNum, JButton button, CollecteurEvenements control, Jeu jeu) {
         this.interfaceNum = interfaceNum;
         this.button = button;
         this.cm = (ControlleurMediateur) control;
+        this.j = jeu;
     }
 
     @Override
@@ -22,7 +25,16 @@ public class ClickListener implements ActionListener {
         switch (interfaceNum){
             case 0: //FenetrePlateau
                 if (button.getName().equals("btnValide")) {
-                    System.out.println(cm.isPionSelec());
+                    if (cm.isPionSelec() && cm.isDeplSelec()){
+                        cm.setCoupValide(true);
+                        cm.changeJoueur();
+                        j.joueurSuivant();
+                        cm.setPionSelec(false);
+                        cm.setDeplSelec(false);
+                    }
+                    else{
+                        System.out.println("Aucun déplacement choisis");
+                    }
 
 
                 } 
