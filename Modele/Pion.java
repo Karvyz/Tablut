@@ -114,11 +114,15 @@ public class Pion implements Cloneable{
     }
 
     public void affiche_liste_deplacement(ArrayList<Coordonne> liste){
-        System.out.print("Déplacements possibles { ");
-        for(Coordonne c : liste){
-            System.out.print("(" + c.getX() + "," + c.getY() +") ");
+        if (liste.isEmpty())
+            System.out.println("Aucun déplacement possible pour ce pion");
+        else{
+            System.out.print("Déplacements possibles { ");
+            for(Coordonne c : liste){
+                System.out.print("(" + c.getX() + "," + c.getY() +") ");
+            }
+            System.out.println("}");
         }
-        System.out.println("}");
     }
 
     @Override

@@ -42,6 +42,13 @@ public class Pile {
         return sommet == -1;
     }
 
+    public void clear() {
+        for (int i = 0; i <= sommet; i++) {
+            elements[i] = null;
+        }
+        sommet = -1;
+    }
+
     public int taille() {
         return sommet + 1;
     }

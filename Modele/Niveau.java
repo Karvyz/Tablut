@@ -202,22 +202,7 @@ public class Niveau {
         return x>=0 && x<9 && y>=0 && y<9;
     }
 
-    //Renvoi la liste d'un seul type de joueur.
-    public ArrayList<Pion> getPions(TypePion type){
-        ArrayList<Pion> liste = new ArrayList<>();
-        for (int x=0; x<taille; x++){
-            for (int y=0; y< taille; y++){
-                Pion courant = plateau[x][y];
-                if(courant != null){
-                    if (type == courant.getType()){
-                        liste.add(courant);
-                    }
-                }
-            }
-        }
-        return liste;
-    }
-
+    
     //On regarde si la case est une forteresse
     public boolean estFortresse(int x, int y){
         if (x == 0 || x == 8){
@@ -271,13 +256,13 @@ public class Niveau {
             if (estDefenseur(p.getX()-1, p.getY())){
                 if(estAttaquant(p.getX()-2,p.getY())||estFortresse(p.getX()-2, p.getY())){
                     setVide(p.getX()-1,p.getY());
-
+                    
                 }
             }
             if (estDefenseur(p.getX(),p.getY()+1)){
                 if(estAttaquant(p.getX(),p.getY()+2)||estFortresse(p.getX(), p.getY()+2)){
                     setVide(p.getX(),p.getY()+1);
-    
+                    
                 }
             }
             if (estDefenseur(p.getX(),p.getY()-1)){
@@ -291,13 +276,13 @@ public class Niveau {
             if(estAttaquant(p.getX()+1,p.getY())){
                 if(estDefenseur(p.getX()+2,p.getY()) || estFortresse(p.getX()+2, p.getY())){
                     setVide(p.getX()+1,p.getY());
-             
+                    
                 }
             }
             if (estAttaquant(p.getX()-1,p.getY())){
                 if(estDefenseur(p.getX()-2,p.getY()) || estFortresse(p.getX()-2, p.getY())){
                     setVide(p.getX()-1,p.getY());
-                
+                    
                 }
             }
             if (estAttaquant(p.getX(),p.getY()+1)){
@@ -309,14 +294,14 @@ public class Niveau {
             if (estAttaquant(p.getX(),p.getY()-1)){
                 if(estDefenseur(p.getX(),p.getY()-2) || estFortresse(p.getX(), p.getY()-2)){
                     setVide(p.getX(),p.getY()-1);
-                
+                    
                 }
             }      
         }         
-
+        
     }
-
-
+    
+    
     //On regarde si la case est contre le bord
     public boolean estContreBord(int x, int y){
         if (x == 0 || x == 8){
@@ -327,7 +312,7 @@ public class Niveau {
         }
         return false;
     }
-
+    
     //On regarde si le pion est contre une forteresse
     public boolean estContreFortresse(int x, int y){
         if (x==0 && y==1 || x==0 && y==7 || x==1 && y==0 || x==1 && y==8 || x==7 && y==0 || x==7 && y==8 || x==8 && y==1 || x==8 && y==7){
@@ -335,28 +320,44 @@ public class Niveau {
         }
         return false;
     }
-
+    
     public boolean check_clic_selection_dest(Pion selec, int x, int y){
-		ArrayList<Coordonne> liste_depl = selec.getDeplacement(plateau);
+        ArrayList<Coordonne> liste_depl = selec.getDeplacement(plateau);
 		if (liste_depl.isEmpty()){ //Aucun coup possible pour ce pion
 			return false;
 		}
 		Coordonne arrive = new Coordonne(x, y);
 		if(liste_depl.contains(arrive)){
-			return true;
+            return true;
 		}
 		return false;
 	}
-
+    
     public boolean check_clic_selection_pion(Pion p, int JC) { 
-		if (p != null){
-			ArrayList<Pion> pions_dispo = getPionsDispo(JC); 
+        if (p != null){
+            ArrayList<Pion> pions_dispo = getPionsDispo(JC); 
 			return pions_dispo.contains(p);
 		}
 		//}
 		return false;
 	}
-
+    
+    //Renvoi la liste d'un seul type de joueur.
+    public ArrayList<Pion> getPions(TypePion type){
+        ArrayList<Pion> liste = new ArrayList<>();
+        for (int x=0; x<taille; x++){
+            for (int y=0; y< taille; y++){
+                Pion courant = plateau[x][y];
+                if(courant != null){
+                    if (type == courant.getType()){
+                        liste.add(courant);
+                    }
+                }
+            }
+        }
+        return liste;
+    }
+    //Renvoi la liste des pions disponibles au joueur courant
     public ArrayList<Pion> getPionsDispo(int JC){
 		ArrayList<Pion> liste ;
         TypePion t = typePion_JC(JC);
