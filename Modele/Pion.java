@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 
 public class Pion implements Cloneable{
-    Coordonne coordonne;
-    TypePion type; //0 pion Noir, 1 pion Blanc, 
+    private Coordonne coordonne;
+    private TypePion type; //0 pion Noir, 1 pion Blanc, 
 
 
     public Pion(int x, int y, TypePion type){
@@ -34,6 +34,10 @@ public class Pion implements Cloneable{
         return type;
     }
     
+    public Coordonne getCoordonne(){
+        return coordonne;
+    }
+    
     public int getX(){
         return this.coordonne.x;
     }
@@ -48,6 +52,11 @@ public class Pion implements Cloneable{
     
     public void setY(int y){
         this.coordonne.y = y;
+    }
+
+
+    public void setCoordonne(Coordonne c){
+        this.coordonne =c;
     }
 
     @Override

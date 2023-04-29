@@ -21,7 +21,8 @@ public class FenetrePlateau extends JFrame implements Observateur{
 
 		JFrame frame = new JFrame("Ma fenetre a moi");
 		PlateauGraphique plateau = new PlateauGraphique(j);
-		plateau.addMouseListener(new AdaptateurSouris(plateau, control));
+		plateau.addMouseListener(new AdaptateurSouris(plateau, control)); //pour les clics
+		plateau.addMouseMotionListener(new AdaptateurSouris(plateau, control)); //pour les glissements
 		frame.add(plateau);
 		Box barre;
 		barre = Box.createVerticalBox();
