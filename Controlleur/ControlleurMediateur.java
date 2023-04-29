@@ -21,7 +21,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	final int lenteurAttente = 50;
 	int decompte;
 	
-	public Pion selectionne;
 	public Pile coup_annule;
 	public Pile coup_a_refaire;
 	
@@ -83,7 +82,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
     public void tictac(){
         if (jeu.enCours()) {
 			if(jeu.n.PlusdePion(joueurCourant)){
-				jeu.enCours = false;
+				jeu.setEnCours(false);
 				System.out.println("Le joueur blanc a gagné car l'attaquant n'a plus de pion");
 			}else{
 				

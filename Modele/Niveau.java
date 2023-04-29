@@ -6,7 +6,7 @@ public class Niveau {
     public static final int NOIR = 0;
     public static final int BLANC = 1;
     public static final int ROI = 2;
-    int taille = 9;
+    private int taille = 9;
 
     public Pion [][] plateau = new Pion[taille][taille];
 
@@ -230,7 +230,7 @@ public class Niveau {
         setVide(depart.x, depart.y);
         plateau[dst.x][dst.y] = p;
 
-        p.coordonne = dst;
+        p.setCoordonne(dst) ;
         AMangerPion(p);
         if(estAttaquant(p)){
             if( AMangerRoi(dst))

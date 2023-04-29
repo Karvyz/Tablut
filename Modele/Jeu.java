@@ -5,8 +5,8 @@ import Patterns.Observable;
 public class Jeu extends Observable{
 
     public Niveau n;
-    public int joueurCourant;
-    public boolean enCours = false;
+    private int joueurCourant;
+    private boolean enCours = false;
 
     public Jeu(){
         nouvellePartie();
@@ -46,7 +46,15 @@ public class Jeu extends Observable{
         joueurCourant = (joueurCourant + 1) %2;
     }
 
+    public int joueurCourant(){
+        return joueurCourant;
+    }
+
     public boolean enCours(){
         return enCours;
+    }
+
+    public void setEnCours(boolean enCours){
+        this.enCours = enCours;
     }
 }
