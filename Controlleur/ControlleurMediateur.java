@@ -6,6 +6,7 @@ import Modele.Jeu;
 import Modele.Niveau;
 import Modele.Pion;
 import Modele.TypePion;
+import Structures.Pile;
 import Vues.CollecteurEvenements;
 
 
@@ -31,6 +32,8 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	private boolean pionSelec = false;
 	private boolean deplSelec = false;
 	private Niveau retour;
+	public Pile coup_annule;
+	public Pile coup_a_refaire;
 	
 
 	public ControlleurMediateur(Jeu j)  {
@@ -45,18 +48,35 @@ public class ControlleurMediateur implements CollecteurEvenements {
 			typeJoueur[i] = HUMAIN; //type 
 		}
 
+		coup_annule = new Pile();
+		coup_a_refaire = new Pile();
+
 	}
 	
+
+	public boolean restaurer_niveau(){
+		if (coup_annule.estVide()){
+			return false;
+		}
+		Niveau restore = coup_annule.depiler();
+		jeu.n = restore.copy();
+		return true;
+	}
 
 	@Override
 	public void dragANDdrop(Coordonne src, Coordonne dst){
 		Pion depart = jeu.n.getPion(src.getX(), src.getY());
 		if (jeu.n.check_clic_selection_pion(depart, joueurCourant)){ //Vérifie que le Pions choisit est bien de notre Type, joueur 0 implique de jouer les Attaquants et joueur 1 implique de jouer Defenseurs et Roi
 			if(jeu.n.check_clic_selection_dest(selectionne, dst.getX(), dst.getY())){
+				Niveau niveau_avant_coup = jeu.n.copy();
+				coup_annule.empiler(niveau_avant_coup);
 				if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(src, dst) )// MODIF de jeu.n ici
 					changeJoueur();
-				else
+
+				else{
+					coup_annule.depiler();
 					System.out.println("Coup invalide");
+				}
 			}
 			else{
 				System.out.println("Destination invalide"); //a ce stade on a toujours un pion selectionne
