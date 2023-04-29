@@ -36,7 +36,7 @@ public class Jeu extends Observable{
         
         //TODO test si une partie est finie;
         
-        
+        joueurSuivant();
         metAJour();
     }
 
