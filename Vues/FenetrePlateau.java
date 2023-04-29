@@ -41,6 +41,20 @@ public class FenetrePlateau extends JFrame implements Observateur{
 		btnValide.addActionListener(clickListener2);
         add(btnValide, BorderLayout.SOUTH); //Ajoute le bouton a la fenetre
         barre.add(btnValide); // Place le bouton
+
+		JButton btnAnnule = new JButton("Annule");// Creer le bouton Annule
+		btnAnnule.setName("btnAnnule"); //Important de définir le nom pour le retrouvé dans ClickListener
+        ClickListener clickListener3 = new ClickListener(0, btnAnnule, control, j); //ajoute l'action en cas de clique
+		btnAnnule.addActionListener(clickListener3);
+        add(btnAnnule, BorderLayout.SOUTH); //Ajoute le bouton a la fenetre
+        barre.add(btnAnnule); // Place le bouton
+
+		JButton btnRefaire = new JButton("Refaire");// Creer le bouton Refaire
+		btnRefaire.setName("btnRefaire"); //Important de définir le nom pour le retrouvé dans ClickListener
+        ClickListener clickListener4 = new ClickListener(0, btnRefaire, control, j); //ajoute l'action en cas de clique
+		btnRefaire.addActionListener(clickListener4);
+        add(btnRefaire, BorderLayout.SOUTH); //Ajoute le bouton a la fenetre
+        barre.add(btnRefaire); // Place le bouton
         
 		Timer chrono = new Timer( 200, new AdaptateurTemps(control));
 		chrono.start();
