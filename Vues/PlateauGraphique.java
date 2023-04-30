@@ -10,7 +10,7 @@ public class PlateauGraphique extends JComponent implements Observateur {
 	Jeu jeu;
 	int largeurCase, hauteurCase;
     private Point pionEnDeplacement;
-    private Color pionEnDeplacementCouleur;
+    private Color couleurEnDeplacement;
     
     
 
@@ -26,9 +26,9 @@ public class PlateauGraphique extends JComponent implements Observateur {
     public void paintComponent(Graphics g) {
         Graphics2D drawable = (Graphics2D) g;
         super.paintComponent(drawable);
-    
+
         int offset = 5;
-    
+
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if (pionEnDeplacement != null && i * hauteurCase + offset == pionEnDeplacement.y / hauteurCase && j * largeurCase + offset == pionEnDeplacement.x / largeurCase) {
@@ -46,10 +46,12 @@ public class PlateauGraphique extends JComponent implements Observateur {
                 drawable.fillRect(j * largeurCase + offset, i * hauteurCase + offset, largeurCase - 2 * offset, hauteurCase - 2 * offset);
             }
         }
-    
+
         if (pionEnDeplacement != null) {
-            drawable.setColor(pionEnDeplacementCouleur);
-            drawable.fillOval(pionEnDeplacement.x - largeurCase / 2, pionEnDeplacement.y - hauteurCase / 2, largeurCase, hauteurCase);
+            // Utilisez la couleur appropriée pour le pion en déplacement
+            drawable.setColor(couleurEnDeplacement);
+            // Remplacez fillOval par fillRect et ajustez les coordonnées pour correspondre à la taille de la case
+            drawable.fillRect(pionEnDeplacement.x - largeurCase / 2 + offset, pionEnDeplacement.y - hauteurCase / 2 + offset, largeurCase - 2 * offset, hauteurCase - 2 * offset);
         }
     }
     
@@ -57,13 +59,32 @@ public class PlateauGraphique extends JComponent implements Observateur {
     public Point getPionEnDeplacement() {
         return pionEnDeplacement;
     }
-
-    public void setPionEnDeplacement(Point pionEnDeplacement, Color couleur) {
+    
+    public void setPionEnDeplacement(Point pionEnDeplacement){
+        
         this.pionEnDeplacement = pionEnDeplacement;
-        this.pionEnDeplacementCouleur = couleur;
+        miseAJour(); // Ajoutez cette ligne pour actualiser le plateau
+    }
+
+    public Color getCouleurEnDeplacement() {
+        return couleurEnDeplacement;
+    }
+
+    public void setCouleurEnDeplacement(int l, int c) {
+        if (jeu.n.estRoi(l, c)) {
+            couleurEnDeplacement = Color.RED;
+        } else if (jeu.n.estAttaquant(l, c)) {
+            couleurEnDeplacement = Color.BLACK;
+        } else if (jeu.n.estDefenseur(l, c)) {
+            couleurEnDeplacement = Color.WHITE;
+        }
         miseAJour(); // Ajoutez cette ligne pour actualiser le plateau
     }
     
+    @Override
+    public void miseAJour() {
+        repaint();
+    }
     
 
 	int largeur() {
@@ -82,8 +103,4 @@ public class PlateauGraphique extends JComponent implements Observateur {
 		return hauteurCase;
 	}
 
-	@Override
-	public void miseAJour() {
-		repaint();
-	}
 }
