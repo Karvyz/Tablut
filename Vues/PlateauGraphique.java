@@ -11,6 +11,7 @@ public class PlateauGraphique extends JComponent implements Observateur {
 	int largeurCase, hauteurCase;
     private Point pionEnDeplacement;
     private Color couleurEnDeplacement;
+    private Point pionSelec;
     
     
 
@@ -47,14 +48,28 @@ public class PlateauGraphique extends JComponent implements Observateur {
             }
         }
 
+        if (getPionSelec() != null) {
+            drawable.setColor(Color.BLUE);
+            int caseX = getPionSelec().x - largeurCase / 2;
+            int caseY = getPionSelec().y - hauteurCase / 2;
+            drawable.fillRect(caseX + offset, caseY + offset, largeurCase - 2 * offset, hauteurCase - 2 * offset);
+        }
+
         if (pionEnDeplacement != null) {
-            // Utilisez la couleur appropriée pour le pion en déplacement
             drawable.setColor(couleurEnDeplacement);
-            // Remplacez fillOval par fillRect et ajustez les coordonnées pour correspondre à la taille de la case
             drawable.fillRect(pionEnDeplacement.x - largeurCase / 2 + offset, pionEnDeplacement.y - hauteurCase / 2 + offset, largeurCase - 2 * offset, hauteurCase - 2 * offset);
+            
         }
     }
     
+    public void setPionSelec(Point point) {
+        this.pionSelec = point;
+    }
+
+    public Point getPionSelec(){
+        return pionSelec;
+    }
+
 
     public Point getPionEnDeplacement() {
         return pionEnDeplacement;
@@ -102,5 +117,6 @@ public class PlateauGraphique extends JComponent implements Observateur {
 	public int hauteurCase() {
 		return hauteurCase;
 	}
+
 
 }
