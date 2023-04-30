@@ -32,7 +32,7 @@ public class PlateauGraphique extends JComponent implements Observateur {
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if (pionEnDeplacement != null && i * hauteurCase + offset == pionEnDeplacement.y / hauteurCase && j * largeurCase + offset == pionEnDeplacement.x / largeurCase) {
+                if (pionEnDeplacement != null && i == pionEnDeplacement.y / hauteurCase && j == pionEnDeplacement.x / largeurCase) {
                     continue;
                 }
                 if (jeu.n.estRoi(i, j)) {
