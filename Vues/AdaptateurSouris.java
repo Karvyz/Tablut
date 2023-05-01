@@ -29,18 +29,20 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         dragStart = e.getPoint();
         int l = (int) Math.floor((double) e.getY() / plateau.hauteurCase);
         int c = (int) Math.floor((double) e.getX() / plateau.largeurCase);
-        Pion caseSelec = plateau.jeu.n.getPion(l,c);
-        if (!plateau.jeu.n.check_clic_selection_pion(caseSelec, plateau.jeu.joueurCourant())){
+        Pion caseSelec = plateau.jeu.n.getPion(l, c);
+        
+        if (!plateau.jeu.n.check_clic_selection_pion(caseSelec, plateau.jeu.joueurCourant())) {
             plateau.setPionEnDeplacement(null);
-        }
-        else{
+            plateau.setPionSelec(null); // Ajoutez cette ligne
+        } else {
             plateau.setPionSelec(new Point(c * plateau.largeurCase + plateau.largeurCase / 2, l * plateau.hauteurCase + plateau.hauteurCase / 2)); //permet de garder en mémoire le pion selec
             plateau.setPionEnDeplacement(new Point(c * plateau.largeurCase + plateau.largeurCase / 2, l * plateau.hauteurCase + plateau.hauteurCase / 2));            
-            plateau.setCouleurEnDeplacement(l, c); // Ajoutez cette ligne pour définir la couleur du pion en déplacement
+            plateau.setCouleurEnDeplacement(l, c); //Définis la couleur du pion en déplacement
         }
         System.out.println("Clic en (" + l + "," + c + ")");
         control.clicSouris(l, c);
     }
+
 
 
     @Override
@@ -52,13 +54,24 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             pionEnDeplacement.setLocation(mouseX, mouseY); //modifie les coordonne du Point pionEnDeplacement
             plateau.setPionEnDeplacement(pionEnDeplacement);
 
-            // int l = mouseY / plateau.hauteurCase;
-            // int c = mouseX / plateau.largeurCase;
-            // System.out.println(l + "," + c );
+            //Ici pour colorier les cases de destination
+            int l = mouseY / plateau.hauteurCase;
+            int c = mouseX / plateau.largeurCase;
+            plateau.setCaseDestPotentielle(new Point(l,c)); // Ajoutez cette ligne
+            Point depart = plateau.getPionSelec(); //On récupère le point de depart, attention, y = l et x = c 
+            if (depart !=null ){ 
+                Pion departP = plateau.jeu.n.getPion(depart.y/plateau.largeurCase, depart.x/plateau.hauteurCase); //On récupère le pion qui était a cette case
+                if (departP != null){
+                    if (!plateau.jeu.n.check_clic_selection_dest(departP, l, c)){
+                        plateau.setCouleurDest(Color.RED); 
+                     }
+                     else{
+                        plateau.setCouleurDest(Color.GREEN); 
+                     }
+                 } 
+            }
         }
     }
-
-
 
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -73,7 +86,9 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             }
         }
         plateau.setPionEnDeplacement(null);
+        plateau.setCaseDestPotentielle(null);
         plateau.setPionSelec(null);
+        plateau.setCouleurDest(null);
     }
 
 }
