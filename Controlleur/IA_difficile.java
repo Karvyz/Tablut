@@ -60,8 +60,8 @@ public class IA_difficile extends IA{
                 int valeur_deplacement = clone.deplace_pion(pion.getCoordonne(), deplacement);
                 if (valeur_deplacement != 0) {
                     if (depth % 2 == 0)
-                        return Integer.MAX_VALUE;
-                    return Integer.MIN_VALUE;
+                        return Integer.MAX_VALUE - depth;
+                    return Integer.MIN_VALUE + depth;
                 }
                 if (depth == MAX_DEPTH - 1) {
                     return evaluation(clone);
