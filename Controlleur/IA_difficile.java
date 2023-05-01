@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class IA_difficile extends IA{
 
     int nevaluation = 0;
-    static int MAX_DEPTH = 5;
+    static int MAX_DEPTH = 4;
 
     public IA_difficile(int num, Jeu jeu) {
         super(num, jeu);
