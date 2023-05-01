@@ -1,6 +1,7 @@
 package Controlleur;
 
 import Modele.Jeu;
+import Modele.Joueurs;
 
 public class IA extends Joueurs {
 
@@ -15,7 +16,7 @@ public class IA extends Joueurs {
 	}
 
     @Override
-	boolean tempsEcoule() {
+	public boolean tempsEcoule() {
 		// // Pour cette IA, on selectionne aléatoirement une case libre
 		// int i, j;
 

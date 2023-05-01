@@ -1,14 +1,19 @@
 package Controlleur;
 import java.util.ArrayList;
 
-import Modele.Coordonne;
-import Modele.Jeu;
-import Modele.Pion;
-import Modele.TypePion;
-import Vues.CollecteurEvenements;
+import Global.Configuration;
+import Modele.*;
+import Vues.*;
 
 
 public class ControlleurMediateur implements CollecteurEvenements {
+
+	Vues vues;
+	Jeu jeu;
+	IA ia1;
+	IA ia2;
+	Animation animIA1, animIA2;
+	Animation animDemarrage;
     
     public static final int HUMAIN = 0;
     public static final int FACILE = 1;
@@ -27,7 +32,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	public boolean coupValide = false;
 	public Pion selectionne;
 
-
     public ControlleurMediateur(Jeu j)  {
         System.out.println(joueurCourant);
 		jeu = j;
@@ -43,7 +47,54 @@ public class ControlleurMediateur implements CollecteurEvenements {
 
 	}
 
-    @Override
+	@Override
+	public void fixerMediateurVues(Vues v) {
+		vues = v;
+	}
+
+	private void verifierMediateurVues(String message) {
+		if (vues == null) {
+			throw new IllegalStateException(message + " : médiateur de vues non fixé");
+		}
+	}
+
+	private void verifierJeu(String message) {
+		if (jeu == null) {
+			throw new IllegalStateException(message + " : aucune partie commencée");
+		}
+	}
+
+	@Override
+	public void afficherDemarrage() {
+		verifierMediateurVues("Impossible d'afficher le démarrage");
+		vues.afficherDemarrage();
+	}
+
+	@Override
+	public void afficherMenuPrincipal() {
+		verifierMediateurVues("Impossible d'afficher le menu principal");
+		vues.afficherMenuPrincipal();
+	}
+
+	@Override
+	public void afficherMenuNouvellePartie() {
+		verifierMediateurVues("Impossible d'afficher le menu nouvelle partie");
+		vues.afficherMenuNouvellePartie();
+	}
+
+	@Override
+	public void afficherJeu() {
+		verifierMediateurVues("Impossible d'afficher le jeu");
+		vues.afficherJeu();
+	}
+
+	@Override
+	public void afficherMenuChargerPartie() {
+		verifierMediateurVues("Impossible d'afficher le menu des parties sauvegardées");
+		vues.afficherMenuChargerPartie();
+	}
+
+	@Override
 	public void clicSouris(int l, int c) {
 		// Lors d'un clic, on le transmet au joueur courant.
 		// Si un coup a effectivement été joué (humain, coup valide), on change de joueur.
@@ -76,7 +127,142 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		}
 	}
 
-    void changeJoueur() {
+	@Override
+	public void nouvellePartie(String nomJ1, TypeJoueur typeJ1, int handicapJ1, String nomJ2, TypeJoueur typeJ2, int handicapJ2, int choixJoueurDebut) {
+		//verifierMediateurVues("Impossible de créer une nouvelle partie");
+		jeu = new Jeu();
+		jeu.nouveauJoueur(nomJ1, typeJ1);
+		jeu.nouveauJoueur(nomJ2, typeJ2);
+		jeu.nouvellePartie();
+		//vues.nouvellePartie();
+		//initIA(typeJ1,typeJ2);
+	}
+
+	@Override
+	public void partieSuivante() {
+		verifierJeu("Impossible de passer à la partie suivante");
+		jeu.nouvellePartie();
+		vues.nouvellePartie();
+		afficherJeu();
+	}
+
+	@Override
+	public Jeu jeu() {
+		verifierJeu("Impossible de renvoyer un jeu");
+		return jeu;
+	}
+
+	@Override
+	public void toClose() {
+		vues.close();
+		System.exit(0);
+	}
+
+	@Override
+	public void afficherRegles() {
+		vues.afficherR();
+	}
+
+	@Override
+	public void annuler() {
+		//System.out.print("Annuler : " + jeu().joueurActuel().nom() + " ");
+		jeu().annuler();
+	}
+
+	@Override
+	public void refaire() {
+		jeu().refaire();
+	}
+
+
+	@Override
+	public void toucheClavier(String touche) {
+		if (jeu().partieTerminee()) {
+			return;
+		}
+		switch (touche) {
+			case "Annuler":
+				annuler();
+				break;
+			case "Refaire":
+				refaire();
+				break;
+			default:
+				Configuration.instance().logger().info("Touche inconnue : " + touche);
+		}
+	}
+
+	@Override
+	public void temps() {
+		if (animDemarrage == null) {
+			int lenteurAnimation = Integer.parseInt(Configuration.instance().lirePropriete("LenteurAnimationDemarrage"));
+			animDemarrage = new AnimationDemarrage(lenteurAnimation, this);
+		}
+		if (!animDemarrage.terminee()) {
+			animDemarrage.temps();
+			return;
+		}
+		if (jeu == null || jeu().partieTerminee() || jeu().getJoueurCourant().estHumain()) {
+			return;
+		}
+		if (jeu().getJoueurCourant() == jeu().joueur1()) {
+			animIA1.temps();
+		} else {
+			animIA2.temps();
+		}
+	}
+
+	private void initIA(TypeJoueur typeJ1, TypeJoueur typeJ2){
+		int lenteurAnimationIA = Integer.parseInt(Configuration.instance().lirePropriete("LenteurAnimationIA"));
+
+		switch (typeJ1) {
+			case IA_DIFFICILE:
+				ia1 = new IA_difficile(jeu(), jeu().joueur1(), jeu().joueur2(), this);
+				break;
+			case IA_MOYEN:
+				ia1 = new IA_Moyen(jeu(), jeu().joueur1(), jeu().joueur2(), this);
+				break;
+			case IA_FACILE:
+				ia1 = new IA_Facile(jeu(), jeu().joueur1(), jeu().joueur2(), this);
+				break;
+		}
+		if (typeJ1 != TypeJoueur.HUMAIN) {
+			animIA1 = new AnimationIA(lenteurAnimationIA, ia1);
+		}
+
+		switch (typeJ2) {
+			case IA_DIFFICILE:
+				ia2 = new IA_Difficile(jeu(),jeu().joueur2(), jeu().joueur1(),this);
+				break;
+			case IA_MOYEN:
+				ia2 = new IA_Moyen(jeu(),jeu().joueur2(), jeu().joueur1(),this);
+				break;
+			case IA_FACILE:
+				ia2 = new IA_Facile(jeu(),jeu().joueur2(), jeu().joueur1(), this);
+				break;
+		}
+		if (typeJ2 != TypeJoueur.HUMAIN) {
+			animIA2 = new AnimationIA(lenteurAnimationIA, ia2);
+		}
+	}
+
+	/*
+	@Override
+	public boolean sauvegarderPartie() {
+		return jeu().sauvegarder();
+	}
+
+	@Override
+	public void chargerPartie(String nomSauvegarde) {
+		jeu = Sauvegarde.charger(nomSauvegarde);
+		initIA(jeu().joueur1().type(), jeu().joueur2().type());
+		vues.nouvellePartie();
+		afficherJeu();
+	}
+
+	 */
+
+	void changeJoueur() {
 		joueurCourant = (joueurCourant + 1) % joueurs.length;
 		decompte = lenteurAttente;
 	}

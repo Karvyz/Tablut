@@ -2,22 +2,31 @@ package Modele;
 
 import java.util.ArrayList;
 
-
 public class Pion {
-    Coordonne coordonne;
-    TypePion type; //0 pion Noir, 1 pion Blanc, 
+    public Coordonne coordonne;
+    private TypePion type;
 
-
-    public Pion(int x, int y, TypePion type){
-        coordonne = new Coordonne(x, y);
-        this.type = type;
-    }
-
-    public Pion(Coordonne coordonne, TypePion type){
+    Pion(Coordonne coordonne, TypePion type) {
         this.coordonne = coordonne;
         this.type = type;
     }
 
+    Pion(int x, int y, TypePion type) {
+        new Pion(new Coordonne(x, y), type);
+    }
+
+    Piece toPiece() {
+        switch(type){
+            case ATTAQUANT:
+                return Piece.NOIR;
+            case DEFENSEUR:
+                return Piece.BLANC;
+            case ROI:
+                return Piece.ROI;
+            default:
+                return null;
+        }
+    }
 
     public TypePion getType() {
         return type;
@@ -41,8 +50,9 @@ public class Pion {
 
     @Override
     public String toString() {
-        return "Pion selectionne (" + this.coordonne.x + ", " + this.coordonne.y + ")";
+        return "Pion sélectionné (" + this.coordonne.x + ", " + this.coordonne.y + ") ";
     }
+
     // public boolean estCorrect() { //Normalment inutile car gérer par l'IHM
     //     return (getX()>=0 && getX()<9 && getY()>=0 && getY()<9);
     // }
@@ -55,7 +65,7 @@ public class Pion {
         return x != 4 || y != 4;
     }
 
-    private ArrayList<Coordonne> getDeplacementVerticaList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
+    private void getDeplacementVerticaList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
         int x = coordonne.x;
         int y = coordonne.y;
         int i = 1;
@@ -72,10 +82,9 @@ public class Pion {
                 deplacement.add(new Coordonne(x+i, y));
             i++;
         }
-        return deplacement;
     }
 
-    private ArrayList<Coordonne> getDeplacementHorizontaleList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
+    private void getDeplacementHorizontaleList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
         int x = coordonne.x;
         int y = coordonne.y;
         int i = 1;
@@ -92,7 +101,6 @@ public class Pion {
                 deplacement.add(new Coordonne(x, y + i));
             i++;
         }
-        return deplacement;
     }
 
     public ArrayList<Coordonne> getDeplacement(Pion[][] plateau){
@@ -109,7 +117,4 @@ public class Pion {
         }
         System.out.println("}");
     }
-
-
-
 }

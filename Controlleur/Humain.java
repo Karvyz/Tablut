@@ -5,11 +5,14 @@ import java.util.Scanner;
 
 import Modele.Coordonne;
 import Modele.Jeu;
+import Modele.Joueurs;
+
+import static Modele.TypeJoueur.HUMAIN;
 
 public class Humain extends Joueurs {
 
     public Humain(int num, Jeu jeu) {
-        super(num, jeu);
+        super(HUMAIN, jeu, "Humain");
     }
     
     // Méthode appelée pour tous les joueurs lors d'un clic sur le plateau
@@ -18,7 +21,7 @@ public class Humain extends Joueurs {
 
      
         //if(check_Deplacement(liste_depl, arrive))
-        jeu.jouer(depart, arrive); 
+        this.jeu.jouer(depart, arrive);
         //else          
             //return false;
 

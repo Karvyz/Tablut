@@ -9,7 +9,7 @@ public class IA_difficile extends IA{
     }
 
     @Override
-	boolean tempsEcoule() {
+	public boolean tempsEcoule() {
 		//Code de l'IA renvoyer vrai une fois que le coup est joué
 		return true;
 	}
