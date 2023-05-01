@@ -14,6 +14,9 @@ public class PlateauGraphique extends JComponent implements Observateur {
     private Point caseDestPotentielle;
     private Color couleurEnDeplacement;
     private Color couleurDest;
+    int strokeWidth = 6; // Vous pouvez ajuster cette valeur pour modifier la taille du contour
+    Color borderColor = new Color(255, 255, 0); // Couleur jaune
+
     
 	public PlateauGraphique(Jeu j) {
 		jeu = j;
@@ -53,6 +56,7 @@ public class PlateauGraphique extends JComponent implements Observateur {
             int caseX = getPionSelec().x - largeurCase / 2;
             int caseY = getPionSelec().y - hauteurCase / 2;
             drawable.fillRect(caseX + offset, caseY + offset, largeurCase - 2 * offset, hauteurCase - 2 * offset);
+
         }
         
         if (pionEnDeplacement != null) {
@@ -65,6 +69,16 @@ public class PlateauGraphique extends JComponent implements Observateur {
             }
             drawable.setColor(couleurEnDeplacement);
             drawable.fillRect(pionEnDeplacement.x - largeurCase / 2 + offset, pionEnDeplacement.y - hauteurCase / 2 + offset, largeurCase - 2 * offset, hauteurCase - 2 * offset);
+            
+
+            //halo
+            drawable.setColor(borderColor);
+            int cornerX = pionEnDeplacement.x - largeurCase / 2;
+            int cornerY = pionEnDeplacement.y - hauteurCase / 2;
+            Stroke originalStroke = drawable.getStroke();
+            drawable.setStroke(new BasicStroke(strokeWidth));
+            drawable.drawRect(cornerX, cornerY, largeurCase, hauteurCase);
+            drawable.setStroke(originalStroke); // Restaurez le trait original pour ne pas affecter les autres dessins
         }
     }
     
