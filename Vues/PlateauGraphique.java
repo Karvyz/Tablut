@@ -10,11 +10,11 @@ public class PlateauGraphique extends JComponent implements Observateur {
 	Jeu jeu;
 	int largeurCase, hauteurCase;
     private Point pionEnDeplacement;
-    private Color couleurEnDeplacement;
     private Point pionSelec;
+    private Point caseDestPotentielle;
+    private Color couleurEnDeplacement;
+    private Color couleurDest;
     
-    
-
 	public PlateauGraphique(Jeu j) {
 		jeu = j;
 		jeu.ajouteObservateur(this);
@@ -48,29 +48,50 @@ public class PlateauGraphique extends JComponent implements Observateur {
             }
         }
 
-        if (getPionSelec() != null) {
+        if (getPionSelec() != null) { //Permet de mettre en bleu la case du pion selec pendant le drag
+            System.out.println("ici");
             drawable.setColor(Color.BLUE);
             int caseX = getPionSelec().x - largeurCase / 2;
             int caseY = getPionSelec().y - hauteurCase / 2;
             drawable.fillRect(caseX + offset, caseY + offset, largeurCase - 2 * offset, hauteurCase - 2 * offset);
         }
-
+        
         if (pionEnDeplacement != null) {
+            Point caseDestPotentielle = getCaseDestPotentielle();
+            if (caseDestPotentielle != null) {
+                int l = caseDestPotentielle.x ;
+                int c = caseDestPotentielle.y;
+                drawable.setColor(getCouleurDest());
+                drawable.fillRect(c * largeurCase + offset, l * hauteurCase + offset, largeurCase - 2 * offset, hauteurCase - 2 * offset);
+            }
             drawable.setColor(couleurEnDeplacement);
             drawable.fillRect(pionEnDeplacement.x - largeurCase / 2 + offset, pionEnDeplacement.y - hauteurCase / 2 + offset, largeurCase - 2 * offset, hauteurCase - 2 * offset);
-            
         }
+    }
+    
+
+    @Override
+    public void miseAJour() {
+        repaint();
+    }
+    
+    public Point getCaseDestPotentielle() {
+        return caseDestPotentielle;
+    }
+    
+    public void setCaseDestPotentielle(Point caseDestPotentielle) {
+        this.caseDestPotentielle = caseDestPotentielle;
+        miseAJour(); // Ajoutez cette ligne pour actualiser le plateau
     }
     
     public void setPionSelec(Point point) {
         this.pionSelec = point;
     }
-
+    
     public Point getPionSelec(){
         return pionSelec;
     }
-
-
+    
     public Point getPionEnDeplacement() {
         return pionEnDeplacement;
     }
@@ -80,9 +101,17 @@ public class PlateauGraphique extends JComponent implements Observateur {
         this.pionEnDeplacement = pionEnDeplacement;
         miseAJour(); // Ajoutez cette ligne pour actualiser le plateau
     }
-
+    
     public Color getCouleurEnDeplacement() {
         return couleurEnDeplacement;
+    }
+    
+    public void setCouleurDest(Color c) {
+        this.couleurDest = c;
+    }
+
+    private Color getCouleurDest() {
+        return couleurDest;
     }
 
     public void setCouleurEnDeplacement(int l, int c) {
@@ -95,12 +124,6 @@ public class PlateauGraphique extends JComponent implements Observateur {
         }
         miseAJour(); // Ajoutez cette ligne pour actualiser le plateau
     }
-    
-    @Override
-    public void miseAJour() {
-        repaint();
-    }
-    
 
 	int largeur() {
 		return getWidth();
@@ -117,6 +140,4 @@ public class PlateauGraphique extends JComponent implements Observateur {
 	public int hauteurCase() {
 		return hauteurCase;
 	}
-
-
 }
