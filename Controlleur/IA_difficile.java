@@ -3,6 +3,7 @@ package Controlleur;
 import Modele.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class IA_difficile extends IA{
 
@@ -21,8 +22,9 @@ public class IA_difficile extends IA{
         TypePion current_type = ((jeu.getJoueurCourant()) % 2 ) == 0 ? TypePion.ATTAQUANT : TypePion.DEFENSEUR;
         ArrayList<Pion> pions = jeu.n.getPions(current_type);
         int valeur_retour = Integer.MIN_VALUE;
-        Coordonne pion_depart = new Coordonne(0,0);
-        Coordonne pion_arrivee = new Coordonne(0,0);
+        ArrayList<Coordonne> departs = new ArrayList<>();
+        ArrayList<Coordonne> arrivees = new ArrayList<>();
+
         for (Pion pion : pions) {
             ArrayList<Coordonne> deplacements = pion.getDeplacement(jeu.n.plateau);
 
@@ -32,15 +34,22 @@ public class IA_difficile extends IA{
                 int tmp = analyse_recursive(clone, 1);
                 if (retour != 0)
                     tmp = Integer.MAX_VALUE;
-                if (tmp > valeur_retour){
-                    valeur_retour = tmp;
-                    pion_depart = pion.getCoordonne();
-                    pion_arrivee = deplacement;
-                    System.out.println("changement valeur retour : " + valeur_retour);
+                if (tmp >= valeur_retour){
+                    if (tmp > valeur_retour) {
+                        departs.clear();
+                        arrivees.clear();
+                        valeur_retour = tmp;
+                        System.out.println("changement valeur retour : " + valeur_retour);
+                    }
+                    departs.add(pion.getCoordonne());
+                    arrivees.add(deplacement);
 
                 }
             }
         }
+        int index = new Random().nextInt(departs.size());
+        Coordonne pion_depart = departs.get(index);
+        Coordonne pion_arrivee = arrivees.get(index);
         jeu.jouer(pion_depart, pion_arrivee);
         System.out.println(nevaluation + " evalutations en " + (System.currentTimeMillis() -l ) + "ms");
         return true;
