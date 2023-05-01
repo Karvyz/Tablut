@@ -37,10 +37,10 @@ public class ControlleurMediateur implements CollecteurEvenements {
 			joueurs[i][HUMAIN] = new Humain(i, jeu);
 			joueurs[i][FACILE] = new IA_facile(i, jeu);
             joueurs[i][MOYEN] = new IA_moyen(i, jeu);
-            joueurs[i][DIFFCILE] = new IA_difficile_MassacrePion(i, jeu);
+            joueurs[i][DIFFCILE] = new IA_difficile_le_roi_c_ciao(i, jeu);
 			typeJoueur[i] = DIFFCILE; //type
 		}
-		joueurs[1][DIFFCILE] = new IA_difficile_AttaqueRoi(1, jeu);
+		joueurs[1][DIFFCILE] = new IA_difficile_le_roi_c_ciao(1, jeu);
 	}
 
     @Override
@@ -49,7 +49,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		// Si un coup a effectivement été joué (humain, coup valide), on change de joueur.
 
         Pion caseSelec = jeu.n.getPion(l,c);
-		if (caseSelec == null && pionSelec == true){ //ICI on cherche a déplacer
+		if (caseSelec == null && pionSelec){ //ICI on cherche a déplacer
 			Coordonne depart = new Coordonne(selectionne.getX(), selectionne.getY());
 			Coordonne arrive = new Coordonne(l, c);
 			if(!check_clic_selection_dest(l, c)){
@@ -175,10 +175,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 			return false;
 		}
 		Coordonne arrive = new Coordonne(x, y);
-		if(check_Deplacement(liste_depl, arrive)){
-			return true;
-		}
-		return false;
+		return check_Deplacement(liste_depl, arrive);
 	}
 
 	
