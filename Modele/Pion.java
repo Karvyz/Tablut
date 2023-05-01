@@ -1,6 +1,5 @@
 package Modele;
 
-import Modele.Coordonne;
 import java.util.ArrayList;
 
 public class Pion implements Cloneable {
@@ -27,11 +26,11 @@ public class Pion implements Cloneable {
     public TypePion getType() {
         return type;
     }
-
+    
     public int getX(){
         return this.coordonne.x;
     }
-
+    
     public int getY(){
         return this.coordonne.y;
     }
@@ -43,10 +42,18 @@ public class Pion implements Cloneable {
     public void setX(int x){
         this.coordonne.x = x;
     }
-
+    
     public void setY(int y){
         this.coordonne.y = y;
     }
+
+    @Override
+    public String toString() {
+        return "Pion selectionne (" + this.coordonne.x + ", " + this.coordonne.y + ")";
+    }
+    // public boolean estCorrect() { //Normalment inutile car gérer par l'IHM
+    //     return (getX()>=0 && getX()<9 && getY()>=0 && getY()<9);
+    // }
 
     private boolean emplacementValide(int x, int y) {
         if (x == 0 && (y == 0 || y == 8))
@@ -101,5 +108,23 @@ public class Pion implements Cloneable {
         getDeplacementVerticaList(plateau, deplacement);
         getDeplacementHorizontaleList(plateau, deplacement);
         return deplacement;
+    }
+
+    public void affiche_liste_deplacement(ArrayList<Coordonne> liste){
+        System.out.print("Déplacements possibles { ");
+        for(Coordonne c : liste){
+            System.out.print("(" + c.getX() + "," + c.getY() +") ");
+        }
+        System.out.println("}");
+    }
+
+
+    @Override
+    public Pion clone() {
+        try {
+            return (Pion) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
