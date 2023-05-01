@@ -3,9 +3,6 @@ import java.util.ArrayList;
 
 
 public class Niveau implements Cloneable{
-    public static final int NOIR = 0;
-    public static final int BLANC = 1;
-    public static final int ROI = 2;
     int taille = 9;
 
     public Pion [][] plateau = new Pion[taille][taille];
@@ -19,24 +16,24 @@ public class Niveau implements Cloneable{
 
     //On initialise le plateau de jeu
     public void init_Niveau() {
-//        String[] tab = {"   AAA   ",
-//                        "    A    ",
-//                        "    D    ",
-//                        "A   D   A",
-//                        "AADDRDDAA",
-//                        "A   D   A",
-//                        "    D    ",
-//                        "    A    ",
-//                        "   AAA   "};
-        String[] tab = {"        D",
-                        "         ",
-                        "         ",
-                        "         ",
-                        "         ",
-                        "         ",
-                        "         ",
-                        "A        ",
-                        "A      RD"};
+        String[] tab = {"   AAA   ",
+                        "    A    ",
+                        "    D    ",
+                        "A   D   A",
+                        "AADDRDDAA",
+                        "A   D   A",
+                        "    D    ",
+                        "    A    ",
+                        "   AAA   "};
+//        String[] tab = {"        D",
+//                        "         ",
+//                        "         ",
+//                        "         ",
+//                        "         ",
+//                        "         ",
+//                        "         ",
+//                        "A        ",
+//                        "A      RD"};
 
         for (int i = 0; i < taille; i++) {
             for (int j = 0; j < taille; j++) {
