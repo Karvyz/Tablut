@@ -49,7 +49,6 @@ public class PlateauGraphique extends JComponent implements Observateur {
         }
 
         if (getPionSelec() != null) { //Permet de mettre en bleu la case du pion selec pendant le drag
-            System.out.println("ici");
             drawable.setColor(Color.BLUE);
             int caseX = getPionSelec().x - largeurCase / 2;
             int caseY = getPionSelec().y - hauteurCase / 2;

@@ -1,11 +1,12 @@
 package Structures;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.EmptyStackException;
 
 import Modele.Niveau;
 
-public class Pile {
+public class Pile implements Serializable {
     private static final int CAPACITE_DEPART = 16;
     private Niveau[] elements;
     private int sommet;

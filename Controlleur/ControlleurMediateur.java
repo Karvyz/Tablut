@@ -2,11 +2,20 @@ package Controlleur;
 import java.awt.Color;
 
 import Modele.Coordonne;
+import Modele.Data_Niveau;
 import Modele.Jeu;
 import Modele.Niveau;
 import Modele.Pion;
 import Structures.Pile;
 import Vues.CollecteurEvenements;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InvalidClassException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 
 public class ControlleurMediateur implements CollecteurEvenements {
@@ -23,16 +32,14 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	final int lenteurAttente = 50;
 	int decompte;
 	
-	public Pile coup_annule;
-	public Pile coup_a_refaire;
+	// public Pile coup_annule;
+	// public Pile coup_a_refaire;
 	
 
 	public ControlleurMediateur(Jeu j)  {
 		jeu = j;
 		joueurs = new Joueurs[2][4];
 		typeJoueur = new int[4];
-		coup_annule = new Pile();
-		coup_a_refaire = new Pile();
 
 		for (int i = 0; i < joueurs.length; i++) {
 			joueurs[i][HUMAIN] = new Humain(i, jeu);
@@ -48,13 +55,13 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	@Override
 	public void dragANDdrop(Coordonne src, Coordonne dst){
 		Niveau niveau_avant_coup = jeu.n.copy();
-		coup_annule.empiler(niveau_avant_coup);
+		jeu.coup_annule.empiler(niveau_avant_coup);
 		if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(src, dst)){// MODIF de jeu.n ici
 			changeJoueur();
-			coup_a_refaire.clear();
+			jeu.coup_a_refaire.clear();
 		}
 		else{
-			coup_annule.depiler(); //on dépile car on empile a chaque tentative de drag & drop
+			jeu.coup_annule.depiler(); //on dépile car on empile a chaque tentative de drag & drop
 		}
 	}
 
@@ -110,6 +117,8 @@ public class ControlleurMediateur implements CollecteurEvenements {
 				}
 			}
 		}
+
+
     }
 
 	@Override
@@ -119,11 +128,11 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	}
 
 	public boolean refaire_coup() {
-		if (coup_a_refaire.estVide())
+		if (jeu.coup_a_refaire.estVide())
 			return false;
 	
-		coup_annule.empiler(jeu.n.copy());
-		Niveau a_refaire = coup_a_refaire.depiler();
+		jeu.coup_annule.empiler(jeu.n.copy());
+		Niveau a_refaire = jeu.coup_a_refaire.depiler();
 		jeu.n = a_refaire.copy();
 		jeu.metAJour();
 		jeu.joueurSuivant();
@@ -133,15 +142,18 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	}
 	
 	public boolean restaurer_niveau(){
-		if (coup_annule.estVide()){
+		if (jeu.coup_annule.estVide()){
 			return false;
 		}
-		coup_a_refaire.empiler(jeu.n.copy()); //stock l'état avant d'annuler
-		Niveau restaure = coup_annule.depiler(); //Recupère le niveau précedent
+		jeu.coup_a_refaire.empiler(jeu.n.copy()); //stock l'état avant d'annuler
+		Niveau restaure = jeu.coup_annule.depiler(); //Recupère le niveau précedent
 		jeu.n = restaure.copy();
 		jeu.metAJour();
 		jeu.joueurSuivant(); //La variable du jeu doit aussi être modifie
 		changeJoueur(); //On redonne la main au joueur précedent
 		return true;
 	}
+
+	
+
 }

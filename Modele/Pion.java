@@ -1,9 +1,10 @@
 package Modele;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Pion implements Cloneable{
+public class Pion implements Cloneable, Serializable{
     private Coordonne coordonne;
     private TypePion type; //0 pion Noir, 1 pion Blanc, 
 
