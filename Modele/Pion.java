@@ -2,7 +2,7 @@ package Modele;
 
 import java.util.ArrayList;
 
-public class Pion {
+public class Pion implements Cloneable {
     Coordonne coordonne;
     TypePion type; //0 pion Noir, 1 pion Blanc, 
 
@@ -119,4 +119,12 @@ public class Pion {
     }
 
 
+    @Override
+    public Pion clone() {
+        try {
+            return (Pion) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }

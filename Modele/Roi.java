@@ -53,8 +53,8 @@ public class Roi extends Pion {
     @Override
     public ArrayList<Coordonne> getDeplacement(Pion[][] plateau){
         ArrayList<Coordonne> deplacement = new ArrayList<Coordonne>();
-        deplacement = getDeplacementVerticaList(plateau, deplacement);
-        deplacement = getDeplacementHorizontaleList(plateau, deplacement);
+        getDeplacementVerticaList(plateau, deplacement);
+        getDeplacementHorizontaleList(plateau, deplacement);
         return deplacement;
     }
     

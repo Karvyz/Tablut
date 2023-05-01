@@ -17,37 +17,26 @@ public class Niveau implements Cloneable{
         init_Niveau();
     }
 
-    public Niveau(Niveau n) {
-        plateau = new Pion[taille][taille];
-        for (int i = 0; i < taille; i++) {
-            for (int j = 0; j < taille; j++) {
-                if (n.plateau[i][j] != null) {
-                    plateau[i][j] = new Pion(n.plateau[i][j]);
-                }
-            }
-        }
-    }
-
     //On initialise le plateau de jeu
     public void init_Niveau() {
-        String[] tab = {"   AAA   ",
-                        "    A    ",
-                        "    D    ",
-                        "A   D   A",
-                        "AADDRDDAA",
-                        "A   D   A",
-                        "    D    ",
-                        "    A    ",
-                        "   AAA   "};
-//        String[] tab = {"        D",
-//                        "         ",
-//                        "         ",
-//                        "         ",
-//                        "         ",
-//                        "         ",
-//                        "         ",
-//                        "A        ",
-//                        "A      RD"};
+//        String[] tab = {"   AAA   ",
+//                        "    A    ",
+//                        "    D    ",
+//                        "A   D   A",
+//                        "AADDRDDAA",
+//                        "A   D   A",
+//                        "    D    ",
+//                        "    A    ",
+//                        "   AAA   "};
+        String[] tab = {"        D",
+                        "         ",
+                        "         ",
+                        "         ",
+                        "         ",
+                        "         ",
+                        "         ",
+                        "A        ",
+                        "A      RD"};
 
         for (int i = 0; i < taille; i++) {
             for (int j = 0; j < taille; j++) {
@@ -412,5 +401,23 @@ public class Niveau implements Cloneable{
             }
         }
         return false;
+    }
+
+    @Override
+    public Niveau clone() {
+        try {
+            Niveau clone = (Niveau) super.clone();
+            clone.plateau = new Pion[taille][taille];
+            for (int i = 0; i < taille; i++) {
+                for (int j = 0; j < taille; j++) {
+                    if (plateau[i][j] != null) {
+                        clone.plateau[i][j] = plateau[i][j].clone();
+                    }
+                }
+            }
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
