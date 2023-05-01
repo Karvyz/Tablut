@@ -4,7 +4,7 @@ import Modele.*;
 
 import java.util.ArrayList;
 
-public class IA_difficile extends IA{
+public abstract class IA_difficile extends IA{
 
     int nevaluation = 0;
     static int MAX_DEPTH = 4;
@@ -84,28 +84,5 @@ public class IA_difficile extends IA{
         return  valeur_retour;
     }
 
-    public int evaluation(Niveau n) {
-        nevaluation++;
-        int attaquants = 16;
-        int defenseurs = 8;
-        for (int i = 0; i < n.getTaille(); i++) {
-            for (int j = 0; j < n.getTaille(); j++) {
-                if (!n.estVide(i, j)) {
-                    switch (n.typePion(i, j)) {
-                        case ATTAQUANT:
-                            attaquants--;
-                            break;
-                        case DEFENSEUR:
-                            defenseurs--;
-                            break;
-                        case ROI:
-                    }
-                }
-            }
-        }
-        if (jeu.getJoueurCourant() == 0) {
-            return defenseurs - attaquants;
-        }
-        return attaquants - defenseurs;
-    }
+    public abstract int evaluation(Niveau n);
 }
