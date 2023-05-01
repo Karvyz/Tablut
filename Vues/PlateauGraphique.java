@@ -15,7 +15,7 @@ public class PlateauGraphique extends JComponent implements Observateur {
     private Color couleurEnDeplacement;
     private Color couleurDest;
     int strokeWidth = 6; // Vous pouvez ajuster cette valeur pour modifier la taille du contour
-    Color borderColor = new Color(255, 255, 0); // Couleur jaune
+    Color borderColor = new Color(255, 128, 0); // Couleur jaune
 
     
 	public PlateauGraphique(Jeu j) {
