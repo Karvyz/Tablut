@@ -1,6 +1,8 @@
 package Modele;
 
-public class Coordonne implements Cloneable{
+import java.io.Serializable;
+
+public class Coordonne implements Cloneable, Serializable{
     int x;
     int y;
 

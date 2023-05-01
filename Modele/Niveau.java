@@ -1,8 +1,19 @@
 package Modele;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InvalidClassException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
+import Structures.Pile;
 
-public class Niveau {
+
+public class Niveau implements Serializable{
     public static final int NOIR = 0;
     public static final int BLANC = 1;
     public static final int ROI = 2;
@@ -15,6 +26,31 @@ public class Niveau {
     //On creer le plateau de jeu
     public Niveau() {
         init_Niveau();
+    }
+
+    public Niveau(String fichier) {
+        Data_Niveau data_niveau = null;
+    
+        try {
+            FileInputStream fileIn = new FileInputStream(fichier);
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+            data_niveau = (Data_Niveau) objectIn.readObject();
+            objectIn.close();
+            fileIn.close();
+    
+            // Mettre à jour l'objet Niveau avec les données chargées
+            this.taille = data_niveau.niveau.taille;
+            this.plateau = data_niveau.niveau.plateau;
+    
+        } catch (FileNotFoundException e) {
+            System.err.println("Fichier non trouvé : " + fichier);
+        } catch (EOFException | InvalidClassException e) {
+            System.err.println("Erreur lors de la lecture du fichier : " + fichier);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.err.println("Classe Data_Niveau introuvable");
+        }
     }
     
     
@@ -48,7 +84,6 @@ public class Niveau {
             plateau[x][y] = p;
         }
     }
-    
 
 
     // Crée une copie profonde de l'objet Niveau

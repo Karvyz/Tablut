@@ -6,6 +6,8 @@ import javax.swing.JButton;
 import Controlleur.ControlleurMediateur;
 import Modele.Jeu;
 import Vues.CollecteurEvenements;
+import Vues.FenetrePlateau;
+import Vues.InterfaceGraphique;
 
 public class ClickListener implements ActionListener {
     private int interfaceNum;
@@ -22,6 +24,7 @@ public class ClickListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String fichier = "test_sauvegarde.save";
         switch (interfaceNum){
             case 0: //FenetrePlateau
                 if (button.getName().equals("btnAnnule")) {//faire des fonctions pour chaque bouton
@@ -39,8 +42,22 @@ public class ClickListener implements ActionListener {
                     else{
                         System.out.println("Aucun coup n'a ete annulé");
                     } 
-                // Ajouter d'autres conditions pour chaque bouton sur la même fenêtre
-            }
+                }
+                else if (button.getName().equals("btnSauvegarde")) {//faire des fonctions pour chaque bouton
+                    if (j.save(fichier)){
+                        System.out.println("Jeu actuelle sauvegardé dans le fichier: "+fichier);
+                    }
+                    else{
+                        System.out.println("Impossible de sauvegarder le jeu dans le fichier:" +fichier);
+                    } 
+                }
+                else if (button.getName().equals("btnCharger")) {//faire des fonctions pour chaque bouton
+                    j.nouvellePartie(fichier);
+                    
+                }
+                break;
+            default :
+                System.out.println("Interface inconnu");
         }
     }
 }
