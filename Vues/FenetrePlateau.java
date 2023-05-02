@@ -36,6 +36,14 @@ public class FenetrePlateau extends JFrame implements Observateur{
 		barre.add(Box.createGlue());
 		this.add(barre, BorderLayout.LINE_END);
 
+<<<<<<< HEAD
+        JButton btnOuvrirFenetreB = new JButton("Fen B");
+        btnOuvrirFenetreB.addActionListener(new OuvrirFenetreBActionListener(jeu, control));
+        add(btnOuvrirFenetreB, BorderLayout.SOUTH);
+        barre.add(btnOuvrirFenetreB);
+
+		Timer chrono = new Timer( 200, new AdaptateurTemps(control));
+=======
 		JButton btnAnnule = new JButton("Annule");// Creer le bouton Annule
 		btnAnnule.setName("btnAnnule"); //Important de définir le nom pour le retrouvé dans ClickListener
         ClickListener clickListener3 = new ClickListener(0, btnAnnule, control, j); //ajoute l'action en cas de clique
@@ -62,6 +70,7 @@ public class FenetrePlateau extends JFrame implements Observateur{
         barre.add(btnCharger); // Place le bouton
         
 		Timer chrono = new Timer( 100, new AdaptateurTemps(control));
+>>>>>>> origin/Implementation-annule-et-refaire
 		chrono.start();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(500, 500);
