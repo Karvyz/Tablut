@@ -42,7 +42,7 @@ public class CPlateau extends JPanel implements Observateur {
                 Pion courant = n.getPion(l, c);
                 // Dessin des pions, forteresses, roi, konakis
                 // - Si c'est un des coins alors on dessine les forteresses
-                if (n.estForteresse(l, c)) {
+                if (n.estFortresse(l, c)) {
                     g.drawImage(Theme.instance().forteresse(), x, y, largeurCase, hauteurCase, this);
                 }
                 // - Si c'est la case centrale alors on dessine le konakis
