@@ -6,17 +6,7 @@ import Modele.Data_Niveau;
 import Modele.Jeu;
 import Modele.Niveau;
 import Modele.Pion;
-import Structures.Pile;
 import Vues.CollecteurEvenements;
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
 
 public class ControlleurMediateur implements CollecteurEvenements {
     
@@ -29,12 +19,10 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	Joueurs[][] joueurs;
 	int [] typeJoueur;
 	int joueurCourant = 0; //joueur qui commence
-	final int lenteurAttente = 1;
+	final int lenteurAttente = 50;
 	int decompte;
-	
-	// public Pile coup_annule;
-	// public Pile coup_a_refaire;
-	
+	private Pion selectionne;
+	private boolean pionSelec = false;
 
 	public ControlleurMediateur(Jeu j)  {
 		jeu = j;
@@ -46,49 +34,53 @@ public class ControlleurMediateur implements CollecteurEvenements {
 			joueurs[i][FACILE] = new IA_facile(i, jeu);
             joueurs[i][MOYEN] = new IA_moyen(i, jeu);
             joueurs[i][DIFFCILE] = new IA_difficile_Long_live_the_king(i, jeu);
-			typeJoueur[i] = DIFFCILE; //type
+			//typeJoueur[i] = DIFFCILE; //type
+			typeJoueur[i] = HUMAIN; //type
+
 		}
 		//joueurs[1][DIFFCILE] = new IA_facile(1, jeu);
-
-
 	}
 	
-	@Override
+	@Override//Deplacement en Drag&Drop
 	public void dragANDdrop(Coordonne src, Coordonne dst){
-		Niveau niveau_avant_coup = jeu.n.clone();
-		jeu.coup_annule.empiler(niveau_avant_coup);
 		if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(src, dst)){// MODIF de jeu.n ici
 			changeJoueur();
-			jeu.coup_a_refaire.clear();
-		}
-		else{
-			jeu.coup_annule.depiler(); //on dépile car on empile a chaque tentative de drag & drop
 		}
 	}
 
-    @Override
+    @Override//Déplacement au clic
 	public void clicSouris(int l, int c) {
 		// Lors d'un clic sur un pion, on affiche ses déplacements possibles
 		
 		Pion caseSelec = jeu.n.getPion(l,c);
-		if (caseSelec == null){
-			System.out.println("Cette case ne contient aucun pion");
-		}
-		else{
-			if (!jeu.n.check_clic_selection_pion(caseSelec, joueurCourant)){
-				System.out.println("Ce pion ne vous appartient pas");
+
+		if (caseSelec == null && pionSelec == true){ //ICI on cherche a déplacer
+			Coordonne depart = new Coordonne(selectionne.getX(), selectionne.getY());
+			Coordonne arrive = new Coordonne(l, c);
+			if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(depart, arrive )){
+				changeJoueur();
+				pionSelec = false; 
+			}
+		} 
+		else{ //Selection du pion 
+			if (jeu.n.check_clic_selection_pion(caseSelec, joueurCourant)){ 
+				pionSelec = true;
+				selectionne = caseSelec.clone(); //on stock le pion selectionne
+				caseSelec.affiche_liste_deplacement(caseSelec.getDeplacement(jeu.n.plateau));
 			}
 			else{
-				caseSelec.affiche_liste_deplacement(caseSelec.getDeplacement(jeu.n.plateau));
+				System.out.println("Ce pion ne vous appartient pas");
 			}
 		}
 	}
 	
+	//Passe au joueur suivant
     public void changeJoueur() {
 		joueurCourant = (joueurCourant + 1) % joueurs.length;
 		decompte = lenteurAttente;
 	}
 	
+
     public void tictac(){
         if (jeu.enCours()) {
 			if(jeu.n.PlusdePion(joueurCourant)){
@@ -128,6 +120,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		typeJoueur[j] = t;
 	}
 
+	//Le niveau courant devient le sommet de la pile a_refaire
 	public boolean refaire_coup() {
 		if (jeu.coup_a_refaire.estVide())
 			return false;
@@ -142,6 +135,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	
 	}
 	
+	//Le niveau courant devient le sommet de la pile annule_coup, soit le coup précedent
 	public boolean restaurer_niveau(){
 		if (jeu.coup_annule.estVide()){
 			return false;

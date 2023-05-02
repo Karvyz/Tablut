@@ -18,14 +18,17 @@ public class Niveau implements Serializable, Cloneable {
     public static final int BLANC = 1;
     public static final int ROI = 2;
     private int taille = 9;
+    private Configuration config;
 
     public Pion [][] plateau = new Pion[taille][taille];
 
 
 
     //On creer le plateau de jeu
-    public Niveau() {
+    public Niveau(Configuration config ) {
+        this.config = config;
         init_Niveau();
+
     }
 
     public Niveau(String fichier) {
@@ -263,7 +266,7 @@ public class Niveau implements Serializable, Cloneable {
                 return 1;
         }
         if (estRoi(p)){
-            if (estFortresse(dst.x, dst.y))
+            if (estFortresse(dst.x, dst.y) || (estContreBord(dst.x, dst.y) && config.isWinTousCote()))
             return 2;
         }
        //}
@@ -271,7 +274,7 @@ public class Niveau implements Serializable, Cloneable {
 
     }
 
-    public void AMangerPion(Pion p){
+     public void AMangerPion(Pion p){
         if (estAttaquant(p)){
             if (estDefenseur(p.getX()+1,p.getY())){
                 if(estAttaquant(p.getX()+2,p.getY())||estFortresse(p.getX()+2, p.getY())){
@@ -326,7 +329,6 @@ public class Niveau implements Serializable, Cloneable {
         }         
         
     }
-    
     
     //On regarde si la case est contre le bord
     public boolean estContreBord(int x, int y){
@@ -434,7 +436,7 @@ public class Niveau implements Serializable, Cloneable {
         }
         return 0;
     }
-
+/*
     //On regarde si on a mangé le roi
     public boolean AMangerRoi(Coordonne dplc){
         if(estRoi(dplc.x+1,dplc.y)){
@@ -528,6 +530,116 @@ public class Niveau implements Serializable, Cloneable {
         }
         return false;
     }
+*/
+  
+
+    //On regarde ou est le roi par rapport a notre Attaquant
+    public int estContreRoi(int x, int y){
+        if (estRoi(x+1,y)){
+            return 1;
+        }
+        else if (estRoi(x-1,y)){
+            return 2;
+        }
+        else if (estRoi(x,y+1)){
+            return 3;
+        }
+        else if (estRoi(x,y-1)){
+            return 4;
+        }
+        return 0;
+    }
+
+    //On regarde si il y a un regicide contre les fortresses
+    public boolean regicideFortresse( int x, int y){
+        if (estContreBord(x, y)){
+            if(estContreFortresse(x, y)){
+                if(estAttaquant(x+1,y) && estAttaquant(x,y+1)){
+                    return true;
+                }
+                else if(estAttaquant(x+1,y) && estAttaquant(x,y-1)){
+                    return true;
+                }
+                else if(estAttaquant(x-1,y) && estAttaquant(x,y+1)){
+                    return true;
+                }
+                else if(estAttaquant(x-1,y) && estAttaquant(x,y-1)){
+                    return true;
+                }
+            }
+            
+        }
+        return false;
+    }
+
+    //On regarde si il y a un regicide contre le trone
+    public boolean regicideKonakis(int x, int y , int pos){
+        if (estContreTrone(x, y)==1 && estAttaquant(x,y-1)&&estAttaquant(x-1,y)&&estAttaquant(x,y-1)){
+            return true;
+        }
+        else if (estContreTrone(x, y)==2 && estAttaquant(x,y-1)&&estAttaquant(x+1,y)&&estAttaquant(x,y+1)){
+            return true;
+        }
+        else if (estContreTrone(x, y)==3 && estAttaquant(x,y-1)&&estAttaquant(x-1,y)&&estAttaquant(x+1,y)){
+            return true;
+        }
+        else if (estContreTrone(x, y)==4 && estAttaquant(x,y+1)&&estAttaquant(x+1,y)&&estAttaquant(x-1,y)){
+            return true;
+        }
+        return false;
+    }
+
+    //On regarde si il y a un regicide contre un mur
+    public boolean regicideMur(int x, int y){
+        if (estContreBord(x, y)){
+            if(estAttaquant(x+1,y) && estAttaquant(x-1,y) && estAttaquant(x,y+1)){
+                return true;
+            }
+            else if(estAttaquant(x,y+1) && estAttaquant(x,y-1) && estAttaquant(x+1,y)){
+                return true;
+            }
+            else if(estAttaquant(x,y-1) && estAttaquant(x-1,y) && estAttaquant(x+1,y)){
+                return true;
+            }
+            else if(estAttaquant(x,y+1) && estAttaquant(x,y-1) && estAttaquant(x-1,y)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //On regarde si il y a un regicide contre un pion
+    public boolean regicidePion(int x, int y){
+        if (estAttaquant(x+1, y) && estAttaquant(x-1, y) && estAttaquant(x, y+1) && estAttaquant(x, y-1)){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean AMangerRoi(Coordonne dplc){
+        int pos = estContreRoi(dplc.x,dplc.y);
+        if(pos == 1){
+            if((regicideFortresse(dplc.x+1, dplc.y) && config.isRF()) || (regicideKonakis(dplc.x+1, dplc.y, pos) && config.isRT()) || (regicideMur(dplc.x+1, dplc.y) && config.isRM()) || regicidePion(dplc.x+1, dplc.y)){
+                return true;
+            }
+        }
+        else if(pos == 2){
+            if((regicideFortresse(dplc.x-1, dplc.y) && config.isRF()) || (regicideKonakis(dplc.x-1, dplc.y, pos) && config.isRT()) || (regicideMur(dplc.x-1, dplc.y) && config.isRM()) || regicidePion(dplc.x-1, dplc.y)){
+                return true;
+            }
+        }
+        else if(pos == 3){
+            if((regicideFortresse(dplc.x, dplc.y+1) && config.isRF()) || (regicideKonakis(dplc.x, dplc.y+1, pos) && config.isRT()) || (regicideMur(dplc.x, dplc.y+1) && config.isRM()) || regicidePion(dplc.x, dplc.y+1)){
+                return true;
+            }
+        }
+        else if(pos == 4){
+            if((regicideFortresse(dplc.x, dplc.y-1) && config.isRF()) || (regicideKonakis(dplc.x, dplc.y-1, pos) && config.isRT()) || (regicideMur(dplc.x, dplc.y-1) && config.isRM()) || regicidePion(dplc.x, dplc.y-1)){
+                return true;
+            }
+        }
+        return false;
+        }
 
     @Override
     public Niveau clone() {

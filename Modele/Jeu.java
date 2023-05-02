@@ -3,7 +3,6 @@ package Modele;
 import Patterns.Observable;
 import Structures.Pile;
 import Vues.CollecteurEvenements;
-import Vues.FenetrePlateau;
 import Vues.InterfaceGraphique;
 
 import java.io.EOFException;
@@ -14,8 +13,6 @@ import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.JFrame;
 
 import Controlleur.ControlleurMediateur;
 
@@ -28,6 +25,7 @@ public class Jeu extends Observable{
     public Pile coup_annule;
 	public Pile coup_a_refaire;
     private InterfaceGraphique interfaceGraphique;
+    private Configuration config;
 
     public Jeu(){
         nouvellePartie();
@@ -37,7 +35,8 @@ public class Jeu extends Observable{
      * Crée une nouvelle partie de taille par défaut
      */
     public void nouvellePartie() {
-        this.n = new Niveau();
+        this.config = new Configuration();
+        this.n = new Niveau(config);
         this.joueurCourant = 0;
         this.coup_annule = new Pile();
         this.coup_a_refaire = new Pile();
@@ -100,6 +99,7 @@ public class Jeu extends Observable{
     public int getJoueurCourant() { return joueurCourant;}
 
     public void jouer(Coordonne depart, Coordonne arrive){
+		this.coup_annule.empiler(this.n.clone());
         int i = n.deplace_pion(depart, arrive);
         System.out.println("Déplacement du pion de (" + depart.getX() +"," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() +")");
         if (i > 0){
@@ -112,7 +112,8 @@ public class Jeu extends Observable{
         }
         
         //TODO test si une partie est finie;
-        
+        this.coup_a_refaire.clear();
+
         joueurSuivant();
         metAJour();
     }
