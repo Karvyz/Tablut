@@ -74,6 +74,12 @@ public class Niveau {
     }
 
     public Pion getPion(int x, int y) {
+        if(!estCorrect(x,y)){
+            return null;
+        }
+        if(plateau[x][y] == null){
+            return null;
+        }
         return plateau[x][y];
     }
 

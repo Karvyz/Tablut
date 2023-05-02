@@ -41,6 +41,9 @@ public class Pion {
 
     @Override
     public String toString() {
+        if(this.coordonne == null || this.type == null)
+            return "Pion null";
+        else
         return "Pion sélectionné (" + this.coordonne.x + ", " + this.coordonne.y + ") ";
     }
 
