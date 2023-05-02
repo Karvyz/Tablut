@@ -40,7 +40,7 @@ public class Jeu extends Observable{
     public Pile coup_annule;
 	public Pile coup_a_refaire;
     private InterfaceGraphique interfaceGraphique;
-    private Configuration config;
+    private ConfigurationJeu config;
     
     
     public Jeu(){
@@ -71,7 +71,7 @@ public class Jeu extends Observable{
 
 
         enCours = true;
-        this.config = new Configuration();
+        this.config = new ConfigurationJeu();
         this.n = new Niveau(config);
         this.joueurCourant = 0;
         this.coup_annule = new Pile();

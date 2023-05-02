@@ -9,9 +9,9 @@ public class Data_Niveau implements Serializable {
         public Pile coup_annule;
         public Pile coup_a_refaire;
         public int joueurCourant;
-        public Configuration config;
+        public ConfigurationJeu config;
     
-        public Data_Niveau(Configuration config, Niveau niveau, Pile coup_annule, Pile coup_a_refaire, int JC) {
+        public Data_Niveau(ConfigurationJeu config, Niveau niveau, Pile coup_annule, Pile coup_a_refaire, int JC) {
             this.niveau = niveau;
             this.coup_annule = coup_annule;
             this.coup_a_refaire = coup_a_refaire;

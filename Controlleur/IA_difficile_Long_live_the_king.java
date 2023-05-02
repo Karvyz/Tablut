@@ -32,7 +32,7 @@ public class IA_difficile_Long_live_the_king extends IA_difficile{
                 }
             }
         }
-        if(jeu.getJoueurCourant() != 0){
+        if(jeu.get_num_JoueurCourant() != 0){
             for(int i = x-2; i < x+2; i++){
                 for(int j = y-2; j < y+2; j++){
                     if(n.estAttaquant(i, j)){

@@ -16,8 +16,8 @@ public class IA_facile extends IA {
     }
 
     @Override
-    boolean tempsEcoule() {
-        TypePion current_type = ((jeu.getJoueurCourant()) % 2 ) == 0 ? TypePion.ATTAQUANT : TypePion.DEFENSEUR;
+    public boolean tempsEcoule() {
+        TypePion current_type = ((jeu.get_num_JoueurCourant()) % 2 ) == 0 ? TypePion.ATTAQUANT : TypePion.DEFENSEUR;
         ArrayList<Pion> pions = jeu.n.getPions(current_type);
         Pion pion;
         ArrayList<Coordonne> deplacements;

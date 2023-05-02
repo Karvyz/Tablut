@@ -1,34 +1,107 @@
 package Vues;
 
-import Modele.Jeu;
-
 import javax.swing.*;
+import java.awt.*;
 
 public class InterfaceGraphique implements Runnable {
-	Jeu j;
+	//Jeu j;
 	CollecteurEvenements control;
-	private JFrame fenetrePrincipale;
+	Vues vues;
+	JFrame frame;
+	GraphicsEnvironment env;
+	GraphicsDevice device;
+	boolean maximized;
 
-	public InterfaceGraphique(Jeu jeu, CollecteurEvenements c) {
-		j = jeu;
+	InterfaceGraphique(CollecteurEvenements c) {
+		//j = jeu;
 		control = c;
 	}
 
-    public void fermerFenetrePrincipale() {
-		if (fenetrePrincipale != null) {
-			fenetrePrincipale.dispose();
-		}
-		else{
-			System.out.println("fenetrePrincipale est null");
-		}
-	}
-
-	public static void demarrer(Jeu j, CollecteurEvenements control, InterfaceGraphique interfaceGraphique) {
-		SwingUtilities.invokeLater(interfaceGraphique);
+	public static void demarrer(CollecteurEvenements control) {
+		//SwingUtilities.invokeLater(new InterfaceGraphique(j, control));
+		SwingUtilities.invokeLater(new InterfaceGraphique(control));
 	}
 
 	@Override
 	public void run() {
-		fenetrePrincipale = new FenetrePlateau(j, control);
+		// Nouvelle fenêtre
+		frame = new JFrame("Tablut");
+
+		// On récupère des informations sur l'écran
+		env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		device = env.getDefaultScreenDevice();
+		DisplayMode dm = device.getDisplayMode();
+
+		// TODO: Gérer la taille de la fenêtre dans default.cfg
+		int width = dm.getWidth() / 4 * 3;
+		int height = dm.getHeight() / 4 * 3;
+
+		// On fixe le layout du conteneur contenant les différentes vues de la fenêtre
+		frame.getContentPane().setLayout(new CardLayout());
+
+		// Ajout de nos vues dans la fenêtre
+		vues = new Vues(frame);
+
+		ajouterVue(Vues.DEMARRAGE);
+		ajouterVue(Vues.MENU_SAISIES);
+		ajouterVue(Vues.MENU_PRINCIPAL);
+		ajouterVue(Vues.MENU_PARTIES);
+		ajouterVue(Vues.JEU);
+
+		control.fixerMediateurVues(vues);
+
+		// Ajout des listeners
+
+
+		// Ajout du timer
+		Timer time = new Timer(16, new AdaptateurTemps(control));
+		time.start();
+
+		// Un clic sur le bouton de fermeture clos l'application
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		// On fixe la taille et centre la fenêtre
+		frame.setSize(width, height);
+		frame.setMinimumSize(new Dimension(1040, 666));
+		frame.setLocationRelativeTo(null);
+
+		frame.setVisible(true);
+	}
+
+	public void toggleFullscreen() {
+		if (maximized) {
+			device.setFullScreenWindow(null);
+			maximized = false;
+		} else {
+			device.setFullScreenWindow(frame);
+			maximized = true;
+		}
+	}
+
+	void ajouterVue(String nom) {
+		JPanel vue;
+
+		switch (nom) {
+			case Vues.DEMARRAGE:
+				vue = new VueDemarrage();
+				break;
+			case Vues.MENU_PRINCIPAL:
+				vue = new VueMenuPrincipal(control);
+				break;
+			case Vues.MENU_SAISIES:
+				vue = new VueMenuSaisies(control);
+				break;
+			case Vues.JEU:
+				vue = new VueJeu(control);
+				vues.fixerVueJeu((VueJeu) vue);
+				//vue = new PlateauGraphique();
+				break;
+			case Vues.MENU_PARTIES:
+				vue = new VueMenuParties(control);
+				break;
+			default:
+				throw new IllegalArgumentException("Nom de vue incorrect : " + nom);
+		}
+		frame.getContentPane().add(vue, nom);
 	}
 }
