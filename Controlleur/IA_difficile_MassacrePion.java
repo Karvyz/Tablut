@@ -10,7 +10,6 @@ public class IA_difficile_MassacrePion extends IA_difficile {
 
     @Override
     public int evaluation(Niveau n) {
-        nevaluation++;
         int attaquants = 16;
         int defenseurs = 8;
         for (int i = 0; i < n.getTaille(); i++) {

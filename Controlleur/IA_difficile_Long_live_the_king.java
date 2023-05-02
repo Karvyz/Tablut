@@ -10,7 +10,6 @@ public class IA_difficile_Long_live_the_king extends IA_difficile{
 
     @Override
     public int evaluation(Niveau n) {
-        nevaluation++;
         int x = 0, y = 0;
         int attaquants = 0, defenseurs = 0, eval = 0, check = 0, check2 = 0;
         for (int i = 0; i < n.getTaille(); i++) {
