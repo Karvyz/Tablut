@@ -81,7 +81,7 @@ public class Jeu extends Observable{
 			FileOutputStream fileOut = new FileOutputStream(fichier);
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 	
-			Data_Niveau data_niveau = new Data_Niveau(this.n, this.coup_annule, this.coup_a_refaire, joueurCourant);
+			Data_Niveau data_niveau = new Data_Niveau(this.config, this.n, this.coup_annule, this.coup_a_refaire, joueurCourant);
 	
 			objectOut.writeObject(data_niveau);
 			objectOut.close();
@@ -96,6 +96,8 @@ public class Jeu extends Observable{
 		}
     }
 
+    public int getJoueurCourant() { 
+        return joueurCourant;}
 
     public void jouer(Coordonne depart, Coordonne arrive){
 		this.coup_annule.empiler(this.n.clone());
@@ -107,6 +109,7 @@ public class Jeu extends Observable{
                 System.out.println("PARTIE FINI CAR ROI CAPTURE");
             else
                 System.out.println("PARTIE FINI CAR ROI EVADE");
+            System.out.println(n);
         }
         
         //TODO test si une partie est finie;

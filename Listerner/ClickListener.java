@@ -6,8 +6,6 @@ import javax.swing.JButton;
 import Controlleur.ControlleurMediateur;
 import Modele.Jeu;
 import Vues.CollecteurEvenements;
-import Vues.FenetrePlateau;
-import Vues.InterfaceGraphique;
 
 public class ClickListener implements ActionListener {
     private int interfaceNum;

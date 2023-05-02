@@ -1,8 +1,6 @@
 package Controlleur;
-import java.awt.Color;
 
 import Modele.Coordonne;
-import Modele.Data_Niveau;
 import Modele.Jeu;
 import Modele.Niveau;
 import Modele.Pion;
@@ -18,7 +16,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
     Jeu jeu;
 	Joueurs[][] joueurs;
 	int [] typeJoueur;
-	int joueurCourant = 0; //joueur qui commence
 	final int lenteurAttente = 50;
 	int decompte;
 	private Pion selectionne;
@@ -43,7 +40,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	
 	@Override//Deplacement en Drag&Drop
 	public void dragANDdrop(Coordonne src, Coordonne dst){
-		if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(src, dst)){// MODIF de jeu.n ici
+		if (joueurs[jeu.getJoueurCourant()][typeJoueur[jeu.getJoueurCourant()]].jeu(src, dst)){// MODIF de jeu.n ici
 			changeJoueur();
 		}
 	}
@@ -57,13 +54,13 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		if (caseSelec == null && pionSelec == true){ //ICI on cherche a déplacer
 			Coordonne depart = new Coordonne(selectionne.getX(), selectionne.getY());
 			Coordonne arrive = new Coordonne(l, c);
-			if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(depart, arrive )){
+			if (joueurs[jeu.getJoueurCourant()][typeJoueur[jeu.getJoueurCourant()]].jeu(depart, arrive )){
 				changeJoueur();
 				pionSelec = false; 
 			}
 		} 
 		else{ //Selection du pion 
-			if (jeu.n.check_clic_selection_pion(caseSelec, joueurCourant)){ 
+			if (jeu.n.check_clic_selection_pion(caseSelec, jeu.getJoueurCourant())){ 
 				pionSelec = true;
 				selectionne = caseSelec.clone(); //on stock le pion selectionne
 				caseSelec.affiche_liste_deplacement(caseSelec.getDeplacement(jeu.n.plateau));
@@ -76,32 +73,31 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	
 	//Passe au joueur suivant
     public void changeJoueur() {
-		joueurCourant = (joueurCourant + 1) % joueurs.length;
 		decompte = lenteurAttente;
 	}
 	
 
     public void tictac(){
         if (jeu.enCours()) {
-			if(jeu.n.PlusdePion(joueurCourant)){
+			if(jeu.n.PlusdePion(jeu.getJoueurCourant())){
 				jeu.setEnCours(false);
 				System.out.println("Le joueur blanc a gagné car l'attaquant n'a plus de pion");
 			}else{
 				
 				if (decompte == 0) {
-					int type = typeJoueur[joueurCourant];
+					int type = typeJoueur[jeu.getJoueurCourant()];
 	
 					// Lorsque le temps est écoulé on le transmet au joueur courant.
 					// Si un coup a été joué (IA) on change de joueur.
-					if (joueurs[joueurCourant][type].tempsEcoule()) { //Un humain renvoi tjr false, une IA renvoi vrai lorsquelle a joué(jeu effectué dans tempsEcoule())
+					if (joueurs[jeu.getJoueurCourant()][type].tempsEcoule()) { //Un humain renvoi tjr false, une IA renvoi vrai lorsquelle a joué(jeu effectué dans tempsEcoule())
 						changeJoueur();
 					} else {
 					// Sinon on indique au joueur qui ne réagit pas au temps (humain) qu'on l'attend.
 
-						if (joueurs[joueurCourant][type].numJ == 0)
-							System.out.println("On vous attend, joueur " + joueurs[joueurCourant][type].numJ + " vous devez déplacer un pion noir ");
+						if (joueurs[jeu.getJoueurCourant()][type].numJ == 0)
+							System.out.println("On vous attend, joueur " + joueurs[jeu.getJoueurCourant()][type].numJ + " vous devez déplacer un pion noir ");
 						else
-							System.out.println("On vous attend, joueur " + joueurs[joueurCourant][type].numJ + " vous devez déplacer un pion blanc ou le roi");
+							System.out.println("On vous attend, joueur " + joueurs[jeu.getJoueurCourant()][type].numJ + " vous devez déplacer un pion blanc ou le roi");
 	
 						decompte = lenteurAttente;
 					}
