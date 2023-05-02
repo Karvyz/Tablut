@@ -542,6 +542,16 @@ public class Niveau implements Serializable, Cloneable {
         return false;
         }
 
+    public boolean estTermine() {
+        // Si le roi est sur une des cases au bord du plateau
+        for (int i = 0; i < 9; i++) {
+            if (estRoi(0, i) || estRoi(8, i) || estRoi(i, 0) || estRoi(i, 8)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public Niveau clone() {
         try {
