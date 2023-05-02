@@ -58,8 +58,27 @@ public class Niveau implements Serializable{
     
     //On initialise le plateau de jeu
     public void init_Niveau() {
-        int [][] pos_attaquants = new int[][] {{0,3}, {0,4}, {0,5}, {1,4}, {3,0}, {4,0}, {5,0}, {4,1}, {8,3}, {8,4}, {8,5}, {7,4}, {4,7}, {3,8}, {4,8}, {5,8}};
-        int [][] pos_defenseurs = new int[][] {{2,4}, {3,4}, {4,2}, {4,3}, {5,4}, {6,4}, {4,5}, {4,6}};
+        String[] tab = {"   AAA   ",
+                        "    A    ",
+                        "    D    ",
+                        "A   D   A",
+                        "AADDRDDAA",
+                        "A   D   A",
+                        "    D    ",
+                        "    A    ",
+                        "   AAA   "};
+    int [][] pos_attaquants = new int[][] {{0,3}, {0,4}, {0,5}, {1,4}, {3,0}, {4,0}, {5,0}, {4,1}, {8,3}, {8,4}, {8,5}, {7,4}, {4,7}, {3,8}, {4,8}, {5,8}};
+    int [][] pos_defenseurs = new int[][] {{2,4}, {3,4}, {4,2}, {4,3}, {5,4}, {6,4}, {4,5}, {4,6}};
+
+//        String[] tab = {"        D",
+//                        "         ",
+//                        "         ",
+//                        "         ",
+//                        "         ",
+//                        "         ",
+//                        "         ",
+//                        "A        ",
+//                        "A      RD"};
 
         for (int i = 0; i < taille; i++) {
             for (int j = 0; j < taille; j++) {
@@ -180,6 +199,10 @@ public class Niveau implements Serializable{
             return true;
         }
         return false;
+    }
+
+    public TypePion typePion(int x, int y) {
+        return plateau[x][y].getType();
     }
 
     //On regarde si la case est noire
@@ -540,4 +563,21 @@ public class Niveau implements Serializable{
         return false;
     }
 
+    @Override
+    public Niveau clone() {
+        try {
+            Niveau clone = (Niveau) super.clone();
+            clone.plateau = new Pion[taille][taille];
+            for (int i = 0; i < taille; i++) {
+                for (int j = 0; j < taille; j++) {
+                    if (plateau[i][j] != null) {
+                        clone.plateau[i][j] = plateau[i][j].clone();
+                    }
+                }
+            }
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }

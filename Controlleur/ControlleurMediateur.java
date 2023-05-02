@@ -29,7 +29,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	Joueurs[][] joueurs;
 	int [] typeJoueur;
 	int joueurCourant = 0; //joueur qui commence
-	final int lenteurAttente = 50;
+	final int lenteurAttente = 1;
 	int decompte;
 	
 	// public Pile coup_annule;
@@ -44,10 +44,11 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		for (int i = 0; i < joueurs.length; i++) {
 			joueurs[i][HUMAIN] = new Humain(i, jeu);
 			joueurs[i][FACILE] = new IA_facile(i, jeu);
-			joueurs[i][MOYEN] = new IA_moyen(i, jeu);
-			joueurs[i][DIFFCILE] = new IA_difficile(i, jeu);
-			typeJoueur[i] = HUMAIN; //type 
+            joueurs[i][MOYEN] = new IA_moyen(i, jeu);
+            joueurs[i][DIFFCILE] = new IA_difficile_Long_live_the_king(i, jeu);
+			typeJoueur[i] = DIFFCILE; //type
 		}
+		//joueurs[1][DIFFCILE] = new IA_facile(1, jeu);
 
 
 	}
