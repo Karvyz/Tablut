@@ -24,11 +24,12 @@ public class IA_difficile extends IA{
         int valeur_retour = Integer.MIN_VALUE;
         ArrayList<Coordonne> departs = new ArrayList<>();
         ArrayList<Coordonne> arrivees = new ArrayList<>();
-
+        int nb_branches = 0;
         for (Pion pion : pions) {
             ArrayList<Coordonne> deplacements = pion.getDeplacement(jeu.n.plateau);
 
             for (Coordonne deplacement : deplacements) {
+                nb_branches++;
                 Niveau clone = jeu.n.clone();
                 int retour = clone.deplace_pion(pion.getCoordonne(), deplacement);
                 int tmp = analyse_recursive(clone, 1);
@@ -51,6 +52,7 @@ public class IA_difficile extends IA{
         Coordonne pion_depart = departs.get(index);
         Coordonne pion_arrivee = arrivees.get(index);
         jeu.jouer(pion_depart, pion_arrivee);
+        System.out.println(nb_branches + " branches");
         System.out.println(nevaluation + " evalutations en " + (System.currentTimeMillis() -l ) + "ms");
         return true;
     }
