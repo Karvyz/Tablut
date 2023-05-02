@@ -28,11 +28,14 @@ public class VueMenuSaisies extends JPanel {
     private JLabel JoueurCommence;
     private JComboBox comboBox1;
     int logoHeight;
-    Image t;
+    Image background;
     Image vs;
     int called = 0;
 
     public VueMenuSaisies(CollecteurEvenements c) {
+        // Chargement des assets
+        background = Imager.getImageBuffer("assets/logo.png");
+
         controleur = c;
 
         typeJ1 = new CComboxBox();
@@ -234,9 +237,14 @@ public class VueMenuSaisies extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        // Affichage de l'image d'arrière plan
+        g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+
+
+        int w = getWidth(), h = getHeight();
+
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        int w = getWidth(), h = getHeight();
         //Color color1 = new Color(255, 140, 85);
         //Color color2 = new Color(255, 120, 105);
         //GradientPaint gp = new GradientPaint(0, 0, color1, w, h, color2);
