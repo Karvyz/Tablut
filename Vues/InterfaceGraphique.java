@@ -27,8 +27,7 @@ public class InterfaceGraphique implements Runnable {
 	/*
 	@Override
 	public void run() {
-		new FenetrePlateau(j, control);
-		//fenetrePlateau.setVisible(true);
+		fenetrePrincipale = new FenetrePlateau(j, control);
 	}
 
 	 */
