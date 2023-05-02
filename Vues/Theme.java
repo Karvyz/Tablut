@@ -49,8 +49,8 @@ public class Theme {
         bordureGauche = Integer.parseInt(p.getProperty("Bordure_gauche"));
         bordureBas = Integer.parseInt(p.getProperty("Bordure_bas"));
         bordureDroite = Integer.parseInt(p.getProperty("Bordure_droite"));
-        hauteurCase = (hauteurPlateau - bordureHaut - bordureBas) / 4;
-        largeurCase = (largeurPlateau - bordureGauche - bordureDroite) / 4;
+        hauteurCase = (hauteurPlateau - bordureHaut - bordureBas) / 9;
+        largeurCase = (largeurPlateau - bordureGauche - bordureDroite) / 9;
     }
 
     void charger() {
