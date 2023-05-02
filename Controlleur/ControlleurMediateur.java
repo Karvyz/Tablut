@@ -48,7 +48,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
             joueurs[i][DIFFCILE] = new IA_difficile_Long_live_the_king(i, jeu);
 			typeJoueur[i] = DIFFCILE; //type
 		}
-		joueurs[1][DIFFCILE] = new IA_facile(1, jeu);
+		//joueurs[1][DIFFCILE] = new IA_facile(1, jeu);
 
 
 	}

@@ -67,6 +67,9 @@ public class Niveau implements Serializable{
                         "    D    ",
                         "    A    ",
                         "   AAA   "};
+    int [][] pos_attaquants = new int[][] {{0,3}, {0,4}, {0,5}, {1,4}, {3,0}, {4,0}, {5,0}, {4,1}, {8,3}, {8,4}, {8,5}, {7,4}, {4,7}, {3,8}, {4,8}, {5,8}};
+    int [][] pos_defenseurs = new int[][] {{2,4}, {3,4}, {4,2}, {4,3}, {5,4}, {6,4}, {4,5}, {4,6}};
+
 //        String[] tab = {"        D",
 //                        "         ",
 //                        "         ",

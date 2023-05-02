@@ -13,7 +13,7 @@ public class Pion implements Cloneable, Serializable{
         coordonne = new Coordonne(x, y);
         this.type = type;
     }
-
+    
     public Pion(Coordonne coordonne, TypePion type){
         this.coordonne = coordonne;
         this.type = type;
@@ -30,7 +30,8 @@ public class Pion implements Cloneable, Serializable{
             throw new AssertionError("La classe Pion doit être cloneable", e);
         }
     }
-
+    
+    
     public TypePion getType() {
         return type;
     }
@@ -46,11 +47,7 @@ public class Pion implements Cloneable, Serializable{
     public int getY(){
         return this.coordonne.y;
     }
-
-    public Coordonne getCoordonne(){
-        return coordonne;
-    }
-
+    
     public void setX(int x){
         this.coordonne.x = x;
     }
