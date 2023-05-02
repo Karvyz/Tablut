@@ -2,15 +2,12 @@ package Modele;
 import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import Structures.Pile;
 
 
 public class Niveau implements Serializable, Cloneable {
@@ -436,103 +433,7 @@ public class Niveau implements Serializable, Cloneable {
         }
         return 0;
     }
-/*
-    //On regarde si on a mangé le roi
-    public boolean AMangerRoi(Coordonne dplc){
-        if(estRoi(dplc.x+1,dplc.y)){
-            if(estContreBord(dplc.x+1,dplc.y)){
-                if( (estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y-1)) || ((estContreFortresse(dplc.x+1, dplc.y)&&(estAttaquant(dplc.x+1,dplc.y+1) || estAttaquant(dplc.x+1,dplc.y-1))))){
-                    return true;
-                }
-            }
-            else if (estAttaquant(dplc.x+2,dplc.y) && estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y-1)){
-                return true;
-            }
-            else if(estContreTrone(dplc.x+1,dplc.y)!=0){
-                if(estContreTrone(dplc.x+1,dplc.y)==1 && estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y-1)){
-                    return true;
-                }
-                if(estContreTrone(dplc.x+1,dplc.y)==3 && estAttaquant(dplc.x+2,dplc.y) && estAttaquant(dplc.x+1,dplc.y-1)){
-                    return true;
-                }
-                if(estContreTrone(dplc.x+1,dplc.y)==4 && estAttaquant(dplc.x+2,dplc.y) && estAttaquant(dplc.x+1,dplc.y+1)){
-                    return true;
-                }
-            }
-        }
-        else if (estRoi(dplc.x-1,dplc.y)){
-            if(estContreBord(dplc.x-1,dplc.y)){
-                if( (estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y-1)) || (estContreFortresse(dplc.x-1, dplc.y)&&(estAttaquant(dplc.x-1,dplc.y+1) || estAttaquant(dplc.x-1,dplc.y-1)))){
-                    return true;
-                }
-                return true;
-            }
-            else if (estAttaquant(dplc.x-2,dplc.y) && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y-1)){
-                return true;
-            }
-            else if(estContreTrone(dplc.x-1,dplc.y)!=0){
-                if(estContreTrone(dplc.x-1,dplc.y)==2 && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y-1)){
-                    return true;
-                }
-                if(estContreTrone(dplc.x-1,dplc.y)==3 && estAttaquant(dplc.x-2,dplc.y) && estAttaquant(dplc.x-1,dplc.y-1)){
-                    return true;
-                }
-                if(estContreTrone(dplc.x-1,dplc.y)==4 && estAttaquant(dplc.x-2,dplc.y) && estAttaquant(dplc.x-1,dplc.y+1)){
-                    return true;
-                }
-            }
-
-        }
-        else if (estRoi(dplc.x,dplc.y+1)){
-            if(estContreBord(dplc.x,dplc.y+1)){
-                if( (estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y+1)) || (estContreFortresse(dplc.x, dplc.y+1)&&(estAttaquant(dplc.x+1,dplc.y+1) || estAttaquant(dplc.x-1,dplc.y+1)))){
-                    return true;
-                }
-            }
-            else if (estAttaquant(dplc.x,dplc.y+2) && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y+1)){
-                return true;
-            }
-            else if(estContreTrone(dplc.x,dplc.y+1)!=0){
-                if(estContreTrone(dplc.x,dplc.y+1)==1 && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x,dplc.y+2)){
-                    return true;
-                }
-                if(estContreTrone(dplc.x,dplc.y+1)==2 && estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x,dplc.y+2)){
-                    return true;
-                }
-                if(estContreTrone(dplc.x,dplc.y+1)==3 && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y+1)){
-                    return true;
-                }
-            }
-        }
-        else if (estRoi(dplc.x,dplc.y-1)){
-            if(estContreBord(dplc.x,dplc.y-1)){
-                if( (estAttaquant(dplc.x+1,dplc.y-1) && estAttaquant(dplc.x-1,dplc.y-1)) || (estContreFortresse(dplc.x, dplc.y-1)&&(estAttaquant(dplc.x+1,dplc.y-1) || estAttaquant(dplc.x-1,dplc.y-1)))){
-                    return true;
-                }
-            }
-            else if (estAttaquant(dplc.x,dplc.y-2) && estAttaquant(dplc.x-1,dplc.y-1) && estAttaquant(dplc.x+1,dplc.y-1)){
-                return true;
-            }
-            else if (estAttaquant(dplc.x,dplc.y-2) && estAttaquant(dplc.x-1,dplc.y-1) && estAttaquant(dplc.x+1,dplc.y-1)){
-                return true;
-            }
-            else if (estContreTrone(dplc.x,dplc.y-1)!=0){
-                if(estContreTrone(dplc.x,dplc.y-1)==1 && estAttaquant(dplc.x,dplc.y-2) && estAttaquant(dplc.x-1,dplc.y-1)){
-                    return true;
-                }
-                if(estContreTrone(dplc.x,dplc.y-1)==2 && estAttaquant(dplc.x,dplc.y-2) && estAttaquant(dplc.x+1,dplc.y-1)){
-                    return true;
-                }
-                if(estContreTrone(dplc.x,dplc.y-1)==4 && estAttaquant(dplc.x-1,dplc.y-1) && estAttaquant(dplc.x+1,dplc.y-1)){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-*/
   
-
     //On regarde ou est le roi par rapport a notre Attaquant
     public int estContreRoi(int x, int y){
         if (estRoi(x+1,y)){
