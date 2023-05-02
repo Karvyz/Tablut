@@ -39,7 +39,7 @@ public class CPlateau extends JPanel implements Observateur {
 
         for (int l = 0; l < 9; l++) {
             for (int c = 0; c < 9; c++) {
-                Pion courant = n.getPion(l, c);
+                //Pion courant = n.getPion(l, c);
                 // Dessin des pions, forteresses, roi, konakis
                 // - Si c'est un des coins alors on dessine les forteresses
                 if (n.estFortresse(l, c)) {
@@ -49,11 +49,15 @@ public class CPlateau extends JPanel implements Observateur {
                 if (n.estKonakis(l, c)) {
                     g.drawImage(Theme.instance().konakis(), x, y, largeurCase, hauteurCase, this);
                 }
-                if (n.estAttaquant(courant)) {
+
+                System.out.println("l = " + l + ", c = " + c);
+                System.out.println("x = " + x + ", y = " + y);
+
+                if (n.estAttaquant(l, c)) {
                     g.drawImage(Theme.instance().blanc_inactif(), x, y, largeurCase, hauteurCase, this);
                 } else if (n.estRoi(l, c)) {
                     g.drawImage(Theme.instance().roi(), x, y, largeurCase, hauteurCase, this);
-                } else if (n.estDefenseur(courant)) {
+                } else if (n.estDefenseur(l, c)) {
                     g.drawImage(Theme.instance().noir_inactif(), x, y, largeurCase, hauteurCase, this);
                 }
                 x += largeurCase;

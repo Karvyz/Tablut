@@ -1,43 +1,26 @@
 package Modele;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
+public class Pion {
+    public Coordonne coordonne;
+    private TypePion type;
 
-public class Pion implements Cloneable, Serializable{
-    private Coordonne coordonne;
-    private TypePion type; //0 pion Noir, 1 pion Blanc, 
-
-
-    public Pion(int x, int y, TypePion type){
-        coordonne = new Coordonne(x, y);
-        this.type = type;
-    }
-    
-    public Pion(Coordonne coordonne, TypePion type){
+    Pion(Coordonne coordonne, TypePion type) {
         this.coordonne = coordonne;
         this.type = type;
     }
 
-    @Override
-    public Pion clone() {
-        try {
-            Pion copie = (Pion) super.clone();
-            copie.coordonne = new Coordonne(this.coordonne.getX(), this.coordonne.getY());
-            copie.type = this.type; // Pas besoin de cloner si TypePion est une enum ou un type immuable
-            return copie;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError("La classe Pion doit être cloneable", e);
-        }
+    Pion(int x, int y, TypePion type) {
+        new Pion(new Coordonne(x, y), type);
     }
-    
-    
+
+    public void setType(TypePion type){
+        this.type = type;
+    }
+
     public TypePion getType() {
         return type;
-    }
-    
-    public Coordonne getCoordonne(){
-        return coordonne;
     }
     
     public int getX(){
@@ -56,15 +39,14 @@ public class Pion implements Cloneable, Serializable{
         this.coordonne.y = y;
     }
 
-
-    public void setCoordonne(Coordonne c){
-        this.coordonne =c;
-    }
-
     @Override
     public String toString() {
-        return "Pion selectionne (" + this.coordonne.x + ", " + this.coordonne.y + ", type=" + this.getType() + ")";
+        if(this.coordonne == null || this.type == null)
+            return "Pion null";
+        else
+        return "Pion sélectionné (" + this.coordonne.x + ", " + this.coordonne.y + ") ";
     }
+
     // public boolean estCorrect() { //Normalment inutile car gérer par l'IHM
     //     return (getX()>=0 && getX()<9 && getY()>=0 && getY()<9);
     // }
@@ -77,7 +59,7 @@ public class Pion implements Cloneable, Serializable{
         return x != 4 || y != 4;
     }
 
-    private ArrayList<Coordonne> getDeplacementVerticaList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
+    private void getDeplacementVerticaList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
         int x = coordonne.x;
         int y = coordonne.y;
         int i = 1;
@@ -94,10 +76,9 @@ public class Pion implements Cloneable, Serializable{
                 deplacement.add(new Coordonne(x+i, y));
             i++;
         }
-        return deplacement;
     }
 
-    private ArrayList<Coordonne> getDeplacementHorizontaleList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
+    private void getDeplacementHorizontaleList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
         int x = coordonne.x;
         int y = coordonne.y;
         int i = 1;
@@ -114,7 +95,6 @@ public class Pion implements Cloneable, Serializable{
                 deplacement.add(new Coordonne(x, y + i));
             i++;
         }
-        return deplacement;
     }
 
     public ArrayList<Coordonne> getDeplacement(Pion[][] plateau){
@@ -125,25 +105,10 @@ public class Pion implements Cloneable, Serializable{
     }
 
     public void affiche_liste_deplacement(ArrayList<Coordonne> liste){
-        if (liste.isEmpty())
-            System.out.println("Aucun déplacement possible pour ce pion");
-        else{
-            System.out.print("Déplacements possibles { ");
-            for(Coordonne c : liste){
-                System.out.print("(" + c.getX() + "," + c.getY() +") ");
-            }
-            System.out.println("}");
+        System.out.print("Déplacements possibles { ");
+        for(Coordonne c : liste){
+            System.out.print("(" + c.getX() + "," + c.getY() +") ");
         }
+        System.out.println("}");
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) return false;
-        if (getClass() != obj.getClass()) return false;
-
-        Pion other = (Pion) obj;
-        return this.coordonne.equals(other.coordonne) && this.type == other.type;
-    }
-
-
 }
