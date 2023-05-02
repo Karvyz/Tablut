@@ -91,9 +91,9 @@ public class IA_difficile_le_roi_c_ciao extends IA_difficile{
     }
 
     public boolean peut_tuer_roi(int x, int y, Niveau n){
-        return ((x == 8 || n.estAttaquant(x + 1, y) || n.estFortresse(x + 1, y) || n.estKonakis(x + 1, y))
-                && (x == 0 || n.estAttaquant(x - 1, y) || n.estFortresse(x - 1, y) || n.estKonakis(x - 1, y))
-                && (y == 8 || n.estAttaquant(x, y + 1) || n.estFortresse(x, y + 1) || n.estKonakis(x, y + 1))
-                && (y == 0 || n.estAttaquant(x, y - 1) || n.estFortresse(x, y - 1) || n.estKonakis(x, y - 1)));
+        return ((x == 8 || n.estAttaquant(x + 1, y) || n.estForteresse(x + 1, y) || n.estKonakis(x + 1, y))
+                && (x == 0 || n.estAttaquant(x - 1, y) || n.estForteresse(x - 1, y) || n.estKonakis(x - 1, y))
+                && (y == 8 || n.estAttaquant(x, y + 1) || n.estForteresse(x, y + 1) || n.estKonakis(x, y + 1))
+                && (y == 0 || n.estAttaquant(x, y - 1) || n.estForteresse(x, y - 1) || n.estKonakis(x, y - 1)));
     }
 }

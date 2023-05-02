@@ -59,7 +59,7 @@ public class IA_difficile_Long_live_the_king extends IA_difficile{
             for(int i = 0; i < n.getTaille(); i++){
                 for(int j = 0; j <n.getTaille(); j++){
                     if (i-1 >= 0 && n.estAttaquant(i,j)){
-                        if(n.estAttaquant(i-1, j) || n.estFortresse(i-1, j) || n.estDefenseur(i-1, j)){
+                        if(n.estAttaquant(i-1, j) || n.estForteresse(i-1, j) || n.estDefenseur(i-1, j)){
                             eval--;
                         } else if (n.estRoi(i-1, j)){
                             eval += 5;
@@ -68,7 +68,7 @@ public class IA_difficile_Long_live_the_king extends IA_difficile{
                         }
                     }
                     if (i+1 < n.getTaille() && n.estAttaquant(i,j)){
-                        if(n.estAttaquant(i+1, j) || n.estFortresse(i+1, j) || n.estDefenseur(i+1, j)){
+                        if(n.estAttaquant(i+1, j) || n.estForteresse(i+1, j) || n.estDefenseur(i+1, j)){
                             eval--;
                         } else if (n.estRoi(i+1, j)){
                             eval += 5;
@@ -77,7 +77,7 @@ public class IA_difficile_Long_live_the_king extends IA_difficile{
                         }
                     }
                     if (j-1 >= 0 && n.estAttaquant(i,j)){
-                        if(n.estAttaquant(i, j-1) || n.estFortresse(i, j-1) || n.estDefenseur(i, j-1)){
+                        if(n.estAttaquant(i, j-1) || n.estForteresse(i, j-1) || n.estDefenseur(i, j-1)){
                             eval--;
                         } else if (n.estRoi(i, j-1)){
                             eval += 5;
@@ -86,7 +86,7 @@ public class IA_difficile_Long_live_the_king extends IA_difficile{
                         }
                     }
                     if (j+1 < n.getTaille() && n.estAttaquant(i,j)){
-                        if(n.estAttaquant(i, j+1) || n.estFortresse(i, j+1) || n.estDefenseur(i, j+1)){
+                        if(n.estAttaquant(i, j+1) || n.estForteresse(i, j+1) || n.estDefenseur(i, j+1)){
                             eval--;
                         } else if (n.estRoi(i, j+1)){
                             eval += 5;

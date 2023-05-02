@@ -1,49 +1,63 @@
 package Modele;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Random;
 
 
-public class Niveau {
-    public static final int NOIR = 0;
-    public static final int BLANC = 1;
-    public static final int ROI = 2;
-    int taille = 9;
 
-    public Pion[][] plateau = new Pion[taille][taille];
+
+public class Niveau implements Serializable, Cloneable {
+
+    final private int taille = 9;
+    private ConfigurationJeu config;
+
+    public Pion [][] plateau = new Pion[taille][taille];
 
 
     //On creer le plateau de jeu
-    public Niveau() {
+    public Niveau(ConfigurationJeu config ) {
+        this.config = config;
         init_Niveau();
     }
 
     //On initialise le plateau de jeu
     public void init_Niveau() {
-        int[][] pos_attaquants = new int[][]{{0, 3}, {0, 4}, {0, 5}, {1, 4}, {3, 0}, {4, 0}, {5, 0}, {4, 1}, {8, 3}, {8, 4}, {8, 5}, {7, 4}, {4, 7}, {3, 8}, {4, 8}, {5, 8}};
-        int[][] pos_defenseurs = new int[][]{{2, 4}, {3, 4}, {4, 2}, {4, 3}, {5, 4}, {6, 4}, {4, 5}, {4, 6}};
+        String[] tab = {"   AAA   ",
+                "    A    ",
+                "    D    ",
+                "A   D   A",
+                "AADDRDDAA",
+                "A   D   A",
+                "    D    ",
+                "    A    ",
+                "   AAA   "};
+
+//        String[] tab = {"        D",
+//                        "         ",
+//                        "         ",
+//                        "         ",
+//                        "         ",
+//                        "         ",
+//                        "         ",
+//                        "A        ",
+//                        "A      RD"};
 
         for (int i = 0; i < taille; i++) {
             for (int j = 0; j < taille; j++) {
-                plateau[i][j] = null;
+                switch (tab[i].charAt(j)) {
+                    case 'R':
+                        plateau[i][j] = new Roi(i, j);
+                        break;
+                    case 'A':
+                        plateau[i][j] = new Pion(i, j, TypePion.ATTAQUANT);
+                        break;
+                    case 'D':
+                        plateau[i][j] = new Pion(i, j, TypePion.DEFENSEUR);
+                        break;
+                    default:
+                        plateau[i][j] = null;
+                }
             }
-        }
-
-        Roi r = new Roi(4, 4);
-        plateau[4][4] = r;
-
-        for (int i = 0; i < 16; i++) {
-            int x = pos_attaquants[i][0];
-            int y = pos_attaquants[i][1];
-            Pion p = new Pion(x, y, TypePion.ATTAQUANT);
-            plateau[x][y] = p;
-        }
-
-        for (int i = 0; i < 8; i++) {
-            int x = pos_defenseurs[i][0];
-            int y = pos_defenseurs[i][1];
-            Pion p = new Pion(x, y, TypePion.DEFENSEUR);
-            plateau[x][y] = p;
         }
     }
 
@@ -67,6 +81,34 @@ public class Niveau {
         return sb.toString();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Niveau other = (Niveau) obj;
+
+        for (int i = 0; i < taille; i++) {
+            for (int j = 0; j < taille; j++) {
+                Pion p1 = this.plateau[i][j];
+                Pion p2 = other.plateau[i][j];
+
+                if (p1 == null && p2 != null || p1 != null && p2 == null) {
+                    return false;
+                }
+                if (p1 != null && !p1.equals(p2)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
+
 
     //On regarde la taille du plateau
     public int getTaille() {
@@ -89,17 +131,14 @@ public class Niveau {
         return plateau[x][y] == null;
     }
 
-    //On regarde si la case est vide
-    public boolean estVide(Pion p) {
-        if (plateau[p.getX()][p.getY()] == null) {
-            return true;
-        }
-        return false;
+
+    public TypePion typePion(int x, int y) {
+        return plateau[x][y].getType();
     }
 
     //On regarde si la case est noire
     public boolean estAttaquant(int x, int y) {
-        if (!estCorrect(x, y) || plateau[x][y] == null) {
+        if (!estCorrect(x,y) || plateau[x][y] == null) {
             return false;
         }
         return plateau[x][y].getType() == TypePion.ATTAQUANT;
@@ -114,7 +153,7 @@ public class Niveau {
 
     //On regarde si la case est blanche
     public boolean estDefenseur(int x, int y) {
-        if (!estCorrect(x, y) || plateau[x][y] == null) {
+        if (!estCorrect(x,y) || plateau[x][y] == null) {
             return false;
         }
         return plateau[x][y].getType() == TypePion.DEFENSEUR;
@@ -130,7 +169,7 @@ public class Niveau {
 
     //On regarde si la case est le roi
     public boolean estRoi(int x, int y) {
-        if (!estCorrect(x, y) || plateau[x][y] == null) {
+        if (!estCorrect(x,y) || plateau[x][y] == null) {
             return false;
         }
         return plateau[x][y].getType() == TypePion.ROI;
@@ -148,8 +187,8 @@ public class Niveau {
         plateau[x][y] = null;
     }
 
-    public boolean estCorrect(int x, int y) {
-        return x >= 0 && x < 9 && y >= 0 && y < 9;
+    public boolean estCorrect(int x, int y){
+        return x>=0 && x<9 && y>=0 && y<9;
     }
 
     //Renvoi la liste d'un seul type de joueur.
@@ -171,89 +210,89 @@ public class Niveau {
     //On regarde si la case est une forteresse
     public boolean estForteresse(int x, int y) {
         if (x == 0 || x == 8) {
-            if (y == 0 || y == 8) {
-                return true;
-            }
+            return y == 0 || y == 8;
         }
         return false;
     }
 
     //On regarde si la case est un konakis
     public boolean estKonakis(int x, int y) {
-        if (x == 4 && y == 4) {
-            return true;
-        }
-        return false;
+        return x == 4 && y == 4;
     }
 
 
     //int = 0 coup joué , 1 noir on gagné, 2 blanc on gagné
-    public int deplace_pion(Coordonne depart, Coordonne dst) {
+    //int = 0 coup joué , 1 noir on gagné, 2 blanc on gagné
+    public int deplace_pion(Coordonne depart, Coordonne dst){
+
         Pion p = plateau[depart.x][depart.y];
         setVide(depart.x, depart.y);
         plateau[dst.x][dst.y] = p;
-        p.coordonne = dst;
+
+        p.setCoordonne(dst) ;
         AMangerPion(p);
-        if (estAttaquant(p)) {
-            if (AMangerRoi(dst))
+        if(estAttaquant(p)){
+            if( AMangerRoi(dst))
                 return 1;
         }
-        if (estRoi(p)) {
-            if (estForteresse(dst.x, dst.y))
+        if (estRoi(p)){
+            if (estForteresse(dst.x, dst.y) || (estContreBord(dst.x, dst.y) && config.isWinTousCote()))
                 return 2;
         }
+        //}
         return 0;
 
     }
 
-    public void AMangerPion(Pion p) {
-        if (estAttaquant(p)) {
-            if (estDefenseur(p.getX() + 1, p.getY())) {
-                if (estAttaquant(p.getX() + 2, p.getY()) || estForteresse(p.getX() + 2, p.getY())) {
-                    setVide(p.getX() + 1, p.getY());
+     public void AMangerPion(Pion p){
+        if (estAttaquant(p)){
+            if (estDefenseur(p.getX()+1,p.getY())){
+                if(estAttaquant(p.getX()+2,p.getY())||estForteresse(p.getX()+2, p.getY())){
+                    setVide(p.getX()+1,p.getY());
 
                 }
             }
-            if (estDefenseur(p.getX() - 1, p.getY())) {
-                if (estAttaquant(p.getX() - 2, p.getY()) || estForteresse(p.getX() - 2, p.getY())) {
-                    setVide(p.getX() - 1, p.getY());
+            if (estDefenseur(p.getX()-1, p.getY())){
+                if(estAttaquant(p.getX()-2,p.getY())||estForteresse(p.getX()-2, p.getY())){
+                    setVide(p.getX()-1,p.getY());
 
                 }
             }
-            if (estDefenseur(p.getX(), p.getY() + 1)) {
-                if (estAttaquant(p.getX(), p.getY() + 2) || estForteresse(p.getX(), p.getY() + 2)) {
-                    setVide(p.getX(), p.getY() + 1);
+            if (estDefenseur(p.getX(),p.getY()+1)){
+                if(estAttaquant(p.getX(),p.getY()+2)||estForteresse(p.getX(), p.getY()+2)){
+                    setVide(p.getX(),p.getY()+1);
 
                 }
             }
-            if (estDefenseur(p.getX(), p.getY() - 1)) {
-                if (estAttaquant(p.getX(), p.getY() - 2) || estForteresse(p.getX(), p.getY() - 2)) {
-                    setVide(p.getX(), p.getY() - 1);
+            if (estDefenseur(p.getX(),p.getY()-1)){
+                if(estAttaquant(p.getX(),p.getY()-2) || estForteresse(p.getX(), p.getY()-2)){
+                    setVide(p.getX(),p.getY()-1);
 
                 }
             }
-        } else if (estDefenseur(p)) {
-            if (estAttaquant(p.getX() + 1, p.getY())) {
-                if (estDefenseur(p.getX() + 2, p.getY()) || estForteresse(p.getX() + 2, p.getY())) {
-                    setVide(p.getX() + 1, p.getY());
+        }
+        else if (estDefenseur(p)){
+            if(estAttaquant(p.getX()+1,p.getY())){
+                if(estDefenseur(p.getX()+2,p.getY()) || estForteresse(p.getX()+2, p.getY())){
+                    setVide(p.getX()+1,p.getY());
 
                 }
             }
-            if (estAttaquant(p.getX() - 1, p.getY())) {
-                if (estDefenseur(p.getX() - 2, p.getY()) || estForteresse(p.getX() - 2, p.getY())) {
-                    setVide(p.getX() - 1, p.getY());
+            if (estAttaquant(p.getX()-1,p.getY())){
+                if(estDefenseur(p.getX()-2,p.getY()) || estForteresse(p.getX()-2, p.getY())){
+                    setVide(p.getX()-1,p.getY());
 
                 }
             }
-            if (estAttaquant(p.getX(), p.getY() + 1)) {
-                if (estDefenseur(p.getX(), p.getY() + 2) || estForteresse(p.getX(), p.getY() + 2)) {
-                    setVide(p.getX(), p.getY() + 1);
+            if (estAttaquant(p.getX(),p.getY()+1)){
+                if(estDefenseur(p.getX(),p.getY()+2) || estForteresse(p.getX(), p.getY()+2)){
+                    setVide(p.getX(),p.getY()+1);
 
                 }
             }
-            if (estAttaquant(p.getX(), p.getY() - 1)) {
-                if (estDefenseur(p.getX(), p.getY() - 2) || estForteresse(p.getX(), p.getY() - 2)) {
-                    setVide(p.getX(), p.getY() - 1);
+            if (estAttaquant(p.getX(),p.getY()-1)){
+                if(estDefenseur(p.getX(),p.getY()-2) || estForteresse(p.getX(), p.getY()-2)){
+                    setVide(p.getX(),p.getY()-1);
 
                 }
             }
@@ -263,89 +302,194 @@ public class Niveau {
 
 
     //On regarde si la case est contre le bord
-    public boolean estContreBord(int x, int y) {
-        if (x == 0 || x == 8) {
-            return true;
-        } else if (y == 0 || y == 8) {
+    public boolean estContreBord(int x, int y){
+        if (x == 0 || x == 8){
             return true;
         }
-        return false;
+        else return y == 0 || y == 8;
     }
 
     //On regarde si le pion est contre une forteresse
-    public boolean estContreFortresse(int x, int y) {
-        if (x == 0 && y == 1 || x == 0 && y == 7 || x == 1 && y == 0 || x == 1 && y == 8 || x == 7 && y == 0 || x == 7 && y == 8 || x == 8 && y == 1 || x == 8 && y == 7) {
-            return true;
-        }
-        return false;
+    public boolean estContreFortresse(int x, int y){
+        return x == 0 && y == 1 || x == 0 && y == 7 || x == 1 && y == 0 || x == 1 && y == 8 || x == 7 && y == 0 || x == 7 && y == 8 || x == 8 && y == 1 || x == 8 && y == 7;
     }
+
+    public boolean check_clic_selection_dest(Pion selec, int x, int y){
+        ArrayList<Coordonne> liste_depl = selec.getDeplacement(plateau);
+		if (liste_depl.isEmpty()){ //Aucun coup possible pour ce pion
+			return false;
+		}
+		Coordonne arrive = new Coordonne(x, y);
+		if(liste_depl.contains(arrive)){
+            return true;
+		}
+		return false;
+	}
+
+    public boolean check_clic_selection_pion(Pion p, int JC) {
+        if (p != null){
+            ArrayList<Pion> pions_dispo = getPionsDispo(JC);
+			return pions_dispo.contains(p);
+		}
+		//}
+		return false;
+	}
+
+
+    //Renvoi la liste des pions disponibles au joueur courant
+    public ArrayList<Pion> getPionsDispo(int JC){
+		ArrayList<Pion> liste ;
+        TypePion t = typePion_JC(JC);
+
+		liste = getPions(t);
+
+        if (t == TypePion.DEFENSEUR){
+			TypePion t1 = TypePion.ROI;
+            ArrayList<Pion> liste2 = getPions(t1);
+            liste.addAll(liste2); // concaténation de list2 à la fin de list1
+        }
+
+		return liste;
+	}
+
+    public boolean PlusdePion(int JC){
+		return getPionsDispo(JC).isEmpty();
+	}
+
+    public TypePion typePion_JC(int JC){
+		switch (JC){
+			case 0:
+				return TypePion.ATTAQUANT;
+			case 1:
+				return TypePion.DEFENSEUR;
+			default:
+				System.out.println("Joueur courant inconnu");
+				return null;
+		}
+	}
+
 
     //On regarde si il est contre le trone
-    public boolean estContreTrone(int x, int y) {
-        if (x == 4 && y == 3 || x == 4 && y == 4 || x == 3 && y == 4 || x == 5 && y == 4) {
+    public int estContreTrone(int x, int y){
+        if (x==4 && y==3 ){
+            return 3;
+        }
+        else if (x==4 && y==5){
+            return 4;
+        }
+        else if (x==3 && y==4){
+            return 1;
+        }
+        else if (x==5 && y==4){
+            return 2;
+        }
+        return 0;
+    }
+
+    //On regarde ou est le roi par rapport a notre Attaquant
+    public int estContreRoi(int x, int y){
+        if (estRoi(x+1,y)){
+            return 1;
+        }
+        else if (estRoi(x-1,y)){
+            return 2;
+        }
+        else if (estRoi(x,y+1)){
+            return 3;
+        }
+        else if (estRoi(x,y-1)){
+            return 4;
+        }
+        return 0;
+    }
+
+    //On regarde si il y a un regicide contre les fortresses
+    public boolean regicideFortresse( int x, int y){
+        if (estContreBord(x, y)){
+            if(estContreFortresse(x, y)){
+                if(estAttaquant(x+1,y) && estAttaquant(x,y+1)){
+                    return true;
+                }
+                else if(estAttaquant(x+1,y) && estAttaquant(x,y-1)){
+                    return true;
+                }
+                else if(estAttaquant(x-1,y) && estAttaquant(x,y+1)){
+                    return true;
+                }
+                else if(estAttaquant(x-1,y) && estAttaquant(x,y-1)){
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
+    //On regarde si il y a un regicide contre le trone
+    public boolean regicideKonakis(int x, int y , int pos){
+        if (estContreTrone(x, y)==1 && estAttaquant(x,y-1)&&estAttaquant(x-1,y)&&estAttaquant(x,y-1)){
+            return true;
+        }
+        else if (estContreTrone(x, y)==2 && estAttaquant(x,y-1)&&estAttaquant(x+1,y)&&estAttaquant(x,y+1)){
+            return true;
+        }
+        else if (estContreTrone(x, y)==3 && estAttaquant(x,y-1)&&estAttaquant(x-1,y)&&estAttaquant(x+1,y)){
+            return true;
+        }
+        else if (estContreTrone(x, y)==4 && estAttaquant(x,y+1)&&estAttaquant(x+1,y)&&estAttaquant(x-1,y)){
             return true;
         }
         return false;
     }
 
-
-    //On regarde si on a mangé le roi
-    public boolean AMangerRoi(Coordonne dplc) {
-        if (estRoi(dplc.x + 1, dplc.y)) {
-            if (estContreBord(dplc.x + 1, dplc.y)) {
-                if ((estAttaquant(dplc.x + 1, dplc.y + 1) && estAttaquant(dplc.x + 1, dplc.y - 1)) || ((estContreFortresse(dplc.x + 1, dplc.y) && (estAttaquant(dplc.x + 1, dplc.y + 1) || estAttaquant(dplc.x + 1, dplc.y - 1))))) {
-                    return true;
-                }
-            } else if (estAttaquant(dplc.x + 2, dplc.y) && estAttaquant(dplc.x + 1, dplc.y + 1) && estAttaquant(dplc.x + 1, dplc.y - 1)) {
+    //On regarde si il y a un regicide contre un mur
+    public boolean regicideMur(int x, int y){
+        if (estContreBord(x, y)){
+            if(estAttaquant(x+1,y) && estAttaquant(x-1,y) && estAttaquant(x,y+1)){
                 return true;
-            } else if (estContreTrone(dplc.x + 1, dplc.y)) {
-                if (estAttaquant(dplc.x + 1, dplc.y + 1) && estAttaquant(dplc.x + 1, dplc.y - 1)) {
-                    return true;
-                }
             }
-        } else if (estRoi(dplc.x - 1, dplc.y)) {
-            if (estContreBord(dplc.x - 1, dplc.y)) {
-                if ((estAttaquant(dplc.x - 1, dplc.y + 1) && estAttaquant(dplc.x - 1, dplc.y - 1)) || (estContreFortresse(dplc.x - 1, dplc.y) && (estAttaquant(dplc.x - 1, dplc.y + 1) || estAttaquant(dplc.x - 1, dplc.y - 1)))) {
-                    return true;
-                }
+            else if(estAttaquant(x,y+1) && estAttaquant(x,y-1) && estAttaquant(x+1,y)){
                 return true;
-            } else if (estAttaquant(dplc.x - 2, dplc.y) && estAttaquant(dplc.x - 1, dplc.y + 1) && estAttaquant(dplc.x - 1, dplc.y - 1)) {
-                return true;
-            } else if (estContreTrone(dplc.x - 1, dplc.y)) {
-                if (estAttaquant(dplc.x - 1, dplc.y + 1) && estAttaquant(dplc.x - 1, dplc.y - 1)) {
-                    return true;
-                }
             }
-
-        } else if (estRoi(dplc.x, dplc.y + 1)) {
-            if (estContreBord(dplc.x, dplc.y + 1)) {
-                if ((estAttaquant(dplc.x + 1, dplc.y + 1) && estAttaquant(dplc.x - 1, dplc.y + 1)) || (estContreFortresse(dplc.x, dplc.y + 1) && (estAttaquant(dplc.x + 1, dplc.y + 1) || estAttaquant(dplc.x - 1, dplc.y + 1)))) {
-                    return true;
-                }
-            } else if (estAttaquant(dplc.x, dplc.y + 2) && estAttaquant(dplc.x - 1, dplc.y + 1) && estAttaquant(dplc.x + 1, dplc.y + 1)) {
+            else if(estAttaquant(x,y-1) && estAttaquant(x-1,y) && estAttaquant(x+1,y)){
                 return true;
-            } else if (estContreTrone(dplc.x, dplc.y + 1)) {
-                if (estAttaquant(dplc.x + 1, dplc.y + 1) && estAttaquant(dplc.x - 1, dplc.y + 1)) {
-                    return true;
-                }
             }
-        } else if (estRoi(dplc.x, dplc.y - 1)) {
-            if (estContreBord(dplc.x, dplc.y - 1)) {
-                if ((estAttaquant(dplc.x + 1, dplc.y - 1) && estAttaquant(dplc.x - 1, dplc.y - 1)) || (estContreFortresse(dplc.x, dplc.y - 1) && (estAttaquant(dplc.x + 1, dplc.y - 1) || estAttaquant(dplc.x - 1, dplc.y - 1)))) {
-                    return true;
-                }
-            } else if (estAttaquant(dplc.x, dplc.y - 2) && estAttaquant(dplc.x - 1, dplc.y - 1) && estAttaquant(dplc.x + 1, dplc.y - 1)) {
+            else if(estAttaquant(x,y+1) && estAttaquant(x,y-1) && estAttaquant(x-1,y)){
                 return true;
-            } else if (estAttaquant(dplc.x, dplc.y - 2) && estAttaquant(dplc.x - 1, dplc.y - 1) && estAttaquant(dplc.x + 1, dplc.y - 1)) {
-                return true;
-            } else if (estContreTrone(dplc.x, dplc.y - 1)) {
-                if (estAttaquant(dplc.x + 1, dplc.y - 1) && estAttaquant(dplc.x - 1, dplc.y - 1)) {
-                    return true;
-                }
             }
         }
         return false;
     }
+
+    //On regarde si il y a un regicide contre un pion
+    public boolean regicidePion(int x, int y){
+        return estAttaquant(x + 1, y) && estAttaquant(x - 1, y) && estAttaquant(x, y + 1) && estAttaquant(x, y - 1);
+    }
+
+    public boolean AMangerRoi(Coordonne dplc){
+        int pos = estContreRoi(dplc.x,dplc.y);
+        if(pos == 1){
+            if((regicideFortresse(dplc.x+1, dplc.y) && config.isRF()) || (regicideKonakis(dplc.x+1, dplc.y, pos) && config.isRT()) || (regicideMur(dplc.x+1, dplc.y) && config.isRM()) || regicidePion(dplc.x+1, dplc.y)){
+                return true;
+            }
+        }
+        else if(pos == 2){
+            if((regicideFortresse(dplc.x-1, dplc.y) && config.isRF()) || (regicideKonakis(dplc.x-1, dplc.y, pos) && config.isRT()) || (regicideMur(dplc.x-1, dplc.y) && config.isRM()) || regicidePion(dplc.x-1, dplc.y)){
+                return true;
+            }
+        }
+        else if(pos == 3){
+            if((regicideFortresse(dplc.x, dplc.y+1) && config.isRF()) || (regicideKonakis(dplc.x, dplc.y+1, pos) && config.isRT()) || (regicideMur(dplc.x, dplc.y+1) && config.isRM()) || regicidePion(dplc.x, dplc.y+1)){
+                return true;
+            }
+        }
+        else if(pos == 4){
+            if((regicideFortresse(dplc.x, dplc.y-1) && config.isRF()) || (regicideKonakis(dplc.x, dplc.y-1, pos) && config.isRT()) || (regicideMur(dplc.x, dplc.y-1) && config.isRM()) || regicidePion(dplc.x, dplc.y-1)){
+                return true;
+            }
+        }
+        return false;
+        }
 
     public boolean estTermine() {
         // Si le roi est sur une des cases au bord du plateau
@@ -357,4 +501,21 @@ public class Niveau {
         return false;
     }
 
+    @Override
+    public Niveau clone() {
+        try {
+            Niveau clone = (Niveau) super.clone();
+            clone.plateau = new Pion[taille][taille];
+            for (int i = 0; i < taille; i++) {
+                for (int j = 0; j < taille; j++) {
+                    if (plateau[i][j] != null) {
+                        clone.plateau[i][j] = plateau[i][j].clone();
+                    }
+                }
+            }
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }
