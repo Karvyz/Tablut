@@ -37,10 +37,10 @@ public class ControlleurMediateur implements CollecteurEvenements {
 			joueurs[i][HUMAIN] = new Humain(i, jeu);
 			joueurs[i][FACILE] = new IA_facile(i, jeu);
             joueurs[i][MOYEN] = new IA_moyen(i, jeu);
-            joueurs[i][DIFFCILE] = new IA_difficile_le_roi_c_ciao(i, jeu);
+            joueurs[i][DIFFCILE] = new IA_difficile_Long_live_the_king(i, jeu);
 			typeJoueur[i] = DIFFCILE; //type
 		}
-		joueurs[1][DIFFCILE] = new IA_difficile_le_roi_c_ciao(1, jeu);
+		joueurs[1][DIFFCILE] = new IA_facile(1, jeu);
 	}
 
     @Override
@@ -127,14 +127,14 @@ public class ControlleurMediateur implements CollecteurEvenements {
 
 	public ArrayList<Pion> getPionsDispo(int JoueurCourant){
 		ArrayList<Pion> liste ;
-        TypePion t = typePion_JC(joueurCourant);
+        TypePion t = typePion_JC(JoueurCourant);
 
 		liste = jeu.n.getPions(t);
 
         if (t == TypePion.DEFENSEUR){
 			TypePion t1 = TypePion.ROI;
             ArrayList<Pion> liste2 = jeu.n.getPions(t1);
-            liste.addAll(liste2); // concaténation de list2 à la fin de list1        
+            liste.addAll(liste2); // concaténation de list2 à la fin de list1
         }
 
 		return liste;
