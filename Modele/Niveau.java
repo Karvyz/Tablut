@@ -1,9 +1,23 @@
 package Modele;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InvalidClassException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
+import Structures.Pile;
 
-public class Niveau implements Cloneable{
-    int taille = 9;
+
+public class Niveau implements Serializable{
+    public static final int NOIR = 0;
+    public static final int BLANC = 1;
+    public static final int ROI = 2;
+    private int taille = 9;
 
     public Pion [][] plateau = new Pion[taille][taille];
 
@@ -14,6 +28,34 @@ public class Niveau implements Cloneable{
         init_Niveau();
     }
 
+    public Niveau(String fichier) {
+        Data_Niveau data_niveau = null;
+    
+        try {
+            FileInputStream fileIn = new FileInputStream(fichier);
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+            data_niveau = (Data_Niveau) objectIn.readObject();
+            objectIn.close();
+            fileIn.close();
+    
+            // Mettre à jour l'objet Niveau avec les données chargées
+            this.taille = data_niveau.niveau.taille;
+            this.plateau = data_niveau.niveau.plateau;
+    
+        } catch (FileNotFoundException e) {
+            System.err.println("Fichier non trouvé : " + fichier);
+        } catch (EOFException | InvalidClassException e) {
+            System.err.println("Erreur lors de la lecture du fichier : " + fichier);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.err.println("Classe Data_Niveau introuvable");
+        }
+    }
+    
+    
+    
+    
     //On initialise le plateau de jeu
     public void init_Niveau() {
         String[] tab = {"   AAA   ",
@@ -37,22 +79,53 @@ public class Niveau implements Cloneable{
 
         for (int i = 0; i < taille; i++) {
             for (int j = 0; j < taille; j++) {
-                switch (tab[i].charAt(j)){
-                    case 'R':
-                        plateau[i][j] = new Roi(i,j);
-                        break;
-                    case 'A':
-                        plateau[i][j] = new Pion(i,j, TypePion.ATTAQUANT);
-                        break;
-                    case 'D':
-                        plateau[i][j] = new Pion(i,j,TypePion.DEFENSEUR);
-                        break;
-                    default:
-                        plateau[i][j] = null;
+                plateau[i][j] = null;
+            }
+        }
+
+        Roi r = new Roi(4, 4);
+        plateau[4][4] = r;
+        
+        for(int i=0; i<16; i++){
+            int x = pos_attaquants[i][0];
+            int y= pos_attaquants[i][1];
+            Pion p = new Pion(x, y, TypePion.ATTAQUANT);
+            plateau[x][y] = p;
+        }
+        
+        for(int i=0; i<8; i++){
+            int x = pos_defenseurs[i][0];
+            int y= pos_defenseurs[i][1];
+            Pion p = new Pion(x, y, TypePion.DEFENSEUR);
+            plateau[x][y] = p;
+        }
+    }
+
+
+    // Crée une copie profonde de l'objet Niveau
+    public Niveau copy() {
+        Niveau copiedNiveau = new Niveau();
+        copiedNiveau.taille = this.taille;
+
+        for (int i = 0; i < this.taille; i++) {
+            for (int j = 0; j < this.taille; j++) {
+                if (this.plateau[i][j] != null) {
+                    if (this.plateau[i][j] instanceof Roi) {
+                        Roi copiedRoi = new Roi(this.plateau[i][j].getX(), this.plateau[i][j].getY());
+                        copiedNiveau.plateau[i][j] = copiedRoi;
+                    } else {
+                        Pion copiedPion = new Pion(this.plateau[i][j].getX(), this.plateau[i][j].getY(), this.plateau[i][j].getType());
+                        copiedNiveau.plateau[i][j] = copiedPion;
+                    }
+                } else {
+                    copiedNiveau.plateau[i][j] = null;
                 }
             }
         }
+        return copiedNiveau;
     }
+
+
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -73,6 +146,34 @@ public class Niveau implements Cloneable{
         }
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Niveau other = (Niveau) obj;
+
+        for (int i = 0; i < taille; i++) {
+            for (int j = 0; j < taille; j++) {
+                Pion p1 = this.plateau[i][j];
+                Pion p2 = other.plateau[i][j];
+
+                if (p1 == null && p2 != null || p1 != null && p2 == null) {
+                    return false;
+                }
+                if (p1 != null && !p1.equals(p2)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    
 
 
     //On regarde la taille du plateau
@@ -156,24 +257,7 @@ public class Niveau implements Cloneable{
         return x>=0 && x<9 && y>=0 && y<9;
     }
 
-    //Renvoi la liste d'un seul type de joueur.
-    public ArrayList<Pion> getPions(TypePion type){
-        ArrayList<Pion> liste = new ArrayList<>();
-        for (int x=0; x<taille; x++){
-            for (int y=0; y< taille; y++){
-                Pion courant = plateau[x][y];
-                if(courant != null){
-                    if (type == courant.getType()){
-                        liste.add(courant);
-                    }
-                    if (type == TypePion.DEFENSEUR && courant.type == TypePion.ROI)
-                        liste.add(courant);
-                }
-            }
-        }
-        return liste;
-    }
-
+    
     //On regarde si la case est une forteresse
     public boolean estFortresse(int x, int y){
         if (x == 0 || x == 8){
@@ -196,19 +280,22 @@ public class Niveau implements Cloneable{
 
     //int = 0 coup joué , 1 noir on gagné, 2 blanc on gagné
     public int deplace_pion(Coordonne depart, Coordonne dst){
+
         Pion p = plateau[depart.x][depart.y];
         setVide(depart.x, depart.y);
         plateau[dst.x][dst.y] = p;
-        p.coordonne = dst;
+
+        p.setCoordonne(dst) ;
         AMangerPion(p);
         if(estAttaquant(p)){
             if( AMangerRoi(dst))
                 return 1;
         }
         if (estRoi(p)){
-           if (estFortresse(dst.x, dst.y))
+            if (estFortresse(dst.x, dst.y))
             return 2;
         }
+       //}
         return 0;
 
     }
@@ -224,13 +311,13 @@ public class Niveau implements Cloneable{
             if (estDefenseur(p.getX()-1, p.getY())){
                 if(estAttaquant(p.getX()-2,p.getY())||estFortresse(p.getX()-2, p.getY())){
                     setVide(p.getX()-1,p.getY());
-
+                    
                 }
             }
             if (estDefenseur(p.getX(),p.getY()+1)){
                 if(estAttaquant(p.getX(),p.getY()+2)||estFortresse(p.getX(), p.getY()+2)){
                     setVide(p.getX(),p.getY()+1);
-    
+                    
                 }
             }
             if (estDefenseur(p.getX(),p.getY()-1)){
@@ -244,13 +331,13 @@ public class Niveau implements Cloneable{
             if(estAttaquant(p.getX()+1,p.getY())){
                 if(estDefenseur(p.getX()+2,p.getY()) || estFortresse(p.getX()+2, p.getY())){
                     setVide(p.getX()+1,p.getY());
-             
+                    
                 }
             }
             if (estAttaquant(p.getX()-1,p.getY())){
                 if(estDefenseur(p.getX()-2,p.getY()) || estFortresse(p.getX()-2, p.getY())){
                     setVide(p.getX()-1,p.getY());
-                
+                    
                 }
             }
             if (estAttaquant(p.getX(),p.getY()+1)){
@@ -262,14 +349,14 @@ public class Niveau implements Cloneable{
             if (estAttaquant(p.getX(),p.getY()-1)){
                 if(estDefenseur(p.getX(),p.getY()-2) || estFortresse(p.getX(), p.getY()-2)){
                     setVide(p.getX(),p.getY()-1);
-                
+                    
                 }
             }      
         }         
-
+        
     }
-
-
+    
+    
     //On regarde si la case est contre le bord
     public boolean estContreBord(int x, int y){
         if (x == 0 || x == 8){
@@ -280,7 +367,7 @@ public class Niveau implements Cloneable{
         }
         return false;
     }
-
+    
     //On regarde si le pion est contre une forteresse
     public boolean estContreFortresse(int x, int y){
         if (x==0 && y==1 || x==0 && y==7 || x==1 && y==0 || x==1 && y==8 || x==7 && y==0 || x==7 && y==8 || x==8 && y==1 || x==8 && y==7){
@@ -288,20 +375,93 @@ public class Niveau implements Cloneable{
         }
         return false;
     }
+    
+    public boolean check_clic_selection_dest(Pion selec, int x, int y){
+        ArrayList<Coordonne> liste_depl = selec.getDeplacement(plateau);
+		if (liste_depl.isEmpty()){ //Aucun coup possible pour ce pion
+			return false;
+		}
+		Coordonne arrive = new Coordonne(x, y);
+		if(liste_depl.contains(arrive)){
+            return true;
+		}
+		return false;
+	}
+    
+    public boolean check_clic_selection_pion(Pion p, int JC) { 
+        if (p != null){
+            ArrayList<Pion> pions_dispo = getPionsDispo(JC); 
+			return pions_dispo.contains(p);
+		}
+		//}
+		return false;
+	}
+    
+    //Renvoi la liste d'un seul type de joueur.
+    public ArrayList<Pion> getPions(TypePion type){
+        ArrayList<Pion> liste = new ArrayList<>();
+        for (int x=0; x<taille; x++){
+            for (int y=0; y< taille; y++){
+                Pion courant = plateau[x][y];
+                if(courant != null){
+                    if (type == courant.getType()){
+                        liste.add(courant);
+                    }
+                }
+            }
+        }
+        return liste;
+    }
+    //Renvoi la liste des pions disponibles au joueur courant
+    public ArrayList<Pion> getPionsDispo(int JC){
+		ArrayList<Pion> liste ;
+        TypePion t = typePion_JC(JC);
 
+		liste = getPions(t);
+
+        if (t == TypePion.DEFENSEUR){
+			TypePion t1 = TypePion.ROI;
+            ArrayList<Pion> liste2 = getPions(t1);
+            liste.addAll(liste2); // concaténation de list2 à la fin de list1        
+        }
+
+		return liste;
+	}
+
+    public boolean PlusdePion(int JC){
+		return getPionsDispo(JC).isEmpty();
+	}
+
+    public TypePion typePion_JC(int JC){
+		switch (JC){
+			case 0:
+				return TypePion.ATTAQUANT;
+			case 1:
+				return TypePion.DEFENSEUR;
+			default:
+				System.out.println("Joueur courant inconnu");
+				return null;
+		}
+	}
+
+    
     //On regarde si il est contre le trone
     public int estContreTrone(int x, int y){
         if (x==4 && y==3 ){
-            return 1;
-        }
-        else if (x==4 && y==5){
-            return 2;
-        }
-        else if (x==3 && y==4){
+            System.out.println("trone 3");
             return 3;
         }
-        else if (x==5 && y==4){
+        else if (x==4 && y==5){
+            System.out.println("trone 4");
             return 4;
+        }
+        else if (x==3 && y==4){
+            System.out.println("trone 1");
+            return 1;
+        }
+        else if (x==5 && y==4){
+            System.out.println("trone 2");
+            return 2;
         }
         return 0;
     }

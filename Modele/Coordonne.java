@@ -1,6 +1,8 @@
 package Modele;
 
-public class Coordonne implements Cloneable{
+import java.io.Serializable;
+
+public class Coordonne implements Cloneable, Serializable{
     int x;
     int y;
 
@@ -33,6 +35,15 @@ public class Coordonne implements Cloneable{
 
     public String toString(){
         return "(" + this.x + ", " + this.y + ")";
+    }
+
+    @Override
+    public Coordonne clone() {
+        try {
+            return (Coordonne) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(); // Ne devrait pas arriver car on implémente Cloneable
+        }
     }
     
 }

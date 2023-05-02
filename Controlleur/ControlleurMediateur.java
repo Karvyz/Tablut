@@ -1,11 +1,21 @@
 package Controlleur;
-import java.util.ArrayList;
+import java.awt.Color;
 
 import Modele.Coordonne;
+import Modele.Data_Niveau;
 import Modele.Jeu;
+import Modele.Niveau;
 import Modele.Pion;
-import Modele.TypePion;
+import Structures.Pile;
 import Vues.CollecteurEvenements;
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InvalidClassException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 
 public class ControlleurMediateur implements CollecteurEvenements {
@@ -14,25 +24,23 @@ public class ControlleurMediateur implements CollecteurEvenements {
     public static final int FACILE = 1;
     public static final int MOYEN = 2;
     public static final int DIFFCILE = 3;
-
+	
     Jeu jeu;
 	Joueurs[][] joueurs;
 	int [] typeJoueur;
 	int joueurCourant = 0; //joueur qui commence
 	final int lenteurAttente = 1;
 	int decompte;
+	
+	// public Pile coup_annule;
+	// public Pile coup_a_refaire;
+	
 
-	public boolean pionSelec = false;
-	public boolean deplSelec = false;
-	public boolean coupValide = false;
-	public Pion selectionne;
-
-
-    public ControlleurMediateur(Jeu j)  {
-        System.out.println(joueurCourant);
+	public ControlleurMediateur(Jeu j)  {
 		jeu = j;
 		joueurs = new Joueurs[2][4];
 		typeJoueur = new int[4];
+
 		for (int i = 0; i < joueurs.length; i++) {
 			joueurs[i][HUMAIN] = new Humain(i, jeu);
 			joueurs[i][FACILE] = new IA_facile(i, jeu);
@@ -41,54 +49,53 @@ public class ControlleurMediateur implements CollecteurEvenements {
 			typeJoueur[i] = DIFFCILE; //type
 		}
 		joueurs[1][DIFFCILE] = new IA_facile(1, jeu);
+
+
+	}
+	
+	@Override
+	public void dragANDdrop(Coordonne src, Coordonne dst){
+		Niveau niveau_avant_coup = jeu.n.copy();
+		jeu.coup_annule.empiler(niveau_avant_coup);
+		if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(src, dst)){// MODIF de jeu.n ici
+			changeJoueur();
+			jeu.coup_a_refaire.clear();
+		}
+		else{
+			jeu.coup_annule.depiler(); //on dépile car on empile a chaque tentative de drag & drop
+		}
 	}
 
     @Override
 	public void clicSouris(int l, int c) {
-		// Lors d'un clic, on le transmet au joueur courant.
-		// Si un coup a effectivement été joué (humain, coup valide), on change de joueur.
-
-        Pion caseSelec = jeu.n.getPion(l,c);
-		if (caseSelec == null && pionSelec){ //ICI on cherche a déplacer
-			Coordonne depart = new Coordonne(selectionne.getX(), selectionne.getY());
-			Coordonne arrive = new Coordonne(l, c);
-			if(!check_clic_selection_dest(l, c)){
-				System.out.println("Destination invalide");
-			}else{
-				if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(depart, arrive )){
-					changeJoueur();
-					deplSelec = true;
-					pionSelec = false; //PASSER A FALSE SEULEMENT SI ON VALIDE LE coup
-				}else{
-					System.out.println("Coup invalide");
-				}
-			}
-		} 
-		else{ //Selection du pion 
-			if (check_clic_selection_pion(caseSelec)){ //Vérifie que le Pions choisit est bien de notre Type, joueur 0 implique de jouer les Attaquants et joueur 1 implique de jouer Defenseurs et Roi
-				System.out.println(caseSelec);
-				pionSelec = true;
-				selectionne = caseSelec;
+		// Lors d'un clic sur un pion, on affiche ses déplacements possibles
+		
+		Pion caseSelec = jeu.n.getPion(l,c);
+		if (caseSelec == null){
+			System.out.println("Cette case ne contient aucun pion");
+		}
+		else{
+			if (!jeu.n.check_clic_selection_pion(caseSelec, joueurCourant)){
+				System.out.println("Ce pion ne vous appartient pas");
 			}
 			else{
-				System.out.println("Ce pion n'est pas valide");
+				caseSelec.affiche_liste_deplacement(caseSelec.getDeplacement(jeu.n.plateau));
 			}
 		}
 	}
-
-    void changeJoueur() {
+	
+    public void changeJoueur() {
 		joueurCourant = (joueurCourant + 1) % joueurs.length;
 		decompte = lenteurAttente;
 	}
-
+	
     public void tictac(){
-        //System.out.println(joueurCourant);
-
         if (jeu.enCours()) {
-			if(PlusdePion(joueurCourant)){
-				jeu.enCours = false;
+			if(jeu.n.PlusdePion(joueurCourant)){
+				jeu.setEnCours(false);
 				System.out.println("Le joueur blanc a gagné car l'attaquant n'a plus de pion");
 			}else{
+				
 				if (decompte == 0) {
 					int type = typeJoueur[joueurCourant];
 	
@@ -98,10 +105,11 @@ public class ControlleurMediateur implements CollecteurEvenements {
 						changeJoueur();
 					} else {
 					// Sinon on indique au joueur qui ne réagit pas au temps (humain) qu'on l'attend.
+
 						if (joueurs[joueurCourant][type].numJ == 0)
-							System.out.println("On vous attend, joueur " + joueurs[joueurCourant][type].numJ + " Vous devez déplacer un pion noir ");
+							System.out.println("On vous attend, joueur " + joueurs[joueurCourant][type].numJ + " vous devez déplacer un pion noir ");
 						else
-							System.out.println("On vous attend, joueur " + joueurs[joueurCourant][type].numJ + " Vous devez déplacer un pion blanc ou le roi");
+							System.out.println("On vous attend, joueur " + joueurs[joueurCourant][type].numJ + " vous devez déplacer un pion blanc ou le roi");
 	
 						decompte = lenteurAttente;
 					}
@@ -110,72 +118,41 @@ public class ControlleurMediateur implements CollecteurEvenements {
 				}
 			}
 		}
+
+
     }
 
-
-	public TypePion typePion_JC(int JC){
-		switch (JC){
-			case 0:
-				return TypePion.ATTAQUANT;
-			case 1:
-				return TypePion.DEFENSEUR;
-			default:
-				System.out.println("Joueur courant inconnu");
-				return null;
-		}
+	@Override
+	public void changeJoueur(int j, int t) {
+		System.out.println("Nouveau type " + t + " pour le joueur " + j);
+		typeJoueur[j] = t;
 	}
 
-	public ArrayList<Pion> getPionsDispo(int JoueurCourant){
-		ArrayList<Pion> liste ;
-        TypePion t = typePion_JC(JoueurCourant);
-
-		liste = jeu.n.getPions(t);
-
-        if (t == TypePion.DEFENSEUR){
-			TypePion t1 = TypePion.ROI;
-            ArrayList<Pion> liste2 = jeu.n.getPions(t1);
-            liste.addAll(liste2); // concaténation de list2 à la fin de list1
-        }
-
-		return liste;
+	public boolean refaire_coup() {
+		if (jeu.coup_a_refaire.estVide())
+			return false;
+	
+		jeu.coup_annule.empiler(jeu.n.copy());
+		Niveau a_refaire = jeu.coup_a_refaire.depiler();
+		jeu.n = a_refaire.copy();
+		jeu.metAJour();
+		jeu.joueurSuivant();
+		changeJoueur();
+		return true;
+	
 	}
-
-	public boolean PlusdePion(int JC){
-		return getPionsDispo(JC).isEmpty();
-	}
-
-	//Prends un joueur et affiche sa liste de pions dispos
-    public void affiche_pions_dispo(int j){
-		
-		ArrayList<Pion> liste = getPionsDispo(j) ;
-        System.out.print("Pions disponibles { ");
-        for(Pion p : liste){
-            System.out.print("(" + p.getX() + "," + p.getY() +") ");
-        }
-        System.out.println("}");
-    }
-
-	//Ici on alterne liste de pion et de coordonne c'est pas bien
-	public boolean check_clic_selection_pion(Pion p) { 
-		if (p != null){
-			ArrayList<Pion> pions_dispo = getPionsDispo(joueurCourant); 
-			return pions_dispo.contains(p);
-		}
-		//}
-		return false;
-	}
-
-	public boolean check_Deplacement(ArrayList<Coordonne> liste, Coordonne p) {
-		return liste.contains(p);
-	}
-
-	public boolean check_clic_selection_dest(int x, int y){
-		ArrayList<Coordonne> liste_depl = selectionne.getDeplacement(jeu.n.plateau);
-		if (liste_depl.isEmpty()){ //Aucun coup possible pour ce pion
+	
+	public boolean restaurer_niveau(){
+		if (jeu.coup_annule.estVide()){
 			return false;
 		}
-		Coordonne arrive = new Coordonne(x, y);
-		return check_Deplacement(liste_depl, arrive);
+		jeu.coup_a_refaire.empiler(jeu.n.copy()); //stock l'état avant d'annuler
+		Niveau restaure = jeu.coup_annule.depiler(); //Recupère le niveau précedent
+		jeu.n = restaure.copy();
+		jeu.metAJour();
+		jeu.joueurSuivant(); //La variable du jeu doit aussi être modifie
+		changeJoueur(); //On redonne la main au joueur précedent
+		return true;
 	}
 
 	
