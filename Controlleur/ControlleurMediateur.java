@@ -46,7 +46,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 			joueurs[i][FACILE] = new IA_facile(i, jeu);
             joueurs[i][MOYEN] = new IA_moyen(i, jeu);
             joueurs[i][DIFFCILE] = new IA_difficile_Long_live_the_king(i, jeu);
-			typeJoueur[i] = DIFFCILE; //type
+			typeJoueur[i] = HUMAIN; //type
 		}
 		//joueurs[1][DIFFCILE] = new IA_facile(1, jeu);
 
@@ -118,8 +118,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
 				}
 			}
 		}
-
-
     }
 
 	@Override
@@ -154,7 +152,4 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		changeJoueur(); //On redonne la main au joueur précedent
 		return true;
 	}
-
-	
-
 }

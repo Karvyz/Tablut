@@ -9,6 +9,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Hashtable;
+
+import javax.print.DocFlavor.STRING;
 
 import Structures.Pile;
 
@@ -20,7 +23,7 @@ public class Niveau implements Serializable, Cloneable {
     private int taille = 9;
 
     public Pion [][] plateau = new Pion[taille][taille];
-
+    public Hashtable<String, Integer> data = new Hashtable<String, Integer>();
 
 
     //On creer le plateau de jeu
@@ -83,6 +86,7 @@ public class Niveau implements Serializable, Cloneable {
                 switch (tab[i].charAt(j)){
                     case 'R':
                         plateau[i][j] = new Roi(i,j);
+
                         break;
                     case 'A':
                         plateau[i][j] = new Pion(i,j, TypePion.ATTAQUANT);
@@ -96,7 +100,6 @@ public class Niveau implements Serializable, Cloneable {
             }
         }
     }
-
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -252,11 +255,12 @@ public class Niveau implements Serializable, Cloneable {
     //int = 0 coup joué , 1 noir on gagné, 2 blanc on gagné
     public int deplace_pion(Coordonne depart, Coordonne dst){
 
+        data.put(plateau.clone().toString(),plateau.toString().hashCode());
         Pion p = plateau[depart.x][depart.y];
         setVide(depart.x, depart.y);
         plateau[dst.x][dst.y] = p;
 
-        p.setCoordonne(dst) ;
+        p.setCoordonne(dst);
         AMangerPion(p);
         if(estAttaquant(p)){
             if( AMangerRoi(dst))

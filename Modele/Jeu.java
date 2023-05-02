@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.concurrent.FutureTask;
 
 import javax.swing.JFrame;
 
@@ -49,6 +50,13 @@ public class Jeu extends Observable{
         metAJour();
     }
 
+    public boolean a_bouclé(){
+        int catapulte = n.plateau.toString().hashCode();
+        if(n.data.contains(catapulte)){
+            return true;
+        }
+        return false;
+    }
 
     public void nouvellePartie(String fichier) { //Pour charger une partie
        
@@ -115,6 +123,10 @@ public class Jeu extends Observable{
         
         joueurSuivant();
         metAJour();
+        if(a_bouclé()){
+            setEnCours(false);
+            System.out.println("LA PARTIE A BOUCLÉ");
+        }
     }
 
     
