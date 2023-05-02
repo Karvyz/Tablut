@@ -1,21 +1,14 @@
 package Modele;
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Random;
+
 
 
 
 public class Niveau implements Serializable, Cloneable {
-    public static final int NOIR = 0;
-    public static final int BLANC = 1;
-    public static final int ROI = 2;
-    private int taille = 9;
+
+    final private int taille = 9;
     private ConfigurationJeu config;
 
     public Pion [][] plateau = new Pion[taille][taille];
@@ -138,13 +131,6 @@ public class Niveau implements Serializable, Cloneable {
         return plateau[x][y] == null;
     }
 
-    //On regarde si la case est vide
-    public boolean estVide(Pion p) {
-        if (plateau[p.getX()][p.getY()] == null){
-            return true;
-        }
-        return false;
-    }
 
     public TypePion typePion(int x, int y) {
         return plateau[x][y].getType();
@@ -224,19 +210,14 @@ public class Niveau implements Serializable, Cloneable {
     //On regarde si la case est une forteresse
     public boolean estForteresse(int x, int y) {
         if (x == 0 || x == 8) {
-            if (y == 0 || y == 8) {
-                return true;
-            }
+            return y == 0 || y == 8;
         }
         return false;
     }
 
     //On regarde si la case est un konakis
     public boolean estKonakis(int x, int y) {
-        if (x == 4 && y == 4) {
-            return true;
-        }
-        return false;
+        return x == 4 && y == 4;
     }
 
 
@@ -266,25 +247,25 @@ public class Niveau implements Serializable, Cloneable {
      public void AMangerPion(Pion p){
         if (estAttaquant(p)){
             if (estDefenseur(p.getX()+1,p.getY())){
-                if(estAttaquant(p.getX()+2,p.getY())||estFortresse(p.getX()+2, p.getY())){
+                if(estAttaquant(p.getX()+2,p.getY())||estForteresse(p.getX()+2, p.getY())){
                     setVide(p.getX()+1,p.getY());
 
                 }
             }
             if (estDefenseur(p.getX()-1, p.getY())){
-                if(estAttaquant(p.getX()-2,p.getY())||estFortresse(p.getX()-2, p.getY())){
+                if(estAttaquant(p.getX()-2,p.getY())||estForteresse(p.getX()-2, p.getY())){
                     setVide(p.getX()-1,p.getY());
 
                 }
             }
             if (estDefenseur(p.getX(),p.getY()+1)){
-                if(estAttaquant(p.getX(),p.getY()+2)||estFortresse(p.getX(), p.getY()+2)){
+                if(estAttaquant(p.getX(),p.getY()+2)||estForteresse(p.getX(), p.getY()+2)){
                     setVide(p.getX(),p.getY()+1);
 
                 }
             }
             if (estDefenseur(p.getX(),p.getY()-1)){
-                if(estAttaquant(p.getX(),p.getY()-2) || estFortresse(p.getX(), p.getY()-2)){
+                if(estAttaquant(p.getX(),p.getY()-2) || estForteresse(p.getX(), p.getY()-2)){
                     setVide(p.getX(),p.getY()-1);
 
                 }
@@ -292,25 +273,25 @@ public class Niveau implements Serializable, Cloneable {
         }
         else if (estDefenseur(p)){
             if(estAttaquant(p.getX()+1,p.getY())){
-                if(estDefenseur(p.getX()+2,p.getY()) || estFortresse(p.getX()+2, p.getY())){
+                if(estDefenseur(p.getX()+2,p.getY()) || estForteresse(p.getX()+2, p.getY())){
                     setVide(p.getX()+1,p.getY());
 
                 }
             }
             if (estAttaquant(p.getX()-1,p.getY())){
-                if(estDefenseur(p.getX()-2,p.getY()) || estFortresse(p.getX()-2, p.getY())){
+                if(estDefenseur(p.getX()-2,p.getY()) || estForteresse(p.getX()-2, p.getY())){
                     setVide(p.getX()-1,p.getY());
 
                 }
             }
             if (estAttaquant(p.getX(),p.getY()+1)){
-                if(estDefenseur(p.getX(),p.getY()+2) || estFortresse(p.getX(), p.getY()+2)){
+                if(estDefenseur(p.getX(),p.getY()+2) || estForteresse(p.getX(), p.getY()+2)){
                     setVide(p.getX(),p.getY()+1);
 
                 }
             }
             if (estAttaquant(p.getX(),p.getY()-1)){
-                if(estDefenseur(p.getX(),p.getY()-2) || estFortresse(p.getX(), p.getY()-2)){
+                if(estDefenseur(p.getX(),p.getY()-2) || estForteresse(p.getX(), p.getY()-2)){
                     setVide(p.getX(),p.getY()-1);
 
                 }
@@ -325,18 +306,12 @@ public class Niveau implements Serializable, Cloneable {
         if (x == 0 || x == 8){
             return true;
         }
-        else if (y == 0 || y == 8){
-            return true;
-        }
-        return false;
+        else return y == 0 || y == 8;
     }
 
     //On regarde si le pion est contre une forteresse
     public boolean estContreFortresse(int x, int y){
-        if (x==0 && y==1 || x==0 && y==7 || x==1 && y==0 || x==1 && y==8 || x==7 && y==0 || x==7 && y==8 || x==8 && y==1 || x==8 && y==7){
-            return true;
-        }
-        return false;
+        return x == 0 && y == 1 || x == 0 && y == 7 || x == 1 && y == 0 || x == 1 && y == 8 || x == 7 && y == 0 || x == 7 && y == 8 || x == 8 && y == 1 || x == 8 && y == 7;
     }
 
     public boolean check_clic_selection_dest(Pion selec, int x, int y){
@@ -488,10 +463,7 @@ public class Niveau implements Serializable, Cloneable {
 
     //On regarde si il y a un regicide contre un pion
     public boolean regicidePion(int x, int y){
-        if (estAttaquant(x+1, y) && estAttaquant(x-1, y) && estAttaquant(x, y+1) && estAttaquant(x, y-1)){
-            return true;
-        }
-        return false;
+        return estAttaquant(x + 1, y) && estAttaquant(x - 1, y) && estAttaquant(x, y + 1) && estAttaquant(x, y - 1);
     }
 
     public boolean AMangerRoi(Coordonne dplc){

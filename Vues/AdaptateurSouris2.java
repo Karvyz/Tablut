@@ -16,6 +16,7 @@ class AdaptateurSouris2 extends MouseAdapter {
 
     @Override
     public void mousePressed(MouseEvent e) {
+
         int bordureHaut = Math.round(Theme.instance().bordureHaut() * pane.getHeight() / (float) Theme.instance().hauteurPlateau());
         int bordureGauche = Math.round(Theme.instance().bordureGauche() * pane.getWidth() / (float) Theme.instance().largeurPlateau());
         int bordureBas = Math.round(Theme.instance().bordureBas() * pane.getHeight() / (float) Theme.instance().hauteurPlateau());
@@ -26,6 +27,7 @@ class AdaptateurSouris2 extends MouseAdapter {
                 e.getY() > pane.getHeight() - bordureBas) {
             return;
         }
+
         int x = e.getX() - bordureGauche;
         int y = e.getY() - bordureHaut;
         int hauteur = pane.getHeight() - bordureHaut - bordureBas;
@@ -36,5 +38,12 @@ class AdaptateurSouris2 extends MouseAdapter {
 
         controleur.clicSouris(l, c);
         System.out.println("l = " + l + ", c = " + c);
+    }
+
+
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        //S'inspirer de AdaptateurSouris
     }
 }

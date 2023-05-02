@@ -2,7 +2,6 @@ package Vues.JComposants;
 
 import Modele.Jeu;
 import Modele.Niveau;
-import Modele.Pion;
 import Patterns.Observateur;
 import Vues.CollecteurEvenements;
 import Vues.Theme;
@@ -42,7 +41,7 @@ public class CPlateau extends JPanel implements Observateur {
                 //Pion courant = n.getPion(l, c);
                 // Dessin des pions, forteresses, roi, konakis
                 // - Si c'est un des coins alors on dessine les forteresses
-                if (n.estFortresse(l, c)) {
+                if (n.estForteresse(l, c)) {
                     g.drawImage(Theme.instance().forteresse(), x, y, largeurCase, hauteurCase, this);
                 }
                 // - Si c'est la case centrale alors on dessine le konakis
@@ -50,8 +49,8 @@ public class CPlateau extends JPanel implements Observateur {
                     g.drawImage(Theme.instance().konakis(), x, y, largeurCase, hauteurCase, this);
                 }
 
-                System.out.println("l = " + l + ", c = " + c);
-                System.out.println("x = " + x + ", y = " + y);
+                //System.out.println("l = " + l + ", c = " + c);
+                //System.out.println("x = " + x + ", y = " + y);
 
                 if (n.estAttaquant(l, c)) {
                     g.drawImage(Theme.instance().blanc_inactif(), x, y, largeurCase, hauteurCase, this);

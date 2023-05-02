@@ -103,7 +103,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		
 		Pion caseSelec = jeu.n.getPion(l,c);
 
-		if (caseSelec == null && pionSelec == true){ //ICI on cherche a déplacer
+		if (caseSelec == null && pionSelec ){ //ICI on cherche a déplacer
 			Coordonne depart = new Coordonne(selectionne.getX(), selectionne.getY());
 			Coordonne arrive = new Coordonne(l, c);
 			if (joueurs[jeu.get_num_JoueurCourant()][typeJoueur[jeu.get_num_JoueurCourant()]].jeu(depart, arrive )){
@@ -162,12 +162,32 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	@Override
 	public void annuler() {
 		//System.out.print("Annuler : " + jeu().joueurActuel().nom() + " ");
-		//jeu().annuler();
+		if (jeu.coup_annule.estVide()){
+			System.out.println("Impossible d'annuler");
+			return;
+		}
+		jeu.coup_a_refaire.empiler(jeu.n.clone()); //stock l'état avant d'annuler
+		Niveau restaure = jeu.coup_annule.depiler(); //Recupère le niveau précedent
+		jeu.n = restaure.clone();
+		jeu.metAJour();
+		jeu.joueurSuivant(); //La variable du jeu doit aussi être modifie
+		changeJoueur(); //On redonne la main au joueur précedent
+		System.out.println("Annulation effectué");
 	}
 
 	@Override
 	public void refaire() {
-		//jeu().refaire();
+		if (jeu.coup_a_refaire.estVide()) {
+			System.out.println("Aucun coup n'est a refaire");
+			return;
+		}
+		jeu.coup_annule.empiler(jeu.n.clone());
+		Niveau a_refaire = jeu.coup_a_refaire.depiler();
+		jeu.n = a_refaire.clone();
+		jeu.metAJour();
+		jeu.joueurSuivant();
+		changeJoueur();
+		System.out.println("Coup refait");
 	}
 
 
