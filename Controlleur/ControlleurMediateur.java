@@ -55,7 +55,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	
 	@Override
 	public void dragANDdrop(Coordonne src, Coordonne dst){
-		Niveau niveau_avant_coup = jeu.n.copy();
+		Niveau niveau_avant_coup = jeu.n.clone();
 		jeu.coup_annule.empiler(niveau_avant_coup);
 		if (joueurs[joueurCourant][typeJoueur[joueurCourant]].jeu(src, dst)){// MODIF de jeu.n ici
 			changeJoueur();
@@ -132,9 +132,9 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		if (jeu.coup_a_refaire.estVide())
 			return false;
 	
-		jeu.coup_annule.empiler(jeu.n.copy());
+		jeu.coup_annule.empiler(jeu.n.clone());
 		Niveau a_refaire = jeu.coup_a_refaire.depiler();
-		jeu.n = a_refaire.copy();
+		jeu.n = a_refaire.clone();
 		jeu.metAJour();
 		jeu.joueurSuivant();
 		changeJoueur();
@@ -146,9 +146,9 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		if (jeu.coup_annule.estVide()){
 			return false;
 		}
-		jeu.coup_a_refaire.empiler(jeu.n.copy()); //stock l'état avant d'annuler
+		jeu.coup_a_refaire.empiler(jeu.n.clone()); //stock l'état avant d'annuler
 		Niveau restaure = jeu.coup_annule.depiler(); //Recupère le niveau précedent
-		jeu.n = restaure.copy();
+		jeu.n = restaure.clone();
 		jeu.metAJour();
 		jeu.joueurSuivant(); //La variable du jeu doit aussi être modifie
 		changeJoueur(); //On redonne la main au joueur précedent

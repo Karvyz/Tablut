@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import Structures.Pile;
 
 
-public class Niveau implements Serializable{
+public class Niveau implements Serializable, Cloneable {
     public static final int NOIR = 0;
     public static final int BLANC = 1;
     public static final int ROI = 2;
@@ -67,8 +67,6 @@ public class Niveau implements Serializable{
                         "    D    ",
                         "    A    ",
                         "   AAA   "};
-    int [][] pos_attaquants = new int[][] {{0,3}, {0,4}, {0,5}, {1,4}, {3,0}, {4,0}, {5,0}, {4,1}, {8,3}, {8,4}, {8,5}, {7,4}, {4,7}, {3,8}, {4,8}, {5,8}};
-    int [][] pos_defenseurs = new int[][] {{2,4}, {3,4}, {4,2}, {4,3}, {5,4}, {6,4}, {4,5}, {4,6}};
 
 //        String[] tab = {"        D",
 //                        "         ",
@@ -82,52 +80,22 @@ public class Niveau implements Serializable{
 
         for (int i = 0; i < taille; i++) {
             for (int j = 0; j < taille; j++) {
-                plateau[i][j] = null;
-            }
-        }
-
-        Roi r = new Roi(4, 4);
-        plateau[4][4] = r;
-        
-        for(int i=0; i<16; i++){
-            int x = pos_attaquants[i][0];
-            int y= pos_attaquants[i][1];
-            Pion p = new Pion(x, y, TypePion.ATTAQUANT);
-            plateau[x][y] = p;
-        }
-        
-        for(int i=0; i<8; i++){
-            int x = pos_defenseurs[i][0];
-            int y= pos_defenseurs[i][1];
-            Pion p = new Pion(x, y, TypePion.DEFENSEUR);
-            plateau[x][y] = p;
-        }
-    }
-
-
-    // Crée une copie profonde de l'objet Niveau
-    public Niveau copy() {
-        Niveau copiedNiveau = new Niveau();
-        copiedNiveau.taille = this.taille;
-
-        for (int i = 0; i < this.taille; i++) {
-            for (int j = 0; j < this.taille; j++) {
-                if (this.plateau[i][j] != null) {
-                    if (this.plateau[i][j] instanceof Roi) {
-                        Roi copiedRoi = new Roi(this.plateau[i][j].getX(), this.plateau[i][j].getY());
-                        copiedNiveau.plateau[i][j] = copiedRoi;
-                    } else {
-                        Pion copiedPion = new Pion(this.plateau[i][j].getX(), this.plateau[i][j].getY(), this.plateau[i][j].getType());
-                        copiedNiveau.plateau[i][j] = copiedPion;
-                    }
-                } else {
-                    copiedNiveau.plateau[i][j] = null;
+                switch (tab[i].charAt(j)){
+                    case 'R':
+                        plateau[i][j] = new Roi(i,j);
+                        break;
+                    case 'A':
+                        plateau[i][j] = new Pion(i,j, TypePion.ATTAQUANT);
+                        break;
+                    case 'D':
+                        plateau[i][j] = new Pion(i,j,TypePion.DEFENSEUR);
+                        break;
+                    default:
+                        plateau[i][j] = null;
                 }
             }
         }
-        return copiedNiveau;
     }
-
 
 
     public String toString() {
@@ -410,6 +378,8 @@ public class Niveau implements Serializable{
                     if (type == courant.getType()){
                         liste.add(courant);
                     }
+                    if (type == TypePion.DEFENSEUR && courant.getType() == TypePion.ROI)
+                        liste.add(courant);
                 }
             }
         }
@@ -451,19 +421,15 @@ public class Niveau implements Serializable{
     //On regarde si il est contre le trone
     public int estContreTrone(int x, int y){
         if (x==4 && y==3 ){
-            System.out.println("trone 3");
             return 3;
         }
         else if (x==4 && y==5){
-            System.out.println("trone 4");
             return 4;
         }
         else if (x==3 && y==4){
-            System.out.println("trone 1");
             return 1;
         }
         else if (x==5 && y==4){
-            System.out.println("trone 2");
             return 2;
         }
         return 0;

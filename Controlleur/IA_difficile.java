@@ -30,7 +30,7 @@ public abstract class IA_difficile extends IA{
 
             for (Coordonne deplacement : deplacements) {
                 nb_branches++;
-                Niveau clone = jeu.n.copy();
+                Niveau clone = jeu.n.clone();
                 int retour = clone.deplace_pion(pion.getCoordonne(), deplacement);
                 int tmp = analyse_recursive(clone, 1);
                 if (retour != 0)
@@ -67,7 +67,7 @@ public abstract class IA_difficile extends IA{
         for (Pion pion : pions) {
             ArrayList<Coordonne> deplacements= pion.getDeplacement(n.plateau);
             for (Coordonne deplacement : deplacements) {
-                Niveau clone = n.copy();
+                Niveau clone = n.clone();
                 int valeur_deplacement = clone.deplace_pion(pion.getCoordonne(), deplacement);
                 if (valeur_deplacement != 0) {
                     if (depth % 2 == 0)
