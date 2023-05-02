@@ -19,6 +19,4 @@ public class Tablut{
         //InterfaceGraphique.demarrer(j, control);
         InterfaceGraphique.demarrer(control);
     }
-
 }
- 

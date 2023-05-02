@@ -15,14 +15,14 @@ public class Niveau implements Serializable, Cloneable {
     public static final int BLANC = 1;
     public static final int ROI = 2;
     private int taille = 9;
-    private Configuration config;
+    private ConfigurationJeu config;
 
     public Pion [][] plateau = new Pion[taille][taille];
 
 
 
     //On creer le plateau de jeu
-    public Niveau(Configuration config ) {
+    public Niveau(ConfigurationJeu config ) {
         this.config = config;
         init_Niveau();
 

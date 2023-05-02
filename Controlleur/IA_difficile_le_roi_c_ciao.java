@@ -65,7 +65,7 @@ public class IA_difficile_le_roi_c_ciao extends IA_difficile{
                 }
             }
         }
-        if (jeu.getJoueurCourant() == 0) { // attaquant
+        if (jeu.get_num_JoueurCourant() == 0) { // attaquant
             if (peut_tuer_roi(x,y,n)) {
                 return Integer.MAX_VALUE;
             }

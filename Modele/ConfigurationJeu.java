@@ -1,6 +1,6 @@
 package Modele;
 
-public class Configuration {
+public class ConfigurationJeu {
     private boolean RegicideTrone;
     private boolean RegicideFortresse;
     private boolean RegicideMur;
@@ -11,7 +11,7 @@ public class Configuration {
 
 
 
-    public Configuration() {
+    public ConfigurationJeu() {
         RegicideTrone = true; //A true on peut capturer le roi avec le trone
         RegicideFortresse = true; //A true on peut capturer le roi avec une forteresse
         RegicideMur = true; //On peut se servir d'un mur pour capturer le roi

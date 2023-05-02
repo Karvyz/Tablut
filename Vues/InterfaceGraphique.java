@@ -1,7 +1,5 @@
 package Vues;
 
-import Modele.Jeu;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -23,14 +21,6 @@ public class InterfaceGraphique implements Runnable {
 		//SwingUtilities.invokeLater(new InterfaceGraphique(j, control));
 		SwingUtilities.invokeLater(new InterfaceGraphique(control));
 	}
-
-	/*
-	@Override
-	public void run() {
-		fenetrePrincipale = new FenetrePlateau(j, control);
-	}
-
-	 */
 
 	@Override
 	public void run() {

@@ -50,6 +50,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		}
 	}
 
+	@Override
 	public void fixerMediateurVues(Vues v) {
 		vues = v;
 	}

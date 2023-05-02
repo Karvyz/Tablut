@@ -55,7 +55,7 @@ public class IA_difficile_AttaqueRoi extends IA_difficile {
                 }
             }
         }
-        if (jeu.getJoueurCourant() == 0) { // attaquant
+        if (jeu.get_num_JoueurCourant() == 0) { // attaquant
             if (countbd < 2 && counthd < 2 || countbg < 2 && counthg < 2 || countbd < 2 && countbg < 2 || counthd < 2 && counthg < 2 || attaquants<3) {
                 return Integer.MIN_VALUE;
             } else {

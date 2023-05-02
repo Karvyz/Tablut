@@ -28,7 +28,7 @@ public class IA_difficile_MassacrePion extends IA_difficile {
                 }
             }
         }
-        if (jeu.getJoueurCourant() == 0) {
+        if (jeu.get_num_JoueurCourant() == 0) {
             return defenseurs - attaquants;
         }
         return attaquants - defenseurs;
