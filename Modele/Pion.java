@@ -15,17 +15,8 @@ public class Pion {
         new Pion(new Coordonne(x, y), type);
     }
 
-    Piece toPiece() {
-        switch(type){
-            case ATTAQUANT:
-                return Piece.NOIR;
-            case DEFENSEUR:
-                return Piece.BLANC;
-            case ROI:
-                return Piece.ROI;
-            default:
-                return null;
-        }
+    public void setType(TypePion type){
+        this.type = type;
     }
 
     public TypePion getType() {

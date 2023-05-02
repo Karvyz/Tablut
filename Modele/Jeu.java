@@ -30,9 +30,11 @@ public class Jeu extends Observable{
     public void nouveauJoueur(String nom, TypeJoueur type) {
         if (joueur1 == null) {
             joueur1 = new Joueurs(type, this, nom);
+            //joueur1.pions().setType(TypePion.ATTAQUANT);
         }
         else if (joueur2 == null) {
             joueur2 = new Joueurs(type, this, nom);
+            //joueur2.pions().setType(TypePion.DEFENSEUR);
             //sauvegarde = new Sauvegarde(this);
         }
         else {
@@ -47,13 +49,18 @@ public class Jeu extends Observable{
         if(joueur1 == null || joueur2 == null)
             throw new IllegalStateException("Impossible de créer une nouvelle partie : tous les joueurs n'ont pas été ajoutés");
 
-        // L'attaquant commence toujours (
+        // L'attaquant commence toujours
+        //joueur1.pions().setType(TypePion.ATTAQUANT);
+        //joueur2.pions().setType(TypePion.DEFENSEUR);
+        /*
         if(joueur1.aPionsNoirs()) {
             joueurCourant = 0;
         }
         else {
             joueurCourant = 1;
         }
+
+         */
 
         this.n = new Niveau();
         enCours = true;
@@ -69,8 +76,9 @@ public class Jeu extends Observable{
     }
 
     public boolean partieTerminee() {
-        // TODO : vérifier si la partie est terminée
-        return false;
+        if(n==null)
+            return false;
+        return n.estTermine();
     }
 
     public Joueurs joueur1() {
@@ -82,14 +90,6 @@ public class Jeu extends Observable{
         requireNonNull(joueur2, "Impossible de récupérer le joueur 2 : le joueur n'a pas été créé");
         return joueur2;
     }
-
-    public Joueurs joueurCourant() {
-        if (joueurCourant == 0) {
-            return joueur1();
-        }
-        return joueur2();
-    }
-
 
     public void jouer(Coordonne depart, Coordonne arrive){
         int i = n.deplace_pion(depart, arrive);
@@ -117,18 +117,42 @@ public class Jeu extends Observable{
     }
 
     public Joueurs getJoueurCourant(){
-        return switch (joueurCourant) {
-            case 0 -> joueur1;
-            case 1 -> joueur2;
-            default -> null;
-        };
+        switch (joueurCourant) {
+            case 0:
+                return joueur1;
+            case 1:
+                return joueur2;
+            default :
+                return null;
+        }
     }
 
     public Joueurs getJoueurSuivant(){
-        return switch (joueurCourant) {
-            case 0 -> joueur2;
-            case 1 -> joueur1;
-            default -> null;
-        };
+        switch (joueurCourant) {
+            case 0 :
+                return joueur2;
+            case 1 :
+                return joueur1;
+            default :
+                return null;
+        }
+    }
+
+    public Niveau getNiveau(){
+        return n;
+    }
+
+    public Joueurs getAttaquant(){
+        if (joueur1.aPionsNoirs())
+            return joueur1;
+        else
+            return joueur2;
+    }
+
+    public Joueurs getDefenseur(){
+        if (joueur1.aPionsNoirs())
+            return joueur2;
+        else
+            return joueur1;
     }
 }

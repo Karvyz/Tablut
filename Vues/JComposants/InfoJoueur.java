@@ -1,7 +1,8 @@
-package Vues;
+package Vues.JComposants;
 
 //import Vues.Imager;
 
+import Vues.Imager;
 import Vues.JComposants.CPions;
 
 import javax.swing.*;
@@ -28,7 +29,7 @@ public class InfoJoueur extends JPanel {
         n.setFont(new Font("Arial", Font.BOLD, 16));
 
         // -- TODO : ajouter les images des pions
-        pawn = new ImageIcon(Imager.getScaledImage(reverse ? "assets/IconePN.png" : "assets/IconePB.png", 25, 30));
+        pawn = new ImageIcon(Imager.getScaledImage(reverse ? "assets/PN.png" : "assets/PB.png", 25, 30));
         // --
         p = new CPions(reverse);
 

@@ -42,31 +42,31 @@ public abstract class Coup implements Serializable {
     }
 
     /**
-     * Case sur laquelle sur la pièce jouée au départ du coup
+     * Case sur laquelle la pièce jouée se situe au départ du coup
      * @return La case de départ du coup
      */
     abstract public Coordonne depart();
 
     /**
-     * Case sur laquelle sur la pièce jouée à la fin du coup
+     * Case sur laquelle la pièce jouée se retrouve à la fin du coup
      * @return La case d'arrivée du coup
      */
     abstract public Coordonne arrivee();
 
     public boolean estMouvement() {
         verifierCoupCree("Impossible de vérifier si le coup est un mouvement");
-        return etats.element().piece() == Piece.BLANC || etats.element().piece() == Piece.NOIR;
+        return etats.element().pion().getType() == TypePion.DEFENSEUR || etats.element().pion().getType() == TypePion.ATTAQUANT || etats.element().pion().getType() == TypePion.ROI;
     }
 
-    protected void deplacer(Piece p, int departL, int departC, int arriveeL, int arriveeC) {
+    protected void deplacer(Pion p, int departL, int departC, int arriveeL, int arriveeC) {
         etats.add(new Effet(p, new Coordonne(departL, departC), new Coordonne(arriveeL, arriveeC)));
     }
 
-    protected void ajouter(Piece p, int l, int c) {
+    protected void ajouter(Pion p, int l, int c) {
         etats.add(new Effet(p, null, new Coordonne(l, c)));
     }
 
-    protected void supprimer(Piece p, int l, int c) {
+    protected void supprimer(Pion p, int l, int c) {
         etats.add(new Effet(p, new Coordonne(l, c), null));
     }
 
@@ -78,7 +78,6 @@ public abstract class Coup implements Serializable {
 
     public abstract boolean creer(int destL, int destC);
 
-    /*
     public void jouer(Coordonne depart, Coordonne arrive){
         int i;
 
@@ -86,7 +85,6 @@ public abstract class Coup implements Serializable {
 
         System.out.println("Le joueur " + joueur + " a déplacé le piont Noir de (" + depart.getX() +"," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() +")");
         if (i > 0){
-            enCours = false;
             if (i == 1)
                 System.out.println("PARTIE FINI CAR ROI CAPTURE");
             else
@@ -95,10 +93,7 @@ public abstract class Coup implements Serializable {
 
         // TODO test si une partie est finie;
 
-        joueurCourant = (joueurCourant + 1) %2;
-        metAJour();
     }
-     */
 
     /*
     public void annuler() {

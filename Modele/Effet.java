@@ -5,22 +5,22 @@ import java.io.Serializable;
 import static java.util.Objects.requireNonNull;
 
 public class Effet implements Serializable {
-    private final Piece piece;
+    private final Pion pion;
     private final Coordonne depart, arrivee;
 
-    Effet(Piece piece, Coordonne depart, Coordonne arrivee) {
-        requireNonNull(piece, "La pièce ne doit pas être null");
+    Effet(Pion pion, Coordonne depart, Coordonne arrivee) {
+        requireNonNull(pion, "La pièce ne doit pas être null");
 
         if (depart == null && arrivee == null) {
             throw new IllegalArgumentException("Impossible de créer un état avec les cases avant et après null");
         }
-        this.piece = piece;
+        this.pion = pion;
         this.depart = depart;
         this.arrivee = arrivee;
     }
 
-    Piece piece() {
-        return piece;
+    Pion pion() {
+        return pion;
     }
 
     Coordonne depart() {
@@ -33,6 +33,6 @@ public class Effet implements Serializable {
 
     @Override
     public String toString() {
-        return "[" + piece + " : " + depart + " -> " + arrivee + "]";
+        return "[" + pion + " : " + depart + " -> " + arrivee + "]";
     }
 }

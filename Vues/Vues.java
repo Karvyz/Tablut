@@ -63,7 +63,7 @@ public class Vues {
 
     public void afficherR() {
         try {
-            String inputPdf = "assets/regles_du_jeu_FR.pdf";
+            String inputPdf = "regles_du_jeu.pdf";
             Path tempOutput = Files.createTempFile("TempManual", ".pdf");
             tempOutput.toFile().deleteOnExit();
             try (InputStream is = getClass().getClassLoader().getResourceAsStream(inputPdf)) {

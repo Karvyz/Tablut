@@ -22,8 +22,7 @@ public interface CollecteurEvenements {
 
     void afficherMenuChargerPartie();
 
-    void nouvellePartie(String nomJ1, TypeJoueur typeJ1, int handicapJ1,
-                        String nomJ2, TypeJoueur typeJ2, int handicapJ2, int choixJoueurDebut);
+    void nouvellePartie(String nomJ1, TypeJoueur typeJ1, String nomJ2, TypeJoueur typeJ2);
 
     void partieSuivante();
 
@@ -38,8 +37,6 @@ public interface CollecteurEvenements {
     void refaire();
 
     void toucheClavier(String touche);
-
-    void temps();
 
     boolean sauvegarderPartie();
 

@@ -2,11 +2,14 @@ package Controlleur;
 
 import Modele.Jeu;
 import Modele.Joueurs;
+import Modele.TypeJoueur;
+
+import static Modele.TypeJoueur.*;
 
 public class IA extends Joueurs {
 
     public IA(int num, Jeu jeu) {
-        super(num, jeu);
+		super(IA_FACILE, jeu, "");
     }
 
     // Méthode appelée pour tous les joueurs lors d'un clic sur le plateau

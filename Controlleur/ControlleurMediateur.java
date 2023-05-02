@@ -9,9 +9,8 @@ import Vues.*;
 public class ControlleurMediateur implements CollecteurEvenements {
 
 	Vues vues;
-	Jeu jeu;
-	IA ia1;
-	IA ia2;
+	IA2 ia1;
+	IA2 ia2;
 	Animation animIA1, animIA2;
 	Animation animDemarrage;
     
@@ -128,14 +127,14 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	}
 
 	@Override
-	public void nouvellePartie(String nomJ1, TypeJoueur typeJ1, int handicapJ1, String nomJ2, TypeJoueur typeJ2, int handicapJ2, int choixJoueurDebut) {
-		//verifierMediateurVues("Impossible de créer une nouvelle partie");
-		jeu = new Jeu();
+	public void nouvellePartie(String nomJ1, TypeJoueur typeJ1, String nomJ2, TypeJoueur typeJ2) {
+		verifierMediateurVues("Impossible de créer une nouvelle partie");
+		//jeu = new Jeu();
 		jeu.nouveauJoueur(nomJ1, typeJ1);
 		jeu.nouveauJoueur(nomJ2, typeJ2);
 		jeu.nouvellePartie();
-		//vues.nouvellePartie();
-		//initIA(typeJ1,typeJ2);
+		vues.nouvellePartie();
+		initIA(typeJ1,typeJ2);
 	}
 
 	@Override
@@ -166,12 +165,12 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	@Override
 	public void annuler() {
 		//System.out.print("Annuler : " + jeu().joueurActuel().nom() + " ");
-		jeu().annuler();
+		//jeu().annuler();
 	}
 
 	@Override
 	public void refaire() {
-		jeu().refaire();
+		//jeu().refaire();
 	}
 
 
@@ -192,38 +191,18 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		}
 	}
 
-	@Override
-	public void temps() {
-		if (animDemarrage == null) {
-			int lenteurAnimation = Integer.parseInt(Configuration.instance().lirePropriete("LenteurAnimationDemarrage"));
-			animDemarrage = new AnimationDemarrage(lenteurAnimation, this);
-		}
-		if (!animDemarrage.terminee()) {
-			animDemarrage.temps();
-			return;
-		}
-		if (jeu == null || jeu().partieTerminee() || jeu().getJoueurCourant().estHumain()) {
-			return;
-		}
-		if (jeu().getJoueurCourant() == jeu().joueur1()) {
-			animIA1.temps();
-		} else {
-			animIA2.temps();
-		}
-	}
-
 	private void initIA(TypeJoueur typeJ1, TypeJoueur typeJ2){
 		int lenteurAnimationIA = Integer.parseInt(Configuration.instance().lirePropriete("LenteurAnimationIA"));
 
 		switch (typeJ1) {
 			case IA_DIFFICILE:
-				ia1 = new IA_difficile(jeu(), jeu().joueur1(), jeu().joueur2(), this);
+				ia1 = new IA2_difficile(jeu(), jeu().joueur1(), jeu().joueur2(), this);
 				break;
 			case IA_MOYEN:
-				ia1 = new IA_Moyen(jeu(), jeu().joueur1(), jeu().joueur2(), this);
+				ia1 = new IA2_moyen(jeu(), jeu().joueur1(), jeu().joueur2(), this);
 				break;
 			case IA_FACILE:
-				ia1 = new IA_Facile(jeu(), jeu().joueur1(), jeu().joueur2(), this);
+				ia1 = new IA2_facile(jeu(), jeu().joueur1(), jeu().joueur2(), this);
 				break;
 		}
 		if (typeJ1 != TypeJoueur.HUMAIN) {
@@ -232,13 +211,13 @@ public class ControlleurMediateur implements CollecteurEvenements {
 
 		switch (typeJ2) {
 			case IA_DIFFICILE:
-				ia2 = new IA_Difficile(jeu(),jeu().joueur2(), jeu().joueur1(),this);
+				ia2 = new IA2_difficile(jeu(),jeu().joueur2(), jeu().joueur1(),this);
 				break;
 			case IA_MOYEN:
-				ia2 = new IA_Moyen(jeu(),jeu().joueur2(), jeu().joueur1(),this);
+				ia2 = new IA2_moyen(jeu(),jeu().joueur2(), jeu().joueur1(),this);
 				break;
 			case IA_FACILE:
-				ia2 = new IA_Facile(jeu(),jeu().joueur2(), jeu().joueur1(), this);
+				ia2 = new IA2_facile(jeu(),jeu().joueur2(), jeu().joueur1(), this);
 				break;
 		}
 		if (typeJ2 != TypeJoueur.HUMAIN) {
@@ -246,21 +225,19 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		}
 	}
 
-	/*
 	@Override
 	public boolean sauvegarderPartie() {
-		return jeu().sauvegarder();
+		//return jeu().sauvegarder();
+		return false;
 	}
 
 	@Override
 	public void chargerPartie(String nomSauvegarde) {
-		jeu = Sauvegarde.charger(nomSauvegarde);
-		initIA(jeu().joueur1().type(), jeu().joueur2().type());
-		vues.nouvellePartie();
+		//jeu = Sauvegarde.charger(nomSauvegarde);
+		//initIA(jeu().joueur1().type(), jeu().joueur2().type());
+		//vues.nouvellePartie();
 		afficherJeu();
 	}
-
-	 */
 
 	void changeJoueur() {
 		joueurCourant = (joueurCourant + 1) % joueurs.length;
@@ -270,7 +247,25 @@ public class ControlleurMediateur implements CollecteurEvenements {
     public void tictac(){
         //System.out.println(joueurCourant);
 
+		if (animDemarrage == null) {
+			int lenteurAnimation = Integer.parseInt(Configuration.instance().lirePropriete("LenteurAnimationDemarrage"));
+			animDemarrage = new AnimationDemarrage(lenteurAnimation, this);
+		}
+		if (!animDemarrage.terminee()) {
+			animDemarrage.temps();
+			return;
+		}
+
         if (jeu.enCours()) {
+			if (jeu == null || jeu().partieTerminee() || jeu().getJoueurCourant().estHumain()) {
+				return;
+			}
+			if (jeu().getJoueurCourant() == jeu().joueur1()) {
+				animIA1.temps();
+			} else {
+				animIA2.temps();
+			}
+
 			if(PlusdePion(joueurCourant)){
 				jeu.enCours = false;
 				System.out.println("Le joueur blanc a gagné car l'attaquant n'a plus de pion");

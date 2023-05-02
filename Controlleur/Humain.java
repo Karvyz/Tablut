@@ -17,9 +17,8 @@ public class Humain extends Joueurs {
     
     // Méthode appelée pour tous les joueurs lors d'un clic sur le plateau
 	// Si un joueur n'est pas concerné, il lui suffit de l'ignorer
-	boolean jeu(Coordonne depart, Coordonne arrive) {
-
-     
+    @Override
+    public boolean jeu(Coordonne depart, Coordonne arrive) {
         //if(check_Deplacement(liste_depl, arrive))
         this.jeu.jouer(depart, arrive);
         //else          

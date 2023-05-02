@@ -9,7 +9,7 @@ public class Joueurs implements Serializable {
     protected Jeu jeu;
     private final TypeJoueur type;
     private final String nom;
-    private Pion pions;
+    private TypePion pions;
     private int nombrePionsManges;
     private int nombreVictoires;
     static int HANDICAP_MAX = 3;
@@ -23,7 +23,7 @@ public class Joueurs implements Serializable {
         this.nom = nom;
     }
 
-    void initialiserJoueur(Pion p) {
+    void initialiserJoueur(TypePion p) {
         pions = p;
         nombrePionsManges = 0;
     }
@@ -52,16 +52,16 @@ public class Joueurs implements Serializable {
         return type == TypeJoueur.IA_DIFFICILE;
     }
 
-    public Pion pions() {
+    public TypePion typePions() {
         return pions;
     }
 
     public boolean aPionsBlancs() {
-        return pions.getType() == TypePion.DEFENSEUR;
+        return pions == TypePion.DEFENSEUR;
     }
 
     public boolean aPionsNoirs() {
-        return pions.getType() == TypePion.ATTAQUANT;
+        return pions == TypePion.ATTAQUANT;
     }
 
     public int nombrePionsManges() {

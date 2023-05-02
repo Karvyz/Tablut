@@ -20,7 +20,7 @@ public class Theme {
     private Image blanc_selectionne;
     private Image noir_inactif;
     private Image noir_selectionne;
-    private Image roi, foreteresse, konakis;
+    private Image roi, forteresse, konakis, roiSurKonakis;
 
     private Theme() {
         charger();
@@ -54,18 +54,19 @@ public class Theme {
     }
 
     void charger() {
-        String theme = "assets";
+        String theme = "assets/";
         chargerDimensions(theme);
 
-        plateau = Imager.getImageBuffer(theme + "plateau.png");
+        plateau = Imager.getImageBuffer(theme + "Plateau.png");
 
-        blanc_inactif = Imager.getImageBuffer(theme + "blanc_inactif.png");
-        blanc_selectionne = Imager.getImageBuffer(theme + "blanc_selectionne.png");
-        noir_inactif = Imager.getImageBuffer(theme + "noir_inactif.png");
-        noir_selectionne = Imager.getImageBuffer(theme + "noir_selectionne.png");
-        roi = Imager.getImageBuffer(theme + "roi.png");
-        foreteresse = Imager.getImageBuffer(theme + "foreteresse.png");
-        konakis = Imager.getImageBuffer(theme + "konakis.png");
+        blanc_inactif = Imager.getImageBuffer(theme + "PB.png");
+        blanc_selectionne = Imager.getImageBuffer(theme + "PB_selectionne.png");
+        noir_inactif = Imager.getImageBuffer(theme + "PN.png");
+        noir_selectionne = Imager.getImageBuffer(theme + "PN_selectionne.png");
+        roi = Imager.getImageBuffer(theme + "Roi.png");
+        forteresse = Imager.getImageBuffer(theme + "Forteresse.png");
+        konakis = Imager.getImageBuffer(theme + "Konakis.png");
+        roiSurKonakis = Imager.getImageBuffer(theme + "RoiSurKonakis.png");
     }
 
     public int hauteurPlateau() {
@@ -124,8 +125,8 @@ public class Theme {
         return roi;
     }
 
-    public Image foreteresse() {
-        return foreteresse;
+    public Image forteresse() {
+        return forteresse;
     }
 
     public Image konakis() {

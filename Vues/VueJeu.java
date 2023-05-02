@@ -9,8 +9,7 @@ import java.awt.*;
 
 import static java.awt.GridBagConstraints.*;
 
-import Vues.JComposants.CPions;
-import Vues.JComposants.TexteJeu;
+import Vues.JComposants.*;
 
 class VueJeu extends JPanel {
 
@@ -21,10 +20,11 @@ class VueJeu extends JPanel {
 
     private JLabel endGameText;
     private TexteJeu texteJeu;
-    private final JPanel backgroundTop, backgroundBottom;
+    //private final JPanel backgroundTop, backgroundBottom;
     private JFrame topFrame;
 
     private JPanel mainPanel, endGamePanel;
+    Image background;
 
     VueJeu(CollecteurEvenements c) {
         controleur = c;
@@ -37,14 +37,8 @@ class VueJeu extends JPanel {
         // Fin partie
         JPanel endGamePanel = new JPanel();
 
-        // Pour les moitiés de couleurs uniquement
-        JPanel background = new JPanel(new GridLayout(2, 0));
-        backgroundTop = new JPanel(new BorderLayout());
-        backgroundTop.setBackground(new Color(23, 23, 23));
-        backgroundBottom = new JPanel(new BorderLayout());
-        backgroundBottom.setBackground(new Color(255, 116, 87));
-        background.add(backgroundTop);
-        background.add(backgroundBottom);
+        // Chargement des assets
+        background = Imager.getImageBuffer("assets/logo.png");
         // --
 
         JPanel contenu = new JPanel(new GridBagLayout());
@@ -56,7 +50,7 @@ class VueJeu extends JPanel {
 
         addEndGame();
         add(contenu);
-        add(background);
+        //add(background);
     }
 
     private void addEndGame() {
@@ -94,16 +88,16 @@ class VueJeu extends JPanel {
         gbc2.insets = new Insets(20, 0, 0, 0);
         JPanel endButtons = new JPanel();
         endButtons.setOpaque(false);
-        //JButton menu = new CButton("Menu principal");
-        //JButton retry = new CButton("Rejouer?").blanc();
-        //endButtons.add(menu);
-        //endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
-        //endButtons.add(retry);
-        //menu.addActionListener((e) -> controleur.afficherMenuPrincipal());
-        //retry.addActionListener((e) -> {
+        JButton menu = new CButton("Menu principal");
+        JButton retry = new CButton("Rejouer?").blanc();
+        endButtons.add(menu);
+        endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
+        endButtons.add(retry);
+        menu.addActionListener((e) -> controleur.afficherMenuPrincipal());
+        retry.addActionListener((e) -> {
             endGamePanel.setVisible(false);
-            //controleur.partieSuivante();
-        //});
+            controleur.partieSuivante();
+        });
 
         banner.add(endButtons, gbc2);
         endGamePanel.add(banner, gbc);
@@ -245,7 +239,7 @@ class VueJeu extends JPanel {
         c.insets = new Insets(8, 0, 0, 0);
         JPanel textPanel = new JPanel();
         textPanel.setOpaque(false);
-        texteJeu = new CTexteJeu();
+        texteJeu = new TexteJeu();
         texteJeu.setFont(new Font("Arial", Font.PLAIN, 18));
         texteJeu.setForeground(Color.white);
         textPanel.add(texteJeu);
@@ -289,14 +283,6 @@ class VueJeu extends JPanel {
         c.weighty = 1;
         c.anchor = FIRST_LINE_START;
         mainPanel.add(j2, c);
-
-        c.insets = new Insets(14, 0, 0, 0);
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.anchor = PAGE_START;
-        mainPanel.add(seeds, c);
 
         // --
         c.insets = new Insets(10, 60, 0, 60);
@@ -394,7 +380,6 @@ class VueJeu extends JPanel {
         topFrame.requestFocus();
 
         vueNiveau.miseAJour();
-        //texteJeu.setText(controleur.jeu().joueurActuel().nom() + " débute la partie !");
 
         JButton button = new CButton("OK");
         button.addActionListener(e -> JOptionPane.getRootFrame().dispose());
@@ -408,5 +393,15 @@ class VueJeu extends JPanel {
                     new ImageIcon(Imager.getScaledImage("assets/info.png", 24, 24)),
                     new JButton[]{button}, button);
         }
+    }
+
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        // Affichage de l'image d'arrière plan
+        g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
     }
 }
