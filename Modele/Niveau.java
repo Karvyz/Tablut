@@ -257,7 +257,9 @@ public class Niveau implements Serializable, Cloneable {
         plateau[dst.x][dst.y] = p;
 
         p.setCoordonne(dst) ;
-        AMangerPion(p);
+        if(PionSeSuicide(p)){
+            AMangerPion(p);}
+        
         if(estAttaquant(p)){
             if( AMangerRoi(dst))
                 return 1;
@@ -266,65 +268,186 @@ public class Niveau implements Serializable, Cloneable {
             if (estFortresse(dst.x, dst.y) || (estContreBord(dst.x, dst.y) && config.isWinTousCote()))
             return 2;
         }
-       //}
         return 0;
 
     }
 
+    public boolean defenseurSuicideF(int x, int y){
+        if((estAttaquant(x+1,y)&&estFortresse(x-1, y) && config.isPF())|| (estAttaquant(x-1,y)&&estFortresse(x+1, y) && config.isPF()) || (estAttaquant(x,y-1)&&estFortresse(x, y+1) && config.isPF()) || (estAttaquant(x,y+1)&&estFortresse(x, y-1) && config.isPF())){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean defenseurSuicide(int x, int y){
+        if((estAttaquant(x+1,y)&& estAttaquant(x-1,y))|| (estAttaquant(x,y+1)&& estAttaquant(x,y-1))){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean attaquantSuicide(int x, int y){
+        if((estDefenseur(x+1,y) && estDefenseur(x-1,y)) || (estDefenseur(x,y+1)&& estDefenseur(x,y-1))){
+  
+            return true;
+        }
+        return false;
+    }
+
+    public boolean attaquantSuicideF(int x, int y){
+
+    if ((estDefenseur(x+1,y)&&estFortresse(x-1, y) && config.isPF())|| (estDefenseur(x-1,y)&&estFortresse(x+1, y) && config.isPF()) || (estDefenseur(x,y+1)&&estFortresse(x, y-1) && config.isPF()) || (estDefenseur(x,y-1)&&estFortresse(x, y+1) && config.isPF())){
+        return true;
+    }
+    return false;
+    }
+
+    //On regarde si le pion se suicide
+    public boolean PionSeSuicide(Pion p){
+        if (config.isSA()){
+            if(estAttaquant(p)){
+                if(estContreDefenseur(p.getX(), p.getY() ) ){
+                    if(attaquantSuicide(p.getX(),p.getY())||attaquantSuicideF(p.getX(), p.getY()))
+                        setVide(p.getX(),p.getY());
+                        return true;
+                }
+            }
+            if(estDefenseur(p)){
+                if(estContreAttaquant(p.getX(), p.getY())){
+                    if(defenseurSuicide(p.getX(),p.getY())||defenseurSuicideF(p.getX(),p.getY()))
+                        setVide(p.getX(),p.getY());
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    //On verifie que le pion est contre un attaquant
+    public boolean estContreAttaquant(int x, int y){
+        if (estAttaquant(x+1,y) || estAttaquant(x-1,y) || estAttaquant(x,y+1) || estAttaquant(x,y-1)){
+            return true;
+        }
+        return false;
+    }
+
+    //On verifie que le pion est contre un defenseur
+    public boolean estContreDefenseur(int x, int y){
+        if (estDefenseur(x+1,y) || estDefenseur(x-1,y) || estDefenseur(x,y+1) || estDefenseur(x,y-1)){
+            return true;
+        }
+        return false;
+    }
+
+    //On regarde si le pion a manger un defenseurs contre une forteresse
+    public void attaquantForteresse (int x, int y){
+        if(estAttaquant(x+1,y)){
+            if(estFortresse(x+2, y)&& config.isPF()){
+                setVide(x+1,y);
+            }
+        }
+        if(estAttaquant(x-1,y)){
+            if(estFortresse(x-2, y) && config.isPF()){
+                setVide(x-1,y);
+            }
+        }
+        if(estAttaquant(x,y+1)){
+            if(estFortresse(x, y+2) && config.isPF()){
+                setVide(x,y+1);
+            }
+        }
+        if(estAttaquant(x,y-1)){
+            if(estFortresse(x, y-2) && config.isPF()){
+                setVide(x,y-1);
+            }
+        }
+    }
+
+    //On regarde si le pion a manger un ou plusieurs defenseurs avec un attaquant
+    public void attaquantDefenseur (int x, int y){
+        if(estAttaquant(x+1,y)){
+            if(estDefenseur(x+2, y)){
+                setVide(x+1,y);
+            }
+        }
+        if(estAttaquant(x-1,y)){
+            if(estDefenseur(x-2, y)){
+                setVide(x-1,y);
+            }
+        }
+        if(estAttaquant(x,y+1)){
+            if(estDefenseur(x, y+2)){
+                setVide(x,y+1);
+            }
+        }
+        if(estAttaquant(x,y-1)){
+            if(estDefenseur(x, y-2)){
+                setVide(x,y-1);
+            }
+        }
+    }
+
+    //On regarde si le pion a manger un attaquant contre une forteresse
+    public void defenseurForteresse (int x, int y){
+        if(estDefenseur(x+1,y)){
+            if(estFortresse(x+2, y)&&config.isPF()){
+                setVide(x+1,y);
+            }
+        }
+        if(estDefenseur(x-1,y)){
+            if(estFortresse(x-2, y)&&config.isPF()){
+                setVide(x-1,y);
+            }
+        }
+        if(estDefenseur(x,y+1)){
+            if(estFortresse(x, y+2)&&config.isPF()){
+                setVide(x,y+1);
+            }
+        }
+        if(estDefenseur(x,y-1)){
+            if(estFortresse(x, y-2)&&config.isPF()){
+                setVide(x,y-1);
+            }
+        }
+    }
+
+    //On regarde si un defenseur a manger un ou plusieurs attaquants
+    public void defenseurAttaquant (int x, int y){
+        if(estDefenseur(x+1,y)){
+            if(estAttaquant(x+2, y)){
+                setVide(x+1,y);
+            }
+        }
+        if(estDefenseur(x-1,y)){
+            if(estAttaquant(x-2, y)){
+                setVide(x-1,y);
+            }
+        }
+        if(estDefenseur(x,y+1)){
+            if(estAttaquant(x, y+2)){
+                setVide(x,y+1);
+            }
+        }
+        if(estDefenseur(x,y-1)){
+            if(estAttaquant(x, y-2)){
+                setVide(x,y-1);
+            }
+        }
+    }
+
      public void AMangerPion(Pion p){
         if (estAttaquant(p)){
-            if (estDefenseur(p.getX()+1,p.getY())){
-                if(estAttaquant(p.getX()+2,p.getY())||estFortresse(p.getX()+2, p.getY())){
-                    setVide(p.getX()+1,p.getY());
-                  
-                }
+            if(estContreDefenseur(p.getX(), p.getY())){
+                defenseurAttaquant(p.getX(), p.getY());
+                defenseurForteresse(p.getX(), p.getY());
             }
-            if (estDefenseur(p.getX()-1, p.getY())){
-                if(estAttaquant(p.getX()-2,p.getY())||estFortresse(p.getX()-2, p.getY())){
-                    setVide(p.getX()-1,p.getY());
-                    
-                }
-            }
-            if (estDefenseur(p.getX(),p.getY()+1)){
-                if(estAttaquant(p.getX(),p.getY()+2)||estFortresse(p.getX(), p.getY()+2)){
-                    setVide(p.getX(),p.getY()+1);
-                    
-                }
-            }
-            if (estDefenseur(p.getX(),p.getY()-1)){
-                if(estAttaquant(p.getX(),p.getY()-2) || estFortresse(p.getX(), p.getY()-2)){
-                    setVide(p.getX(),p.getY()-1);
-          
-                }
-            }  
-        }    
+        }
         else if (estDefenseur(p)){
-            if(estAttaquant(p.getX()+1,p.getY())){
-                if(estDefenseur(p.getX()+2,p.getY()) || estFortresse(p.getX()+2, p.getY())){
-                    setVide(p.getX()+1,p.getY());
-                    
-                }
+            if(estContreAttaquant(p.getX(), p.getY())){
+                attaquantDefenseur(p.getX(), p.getY());
+                attaquantForteresse(p.getX(), p.getY());
             }
-            if (estAttaquant(p.getX()-1,p.getY())){
-                if(estDefenseur(p.getX()-2,p.getY()) || estFortresse(p.getX()-2, p.getY())){
-                    setVide(p.getX()-1,p.getY());
-                    
-                }
-            }
-            if (estAttaquant(p.getX(),p.getY()+1)){
-                if(estDefenseur(p.getX(),p.getY()+2) || estFortresse(p.getX(), p.getY()+2)){
-                    setVide(p.getX(),p.getY()+1);
-          
-                }
-            }
-            if (estAttaquant(p.getX(),p.getY()-1)){
-                if(estDefenseur(p.getX(),p.getY()-2) || estFortresse(p.getX(), p.getY()-2)){
-                    setVide(p.getX(),p.getY()-1);
-                    
-                }
-            }      
-        }         
-        
+        }      
     }
     
     //On regarde si la case est contre le bord
