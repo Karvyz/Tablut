@@ -31,8 +31,8 @@ class AdaptateurSouris2 extends MouseAdapter {
         int hauteur = pane.getHeight() - bordureHaut - bordureBas;
         int largeur = pane.getWidth() - bordureGauche - bordureDroite;
 
-        int l = y * 4 / hauteur;
-        int c = x * 4 / largeur;
+        int l = y * 9 / hauteur;
+        int c = x * 9 / largeur;
 
         controleur.clicSouris(l, c);
         System.out.println("l = " + l + ", c = " + c);
