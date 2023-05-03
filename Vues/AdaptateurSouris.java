@@ -31,7 +31,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         int c = (int) Math.floor((double) e.getX() / plateau.largeurCase);
         Pion caseSelec = plateau.jeu.n.getPion(l, c);
         
-        if (!plateau.jeu.n.check_clic_selection_pion(caseSelec, plateau.jeu.joueurCourant())) {
+        if (!plateau.jeu.n.check_clic_selection_pion(caseSelec, plateau.jeu.get_num_JoueurCourant())) {
             plateau.setPionEnDeplacement(null);
             plateau.setPionSelec(null); // Ajoutez cette ligne
         } else {

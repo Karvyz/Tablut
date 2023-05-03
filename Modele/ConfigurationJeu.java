@@ -1,6 +1,8 @@
 package Modele;
 
-public class ConfigurationJeu {
+import java.io.Serializable;
+
+public class ConfigurationJeu implements Serializable {
     private boolean RegicideTrone;
     private boolean RegicideForteresse;
     private boolean RegicideMur;
