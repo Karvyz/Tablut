@@ -11,12 +11,11 @@ import javax.swing.*;
 public class Tablut{
     public static void main(String[] args) {
         try {
-            UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+            //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
         } catch (Exception ignored) {
         }
         Jeu j = new Jeu();
         CollecteurEvenements control = new ControlleurMediateur(j);
-        //InterfaceGraphique.demarrer(j, control);
         InterfaceGraphique.demarrer(control);
     }
 }

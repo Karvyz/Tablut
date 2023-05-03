@@ -173,12 +173,13 @@ public class VueMenuSaisies extends JPanel {
         createUIComponents();
         MenuSaisies.setLayout(new GridLayout(4, 1, 0, 120));
         MenuSaisies.setMaximumSize(new Dimension(441, 110));
-        //MenuSaisies.setMinimumSize(new Dimension(441, 110));
-        MenuSaisies.setPreferredSize(new Dimension(441, 50));
+        MenuSaisies.setMinimumSize(new Dimension(441, 60));
+        MenuSaisies.setPreferredSize(new Dimension(441, 110));
 
         Joueur1 = new JPanel();
         Joueur1.setLayout(new GridLayout(1, 5, 50, 0));
         Joueur1.setOpaque(false);
+        Joueur1.setMinimumSize(new Dimension(441, -1));
 
         //Joueur1.setMaximumSize(new Dimension(441, 110/3));
 
@@ -186,7 +187,9 @@ public class VueMenuSaisies extends JPanel {
         Joueur1.add(Box.createRigidArea(new Dimension(30, 0)));
 
         JLabel label1 = new JLabel(" Attaquant");
-        label1.setFont(new Font("Arial", Font.BOLD, 36));
+        System.out.println(label1.getFont());
+        label1.setFont(new Font(label1.getFont().getName(), Font.BOLD, 36));
+        System.out.println(label1.getFont());
         Joueur1.add(label1);
 
         nomJ1.setDropMode(DropMode.USE_SELECTION);
