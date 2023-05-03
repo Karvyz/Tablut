@@ -101,6 +101,7 @@ public class CPlateau extends JPanel implements Observateur {
             for (int j = 0; j < 9; j++) {
 
                 if (i == l && c == j) {
+                    //TODO erreur avec les images ICI
                     g.drawImage(Theme.instance().pointInterrogation(), x, y, largeurCase, hauteurCase, this);
                     /*if (n.estAttaquant(l,c)) {
                         g.drawImage(Theme.instance().noir_selectionne(), x, y, largeurCase, hauteurCase, this);
