@@ -171,7 +171,7 @@ public class VueMenuSaisies extends JPanel {
 
     private void setupUI() {
         createUIComponents();
-        MenuSaisies.setLayout(new GridLayout(4, 1, 0, 100));
+        MenuSaisies.setLayout(new GridLayout(4, 1, 0, 120));
         MenuSaisies.setMaximumSize(new Dimension(441, 110));
         //MenuSaisies.setMinimumSize(new Dimension(441, 110));
         MenuSaisies.setPreferredSize(new Dimension(441, 50));
