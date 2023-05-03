@@ -249,7 +249,8 @@ public class Niveau implements Serializable, Cloneable {
     //int = 0 coup joué , 1 noir on gagné, 2 blanc on gagné
     public int deplace_pion(Coordonne depart, Coordonne dst){
 
-        data.put(plateau.clone().toString(),plateau.toString().hashCode());
+        System.out.println(this);
+        data.put(this.toString(),this.toString().hashCode());
         Pion p = plateau[depart.x][depart.y];
         setVide(depart.x, depart.y);
         plateau[dst.x][dst.y] = p;
