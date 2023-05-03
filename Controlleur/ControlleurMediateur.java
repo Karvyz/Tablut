@@ -5,6 +5,8 @@ import Modele.*;
 import Vues.*;
 import Vues.CollecteurEvenements;
 
+import java.io.*;
+
 public class ControlleurMediateur implements CollecteurEvenements {
 
 	Vues vues;
@@ -242,19 +244,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		}
 	}
 
-	@Override
-	public boolean sauvegarderPartie() {
-		//return jeu().sauvegarder();
-		return false;
-	}
 
-	@Override
-	public void chargerPartie(String nomSauvegarde) {
-		//jeu = Sauvegarde.charger(nomSauvegarde);
-		//initIA(jeu().joueur1().type(), jeu().joueur2().type());
-		//vues.nouvellePartie();
-		afficherJeu();
-	}
 
 	void changeJoueur() {
 		decompte = lenteurAttente;

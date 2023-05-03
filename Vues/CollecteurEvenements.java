@@ -39,8 +39,5 @@ public interface CollecteurEvenements {
 
     void toucheClavier(String touche);
 
-    boolean sauvegarderPartie();
-
-    void chargerPartie(String nomSauvegarde);
 }
 
