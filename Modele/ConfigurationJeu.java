@@ -2,7 +2,7 @@ package Modele;
 
 public class ConfigurationJeu {
     private boolean RegicideTrone;
-    private boolean RegicideFortresse;
+    private boolean RegicideForteresse;
     private boolean RegicideMur;
     private boolean WinTousCote;
     private boolean RegicideDef;
@@ -13,7 +13,7 @@ public class ConfigurationJeu {
 
     public ConfigurationJeu() {
         RegicideTrone = true; //A true on peut capturer le roi avec le trone
-        RegicideFortresse = true; //A true on peut capturer le roi avec une forteresse
+        RegicideForteresse = true; //A true on peut capturer le roi avec une forteresse
         RegicideMur = true; //On peut se servir d'un mur pour capturer le roi
         WinTousCote = false; //A true on peut faire évader le roi sur tous les bords
         RegicideDef = false;
@@ -46,11 +46,11 @@ public class ConfigurationJeu {
     }
 
     public boolean isRF() {
-        return RegicideFortresse;
+        return RegicideForteresse;
     }
 
-    public void setRF(boolean RegicideFortresse) {
-        this.RegicideFortresse = RegicideFortresse;
+    public void setRF(boolean RegicideForteresse) {
+        this.RegicideForteresse = RegicideForteresse;
     }
 
     public boolean isRM() {

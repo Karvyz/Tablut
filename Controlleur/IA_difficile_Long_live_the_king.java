@@ -54,7 +54,7 @@ public class IA_difficile_Long_live_the_king extends IA_difficile{
             }
             eval += check + check2;
         } else {
-            //on regarde les contours de la map et s'il y a deux attaquants collés ou un attaquant collé à une fortresse ou des defenseurs sur cette ligne/colonne on baisse l'evaluation
+            //on regarde les contours de la map et s'il y a deux attaquants collés ou un attaquant collé à une Forteresse ou des defenseurs sur cette ligne/colonne on baisse l'evaluation
             //si il y a rien de tout ça on augmente l'evaluation
             for(int i = 0; i < n.getTaille(); i++){
                 for(int j = 0; j <n.getTaille(); j++){
