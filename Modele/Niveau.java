@@ -257,7 +257,7 @@ public class Niveau implements Serializable, Cloneable {
         plateau[dst.x][dst.y] = p;
 
         p.setCoordonne(dst) ;
-        if(PionSeSuicide(p)){
+        if(!PionSeSuicide(p)){
             AMangerPion(p);}
 
         if(estAttaquant(p)){
