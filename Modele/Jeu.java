@@ -3,9 +3,7 @@ package Modele;
 import Patterns.Observable;
 import Structures.Pile;
 import Vues.CollecteurEvenements;
-import Vues.FenetrePlateau;
 import Vues.InterfaceGraphique;
-
 import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,10 +12,6 @@ import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.concurrent.FutureTask;
-
-import javax.swing.JFrame;
-
 import Controlleur.ControlleurMediateur;
 
 
@@ -50,15 +44,7 @@ public class Jeu extends Observable{
         metAJour();
     }
 
-    public boolean a_bouclé(){
-        System.out.println(n);
-        int catapulte = n.toString().hashCode();
-        if(n.data.containsValue(catapulte)){
-            System.out.println(catapulte);
-            return true;
-        }
-        return false;
-    }
+
 
     public void nouvellePartie(String fichier) { //Pour charger une partie
        
@@ -112,16 +98,14 @@ public class Jeu extends Observable{
     public void jouer(Coordonne depart, Coordonne arrive){
         int i = n.deplace_pion(depart, arrive);
         System.out.println("Déplacement du pion de (" + depart.getX() +"," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() +")");
-        if(a_bouclé()){
-            setEnCours(false);
-            System.out.println("LA PARTIE A BOUCLÉ");
-        }
         if (i > 0){
             setEnCours(false);
             if (i == 1)
                 System.out.println("PARTIE FINI CAR ROI CAPTURE");
-            else
+            else if (i == 2)
                 System.out.println("PARTIE FINI CAR ROI EVADE");
+            else
+                System.out.println("EGALITE");
             System.out.println(n);
         }
         
@@ -134,7 +118,7 @@ public class Jeu extends Observable{
     
 
     public boolean load(String fichier){
-		Data_Niveau data_niveau = null;
+		Data_Niveau data_niveau;
 
 		try {
 			FileInputStream fileIn = new FileInputStream(fichier);

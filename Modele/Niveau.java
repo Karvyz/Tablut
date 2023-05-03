@@ -11,22 +11,20 @@ import java.util.Hashtable;
 
 
 public class Niveau implements Serializable, Cloneable {
-    public static final int NOIR = 0;
-    public static final int BLANC = 1;
-    public static final int ROI = 2;
     private int taille = 9;
 
     public Pion [][] plateau = new Pion[taille][taille];
-    public Hashtable<String, Integer> data = new Hashtable<String, Integer>();
+    public Hashtable<String, Integer> data = new Hashtable<>();
 
 
     //On creer le plateau de jeu
     public Niveau() {
         init_Niveau();
+        data.put(this.toString(),0);
     }
 
     public Niveau(String fichier) {
-        Data_Niveau data_niveau = null;
+        Data_Niveau data_niveau;
     
         try {
             FileInputStream fileIn = new FileInputStream(fichier);
@@ -158,13 +156,6 @@ public class Niveau implements Serializable, Cloneable {
     public boolean estVide(int x, int y) {
         return plateau[x][y] == null;
     }
-    //On regarde si la case est vide
-    public boolean estVide(Pion p) {
-        if (plateau[p.getX()][p.getY()] == null){
-            return true;
-        }
-        return false;
-    }
 
     public TypePion typePion(int x, int y) {
         return plateau[x][y].getType();
@@ -229,32 +220,36 @@ public class Niveau implements Serializable, Cloneable {
     //On regarde si la case est une forteresse
     public boolean estFortresse(int x, int y){
         if (x == 0 || x == 8){
-            if (y == 0 || y == 8){
-                return true;
-            }
+            return y == 0 || y == 8;
         }
         return false;
     }
 
     //On regarde si la case est un konakis
     public boolean estKonakis(int x, int y){
-        if (x==4 && y==4){
-            return true;
+        return x == 4 && y == 4;
+    }
+
+    public boolean a_boucle(){
+        String key = this.toString();
+        if(this.data.containsKey(key)){
+            int val = this.data.get(key);
+            if (val==2) // si on a déjà fait 2 fois le même coup
+                return true;
+            else
+                this.data.put(this.toString(), val + 1); // on incrémente le nombre de fois qu'on a fait le même coup
+        } else {
+            this.data.put(this.toString(), 0); // on ajoute le coup à la map
         }
         return false;
     }
 
-
-
     //int = 0 coup joué , 1 noir on gagné, 2 blanc on gagné
     public int deplace_pion(Coordonne depart, Coordonne dst){
 
-        System.out.println(this);
-        data.put(this.toString(),this.toString().hashCode());
         Pion p = plateau[depart.x][depart.y];
         setVide(depart.x, depart.y);
         plateau[dst.x][dst.y] = p;
-
         p.setCoordonne(dst);
         AMangerPion(p);
         if(estAttaquant(p)){
@@ -263,9 +258,11 @@ public class Niveau implements Serializable, Cloneable {
         }
         if (estRoi(p)){
             if (estFortresse(dst.x, dst.y))
-            return 2;
+                return 2;
         }
-       //}
+        if (a_boucle()){
+            return 3;
+        }
         return 0;
 
     }
@@ -332,18 +329,12 @@ public class Niveau implements Serializable, Cloneable {
         if (x == 0 || x == 8){
             return true;
         }
-        else if (y == 0 || y == 8){
-            return true;
-        }
-        return false;
+        else return y == 0 || y == 8;
     }
     
     //On regarde si le pion est contre une forteresse
     public boolean estContreFortresse(int x, int y){
-        if (x==0 && y==1 || x==0 && y==7 || x==1 && y==0 || x==1 && y==8 || x==7 && y==0 || x==7 && y==8 || x==8 && y==1 || x==8 && y==7){
-            return true;
-        }
-        return false;
+        return x == 0 && y == 1 || x == 0 && y == 7 || x == 1 && y == 0 || x == 1 && y == 8 || x == 7 && y == 0 || x == 7 && y == 8 || x == 8 && y == 1 || x == 8 && y == 7;
     }
     
     public boolean check_clic_selection_dest(Pion selec, int x, int y){
@@ -352,11 +343,8 @@ public class Niveau implements Serializable, Cloneable {
 			return false;
 		}
 		Coordonne arrive = new Coordonne(x, y);
-		if(liste_depl.contains(arrive)){
-            return true;
-		}
-		return false;
-	}
+        return liste_depl.contains(arrive);
+    }
     
     public boolean check_clic_selection_pion(Pion p, int JC) { 
         if (p != null){
@@ -438,9 +426,7 @@ public class Niveau implements Serializable, Cloneable {
     public boolean AMangerRoi(Coordonne dplc){
         if(estRoi(dplc.x+1,dplc.y)){
             if(estContreBord(dplc.x+1,dplc.y)){
-                if( (estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y-1)) || ((estContreFortresse(dplc.x+1, dplc.y)&&(estAttaquant(dplc.x+1,dplc.y+1) || estAttaquant(dplc.x+1,dplc.y-1))))){
-                    return true;
-                }
+                return (estAttaquant(dplc.x + 1, dplc.y + 1) && estAttaquant(dplc.x + 1, dplc.y - 1)) || ((estContreFortresse(dplc.x + 1, dplc.y) && (estAttaquant(dplc.x + 1, dplc.y + 1) || estAttaquant(dplc.x + 1, dplc.y - 1))));
             }
             else if (estAttaquant(dplc.x+2,dplc.y) && estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y-1)){
                 return true;
@@ -452,9 +438,7 @@ public class Niveau implements Serializable, Cloneable {
                 if(estContreTrone(dplc.x+1,dplc.y)==3 && estAttaquant(dplc.x+2,dplc.y) && estAttaquant(dplc.x+1,dplc.y-1)){
                     return true;
                 }
-                if(estContreTrone(dplc.x+1,dplc.y)==4 && estAttaquant(dplc.x+2,dplc.y) && estAttaquant(dplc.x+1,dplc.y+1)){
-                    return true;
-                }
+                return estContreTrone(dplc.x + 1, dplc.y) == 4 && estAttaquant(dplc.x + 2, dplc.y) && estAttaquant(dplc.x + 1, dplc.y + 1);
             }
         }
         else if (estRoi(dplc.x-1,dplc.y)){
@@ -474,17 +458,13 @@ public class Niveau implements Serializable, Cloneable {
                 if(estContreTrone(dplc.x-1,dplc.y)==3 && estAttaquant(dplc.x-2,dplc.y) && estAttaquant(dplc.x-1,dplc.y-1)){
                     return true;
                 }
-                if(estContreTrone(dplc.x-1,dplc.y)==4 && estAttaquant(dplc.x-2,dplc.y) && estAttaquant(dplc.x-1,dplc.y+1)){
-                    return true;
-                }
+                return estContreTrone(dplc.x - 1, dplc.y) == 4 && estAttaquant(dplc.x - 2, dplc.y) && estAttaquant(dplc.x - 1, dplc.y + 1);
             }
 
         }
         else if (estRoi(dplc.x,dplc.y+1)){
             if(estContreBord(dplc.x,dplc.y+1)){
-                if( (estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x-1,dplc.y+1)) || (estContreFortresse(dplc.x, dplc.y+1)&&(estAttaquant(dplc.x+1,dplc.y+1) || estAttaquant(dplc.x-1,dplc.y+1)))){
-                    return true;
-                }
+                return (estAttaquant(dplc.x + 1, dplc.y + 1) && estAttaquant(dplc.x - 1, dplc.y + 1)) || (estContreFortresse(dplc.x, dplc.y + 1) && (estAttaquant(dplc.x + 1, dplc.y + 1) || estAttaquant(dplc.x - 1, dplc.y + 1)));
             }
             else if (estAttaquant(dplc.x,dplc.y+2) && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y+1)){
                 return true;
@@ -496,16 +476,12 @@ public class Niveau implements Serializable, Cloneable {
                 if(estContreTrone(dplc.x,dplc.y+1)==2 && estAttaquant(dplc.x+1,dplc.y+1) && estAttaquant(dplc.x,dplc.y+2)){
                     return true;
                 }
-                if(estContreTrone(dplc.x,dplc.y+1)==3 && estAttaquant(dplc.x-1,dplc.y+1) && estAttaquant(dplc.x+1,dplc.y+1)){
-                    return true;
-                }
+                return estContreTrone(dplc.x, dplc.y + 1) == 3 && estAttaquant(dplc.x - 1, dplc.y + 1) && estAttaquant(dplc.x + 1, dplc.y + 1);
             }
         }
         else if (estRoi(dplc.x,dplc.y-1)){
             if(estContreBord(dplc.x,dplc.y-1)){
-                if( (estAttaquant(dplc.x+1,dplc.y-1) && estAttaquant(dplc.x-1,dplc.y-1)) || (estContreFortresse(dplc.x, dplc.y-1)&&(estAttaquant(dplc.x+1,dplc.y-1) || estAttaquant(dplc.x-1,dplc.y-1)))){
-                    return true;
-                }
+                return (estAttaquant(dplc.x + 1, dplc.y - 1) && estAttaquant(dplc.x - 1, dplc.y - 1)) || (estContreFortresse(dplc.x, dplc.y - 1) && (estAttaquant(dplc.x + 1, dplc.y - 1) || estAttaquant(dplc.x - 1, dplc.y - 1)));
             }
             else if (estAttaquant(dplc.x,dplc.y-2) && estAttaquant(dplc.x-1,dplc.y-1) && estAttaquant(dplc.x+1,dplc.y-1)){
                 return true;
@@ -520,9 +496,7 @@ public class Niveau implements Serializable, Cloneable {
                 if(estContreTrone(dplc.x,dplc.y-1)==2 && estAttaquant(dplc.x,dplc.y-2) && estAttaquant(dplc.x+1,dplc.y-1)){
                     return true;
                 }
-                if(estContreTrone(dplc.x,dplc.y-1)==4 && estAttaquant(dplc.x-1,dplc.y-1) && estAttaquant(dplc.x+1,dplc.y-1)){
-                    return true;
-                }
+                return estContreTrone(dplc.x, dplc.y - 1) == 4 && estAttaquant(dplc.x - 1, dplc.y - 1) && estAttaquant(dplc.x + 1, dplc.y - 1);
             }
         }
         return false;
@@ -540,6 +514,7 @@ public class Niveau implements Serializable, Cloneable {
                     }
                 }
             }
+            clone.data = (Hashtable<String, Integer>) this.data.clone();
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
