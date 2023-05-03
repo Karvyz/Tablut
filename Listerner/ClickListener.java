@@ -40,7 +40,7 @@ public class ClickListener implements ActionListener {
                     else{
                         System.out.println("Aucun coup n'a ete annulé");
                     } 
-                }
+                }/*
                 else if (button.getName().equals("btnSauvegarde")) {//faire des fonctions pour chaque bouton
                     if (j.save(fichier)){
                         System.out.println("Jeu actuelle sauvegardé dans le fichier: "+fichier);
@@ -53,7 +53,7 @@ public class ClickListener implements ActionListener {
                     j.nouvellePartie(fichier);
                     
                 }
-                break;
+                break;*/
             default :
                 System.out.println("Interface inconnu");
         }

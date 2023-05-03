@@ -40,7 +40,7 @@ public class Jeu extends Observable{
     public Pile coup_annule;
 	public Pile coup_a_refaire;
     private InterfaceGraphique interfaceGraphique;
-    private ConfigurationJeu config;
+    public ConfigurationJeu config;
     
     
     public Jeu(){
@@ -111,13 +111,13 @@ public class Jeu extends Observable{
     public void nouvellePartie(String fichier) { //Pour charger une partie
        
         //this.fermerInterfaceGraphique(); //TODO c'est juste pour faire bo mais il faudra modif
-
+/*
         if (load(fichier)){
             System.out.println("Jeu chargé depuis le fichier: " + fichier);
         }
         else{
             System.out.println("Impossible de charger le jeu depuis: "+ fichier);
-        } 
+        } */
         // CollecteurEvenements control = new ControlleurMediateur(this);
         // InterfaceGraphique IG = new InterfaceGraphique(this, control);
         // this.setInterfaceGraphique(IG);
@@ -135,11 +135,11 @@ public class Jeu extends Observable{
     //     }
     // }
 
-    public boolean save(String fichier){
+    public boolean sauvegarderPartie(String fichier){
         try {
 			FileOutputStream fileOut = new FileOutputStream(fichier);
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-	
+	        System.out.println("Sauvegarde du jeu dans le fichier: " + fichier);
 			Data_Niveau data_niveau = new Data_Niveau(this.config, this.n, this.coup_annule, this.coup_a_refaire, joueurCourant);
 	
 			objectOut.writeObject(data_niveau);
@@ -180,7 +180,7 @@ public class Jeu extends Observable{
     
 
     
-    public boolean load(String fichier){
+    public void chargerPartie(String fichier){
         Data_Niveau data_niveau = null;
         
 		try {
@@ -198,18 +198,20 @@ public class Jeu extends Observable{
 			fileIn.close();
             
 			System.out.println("Le jeu a été chargé.");
-			return true;
 
 		} catch (FileNotFoundException e) {
 			System.err.println("Fichier non trouvé : " + fichier);
+            return;
 		} catch (EOFException | InvalidClassException e) {
 			System.err.println("Erreur lors de la lecture du fichier : " + fichier);
+            return;
 		} catch (IOException e) {
 			e.printStackTrace();
+            return;
 		} catch (ClassNotFoundException e) {
             System.err.println("Classe Data_Niveau introuvable");
+            return;
 		}
-		return false;
 	}
     
     //On regarde si le joueur a manger un pion adverse
@@ -217,11 +219,7 @@ public class Jeu extends Observable{
     public void joueurSuivant(){
         joueurCourant = (joueurCourant + 1) %2;
     }
-    
-    public int joueurCourant(){
-        return joueurCourant;
-    }
-    
+
     public boolean enCours(){
         return enCours;
     }
@@ -233,6 +231,10 @@ public class Jeu extends Observable{
     
     public int get_num_JoueurCourant(){
         return joueurCourant;
+    }
+
+    public void set_num_JoueurCourant(int i){
+        joueurCourant = i;
     }
 
     public Joueurs getJoueurCourant(){
