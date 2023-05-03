@@ -51,8 +51,10 @@ public class Jeu extends Observable{
     }
 
     public boolean a_bouclé(){
-        int catapulte = n.plateau.toString().hashCode();
-        if(n.data.contains(catapulte)){
+        System.out.println(n);
+        int catapulte = n.toString().hashCode();
+        if(n.data.containsValue(catapulte)){
+            System.out.println(catapulte);
             return true;
         }
         return false;
@@ -110,6 +112,10 @@ public class Jeu extends Observable{
     public void jouer(Coordonne depart, Coordonne arrive){
         int i = n.deplace_pion(depart, arrive);
         System.out.println("Déplacement du pion de (" + depart.getX() +"," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() +")");
+        if(a_bouclé()){
+            setEnCours(false);
+            System.out.println("LA PARTIE A BOUCLÉ");
+        }
         if (i > 0){
             setEnCours(false);
             if (i == 1)
@@ -123,10 +129,6 @@ public class Jeu extends Observable{
         
         joueurSuivant();
         metAJour();
-        if(a_bouclé()){
-            setEnCours(false);
-            System.out.println("LA PARTIE A BOUCLÉ");
-        }
     }
 
     
