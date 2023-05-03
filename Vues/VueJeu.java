@@ -387,11 +387,11 @@ class VueJeu extends JPanel {
 
         if (controleur.jeu().getJoueurCourant().estHumain() && controleur.jeu().getJoueurSuivant().estHumain()) {
             JOptionPane.showOptionDialog(null,
-                    (controleur.jeu().getJoueurCourant().estHumain() ? controleur.jeu().getJoueurCourant().nom() : "L'IA " + controleur.jeu().getJoueurCourant().nom()) + " débute la partie avec les pions " + (controleur.jeu().getJoueurCourant().aPionsBlancs() ? "blancs" : "noirs") + " sur le plateau\n" + (controleur.jeu().getJoueurSuivant().estHumain() ? "Le joueur " + controleur.jeu().getJoueurSuivant().nom() : "L'IA " + controleur.jeu().getJoueurSuivant().nom()) + " a les pions " + (controleur.jeu().getJoueurSuivant().aPionsBlancs() ? "blancs" : "noirs"),
+                    (controleur.jeu().getJoueurCourant().estHumain() ? controleur.jeu().getJoueurCourant().nom() : "L'IA " + controleur.jeu().getJoueurCourant().nom()) + " (attaquant) débute la partie avec les pions " + (controleur.jeu().getJoueurCourant().aPionsBlancs() ? "blancs" : "noirs\n") + (controleur.jeu().getJoueurSuivant().estHumain() ? "Le joueur " + controleur.jeu().getJoueurSuivant().nom() : "L'IA " + controleur.jeu().getJoueurSuivant().nom()) + " a les pions " + (controleur.jeu().getJoueurSuivant().aPionsBlancs() ? "blancs" : "noirs" + " il est le défenseur\n"),
                     " Début de la partie",
                     JOptionPane.OK_OPTION,
                     JOptionPane.INFORMATION_MESSAGE,
-                    new ImageIcon(Imager.getScaledImage("assets/info.png", 24, 24)),
+                    new ImageIcon(Imager.getScaledImage("info.png", 24, 24)),
                     new JButton[]{button}, button);
         }
     }
