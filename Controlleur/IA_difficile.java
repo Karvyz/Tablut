@@ -5,15 +5,37 @@ import Modele.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static java.lang.System.exit;
+
 public abstract class IA_difficile extends IA{
 
     int nevaluation = 0;
     int bypass1 = 0;
     int bypass2 = 0;
-    static int MAX_DEPTH = 5;
+    static int MAX_DEPTH = 6;
 
     public IA_difficile(int num, Jeu jeu) {
         super(num, jeu);
+    }
+
+    class MyRunable implements Runnable {
+        int game_status;
+        int return_value;
+        Jeu jeu;
+        Pion pion;
+        Coordonne deplacement;
+
+        MyRunable(Jeu jeu, Pion pion, Coordonne deplacement) {
+            this.jeu = jeu;
+            this.pion = pion;
+            this.deplacement = deplacement;
+        }
+        @Override
+        public void run() {
+            Niveau clone = jeu.n.clone();
+            game_status = clone.deplace_pion(pion.getCoordonne(), deplacement);
+            return_value = analyse_recursive(clone, 1, Integer.MAX_VALUE);
+        }
     }
 
     @Override
@@ -32,23 +54,34 @@ public abstract class IA_difficile extends IA{
         for (Pion pion : pions) {
             ArrayList<Coordonne> deplacements = pion.getDeplacement(jeu.n.plateau);
 
-            for (Coordonne deplacement : deplacements) {
+            ArrayList<Thread> threads = new ArrayList<>();
+            ArrayList<MyRunable> myRunables = new ArrayList<>();
+            for (int i = 0; i < deplacements.size(); i++) {
                 nb_branches++;
-                Niveau clone = jeu.n.clone();
-                int retour = clone.deplace_pion(pion.getCoordonne(), deplacement);
-                int tmp = analyse_recursive(clone, 1, valeur_retour);
-                if (retour != 0)
-                    tmp = Integer.MAX_VALUE;
-                if (tmp >= valeur_retour){
-                    if (tmp > valeur_retour) {
-                        departs.clear();
-                        arrivees.clear();
-                        valeur_retour = tmp;
-                        System.out.println("changement valeur retour : " + valeur_retour);
+                MyRunable myRunable = new MyRunable(jeu, pion, deplacements.get(i));
+                myRunables.add(myRunable);
+                Thread thread = new Thread(myRunable);
+                thread.start();
+                threads.add(thread);
+            }
+            for (int i = 0; i < threads.size(); i++) {
+                try {
+                    threads.get(i).join();
+                    int tmp = myRunables.get(i).return_value;
+                    if (myRunables.get(i).game_status != 0)
+                        tmp = Integer.MAX_VALUE;
+                    if (tmp >= valeur_retour){
+                        if (tmp > valeur_retour) {
+                            departs.clear();
+                            arrivees.clear();
+                            valeur_retour = tmp;
+                            System.out.println("changement valeur retour : " + valeur_retour);
+                        }
+                        departs.add(pion.getCoordonne());
+                        arrivees.add(deplacements.get(i));
                     }
-                    departs.add(pion.getCoordonne());
-                    arrivees.add(deplacement);
-
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }
