@@ -11,6 +11,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.lang.reflect.Type;
 
+import static Vues.Imager.getImageIcon;
+
 public class VueMenuSaisies extends JPanel {
 
     CollecteurEvenements controleur;
@@ -44,8 +46,11 @@ public class VueMenuSaisies extends JPanel {
         menuPrincipalButton = new CButton("Menu Principal");
         jouerButton = new CButton("Jouer").blanc();
         comboBox1 = new CComboxBox();
-        nomJ1 = new CTextField();
-        nomJ2 = new CTextField();
+        nomJ1 = new CTextField("Mur.png");
+        //nomJ1 = new CTextField();
+        nomJ2 = new CTextField("Mur.png");
+        //nomJ2 = new CTextField();
+
         Boutons = new JPanel();
         Boutons.setOpaque(false);
         BoutonsQuitter = new JPanel();
@@ -129,14 +134,14 @@ public class VueMenuSaisies extends JPanel {
             public void focusGained(FocusEvent e) {
                 if (nomJ1.getText().equals(s)) {
                     nomJ1.setText("");
-                    nomJ1.setForeground(Color.BLACK);
+                    nomJ1.setForeground(Color.WHITE);
                 }
             }
 
             @Override
             public void focusLost(FocusEvent e) {
                 if (nomJ1.getText().isEmpty()) {
-                    nomJ1.setForeground(Color.BLACK);
+                    nomJ1.setForeground(Color.WHITE);
                     nomJ1.setText(s);
                 }
             }
@@ -148,14 +153,14 @@ public class VueMenuSaisies extends JPanel {
             public void focusGained(FocusEvent e) {
                 if (nomJ2.getText().equals(s)) {
                     nomJ2.setText("");
-                    nomJ2.setForeground(Color.BLACK);
+                    nomJ2.setForeground(Color.WHITE);
                 }
             }
 
             @Override
             public void focusLost(FocusEvent e) {
                 if (nomJ2.getText().isEmpty()) {
-                    nomJ2.setForeground(Color.BLACK);
+                    nomJ2.setForeground(Color.WHITE);
                     nomJ2.setText(s);
                 }
             }
@@ -185,13 +190,14 @@ public class VueMenuSaisies extends JPanel {
         MenuSaisies.add(Joueur1);
 
         JLabel label1 = new JLabel(" Attaquant");
+        label1.setFont(label1.getFont().deriveFont(Font.BOLD));
         Joueur1.add(label1);
 
         nomJ1.setDropMode(DropMode.USE_SELECTION);
         nomJ1.setFocusCycleRoot(false);
         nomJ1.setFocusTraversalPolicyProvider(false);
         nomJ1.setFocusable(true);
-        nomJ1.setText("Attaquant");
+        nomJ1.setText("Joueur 1");
         nomJ1.setVisible(true);
         //nomJ1.setOpaque(false);
         Joueur1.add(nomJ1);
@@ -218,13 +224,14 @@ public class VueMenuSaisies extends JPanel {
         MenuSaisies.add(Joueur2);
 
         JLabel label2 = new JLabel(" Défenseur");
+        label2.setFont(label2.getFont().deriveFont(Font.BOLD));
         Joueur2.add(label2);
 
         nomJ2.setDropMode(DropMode.USE_SELECTION);
         nomJ2.setFocusCycleRoot(false);
         nomJ2.setFocusTraversalPolicyProvider(false);
         nomJ2.setFocusable(true);
-        nomJ2.setText("Défenseur");
+        nomJ2.setText("Joueur 2");
         nomJ2.setVisible(true);
         Joueur2.add(nomJ2);
 
