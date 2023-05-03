@@ -197,7 +197,7 @@ class VueJeu extends JPanel {
         sauvegarder.addActionListener(e -> {
             JButton button = new CButton("OK");
             button.addActionListener(f -> JOptionPane.getRootFrame().dispose());
-            if (controleur.sauvegarderPartie()) {
+            if (controleur.jeu().sauvegarderPartie("sauvegarde.save")) {
                 JOptionPane.showOptionDialog(null,
                         "Sauvegarde réussie",
                         "Sauvegarde",
@@ -223,6 +223,7 @@ class VueJeu extends JPanel {
 
         menuBar.add(Box.createRigidArea(new Dimension(10, 0)));
         menuBar.add(sauvegarder);
+
 
         menuBar.add(Box.createRigidArea(new Dimension(10, 0)));
         menuBar.add(regles);

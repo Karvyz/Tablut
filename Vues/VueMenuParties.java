@@ -43,7 +43,7 @@ public class VueMenuParties extends JPanel {
 
         chargerPartie.addActionListener((e) -> {
             System.out.println("Chargement de : " + selected[0]);
-            controleur.chargerPartie(selected[0]);
+            controleur.jeu().chargerPartie("sauvegarde.save");
         });
 
         supprimerPartie.addActionListener((e) -> {
