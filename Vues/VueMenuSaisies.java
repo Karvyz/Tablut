@@ -178,14 +178,12 @@ public class VueMenuSaisies extends JPanel {
 
         Joueur1 = new JPanel();
         Joueur1.setLayout(new GridLayout(1, 5, 50, 0));
-        Joueur1.setBackground(new Color(-14276823));
         Joueur1.setOpaque(false);
 
         Joueur1.setMaximumSize(new Dimension(441, 110/3));
 
         // Ajouter un bord à gauche
         Joueur1.add(Box.createRigidArea(new Dimension(30, 0)));
-        MenuSaisies.add(Joueur1);
 
         JLabel label1 = new JLabel(" Attaquant");
         label1.setFont(label1.getFont().deriveFont(Font.BOLD));
@@ -210,16 +208,15 @@ public class VueMenuSaisies extends JPanel {
 
         Joueur1.add(Box.createRigidArea(new Dimension(30, 0)));
 
+        MenuSaisies.add(Joueur1);
+
         Joueur2 = new JPanel();
         Joueur2.setLayout(new GridLayout(1, 5, 50, 0));
-        Joueur2.setBackground(new Color(-14276823));
         Joueur2.setOpaque(false);
 
         //Joueur2.setMaximumSize(new Dimension(441, 110/3));
 
         Joueur2.add(Box.createRigidArea(new Dimension(30, 0)));
-
-        MenuSaisies.add(Joueur2);
 
         JLabel label2 = new JLabel(" Défenseur");
         label2.setFont(label2.getFont().deriveFont(Font.BOLD));
@@ -242,6 +239,8 @@ public class VueMenuSaisies extends JPanel {
         Joueur2.add(typeJ2);
 
         Joueur2.add(Box.createRigidArea(new Dimension(30, 0)));
+
+        MenuSaisies.add(Joueur2);
 
         Boutons.add(jouerButton);
         Boutons.add(menuPrincipalButton);
