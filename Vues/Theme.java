@@ -20,6 +20,8 @@ public class Theme {
     private Image blanc_selectionne;
     private Image noir_inactif;
     private Image noir_selectionne;
+
+    private Image point_interrogation;
     private Image roi, forteresse, konakis, roiSurKonakis;
 
     private Theme() {
@@ -67,6 +69,8 @@ public class Theme {
         forteresse = Imager.getImageBuffer(theme + "Forteresse.png");
         konakis = Imager.getImageBuffer(theme + "Konakis.png");
         roiSurKonakis = Imager.getImageBuffer(theme + "RoiSurKonakis.png");
+        point_interrogation = Imager.getImageBuffer(theme + "Point-d'interrogation.png");
+
     }
 
     public int hauteurPlateau() {
@@ -132,4 +136,6 @@ public class Theme {
     public Image konakis() {
         return konakis;
     }
+
+    public Image pointInterrogation(){return point_interrogation;}
 }
