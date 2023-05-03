@@ -15,6 +15,8 @@ class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListener {
     CPlateau pane;
     Point dragStart = null;
 
+    private boolean Deux_cliques = false;
+
     int bordureGauche, bordureHaut, bordureDroite, bordureBas, hauteurCase, largeurCase ;
 
 
@@ -42,16 +44,21 @@ class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListener {
         int l = y * 9 / hauteur;
         int c = x * 9 / largeur;
 
+        if (!Deux_cliques)
+            pane.updateBrillanceSelection(l,c);
+
         Pion caseSelec = controleur.jeu().n.getPion(l, c);
         if (!controleur.jeu().n.check_clic_selection_pion(caseSelec, controleur.jeu().get_num_JoueurCourant())) {
-            //System.out.println("Pion ne vous appartient pas");
             pane.setPionEnDeplacement(null);
             pane.setPionSelec(null);
+            Deux_cliques = false;
+            //pane.updateBrillanceSelection(-1,-1); //TODO A discuter savoir si on met en surbrillance le clic sur un mauvais pion
+
         }
         else {
             pane.setPionSelec(new Point(l, c )); //on donne colonne puis lignes ici
-            System.out.println("Coordonne du pion selec " + pane.getPionSelec().x + "," + pane.getPionSelec().y);
             pane.setPionEnDeplacement(new Point(l , c ));//Initialise point de départ du moov
+            Deux_cliques = true;
             //pane.setCouleurEnDeplacement(l, c); //on donne colonne puis lignes ici
         }
 
@@ -93,6 +100,8 @@ class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListener {
         int largeur = pane.getWidth() - bordureGauche - bordureDroite;
 
         if (dragStart != null && pane.getPionSelec() != null) {
+            pane.updateBrillanceSelection(-1,-1);
+
             if (e.getX() < bordureGauche || e.getY() < bordureHaut ||
                     e.getX() > pane.getWidth() - bordureDroite ||
                     e.getY() > pane.getHeight() - bordureBas) {
@@ -109,6 +118,7 @@ class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListener {
 
             if (startX != l || startY != c) {
                 controleur.dragANDdrop(new Coordonne(startX, startY), new Coordonne(l, c));
+                Deux_cliques = false;
             }
 
             dragStart = null;

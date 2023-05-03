@@ -16,6 +16,8 @@ public class CPlateau extends JPanel implements Observateur {
 
     private Point pionSelec;
     int bordureHaut, bordureGauche, hauteurCase, largeurCase;
+    private int brillanceX = -1;
+    private int brillanceY = -1;
 
     public CPlateau(CollecteurEvenements c) {
         controleur = c;
@@ -25,9 +27,12 @@ public class CPlateau extends JPanel implements Observateur {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         calculerDimensions();
-        System.out.println("BordureGauche : "+ bordureGauche + "," + "Bordure Haut: " + bordureHaut + "," + "largeurCase: " +largeurCase + "hauteurCase: " + hauteurCase);
         drawPlateau(g);
         drawContenu(g);
+
+        if (brillanceX >= 0 && brillanceY >= 0) {
+            drawBrillance(g, brillanceX, brillanceY);
+        }
     }
 
     //Permet de dessiner le plateau sous les pions
@@ -77,12 +82,46 @@ public class CPlateau extends JPanel implements Observateur {
 
     }
 
-    public void drawBrillance(Graphics g) {
-        Jeu j = controleur.jeu();
-        Niveau n = j.getNiveau();
+    public void updateBrillanceSelection(int l, int c) {
+        this.brillanceX = l;
+        this.brillanceY = c;
+        repaint();
+    }
 
-        /*
-        // TODO : implémenter un tour avec une sélection de pion à faire, puis une case à sélectionner, puis un mouvement (implicitement)
+    public void drawBrillance(Graphics g, int l, int c) {
+        Jeu jeu = controleur.jeu();
+        Niveau n = jeu.getNiveau();
+
+        Point selec = getPionSelec();
+        // TODO : Aura autour du pion
+        int x = bordureGauche;
+        int y = bordureHaut;
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+
+                if (i == l && c == j) {
+                    g.drawImage(Theme.instance().pointInterrogation(), x, y, largeurCase, hauteurCase, this);
+                    /*if (n.estAttaquant(l,c)) {
+                        g.drawImage(Theme.instance().noir_selectionne(), x, y, largeurCase, hauteurCase, this);
+
+                    }else if (n.estRoi(l, c)) {
+                        //g.drawImage(Theme.instance().)
+                        System.out.println("ICII faut mettre une image de roi selec");
+                    }
+
+                    else {
+                        g.drawImage(Theme.instance().blanc_selectionne(), x, y, largeurCase, hauteurCase, this);
+                    }*/
+                }
+                x += largeurCase;
+            }
+            y += hauteurCase;
+            x = bordureGauche;
+        }
+
+
+        /*// TODO : implémenter un tour avec une sélection de pion à faire, puis une case à sélectionner, puis un mouvement (implicitement)
         if (j.pionSelectionne() && (j.pion() != null)) {
             int x = bordureGauche + j.pion().colonne() * largeurCase;
             int y = bordureHaut + j.pion().ligne() * hauteurCase;
@@ -93,15 +132,9 @@ public class CPlateau extends JPanel implements Observateur {
             // TODO : Affichage des cases possibles
 
             // - Affichage du pion selectionné (en fonction de la couleur)
-            // TODO : Aura autour du pion
-            if (j.getJoueurCourant().aPionsBlancs()) {
-                g.drawImage(Theme.instance().blanc_selectionne(), x, y, largeurCase, hauteurCase, this);
-            } else if (j.getJoueurCourant().aPionsNoirs()) {
-                g.drawImage(Theme.instance().noir_selectionne(), x, y, largeurCase, hauteurCase, this);
-            }
-        }
+        }*/
 
-         */
+
     }
 
     private void calculerDimensions() {
@@ -124,10 +157,10 @@ public class CPlateau extends JPanel implements Observateur {
     public void setPionSelec(Point point) {
         this.pionSelec = point;
     }
-
     public Point getPionSelec(){
         return pionSelec;
     }
+
     @Override
     public void miseAJour() {
         repaint();
