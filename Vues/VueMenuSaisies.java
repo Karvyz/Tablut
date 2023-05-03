@@ -180,13 +180,13 @@ public class VueMenuSaisies extends JPanel {
         Joueur1.setLayout(new GridLayout(1, 5, 50, 0));
         Joueur1.setOpaque(false);
 
-        Joueur1.setMaximumSize(new Dimension(441, 110/3));
+        //Joueur1.setMaximumSize(new Dimension(441, 110/3));
 
         // Ajouter un bord à gauche
         Joueur1.add(Box.createRigidArea(new Dimension(30, 0)));
 
         JLabel label1 = new JLabel(" Attaquant");
-        label1.setFont(label1.getFont().deriveFont(Font.BOLD));
+        label1.setFont(new Font("Arial", Font.BOLD, 36));
         Joueur1.add(label1);
 
         nomJ1.setDropMode(DropMode.USE_SELECTION);
