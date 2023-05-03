@@ -1,21 +1,9 @@
 package Controlleur;
-import java.awt.Color;
-
 import Modele.Coordonne;
-import Modele.Data_Niveau;
 import Modele.Jeu;
 import Modele.Niveau;
 import Modele.Pion;
-import Structures.Pile;
 import Vues.CollecteurEvenements;
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 
 public class ControlleurMediateur implements CollecteurEvenements {
@@ -48,10 +36,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
             joueurs[i][DIFFCILE] = new IA_difficile_MassacrePion(i, jeu);
 			typeJoueur[i] = DIFFCILE; //type
 		}
-		//joueurs[1][DIFFCILE] = new IA_facile(1, jeu);
-//		typeJoueur[0] = HUMAIN;
-
-
 	}
 	
 	@Override
@@ -119,8 +103,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
 				}
 			}
 		}
-
-
     }
 
 	@Override
@@ -155,7 +137,4 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		changeJoueur(); //On redonne la main au joueur précedent
 		return true;
 	}
-
-	
-
 }

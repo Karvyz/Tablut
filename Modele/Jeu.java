@@ -3,9 +3,7 @@ package Modele;
 import Patterns.Observable;
 import Structures.Pile;
 import Vues.CollecteurEvenements;
-import Vues.FenetrePlateau;
 import Vues.InterfaceGraphique;
-
 import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,9 +12,6 @@ import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.JFrame;
-
 import Controlleur.ControlleurMediateur;
 
 
@@ -48,6 +43,7 @@ public class Jeu extends Observable{
         InterfaceGraphique.demarrer(this, control, interfaceGraphique);
         metAJour();
     }
+
 
 
     public void nouvellePartie(String fichier) { //Pour charger une partie
@@ -106,8 +102,10 @@ public class Jeu extends Observable{
             setEnCours(false);
             if (i == 1)
                 System.out.println("PARTIE FINI CAR ROI CAPTURE");
-            else
+            else if (i == 2)
                 System.out.println("PARTIE FINI CAR ROI EVADE");
+            else
+                System.out.println("EGALITE");
             System.out.println(n);
         }
         
@@ -120,7 +118,7 @@ public class Jeu extends Observable{
     
 
     public boolean load(String fichier){
-		Data_Niveau data_niveau = null;
+		Data_Niveau data_niveau;
 
 		try {
 			FileInputStream fileIn = new FileInputStream(fichier);
