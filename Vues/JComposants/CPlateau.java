@@ -11,6 +11,10 @@ import java.awt.*;
 
 public class CPlateau extends JPanel implements Observateur {
     CollecteurEvenements controleur;
+
+    private Point pionEnDeplacement;
+
+    private Point pionSelec;
     int bordureHaut, bordureGauche, hauteurCase, largeurCase;
 
     public CPlateau(CollecteurEvenements c) {
@@ -21,10 +25,12 @@ public class CPlateau extends JPanel implements Observateur {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         calculerDimensions();
+        System.out.println("BordureGauche : "+ bordureGauche + "," + "Bordure Haut: " + bordureHaut + "," + "largeurCase: " +largeurCase + "hauteurCase: " + hauteurCase);
         drawPlateau(g);
         drawContenu(g);
     }
 
+    //Permet de dessiner le plateau sous les pions
     private void drawPlateau(Graphics g) {
         Image current = Theme.instance().plateau();
         g.drawImage(current, 0, 0, getWidth(), getHeight(), null);
@@ -38,6 +44,9 @@ public class CPlateau extends JPanel implements Observateur {
 
         for (int l = 0; l < 9; l++) {
             for (int c = 0; c < 9; c++) {
+                /*if (pionEnDeplacement != null && l == pionEnDeplacement.y / hauteurCase && l == pionEnDeplacement.x / largeurCase) {
+                    continue;
+                }*/
                 //Pion courant = n.getPion(l, c);
                 // Dessin des pions, forteresses, roi, konakis
                 // - Si c'est un des coins alors on dessine les forteresses
@@ -64,6 +73,8 @@ public class CPlateau extends JPanel implements Observateur {
             y += hauteurCase;
             x = bordureGauche;
         }
+
+
     }
 
     public void drawBrillance(Graphics g) {
@@ -100,6 +111,23 @@ public class CPlateau extends JPanel implements Observateur {
         largeurCase = Math.round(Theme.instance().largeurCase() * getWidth() / (float) Theme.instance().largeurPlateau());
     }
 
+    public Point getPionEnDeplacement() {
+        return pionEnDeplacement;
+    }
+
+    public void setPionEnDeplacement(Point pionEnDeplacement){
+
+        this.pionEnDeplacement = pionEnDeplacement;
+        //miseAJour(); // Ajoutez cette ligne pour actualiser le plateau
+    }
+
+    public void setPionSelec(Point point) {
+        this.pionSelec = point;
+    }
+
+    public Point getPionSelec(){
+        return pionSelec;
+    }
     @Override
     public void miseAJour() {
         repaint();
