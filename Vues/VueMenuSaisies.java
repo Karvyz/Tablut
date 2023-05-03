@@ -168,19 +168,20 @@ public class VueMenuSaisies extends JPanel {
 
     private void setupUI() {
         createUIComponents();
-        MenuSaisies.setLayout(new GridLayout(4, 1));
+        MenuSaisies.setLayout(new GridLayout(4, 1, 0, 100));
         MenuSaisies.setMaximumSize(new Dimension(441, 110));
         //MenuSaisies.setMinimumSize(new Dimension(441, 110));
         MenuSaisies.setPreferredSize(new Dimension(441, 50));
 
         Joueur1 = new JPanel();
-        Joueur1.setLayout(new GridLayout(1, 3));
+        Joueur1.setLayout(new GridLayout(1, 5, 50, 0));
         Joueur1.setBackground(new Color(-14276823));
         Joueur1.setOpaque(false);
 
-        Joueur1.setMaximumSize(new Dimension(300, 20));
+        Joueur1.setMaximumSize(new Dimension(441, 110/3));
 
         // Ajouter un bord à gauche
+        Joueur1.add(Box.createRigidArea(new Dimension(30, 0)));
         MenuSaisies.add(Joueur1);
 
         JLabel label1 = new JLabel(" Attaquant");
@@ -203,12 +204,16 @@ public class VueMenuSaisies extends JPanel {
         typeJ1.setModel(defaultComboBoxModel1);
         Joueur1.add(typeJ1);
 
+        Joueur1.add(Box.createRigidArea(new Dimension(30, 0)));
+
         Joueur2 = new JPanel();
-        Joueur2.setLayout(new GridLayout(1, 3));
+        Joueur2.setLayout(new GridLayout(1, 5, 50, 0));
         Joueur2.setBackground(new Color(-14276823));
         Joueur2.setOpaque(false);
 
-        Joueur2.setMaximumSize(new Dimension(441, 110/3));
+        //Joueur2.setMaximumSize(new Dimension(441, 110/3));
+
+        Joueur2.add(Box.createRigidArea(new Dimension(30, 0)));
 
         MenuSaisies.add(Joueur2);
 
@@ -230,6 +235,8 @@ public class VueMenuSaisies extends JPanel {
         defaultComboBoxModel3.addElement("IA Difficile");
         typeJ2.setModel(defaultComboBoxModel3);
         Joueur2.add(typeJ2);
+
+        Joueur2.add(Box.createRigidArea(new Dimension(30, 0)));
 
         Boutons.add(jouerButton);
         Boutons.add(menuPrincipalButton);
