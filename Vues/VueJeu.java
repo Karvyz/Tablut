@@ -9,6 +9,7 @@ import java.awt.*;
 
 import static java.awt.GridBagConstraints.*;
 
+import Patterns.Observable;
 import Vues.JComposants.*;
 
 class VueJeu extends JPanel {
@@ -405,4 +406,7 @@ class VueJeu extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
     }
+
+
+
 }
