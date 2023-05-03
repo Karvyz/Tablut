@@ -72,8 +72,6 @@ public class VueMenuSaisies extends JPanel {
                         coo.setFont(new Font("Arial", Font.PLAIN, 14));
                         coo.setForeground(Color.WHITE);
                         ((JLabel) coo).setHorizontalAlignment(SwingConstants.CENTER);
-                        //((JLabel) coo).setOpaque(false);
-                        //((JLabel) coo).setIcon(new ImageIcon("Mur.png"));
                     }
                 }
             }
@@ -134,14 +132,14 @@ public class VueMenuSaisies extends JPanel {
             public void focusGained(FocusEvent e) {
                 if (nomJ1.getText().equals(s)) {
                     nomJ1.setText("");
-                    nomJ1.setForeground(Color.WHITE);
+                    nomJ1.setForeground(new Color(173, 216, 230));
                 }
             }
 
             @Override
             public void focusLost(FocusEvent e) {
                 if (nomJ1.getText().isEmpty()) {
-                    nomJ1.setForeground(Color.WHITE);
+                    nomJ1.setForeground(new Color(173, 216, 230));
                     nomJ1.setText(s);
                 }
             }
@@ -153,14 +151,14 @@ public class VueMenuSaisies extends JPanel {
             public void focusGained(FocusEvent e) {
                 if (nomJ2.getText().equals(s)) {
                     nomJ2.setText("");
-                    nomJ2.setForeground(Color.WHITE);
+                    nomJ2.setForeground(new Color(173, 216, 230));
                 }
             }
 
             @Override
             public void focusLost(FocusEvent e) {
                 if (nomJ2.getText().isEmpty()) {
-                    nomJ2.setForeground(Color.WHITE);
+                    nomJ2.setForeground(new Color(173, 216, 230));
                     nomJ2.setText(s);
                 }
             }
