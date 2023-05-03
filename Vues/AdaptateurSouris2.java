@@ -1,5 +1,6 @@
 package Vues;
 
+import Modele.Pion;
 import Vues.JComposants.CPlateau;
 
 import java.awt.event.MouseAdapter;
@@ -35,6 +36,12 @@ class AdaptateurSouris2 extends MouseAdapter {
 
         int l = y * 9 / hauteur;
         int c = x * 9 / largeur;
+
+        Pion caseSelec = controleur.jeu().n.getPion(l, c);
+        /*if (!controleur.jeu().n.check_clic_selection_pion(caseSelec, controleur.jeu().get_num_JoueurCourant())) {
+            pane.setPionEnDeplacement(null);
+            pane.setPionSelec(null); // Ajoutez cette ligne
+        }*/
 
         controleur.clicSouris(l, c);
         System.out.println("l = " + l + ", c = " + c);
