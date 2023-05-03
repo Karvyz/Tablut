@@ -53,11 +53,11 @@ public class CPlateau extends JPanel implements Observateur {
                 //System.out.println("x = " + x + ", y = " + y);
 
                 if (n.estAttaquant(l, c)) {
-                    g.drawImage(Theme.instance().blanc_inactif(), x, y, largeurCase, hauteurCase, this);
+                    g.drawImage(Theme.instance().noir_inactif(), x, y, largeurCase, hauteurCase, this);
                 } else if (n.estRoi(l, c)) {
                     g.drawImage(Theme.instance().roi(), x, y, largeurCase, hauteurCase, this);
                 } else if (n.estDefenseur(l, c)) {
-                    g.drawImage(Theme.instance().noir_inactif(), x, y, largeurCase, hauteurCase, this);
+                    g.drawImage(Theme.instance().blanc_inactif(), x, y, largeurCase, hauteurCase, this);
                 }
                 x += largeurCase;
             }
