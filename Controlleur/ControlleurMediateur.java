@@ -6,9 +6,6 @@ import Vues.*;
 import Vues.CollecteurEvenements;
 
 
-import java.io.*;
-import java.sql.SQLOutput;
-
 public class ControlleurMediateur implements CollecteurEvenements {
 
 	Vues vues;
@@ -23,29 +20,34 @@ public class ControlleurMediateur implements CollecteurEvenements {
     public static final int DIFFCILE = 3;
 	
     Jeu jeu;
-	Joueurs[][] joueurs = new Joueurs[2][4];;
-	final int lenteurAttente = 50;
-	int decompte=20;
+	Joueurs[][] joueurs = new Joueurs[2][4];
+	private int[] typeJoueur = new int[4];
+	final int lenteurAttente = 300;
+	int decompte;
 	private Pion selectionne;
 	private boolean pionSelec = false;
-
-	private int[] typeJoueur = new int[4];
-
-
 	public ControlleurMediateur(Jeu j)  {
 		jeu = j;
+		joueurParDefaut();//Pour initiliaser un joueur Humain
+	}
 
+	@Override
+	public Jeu jeu() {
+		verifierJeu("Impossible de renvoyer un jeu");
+		return jeu;
+	}
 
-		for (int i = 0; i < joueurs.length; i++) {
-			joueurs[i][HUMAIN] = new Humain(i, jeu);
-			joueurs[i][FACILE] = new IA_facile(TypeJoueur.IA_FACILE, jeu, "");
-            joueurs[i][MOYEN] = new IA_moyen(TypeJoueur.IA_FACILE, jeu, "");
-            joueurs[i][DIFFCILE] = new IA_difficile_MassacrePion(TypeJoueur.IA_DIFFICILE, jeu, "");
-		}
-		typeJoueur[0] = HUMAIN; //DE BASE
-		typeJoueur[1] = HUMAIN; //type
-
-//		joueurs[1][DIFFCILE] = new IA_facile(1, jeu);
+	@Override
+	public void nouvellePartie(String nomJ1, TypeJoueur typeJ1, String nomJ2, TypeJoueur typeJ2){
+		verifierMediateurVues("Impossible de créer une nouvelle partie");
+		System.out.println("INITialisation des joueurs \n Type des joueurs choisis pour la partie J0: " + typeJ1 +", J1: " +typeJ2);
+		jeu.nouveauJoueur(nomJ1, typeJ1); //Initialisation des joueurs
+		jeu.nouveauJoueur(nomJ2, typeJ2);
+		initIA(typeJ1, typeJ2);
+		typeJoueur[0] = typeJ1.ordinal(); //type
+		typeJoueur[1] = typeJ2.ordinal(); //type
+		jeu.nouvellePartie();
+		vues.nouvellePartie();
 	}
 
 	@Override//Deplacement en Drag&Drop
@@ -54,15 +56,9 @@ public class ControlleurMediateur implements CollecteurEvenements {
 			changeJoueur();
 		}
 	}
-
 	@Override
 	public void clicSouris(int l, int c) {
 		// Lors d'un clic sur un pion, on affiche ses déplacements possibles
-
-		/*if(jeu.getJoueurCourant().type() != TypeJoueur.HUMAIN){
-			System.out.println("ici");
-			return;
-		}*/
 		Pion caseSelec = jeu.n.getPion(l,c);
 
 		if (caseSelec == null && pionSelec ){ //ICI on cherche a déplacer
@@ -76,13 +72,142 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		else{ //Selection du pion
 			if (jeu.n.check_clic_selection_pion(caseSelec, jeu.get_num_JoueurCourant())){
 				pionSelec = true;
-				selectionne = caseSelec.clone(); //on stock le pion selectionne
+				selectionne = caseSelec.clone(); //on stocke le pion sélectionne
 				caseSelec.affiche_liste_deplacement(caseSelec.getDeplacement(jeu.n.plateau));
 			}
 			else{
 				System.out.println("Ce pion ne vous appartient pas");
 			}
 		}
+	}
+	@Override
+	public void partieSuivante() {
+		verifierJeu("Impossible de passer à la partie suivante");
+		jeu.nouvellePartie();
+		vues.nouvellePartie();
+		afficherJeu();
+	}
+
+	@Override
+	public void toucheClavier(String touche) {
+		if (jeu().partieTerminee()) {
+			return;
+		}
+		switch (touche) {
+			case "Annuler":
+				jeu.annuler();
+				break;
+			case "Refaire":
+				jeu.refaire();
+				break;
+			default:
+				Configuration.instance().logger().info("Touche inconnue : " + touche);
+		}
+	}
+
+
+	//Permet de définir les Objets pour les joueurs, et le type des Joueurs par défault est IA_facile
+	private void joueurParDefaut() {
+		joueurs[0][HUMAIN] = new Humain(0, jeu);
+		joueurs[1][HUMAIN] = new Humain(1, jeu);
+	}
+	private void initIA(TypeJoueur typeJ1, TypeJoueur typeJ2){
+		//int lenteurAnimationIA = Integer.parseInt(Configuration.instance().lirePropriete("LenteurAnimationIA"));
+		switch (typeJ1) {
+			case IA_DIFFICILE:
+				joueurs[0][DIFFCILE] = new IA_difficile_MassacrePion(typeJ1, jeu, "");
+				break;
+			case IA_MOYEN:
+				System.out.println("IA MOYENNE NON MISE"); //TODO
+				joueurs[0][MOYEN] = new IA_moyen(typeJ1, jeu, "");
+				break;
+			case IA_FACILE:
+				joueurs[0][FACILE] = new IA_facile(typeJ1, jeu, "");
+				break;
+
+		}
+		/*if (typeJ1 != TypeJoueur.HUMAIN) {
+			animIA1 = new AnimationIA(lenteurAnimationIA, ia1);
+		}*/
+
+		switch (typeJ2) {
+			case IA_DIFFICILE:
+				joueurs[1][DIFFCILE] = new IA_difficile_MassacrePion(typeJ2, jeu, "");
+				break;
+			case IA_MOYEN:
+				System.out.println("IA MOYENNE NON MISE");//TODO
+				joueurs[1][MOYEN] = new IA_moyen(typeJ2, jeu, "");
+				break;
+			case IA_FACILE:
+				joueurs[1][FACILE] = new IA_facile(typeJ2, jeu, "");
+				break;
+		}
+		/*if (typeJ2 != TypeJoueur.HUMAIN) {
+			animIA2 = new AnimationIA(lenteurAnimationIA, ia2);
+		}*/
+	}
+
+	void changeJoueur() {
+		decompte = lenteurAttente;
+	}
+
+	@Override
+	public void changeJoueur(int j, int t) { //Permet de changer le type d'un joueur en cours de partie mais on va surement pas l'utiliser
+		System.out.println("Nouveau type " + t + " pour le joueur " + j);
+		typeJoueur[j] = t;
+	}
+
+	public void tictac(){
+
+		if (animDemarrage == null) {
+			int lenteurAnimation = Integer.parseInt(Configuration.instance().lirePropriete("LenteurAnimationDemarrage"));
+			animDemarrage = new AnimationDemarrage(lenteurAnimation, this);
+		}
+		if (!animDemarrage.terminee()) {
+			animDemarrage.temps();
+			return;
+		}
+
+		if (jeu.enCours()) {
+			if (jeu == null || jeu().partieTerminee()) {
+				return;
+			}
+
+			/*if (jeu().getJoueurCourant() == jeu.joueur1()) {
+				animIA1.temps();
+			} else {
+				animIA2.temps();
+			}*/
+			int type = typeJoueur[jeu.get_num_JoueurCourant()];
+			if (jeu().n.PlusdePion(jeu().get_num_JoueurCourant())) {
+				jeu().setEnCours(false);
+				System.out.println("Le joueur blanc a gagné car l'attaquant n'a plus de pion");
+			}
+			//TODO ici l'IA joue instanténément donc problème pour annuler coup en IA vs Humain
+			else if (joueurs[jeu.get_num_JoueurCourant()][type].tempsEcoule()) //Un humain renvoi tjr false, une IA renvoi vrai lorsquelle a joué(jeu effectué dans tempsEcoule())
+				changeJoueur();
+			else if (decompte == 0) {
+				if (type == HUMAIN && jeu.get_num_JoueurCourant()==0)
+					System.out.println("C'est a vous de jouer : L'ATTAQUANT ");
+				else
+					System.out.println("C'est a vous de jouer : LE DEFENSEUR");
+				decompte = lenteurAttente;
+			}
+			else {
+				decompte--;
+			}
+		}
+	}
+
+	@Override
+	public void toClose() {
+		vues.close();
+		System.exit(0);
+	}
+
+	@Override
+	public void afficherRegles() {
+		vues.afficherR();
 	}
 
 	@Override
@@ -123,6 +248,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	@Override
 	public void afficherJeu() {
 		verifierMediateurVues("Impossible d'afficher le jeu");
+		System.out.println("Ouverture du jeu");
 		vues.afficherJeu();
 	}
 
@@ -130,226 +256,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	public void afficherMenuChargerPartie() {
 		verifierMediateurVues("Impossible d'afficher le menu des parties sauvegardées");
 		vues.afficherMenuChargerPartie();
-	}
-
-
-
-	@Override
-	public void nouvellePartie(String nomJ1, TypeJoueur typeJ1, String nomJ2, TypeJoueur typeJ2){
-		verifierMediateurVues("Impossible de créer une nouvelle partie");
-		//jeu = new Jeu();
-		System.out.println(typeJ1 +"," +typeJ2);
-		jeu.nouveauJoueur(nomJ1, typeJ1);
-		jeu.nouveauJoueur(nomJ2, typeJ2);
-		jeu.nouvellePartie();
-		vues.nouvellePartie();
-		initIA(typeJ1, typeJ2);
-		typeJoueur[0] = typeJ1.ordinal(); //type
-		typeJoueur[1] = typeJ2.ordinal(); //type
-
-
-	}
-
-	@Override
-	public void partieSuivante() {
-		verifierJeu("Impossible de passer à la partie suivante");
-		jeu.nouvellePartie();
-		vues.nouvellePartie();
-		afficherJeu();
-	}
-
-	@Override
-	public Jeu jeu() {
-		verifierJeu("Impossible de renvoyer un jeu");
-		return jeu;
-	}
-
-	@Override
-	public void toClose() {
-		vues.close();
-		System.exit(0);
-	}
-
-	@Override
-	public void afficherRegles() {
-		vues.afficherR();
-	}
-
-	@Override
-	public void annuler() {
-		//System.out.print("Annuler : " + jeu().joueurActuel().nom() + " ");
-		if (jeu.coup_annule.estVide()){
-			System.out.println("Impossible d'annuler");
-			return;
-		}
-		jeu.coup_a_refaire.empiler(jeu.n.clone()); //stock l'état avant d'annuler
-		Niveau restaure = jeu.coup_annule.depiler(); //Recupère le niveau précedent
-		jeu.n = restaure.clone();
-		jeu.metAJour();
-		jeu.joueurSuivant(); //La variable du jeu doit aussi être modifie
-		changeJoueur(); //On redonne la main au joueur précedent
-		System.out.println("Annulation effectué");
-	}
-
-	@Override
-	public void refaire() {
-		if (jeu.coup_a_refaire.estVide()) {
-			System.out.println("Aucun coup n'est a refaire");
-			return;
-		}
-		jeu.coup_annule.empiler(jeu.n.clone());
-		Niveau a_refaire = jeu.coup_a_refaire.depiler();
-		jeu.n = a_refaire.clone();
-		jeu.metAJour();
-		jeu.joueurSuivant();
-		changeJoueur();
-		System.out.println("Coup refait");
-	}
-
-
-	@Override
-	public void toucheClavier(String touche) {
-		if (jeu().partieTerminee()) {
-			return;
-		}
-		switch (touche) {
-			case "Annuler":
-				annuler();
-				break;
-			case "Refaire":
-				refaire();
-				break;
-			default:
-				Configuration.instance().logger().info("Touche inconnue : " + touche);
-		}
-	}
-
-	private void initIA(TypeJoueur typeJ1, TypeJoueur typeJ2){
-		//int lenteurAnimationIA = Integer.parseInt(Configuration.instance().lirePropriete("LenteurAnimationIA"));
-		System.out.println(typeJ1 +","+typeJ2);
-		switch (typeJ1) {
-			case IA_DIFFICILE:
-				joueurs[0][DIFFCILE] = new IA_difficile_MassacrePion(typeJ1, jeu, "");
-				break;
-			case IA_MOYEN:
-				System.out.println("IA MOYENNE NON MISE");
-				joueurs[0][MOYEN] = new IA_moyen(typeJ1, jeu, "");
-				break;
-			case IA_FACILE:
-				joueurs[0][FACILE] = new IA_facile(typeJ1, jeu, "");
-				break;
-
-		}
-		/*if (typeJ1 != TypeJoueur.HUMAIN) {
-			animIA1 = new AnimationIA(lenteurAnimationIA, ia1);
-		}*/
-
-		switch (typeJ2) {
-			case IA_DIFFICILE:
-				joueurs[1][DIFFCILE] = new IA_difficile_MassacrePion(typeJ2, jeu, "");
-				break;
-			case IA_MOYEN:
-				System.out.println("IA MOYENNE NON MISE");
-				joueurs[1][MOYEN] = new IA_moyen(typeJ2, jeu, "");
-				break;
-			case IA_FACILE:
-				joueurs[1][FACILE] = new IA_facile(typeJ2, jeu, "");
-				break;
-		}
-		/*if (typeJ2 != TypeJoueur.HUMAIN) {
-			animIA2 = new AnimationIA(lenteurAnimationIA, ia2);
-		}*/
-	}
-
-
-
-	void changeJoueur() {
-		decompte = lenteurAttente;
-	}
-
-		public void tictac(){
-
-			if (animDemarrage == null) {
-				int lenteurAnimation = Integer.parseInt(Configuration.instance().lirePropriete("LenteurAnimationDemarrage"));
-				animDemarrage = new AnimationDemarrage(lenteurAnimation, this);
-			}
-			if (!animDemarrage.terminee()) {
-				animDemarrage.temps();
-				return;
-			}
-
-
-
-			if (jeu.enCours()) {
-				if (jeu == null || jeu().partieTerminee()) {
-					return;
-				}
-
-				/*if (jeu().getJoueurCourant() == jeu.joueur1()) {
-					animIA1.temps();
-				} else {
-					animIA2.temps();
-				}*/
-				if (jeu().n.PlusdePion(jeu().get_num_JoueurCourant())) {
-					jeu().setEnCours(false);
-					System.out.println("Le joueur blanc a gagné car l'attaquant n'a plus de pion");
-				} else {
-
-					if (decompte == 0) {
-						int type = typeJoueur[jeu.get_num_JoueurCourant()];
-						System.out.println("Type du joueur : "+ type);
-
-						if (joueurs[jeu.get_num_JoueurCourant()][type].tempsEcoule()) { //Un humain renvoi tjr false, une IA renvoi vrai lorsquelle a joué(jeu effectué dans tempsEcoule())
-							changeJoueur();
-						} else {
-							if (type == HUMAIN)
-								System.out.println("On vous attend, joueur " + joueurs[jeu.get_num_JoueurCourant()][type].numJ + " vous devez déplacer un pion noir ");
-							else
-								System.out.println("On vous attend, joueur " + joueurs[jeu.get_num_JoueurCourant()][type].numJ + " vous devez déplacer un pion blanc ou le roi");
-
-							decompte = lenteurAttente;
-						}
-					} else {
-						decompte--;
-					}
-				}
-			}
-		}
-
-
-	@Override
-	public void changeJoueur(int j, int t) {
-		System.out.println("Nouveau type " + t + " pour le joueur " + j);
-		typeJoueur[j] = t;
-	}
-
-	//Le niveau courant devient le sommet de la pile a_refaire
-	public boolean refaire_coup() {
-		if (jeu.coup_a_refaire.estVide())
-			return false;
-	
-		jeu.coup_annule.empiler(jeu.n.clone());
-		Niveau a_refaire = jeu.coup_a_refaire.depiler();
-		jeu.n = a_refaire.clone();
-		jeu.metAJour();
-		jeu.joueurSuivant();
-		changeJoueur();
-		return true;
-	
-	}
-	
-	//Le niveau courant devient le sommet de la pile annule_coup, soit le coup précedent
-	public boolean restaurer_niveau(){
-		if (jeu.coup_annule.estVide()){
-			return false;
-		}
-		jeu.coup_a_refaire.empiler(jeu.n.clone()); //stock l'état avant d'annuler
-		Niveau restaure = jeu.coup_annule.depiler(); //Recupère le niveau précedent
-		jeu.n = restaure.clone();
-		jeu.metAJour();
-		jeu.joueurSuivant(); //La variable du jeu doit aussi être modifie
-		changeJoueur(); //On redonne la main au joueur précedent
-		return true;
 	}
 
 	

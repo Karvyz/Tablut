@@ -33,10 +33,6 @@ public interface CollecteurEvenements {
 
     void afficherRegles();
 
-    void annuler();
-
-    void refaire();
-
     void toucheClavier(String touche);
 
 }

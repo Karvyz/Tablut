@@ -321,8 +321,8 @@ class VueJeu extends JPanel {
                 new CButton(new ImageIcon(Imager.getScaledImage("assets/redo.png", 18, 18))).blanc(),
         };
 
-        controls[0].addActionListener(e -> controleur.annuler());
-        controls[1].addActionListener(e -> controleur.refaire());
+        controls[0].addActionListener(e -> controleur.jeu().annuler());
+        controls[1].addActionListener(e -> controleur.jeu().refaire());
 
         for (JButton button: controls) {
             button.setFocusable(false);
@@ -385,6 +385,7 @@ class VueJeu extends JPanel {
 
         vueNiveau.miseAJour();
 
+        /*TODO POP UP début de parti quand on clique sur OK
         JButton button = new CButton("OK");
         button.addActionListener(e -> JOptionPane.getRootFrame().dispose());
 
@@ -396,7 +397,7 @@ class VueJeu extends JPanel {
                     JOptionPane.INFORMATION_MESSAGE,
                     new ImageIcon(Imager.getScaledImage("info.png", 24, 24)),
                     new JButton[]{button}, button);
-        }
+        }*/
     }
 
     protected void paintComponent(Graphics g) {

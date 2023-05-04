@@ -1,17 +1,18 @@
 package Controlleur;
 import Modele.Coordonne;
 import Modele.Jeu;
+import Modele.Joueurs;
+
+import static Modele.TypeJoueur.HUMAIN;
 import Modele.Pion;
 
 public class Humain extends Joueurs {
 
     public Humain(int num, Jeu jeu) {
-        super(num, jeu);
+        super(HUMAIN, jeu, "Humain");
     }
-    
-    // Méthode appelée pour tous les joueurs lors d'un clic sur le plateau
-	// Si un joueur n'est pas concerné, il lui suffit de l'ignorer
-	boolean jeu(Coordonne src, Coordonne dst) {
+
+	public boolean jeu(Coordonne src, Coordonne dst) {
         Pion depart = jeu.n.getPion(src.getX(), src.getY()); //Recupère le pion
         if (jeu.n.check_clic_selection_pion(depart, jeu.get_num_JoueurCourant())){ //Vérifie que le Pions choisit est bien de notre Type, joueur 0 implique de jouer les Attaquants et joueur 1 implique de jouer Defenseurs et Roi
             if(jeu.n.check_clic_selection_dest(depart, dst.getX(), dst.getY())){ //On vérifie que la case d'arrive est accessible
@@ -23,8 +24,8 @@ public class Humain extends Joueurs {
         }
         //else
             //System.out.println("le pion choisit est invalide"); //on affiche deja un message quand on clique
-
 		return false;
 	}
+
 
 }
