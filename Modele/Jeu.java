@@ -3,18 +3,12 @@ package Modele;
 import Patterns.Observable;
 import Structures.Pile;
 import Vues.InterfaceGraphique;
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+
+import java.io.*;
 import java.util.Random;
 import static java.util.Objects.requireNonNull;
 
-public class Jeu extends Observable{
+public class Jeu extends Observable implements Serializable {
 
     public Niveau n;
     private Joueurs joueur1;
@@ -67,6 +61,7 @@ public class Jeu extends Observable{
         this.coup_a_refaire = new Pile();
         //metAJour();
     }
+
 
     public void jouer(Coordonne depart, Coordonne arrive){
         this.coup_annule.empiler(this.n.clone());
@@ -149,7 +144,7 @@ public class Jeu extends Observable{
 			FileOutputStream fileOut = new FileOutputStream(fichier);
 			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
 	        System.out.println("Sauvegarde du jeu dans le fichier: " + fichier);
-			Data_Niveau data_niveau = new Data_Niveau(this.config, this.n, this.coup_annule, this.coup_a_refaire, joueurCourant);
+			Data_Niveau data_niveau = new Data_Niveau(this.config, this.n, this.coup_annule, this.coup_a_refaire, joueurCourant, joueur1(), joueur2());
 	
 			objectOut.writeObject(data_niveau);
 			objectOut.close();
@@ -176,7 +171,9 @@ public class Jeu extends Observable{
             this.coup_annule = data_niveau.coup_annule;
             this.coup_a_refaire = data_niveau.coup_a_refaire;
             this.joueurCourant = data_niveau.joueurCourant;
-            setEnCours(false);
+            this.joueur1 = data_niveau.attaquant;
+            this.joueur2 = data_niveau.defenseur;
+
 
             objectIn.close();
             fileIn.close();
@@ -258,4 +255,6 @@ public class Jeu extends Observable{
         else
             return joueur1;
     }
+
+
 }
