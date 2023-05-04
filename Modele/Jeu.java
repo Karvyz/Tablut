@@ -3,8 +3,8 @@ package Modele;
 import Patterns.Observable;
 import Structures.Pile;
 import Vues.CollecteurEvenements;
+import Vues.FenetrePlateau;
 import Vues.InterfaceGraphique;
-
 import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,12 +13,9 @@ import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
+import javax.swing.JFrame;
 import Controlleur.ControlleurMediateur;
-
-
 import java.util.Random;
-
 import static java.util.Objects.requireNonNull;
 
 public class Jeu extends Observable{
@@ -34,15 +31,15 @@ public class Jeu extends Observable{
     private int choixJoueurDebut = -1;
     //private Sauvegarde sauvegarde;
 
-    
+
     private int joueurCourant;
     private boolean enCours = false;
     public Pile coup_annule;
 	public Pile coup_a_refaire;
     private InterfaceGraphique interfaceGraphique;
     public ConfigurationJeu config;
-    
-    
+
+
     public Jeu(){
         rand = new Random();
         //nouvellePartie();
@@ -164,8 +161,10 @@ public class Jeu extends Observable{
             setEnCours(false);
             if (i == 1)
                 System.out.println("PARTIE FINI CAR ROI CAPTURE");
-            else
+            else if (i == 2)
                 System.out.println("PARTIE FINI CAR ROI EVADE");
+            else
+                System.out.println("EGALITE");
             System.out.println(n);
         }
 
@@ -177,43 +176,43 @@ public class Jeu extends Observable{
         metAJour();
     }
 
-    
-
-    
     public void chargerPartie(String fichier){
         Data_Niveau data_niveau = null;
-        
-		try {
-            FileInputStream fileIn = new FileInputStream(fichier);
-			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-            
-			data_niveau = (Data_Niveau) objectIn.readObject();
-			this.n = data_niveau.niveau;
-			this.coup_annule = data_niveau.coup_annule;
-			this.coup_a_refaire = data_niveau.coup_a_refaire;
-			this.joueurCourant = data_niveau.joueurCourant;
-            setEnCours(false);
-            
-			objectIn.close();
-			fileIn.close();
-            
-			System.out.println("Le jeu a été chargé.");
 
-		} catch (FileNotFoundException e) {
-			System.err.println("Fichier non trouvé : " + fichier);
+        try {
+            FileInputStream fileIn = new FileInputStream(fichier);
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+
+            data_niveau = (Data_Niveau) objectIn.readObject();
+            this.n = data_niveau.niveau;
+            this.coup_annule = data_niveau.coup_annule;
+            this.coup_a_refaire = data_niveau.coup_a_refaire;
+            this.joueurCourant = data_niveau.joueurCourant;
+            setEnCours(false);
+
+            objectIn.close();
+            fileIn.close();
+
+            System.out.println("Le jeu a été chargé.");
+
+        } catch (FileNotFoundException e) {
+            System.err.println("Fichier non trouvé : " + fichier);
             return;
-		} catch (EOFException | InvalidClassException e) {
-			System.err.println("Erreur lors de la lecture du fichier : " + fichier);
+        } catch (EOFException | InvalidClassException e) {
+            System.err.println("Erreur lors de la lecture du fichier : " + fichier);
             return;
-		} catch (IOException e) {
-			e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
             return;
-		} catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             System.err.println("Classe Data_Niveau introuvable");
             return;
-		}
-	}
-    
+        }
+    }
+
+
+
+
     //On regarde si le joueur a manger un pion adverse
     
     public void joueurSuivant(){
@@ -224,11 +223,12 @@ public class Jeu extends Observable{
         return enCours;
     }
 
+
     public void setEnCours(boolean b) {
         enCours = b;
     }
-    
-    
+
+
     public int get_num_JoueurCourant(){
         return joueurCourant;
     }
@@ -275,5 +275,4 @@ public class Jeu extends Observable{
             return joueur2;
         else
             return joueur1;
-    }
 }

@@ -7,30 +7,27 @@ import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-
+import java.util.Hashtable;
 
 
 public class Niveau implements Serializable, Cloneable {
-    public static final int NOIR = 0;
-    public static final int BLANC = 1;
-    public static final int ROI = 2;
     private int taille = 9;
     private ConfigurationJeu config;
 
     public Pion [][] plateau = new Pion[taille][taille];
-
+    public Hashtable<String, Integer> data = new Hashtable<>();
 
 
     //On creer le plateau de jeu
     public Niveau(ConfigurationJeu config ) {
         this.config = config;
         init_Niveau();
-
+        data.put(this.toString(),0);
     }
 
     public Niveau(String fichier) {
-        Data_Niveau data_niveau = null;
-
+        Data_Niveau data_niveau;
+    
         try {
             FileInputStream fileIn = new FileInputStream(fichier);
             ObjectInputStream objectIn = new ObjectInputStream(fileIn);
@@ -59,14 +56,14 @@ public class Niveau implements Serializable, Cloneable {
     //On initialise le plateau de jeu
     public void init_Niveau() {
         String[] tab = {"   AAA   ",
-                "    A    ",
-                "    D    ",
-                "A   D   A",
-                "AADDRDDAA",
-                "A   D   A",
-                "    D    ",
-                "    A    ",
-                "   AAA   "};
+                        "    A    ",
+                        "    D    ",
+                        "A   D   A",
+                        "AADDRDDAA",
+                        "A   D   A",
+                        "    D    ",
+                        "    A    ",
+                        "   AAA   "};
 
 //        String[] tab = {"        D",
 //                        "         ",
@@ -144,7 +141,7 @@ public class Niveau implements Serializable, Cloneable {
         return true;
     }
 
-
+    
 
 
     //On regarde la taille du plateau
@@ -228,21 +225,30 @@ public class Niveau implements Serializable, Cloneable {
         return x>=0 && x<9 && y>=0 && y<9;
     }
 
-
+    
     //On regarde si la case est une forteresse
     public boolean estForteresse(int x, int y){
         if (x == 0 || x == 8){
-            if (y == 0 || y == 8){
-                return true;
-            }
+            return y == 0 || y == 8;
         }
         return false;
     }
 
     //On regarde si la case est un konakis
     public boolean estKonakis(int x, int y){
-        if (x==4 && y==4){
-            return true;
+        return x == 4 && y == 4;
+    }
+
+    public boolean a_boucle(){
+        String key = this.toString();
+        if(this.data.containsKey(key)){
+            int val = this.data.get(key);
+            if (val==2) // si on a déjà fait 2 fois le même coup
+                return true;
+            else
+                this.data.put(this.toString(), val + 1); // on incrémente le nombre de fois qu'on a fait le même coup
+        } else {
+            this.data.put(this.toString(), 0); // on ajoute le coup à la map
         }
         return false;
     }
@@ -267,6 +273,9 @@ public class Niveau implements Serializable, Cloneable {
         if (estRoi(p)){
             if (estForteresse(dst.x, dst.y) || (estContreBord(dst.x, dst.y) && config.isWinTousCote()))
                 return 2;
+        }
+        if (a_boucle()){
+            return 3;
         }
         return 0;
 
@@ -455,33 +464,24 @@ public class Niveau implements Serializable, Cloneable {
         if (x == 0 || x == 8){
             return true;
         }
-        else if (y == 0 || y == 8){
-            return true;
-        }
-        return false;
+        else return y == 0 || y == 8;
     }
 
     //On regarde si le pion est contre une forteresse
     public boolean estContreForteresse(int x, int y){
-        if (x==0 && y==1 || x==0 && y==7 || x==1 && y==0 || x==1 && y==8 || x==7 && y==0 || x==7 && y==8 || x==8 && y==1 || x==8 && y==7){
-            return true;
-        }
-        return false;
+        return x == 0 && y == 1 || x == 0 && y == 7 || x == 1 && y == 0 || x == 1 && y == 8 || x == 7 && y == 0 || x == 7 && y == 8 || x == 8 && y == 1 || x == 8 && y == 7;
     }
 
     public boolean check_clic_selection_dest(Pion selec, int x, int y){
         ArrayList<Coordonne> liste_depl = selec.getDeplacement(plateau);
-        if (liste_depl.isEmpty()){ //Aucun coup possible pour ce pion
-            return false;
-        }
-        Coordonne arrive = new Coordonne(x, y);
-        if(liste_depl.contains(arrive)){
-            return true;
-        }
-        return false;
+		if (liste_depl.isEmpty()){ //Aucun coup possible pour ce pion
+			return false;
+		}
+		Coordonne arrive = new Coordonne(x, y);
+        return liste_depl.contains(arrive);
     }
-
-    public boolean check_clic_selection_pion(Pion p, int JC) {
+    
+    public boolean check_clic_selection_pion(Pion p, int JC) { 
         if (p != null){
             ArrayList<Pion> pions_dispo = getPionsDispo(JC);
             return pions_dispo.contains(p);
@@ -687,6 +687,7 @@ public class Niveau implements Serializable, Cloneable {
                     }
                 }
             }
+            clone.data = (Hashtable<String, Integer>) this.data.clone();
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
