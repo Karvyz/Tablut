@@ -1,5 +1,6 @@
 package Modele;
 
+import Controlleur.IA_difficile_MassacrePion;
 import Patterns.Observable;
 import Structures.Pile;
 import Vues.CollecteurEvenements;
@@ -42,18 +43,20 @@ public class Jeu extends Observable{
 
     public Jeu(){
         rand = new Random();
+
         //nouvellePartie();
         //System.out.println(n);
     }
     public void nouveauJoueur(String nom, TypeJoueur type) {
         if (joueur1 == null) {
             joueur1 = new Joueurs(type, this, nom);
+            System.out.println("A revoir methode nouveauJoeur ");
+
             //joueur1.pions().setType(TypePion.ATTAQUANT);
         }
         else if (joueur2 == null) {
+            System.out.println("A revoir methode nouveauJoeur ");
             joueur2 = new Joueurs(type, this, nom);
-            //joueur2.pions().setType(TypePion.DEFENSEUR);
-            //sauvegarde = new Sauvegarde(this);
         }
         else {
             throw new IllegalStateException("Impossible d'ajouter un nouveau joueur : tous les joueurs ont déjà été ajoutés");
@@ -63,8 +66,8 @@ public class Jeu extends Observable{
      * Crée une nouvelle partie de taille par défaut
      */
     public void nouvellePartie() {
-        if(joueur1 == null || joueur2 == null)
-            throw new IllegalStateException("Impossible de créer une nouvelle partie : tous les joueurs n'ont pas été ajoutés");
+        /*if(joueur1 == null || joueur2 == null)
+            throw new IllegalStateException("Impossible de créer une nouvelle partie : tous les joueurs n'ont pas été ajoutés");*/
 
 
         enCours = true;
@@ -74,10 +77,8 @@ public class Jeu extends Observable{
         this.coup_annule = new Pile();
         this.coup_a_refaire = new Pile();
         this.enCours = true;
-        //CollecteurEvenements control = new ControlleurMediateur(this);
-        // InterfaceGraphique IG = new InterfaceGraphique(this, control);
-        // this.setInterfaceGraphique(IG);
-        // InterfaceGraphique.demarrer(this, control, interfaceGraphique);
+
+
         metAJour();
     }
 
@@ -275,4 +276,5 @@ public class Jeu extends Observable{
             return joueur2;
         else
             return joueur1;
+    }
 }

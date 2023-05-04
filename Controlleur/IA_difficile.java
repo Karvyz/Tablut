@@ -10,8 +10,8 @@ public abstract class IA_difficile extends IA{
     int nevaluation = 0;
     static int MAX_DEPTH = 4;
 
-    public IA_difficile(int num, Jeu jeu) {
-        super(num, jeu);
+    public IA_difficile(TypeJoueur type, Jeu jeu, String nom) {
+        super(type,  jeu, nom);
     }
 
     @Override

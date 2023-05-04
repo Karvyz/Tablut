@@ -2,10 +2,11 @@ package Controlleur;
 
 import Modele.Jeu;
 import Modele.Niveau;
+import Modele.TypeJoueur;
 
 public class IA_difficile_MassacrePion extends IA_difficile {
-    public IA_difficile_MassacrePion(int num, Jeu jeu) {
-        super(num, jeu);
+    public IA_difficile_MassacrePion(TypeJoueur type, Jeu jeu, String nom) {
+        super(type, jeu, nom);
     }
 
     @Override
@@ -33,4 +34,6 @@ public class IA_difficile_MassacrePion extends IA_difficile {
         }
         return attaquants - defenseurs;
     }
+
+
 }

@@ -1,15 +1,16 @@
 package Controlleur;
 
 public class AnimationIA extends Animation {
-    private final IA2 ia;
+    private final IA ia;
 
-    public AnimationIA(int l, IA2 ia) {
+    public AnimationIA(int l, IA ia) {
         super(l);
         this.ia = ia;
     }
 
     @Override
     public void miseAJour() {
-        ia.jouer();
+
+        System.out.println("fuck tom");
     }
 }

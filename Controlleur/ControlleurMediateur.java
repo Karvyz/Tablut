@@ -7,12 +7,13 @@ import Vues.CollecteurEvenements;
 
 
 import java.io.*;
+import java.sql.SQLOutput;
 
 public class ControlleurMediateur implements CollecteurEvenements {
 
 	Vues vues;
-	IA2 ia1;
-	IA2 ia2;
+	IA ia1;
+	IA ia2;
 	Animation animIA1, animIA2;
 	Animation animDemarrage;
 
@@ -22,26 +23,28 @@ public class ControlleurMediateur implements CollecteurEvenements {
     public static final int DIFFCILE = 3;
 	
     Jeu jeu;
-	Joueurs[][] joueurs;
-	int [] typeJoueur;
+	Joueurs[][] joueurs = new Joueurs[2][4];;
 	final int lenteurAttente = 50;
-	int decompte;
+	int decompte=20;
 	private Pion selectionne;
 	private boolean pionSelec = false;
 
+	private int[] typeJoueur = new int[4];
+
+
 	public ControlleurMediateur(Jeu j)  {
 		jeu = j;
-		joueurs = new Joueurs[2][4];
-		typeJoueur = new int[4];
+
 
 		for (int i = 0; i < joueurs.length; i++) {
 			joueurs[i][HUMAIN] = new Humain(i, jeu);
-			joueurs[i][FACILE] = new IA_facile(i, jeu);
-            joueurs[i][MOYEN] = new IA_moyen(i, jeu);
-            joueurs[i][DIFFCILE] = new IA_difficile_MassacrePion(i, jeu);
-			//typeJoueur[i] = DIFFCILE; //type
-			//typeJoueur[i] = HUMAIN; //type
+			joueurs[i][FACILE] = new IA_facile(TypeJoueur.IA_FACILE, jeu, "");
+            joueurs[i][MOYEN] = new IA_moyen(TypeJoueur.IA_FACILE, jeu, "");
+            joueurs[i][DIFFCILE] = new IA_difficile_MassacrePion(TypeJoueur.IA_DIFFICILE, jeu, "");
 		}
+		typeJoueur[0] = HUMAIN; //DE BASE
+		typeJoueur[1] = HUMAIN; //type
+
 //		joueurs[1][DIFFCILE] = new IA_facile(1, jeu);
 	}
 
@@ -53,8 +56,39 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	}
 
 	@Override
+	public void clicSouris(int l, int c) {
+		// Lors d'un clic sur un pion, on affiche ses déplacements possibles
+
+		/*if(jeu.getJoueurCourant().type() != TypeJoueur.HUMAIN){
+			System.out.println("ici");
+			return;
+		}*/
+		Pion caseSelec = jeu.n.getPion(l,c);
+
+		if (caseSelec == null && pionSelec ){ //ICI on cherche a déplacer
+			Coordonne depart = new Coordonne(selectionne.getX(), selectionne.getY());
+			Coordonne arrive = new Coordonne(l, c);
+			if (joueurs[jeu.get_num_JoueurCourant()][typeJoueur[jeu.get_num_JoueurCourant()]].jeu(depart, arrive )){
+				changeJoueur();
+				pionSelec = false;
+			}
+		}
+		else{ //Selection du pion
+			if (jeu.n.check_clic_selection_pion(caseSelec, jeu.get_num_JoueurCourant())){
+				pionSelec = true;
+				selectionne = caseSelec.clone(); //on stock le pion selectionne
+				caseSelec.affiche_liste_deplacement(caseSelec.getDeplacement(jeu.n.plateau));
+			}
+			else{
+				System.out.println("Ce pion ne vous appartient pas");
+			}
+		}
+	}
+
+	@Override
 	public void fixerMediateurVues(Vues v) {
 		vues = v;
+	}
 
 	private void verifierMediateurVues(String message) {
 		if (vues == null) {
@@ -98,41 +132,22 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		vues.afficherMenuChargerPartie();
 	}
 
-		@Override
-		public void clicSouris(int l, int c) {
-			// Lors d'un clic sur un pion, on affiche ses déplacements possibles
 
-			Pion caseSelec = jeu.n.getPion(l,c);
-
-			if (caseSelec == null && pionSelec ){ //ICI on cherche a déplacer
-				Coordonne depart = new Coordonne(selectionne.getX(), selectionne.getY());
-				Coordonne arrive = new Coordonne(l, c);
-				if (joueurs[jeu.get_num_JoueurCourant()][typeJoueur[jeu.get_num_JoueurCourant()]].jeu(depart, arrive )){
-					changeJoueur();
-					pionSelec = false;
-				}
-			}
-			else{ //Selection du pion
-				if (jeu.n.check_clic_selection_pion(caseSelec, jeu.get_num_JoueurCourant())){
-					pionSelec = true;
-					selectionne = caseSelec.clone(); //on stock le pion selectionne
-					caseSelec.affiche_liste_deplacement(caseSelec.getDeplacement(jeu.n.plateau));
-				}
-				else{
-					System.out.println("Ce pion ne vous appartient pas");
-				}
-			}
-		}
 
 	@Override
 	public void nouvellePartie(String nomJ1, TypeJoueur typeJ1, String nomJ2, TypeJoueur typeJ2){
 		verifierMediateurVues("Impossible de créer une nouvelle partie");
 		//jeu = new Jeu();
+		System.out.println(typeJ1 +"," +typeJ2);
 		jeu.nouveauJoueur(nomJ1, typeJ1);
 		jeu.nouveauJoueur(nomJ2, typeJ2);
 		jeu.nouvellePartie();
 		vues.nouvellePartie();
 		initIA(typeJ1, typeJ2);
+		typeJoueur[0] = typeJ1.ordinal(); //type
+		typeJoueur[1] = typeJ2.ordinal(); //type
+
+
 	}
 
 	@Override
@@ -210,37 +225,40 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	}
 
 	private void initIA(TypeJoueur typeJ1, TypeJoueur typeJ2){
-		int lenteurAnimationIA = Integer.parseInt(Configuration.instance().lirePropriete("LenteurAnimationIA"));
-
+		//int lenteurAnimationIA = Integer.parseInt(Configuration.instance().lirePropriete("LenteurAnimationIA"));
+		System.out.println(typeJ1 +","+typeJ2);
 		switch (typeJ1) {
 			case IA_DIFFICILE:
-				ia1 = new IA2_difficile(jeu(), jeu().joueur1(), jeu().joueur2(), this);
+				joueurs[0][DIFFCILE] = new IA_difficile_MassacrePion(typeJ1, jeu, "");
 				break;
 			case IA_MOYEN:
-				ia1 = new IA2_moyen(jeu(), jeu().joueur1(), jeu().joueur2(), this);
+				System.out.println("IA MOYENNE NON MISE");
+				joueurs[0][MOYEN] = new IA_moyen(typeJ1, jeu, "");
 				break;
 			case IA_FACILE:
-				ia1 = new IA2_facile(jeu(), jeu().joueur1(), jeu().joueur2(), this);
+				joueurs[0][FACILE] = new IA_facile(typeJ1, jeu, "");
 				break;
+
 		}
-		if (typeJ1 != TypeJoueur.HUMAIN) {
+		/*if (typeJ1 != TypeJoueur.HUMAIN) {
 			animIA1 = new AnimationIA(lenteurAnimationIA, ia1);
-		}
+		}*/
 
 		switch (typeJ2) {
 			case IA_DIFFICILE:
-				ia2 = new IA2_difficile(jeu(),jeu().joueur2(), jeu().joueur1(),this);
+				joueurs[1][DIFFCILE] = new IA_difficile_MassacrePion(typeJ2, jeu, "");
 				break;
 			case IA_MOYEN:
-				ia2 = new IA2_moyen(jeu(),jeu().joueur2(), jeu().joueur1(),this);
+				System.out.println("IA MOYENNE NON MISE");
+				joueurs[1][MOYEN] = new IA_moyen(typeJ2, jeu, "");
 				break;
 			case IA_FACILE:
-				ia2 = new IA2_facile(jeu(),jeu().joueur2(), jeu().joueur1(), this);
+				joueurs[1][FACILE] = new IA_facile(typeJ2, jeu, "");
 				break;
 		}
-		if (typeJ2 != TypeJoueur.HUMAIN) {
+		/*if (typeJ2 != TypeJoueur.HUMAIN) {
 			animIA2 = new AnimationIA(lenteurAnimationIA, ia2);
-		}
+		}*/
 	}
 
 
@@ -250,7 +268,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	}
 
 		public void tictac(){
-			//System.out.println(joueurCourant);
 
 			if (animDemarrage == null) {
 				int lenteurAnimation = Integer.parseInt(Configuration.instance().lirePropriete("LenteurAnimationDemarrage"));
@@ -261,16 +278,18 @@ public class ControlleurMediateur implements CollecteurEvenements {
 				return;
 			}
 
+
+
 			if (jeu.enCours()) {
-				if (jeu == null || jeu().partieTerminee() || jeu().getJoueurCourant().estHumain()) {
+				if (jeu == null || jeu().partieTerminee()) {
 					return;
 				}
-				if (jeu().getJoueurCourant() == jeu.joueur1()) {
+
+				/*if (jeu().getJoueurCourant() == jeu.joueur1()) {
 					animIA1.temps();
 				} else {
 					animIA2.temps();
-				}
-
+				}*/
 				if (jeu().n.PlusdePion(jeu().get_num_JoueurCourant())) {
 					jeu().setEnCours(false);
 					System.out.println("Le joueur blanc a gagné car l'attaquant n'a plus de pion");
@@ -278,15 +297,12 @@ public class ControlleurMediateur implements CollecteurEvenements {
 
 					if (decompte == 0) {
 						int type = typeJoueur[jeu.get_num_JoueurCourant()];
+						System.out.println("Type du joueur : "+ type);
 
-						// Lorsque le temps est écoulé on le transmet au joueur courant.
-						// Si un coup a été joué (IA) on change de joueur.
 						if (joueurs[jeu.get_num_JoueurCourant()][type].tempsEcoule()) { //Un humain renvoi tjr false, une IA renvoi vrai lorsquelle a joué(jeu effectué dans tempsEcoule())
 							changeJoueur();
 						} else {
-							// Sinon on indique au joueur qui ne réagit pas au temps (humain) qu'on l'attend.
-
-							if (joueurs[jeu.get_num_JoueurCourant()][type].numJ == 0)
+							if (type == HUMAIN)
 								System.out.println("On vous attend, joueur " + joueurs[jeu.get_num_JoueurCourant()][type].numJ + " vous devez déplacer un pion noir ");
 							else
 								System.out.println("On vous attend, joueur " + joueurs[jeu.get_num_JoueurCourant()][type].numJ + " vous devez déplacer un pion blanc ou le roi");
