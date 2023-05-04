@@ -6,10 +6,11 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
 
 import static java.awt.GridBagConstraints.*;
 
-import Patterns.Observable;
 import Vues.JComposants.*;
 
 class VueJeu extends JPanel {
@@ -197,29 +198,7 @@ class VueJeu extends JPanel {
         }
 
         JButton sauvegarder = new CButton(new ImageIcon(Imager.getScaledImage("assets/Disquette.png", 20, 20))).blanc();
-        sauvegarder.addActionListener(e -> {
-            JButton button = new CButton("OK");
-            button.addActionListener(f -> JOptionPane.getRootFrame().dispose());
-            if (controleur.jeu().sauvegarderPartie("sauvegarde.save")) {
-                JOptionPane.showOptionDialog(null,
-                        "Sauvegarde réussie",
-                        "Sauvegarde",
-                        JOptionPane.OK_OPTION,
-                        JOptionPane.INFORMATION_MESSAGE,
-                        new ImageIcon(Imager.getScaledImage("assets/ok.png", 24, 24)),
-                        new JButton[]{button}, button);
-            } else {
-                System.out.println("Erreur lors de la sauvegarde: " + e);
-
-                JOptionPane.showOptionDialog(null,
-                        "Échec de la sauvegarde",
-                        "Sauvegarde",
-                        JOptionPane.OK_OPTION,
-                        JOptionPane.INFORMATION_MESSAGE,
-                        new ImageIcon(Imager.getScaledImage("assets/err.png", 24, 24)),
-                        new JButton[]{button}, button);
-            }
-        });
+        sauvegarder.addActionListener(e -> ActionBoutonSauvegarder(e));
 
         JButton regles = new CButton("? Règles").blanc();
         regles.addActionListener(e -> controleur.afficherRegles());
@@ -400,6 +379,68 @@ class VueJeu extends JPanel {
         }*/
     }
 
+
+    private void ActionBoutonSauvegarder(ActionEvent e) {
+        controleur.jeu().setEnCours(false);
+        saveGame();
+        controleur.jeu().setEnCours(true);
+    }
+
+    private void saveGame() {
+        String fileName = JOptionPane.showInputDialog(null, "Entrez le nom du fichier de sauvegarde:", "Sauvegarde", JOptionPane.PLAIN_MESSAGE);
+
+        if (fileName != null && !fileName.trim().isEmpty()) { //Verifie le nom
+            String directoryPath = "Resources/save/";
+            File directory = new File(directoryPath);
+            if (!directory.exists()) { //Verifie si le dossier existe ou le crée
+                if (!directory.mkdirs()) {
+                    handleSaveError("Échec de la création du dossier de sauvegarde");
+                    return;
+                }
+            } else if (!directory.isDirectory() || !directory.canWrite()) {
+                handleSaveError("Impossible d'écrire dans le dossier de sauvegarde");
+                return;
+            }
+            fileName = directoryPath + fileName + ".save";
+
+            if (controleur.jeu().sauvegarderPartie(fileName)) {
+                JOptionPane.showMessageDialog(null, "Sauvegarde réussie", "Sauvegarde", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                handleSaveError("Échec de la sauvegarde");
+            }
+        } else if (fileName != null) {
+            handleSaveError("Le nom de fichier ne peut pas être vide");
+        }
+    }
+
+    private void handleSaveError(String msg) {
+        JButton retryButton = new JButton("Recommencer");
+        JButton cancelButton = new JButton("Annuler");
+
+
+        retryButton.addActionListener(e -> {
+            JOptionPane.getRootFrame().dispose(); // Ferme la boîte de dialogue d'erreur
+            saveGame();
+        });
+
+        cancelButton.addActionListener(e -> {
+            JOptionPane.getRootFrame().dispose(); // Ferme la boîte de dialogue d'erreur
+        });
+
+        int option = JOptionPane.showOptionDialog(null,
+                msg,
+                "Erreur",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.ERROR_MESSAGE,
+                null,
+                new Object[]{retryButton, cancelButton},
+                retryButton);
+
+        if (option == JOptionPane.YES_OPTION) {
+            saveGame();
+        }
+    }
+    @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 

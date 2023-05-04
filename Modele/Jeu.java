@@ -164,7 +164,7 @@ public class Jeu extends Observable{
 		}
     }
 
-    public void chargerPartie(String fichier){
+    public boolean chargerPartie(String fichier){
         Data_Niveau data_niveau = null;
 
         try {
@@ -185,17 +185,18 @@ public class Jeu extends Observable{
 
         } catch (FileNotFoundException e) {
             System.err.println("Fichier non trouvé : " + fichier);
-            return;
+            return false;
         } catch (EOFException | InvalidClassException e) {
             System.err.println("Erreur lors de la lecture du fichier : " + fichier);
-            return;
+            return false;
         } catch (IOException e) {
             e.printStackTrace();
-            return;
+            return false;
         } catch (ClassNotFoundException e) {
             System.err.println("Classe Data_Niveau introuvable");
-            return;
+            return false;
         }
+        return true;
     }
     
     public void joueurSuivant(){
