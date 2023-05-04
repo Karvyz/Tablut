@@ -33,6 +33,13 @@ public class Vues {
         vueJeu.nouvellePartie();
     }
 
+    public void restaurePartie(){
+        if (vueJeu == null) {
+            throw new IllegalStateException("Impossible de charger la partie : vue du jeu non fixée");
+        }
+        vueJeu.nouvellePartie(); //TODO a verifier
+    }
+
     private void afficher(String nom) {
         CardLayout layout = (CardLayout) frame.getContentPane().getLayout();
         layout.show(frame.getContentPane(), nom);

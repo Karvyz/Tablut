@@ -336,6 +336,7 @@ class VueJeu extends JPanel {
 
     void nouvellePartie() {
         endGamePanel.setVisible(false);
+        //System.out.println(j1.);
         vueNiveau = new VueNiveau(controleur, this, j1, j2, texteJeu);
         controleur.jeu().ajouteObservateur(vueNiveau);
 

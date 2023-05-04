@@ -61,6 +61,42 @@ public class Jeu extends Observable implements Serializable {
 
     }
 
+    public boolean chargerPartie(String fichier){
+        Data_Niveau data_niveau = null;
+
+        try {
+            FileInputStream fileIn = new FileInputStream(fichier);
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+
+            data_niveau = (Data_Niveau) objectIn.readObject();
+            this.n = data_niveau.niveau;
+            this.coup_annule = data_niveau.coup_annule;
+            this.coup_a_refaire = data_niveau.coup_a_refaire;
+            this.joueurCourant = data_niveau.joueurCourant;
+            System.out.println("JOUEUR COURANT : " + joueurCourant);
+            this.joueurs[0] = data_niveau.attaquant;
+            this.joueurs[1] = data_niveau.defenseur;
+            setEnCours(true);
+            objectIn.close();
+            fileIn.close();
+
+            System.out.println("Le jeu a été chargé.");
+
+        } catch (FileNotFoundException e) {
+            System.err.println("Fichier non trouvé : " + fichier);
+            return false;
+        } catch (EOFException | InvalidClassException e) {
+            System.err.println("Erreur lors de la lecture du fichier : " + fichier);
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } catch (ClassNotFoundException e) {
+            System.err.println("Classe Data_Niveau introuvable");
+            return false;
+        }
+        return true;
+    }
     /**Méthode utile en fin de partie*/
     public Joueurs vainqueur() {
         if (!partieTerminee()) {
@@ -97,6 +133,7 @@ public class Jeu extends Observable implements Serializable {
 
         this.coup_a_refaire.clear();
 
+        System.out.println("ICI");
         joueurSuivant();
         metAJour();
     }
@@ -149,44 +186,10 @@ public class Jeu extends Observable implements Serializable {
         }
     }
 
-    public boolean chargerPartie(String fichier){
-        Data_Niveau data_niveau = null;
 
-        try {
-            FileInputStream fileIn = new FileInputStream(fichier);
-            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-
-            data_niveau = (Data_Niveau) objectIn.readObject();
-            this.n = data_niveau.niveau;
-            this.coup_annule = data_niveau.coup_annule;
-            this.coup_a_refaire = data_niveau.coup_a_refaire;
-            this.joueurCourant = data_niveau.joueurCourant;
-            this.joueurs[0] = data_niveau.attaquant;
-            this.joueurs[1] = data_niveau.defenseur;
-
-
-            objectIn.close();
-            fileIn.close();
-
-            System.out.println("Le jeu a été chargé.");
-
-        } catch (FileNotFoundException e) {
-            System.err.println("Fichier non trouvé : " + fichier);
-            return false;
-        } catch (EOFException | InvalidClassException e) {
-            System.err.println("Erreur lors de la lecture du fichier : " + fichier);
-            return false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        } catch (ClassNotFoundException e) {
-            System.err.println("Classe Data_Niveau introuvable");
-            return false;
-        }
-        return true;
-    }
 
     public void joueurSuivant(){
+        System.out.println("le "+joueurCourant + "a joué, maintenant c'est au " + (joueurCourant+1 )%2);
         joueurCourant = (joueurCourant + 1) %2;
     }
 
@@ -236,7 +239,7 @@ public class Jeu extends Observable implements Serializable {
             case 0 :
                 return joueurs[1];
             case 1 :
-                return joueurs[2];
+                return joueurs[0];
             default :
                 return null;
         }

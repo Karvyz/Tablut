@@ -34,6 +34,6 @@ public interface CollecteurEvenements {
 
     void toucheClavier(String touche);
 
-    void restaurePartie();
+    void restaurePartie(String fichier);
 }
 

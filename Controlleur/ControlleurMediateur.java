@@ -5,6 +5,8 @@ import Modele.*;
 import Vues.*;
 import Vues.CollecteurEvenements;
 
+import java.sql.SQLOutput;
+
 
 public class ControlleurMediateur implements CollecteurEvenements {
 
@@ -39,17 +41,19 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		vues.nouvellePartie();
 	}
 
+	public void restaurePartie(String fichier){
+		jeu.chargerPartie(fichier);
+		vues.restaurePartie();
+		jeu.setEnCours(true);
+	}
+
 	@Override
 	public void partieSuivante() {
 		verifierJeu("Impossible de passer à la partie suivante");
 		jeu.nouvellePartie();
-		vues.nouvellePartie();
-		afficherJeu();
 	}
 
-	public void restaurePartie(){
-		jeu.setEnCours(true);
-	}
+
 
 	/**Méthode en rapport avec l'interaction HommeMachine */
 	@Override//Deplacement en Drag&Drop
@@ -57,10 +61,14 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		if (jeu.joueurs[jeu().get_num_JoueurCourant()].jeu(src, dst)) {// MODIF de jeu.n ici
 			changeJoueur();
 		}
+		System.out.println(jeu().getNiveau());
+
+		System.out.println("Joeuur courant dans CM " + jeu.get_num_JoueurCourant());
 	}
 	@Override
 	public void clicSouris(int l, int c) {
 		// Lors d'un clic sur un pion, on affiche ses déplacements possibles
+		System.out.println(jeu().getNiveau());
 		Pion caseSelec = jeu.n.getPion(l,c);
 
 		if (caseSelec == null && pionSelec ){ //ICI on cherche a déplacer
@@ -69,6 +77,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 			if (jeu.joueurs[jeu.get_num_JoueurCourant()].jeu(depart, arrive )){
 				changeJoueur();
 				pionSelec = false;
+				System.out.println(jeu().getNiveau());
 			}
 		}
 		else{ //Selection du pion
@@ -125,10 +134,9 @@ public class ControlleurMediateur implements CollecteurEvenements {
 				changeJoueur();
 			else if (decompte == 0) {
 				if (jeu.joueurs[jeu.get_num_JoueurCourant()].estHumain() && jeu.joueurs[jeu.get_num_JoueurCourant()].aPionsNoirs())
-					System.out.println("C'est a vous de jouer : L'ATTAQUANT ");
+					System.out.println("C'est a vous de jouer : L'ATTAQUANT :  " + jeu.get_num_JoueurCourant());
 				else
 					System.out.println("C'est a vous de jouer : LE DEFENSEUR");
-				System.out.println("icii");
 				decompte = lenteurAttente;
 			}
 			else {

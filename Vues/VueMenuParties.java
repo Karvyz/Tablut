@@ -40,10 +40,9 @@ public class VueMenuParties extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String selectedFile = fileList.getSelectedValue();
                 if (selectedFile != null) {
-                    controleur.jeu().chargerPartie("Resources/save/" + selectedFile);
-                    System.out.println(controleur.jeu().getNiveau());
+                    controleur.restaurePartie("Resources/save/" + selectedFile);
                     controleur.afficherJeu();
-                    controleur.restaurePartie();
+
                 }
             }
         });
