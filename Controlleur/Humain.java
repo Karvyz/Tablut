@@ -1,17 +1,16 @@
 package Controlleur;
-import Modele.Coordonne;
-import Modele.Jeu;
-import Modele.Joueurs;
+import Modele.*;
 
 import static Modele.TypeJoueur.HUMAIN;
-import Modele.Pion;
 
 public class Humain extends Joueurs {
 
-    public Humain(int num, Jeu jeu) {
-        super(HUMAIN, jeu, "Humain");
+    public Humain(String nom, TypePion roleJ, Jeu j) {
+        super(nom, TypeJoueur.HUMAIN, roleJ, j);
     }
 
+
+    @Override
 	public boolean jeu(Coordonne src, Coordonne dst) {
         Pion depart = jeu.n.getPion(src.getX(), src.getY()); //Recupère le pion
         if (jeu.n.check_clic_selection_pion(depart, jeu.get_num_JoueurCourant())){ //Vérifie que le Pions choisit est bien de notre Type, joueur 0 implique de jouer les Attaquants et joueur 1 implique de jouer Defenseurs et Roi

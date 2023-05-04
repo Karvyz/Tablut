@@ -6,8 +6,8 @@ import Modele.TypeJoueur;
 import Modele.TypePion;
 
 public class IA_difficile_AttaqueRoi extends IA_difficile {
-    public IA_difficile_AttaqueRoi(TypeJoueur type, Jeu jeu, String nom) {
-        super(type, jeu, nom);
+    public IA_difficile_AttaqueRoi(String nom, TypePion roleJ, Jeu j) {
+        super(nom, roleJ, j);
     }
     @Override
     public int evaluation(Niveau n) {

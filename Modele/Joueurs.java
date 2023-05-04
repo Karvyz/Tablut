@@ -7,25 +7,32 @@ import static java.util.Objects.requireNonNull;
 public class Joueurs implements Serializable {
     public int numJ;
     protected Jeu jeu;
-    private final TypeJoueur type;
+
     private final String nom;
+    private final TypeJoueur type;
+    private final TypePion roleJ;
+
     private TypePion pions;
     private int nombrePionsManges;
     private int nombreVictoires;
     static int HANDICAP_MAX = 3;
 
-    public Joueurs(TypeJoueur type, Jeu j, String nom) {
-        requireNonNull(type, "Le type du joueur ne doit pas être null");
-        requireNonNull(j, "Le jeu ne doit pas être null");
+    public Joueurs(String nom, TypeJoueur type, TypePion roleJ, Jeu j) {
         requireNonNull(nom, "Le nom du joueur ne doit pas être null");
+        requireNonNull(type, "Le type du joueur ne doit pas être null");
+        requireNonNull(roleJ, "Le role du joueur ne doit pas être null"); // Normalement ça ne peut pas arriver
+        requireNonNull(j, "Le jeu ne doit pas être null");
         this.type = type;
         this.jeu = j;
         this.nom = nom;
+        this.roleJ = roleJ;
+        initialiserJoueur(roleJ);
     }
 
-    void initialiserJoueur(TypePion p) {
-        pions = p;
+    void initialiserJoueur(TypePion roleJ) {
+        pions = roleJ;
         nombrePionsManges = 0;
+
     }
 
     public String nom() {

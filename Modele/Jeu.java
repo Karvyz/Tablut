@@ -11,58 +11,73 @@ import static java.util.Objects.requireNonNull;
 public class Jeu extends Observable implements Serializable {
 
     public Niveau n;
-    private Joueurs joueur1;
-    private Joueurs joueur2;
 
-    // Choix du joueur initial aléatoire
     private final Random rand;
-    private int choixJoueurDebut = -1;
-    //private Sauvegarde sauvegarde;
 
-
+    public Joueurs [] joueurs = new Joueurs[2];
     private int joueurCourant;
-    private boolean enCours = false;
+    private boolean enCours ;
     public Pile coup_annule;
 	public Pile coup_a_refaire;
-    private InterfaceGraphique interfaceGraphique;
+
     public ConfigurationJeu config;
 
 
     public Jeu(){
-        rand = new Random(); //TODO explications de ça ??
+        rand = new Random();
+        enCours = false;
+        joueurs[0] = null; //Pour être sure, peut être inutile
+        joueurs[1] = null;
     }
 
-
-    public void nouveauJoueur(String nom, TypeJoueur type) {
-        if (joueur1 == null) {
-            joueur1 = new Joueurs(type, this, nom);
+    /**Méthode permettant d'initialiser une partie */
+    public void nouveauJoueur(String nom, TypeJoueur type, TypePion roleJ) {
+        if (joueurs[0] == null && roleJ == TypePion.ATTAQUANT) {
+            joueurs[0] = JoueursCreation.createJoueur(nom , type, roleJ, this);
         }
-        else if (joueur2 == null) {
-            joueur2 = new Joueurs(type, this, nom);
+        else if (joueurs[1] == null && roleJ == TypePion.DEFENSEUR) {
+            joueurs[1] = JoueursCreation.createJoueur(nom , type, roleJ, this);
+
         }
         else {
             throw new IllegalStateException("Impossible d'ajouter un nouveau joueur : tous les joueurs ont déjà été ajoutés");
         }
     }
 
-    /**
-     * Crée une nouvelle partie de taille par défaut
-     */
     public void nouvellePartie() {
-        if(joueur1 == null || joueur2 == null)
+        if(joueurs[0] == null || joueurs[1] == null)
             throw new IllegalStateException("Impossible de créer une nouvelle partie : tous les joueurs n'ont pas été ajoutés");
 
-        setEnCours(true);
-        System.out.println("Début de la partie");
         this.config = new ConfigurationJeu();
         this.n = new Niveau(config);
-        this.joueurCourant = 0; //Attaquant est le joueur 0, soit J1 dans l'interface
+        if(joueurs[0].aPionsNoirs())
+            this.joueurCourant = 0; //Le joueur qui commence est l'attaquant
+        else{
+            this.joueurCourant = 1;
+        }
         this.coup_annule = new Pile();
         this.coup_a_refaire = new Pile();
-        //metAJour();
+        setEnCours(true);
+
+    }
+
+    /**Méthode utile en fin de partie*/
+    public Joueurs vainqueur() {
+        if (!partieTerminee()) {
+            return null;
+        }
+        // TODO : retourner le joueur gagnant
+        return null;
+    }
+
+    public boolean partieTerminee() {
+        if(n==null)
+            return false;
+        return n.estTermine();
     }
 
 
+    /**Méthode en rapport avec les possibilités de jeu*/
     public void jouer(Coordonne depart, Coordonne arrive){
         this.coup_annule.empiler(this.n.clone());
         int i = n.deplace_pion(depart, arrive);
@@ -114,49 +129,24 @@ public class Jeu extends Observable implements Serializable {
         System.out.println("Coup refait");
     }
 
-    public Joueurs vainqueur() {
-        if (!partieTerminee()) {
-            return null;
-        }
-        // TODO : retourner le joueur gagnant
-        return null;
-    }
-
-    public boolean partieTerminee() {
-        if(n==null)
-            return false;
-        return n.estTermine();
-    }
-
-    public Joueurs joueur1() {
-        requireNonNull(joueur1, "Impossible de récupérer le joueur 1 : le joueur n'a pas été créé");
-        return joueur1;
-    }
-
-    public Joueurs joueur2() {
-        requireNonNull(joueur2, "Impossible de récupérer le joueur 2 : le joueur n'a pas été créé");
-        return joueur2;
-    }
-
-
     public boolean sauvegarderPartie(String fichier){
         try {
-			FileOutputStream fileOut = new FileOutputStream(fichier);
-			ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-	        System.out.println("Sauvegarde du jeu dans le fichier: " + fichier);
-			Data_Niveau data_niveau = new Data_Niveau(this.config, this.n, this.coup_annule, this.coup_a_refaire, joueurCourant, joueur1(), joueur2());
-	
-			objectOut.writeObject(data_niveau);
-			objectOut.close();
-			fileOut.close();
+            FileOutputStream fileOut = new FileOutputStream(fichier);
+            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+            System.out.println("Sauvegarde du jeu dans le fichier: " + fichier);
+            Data_Niveau data_niveau = new Data_Niveau(this.config, this.n, this.coup_annule, this.coup_a_refaire, joueurCourant, joueurs[0], joueurs[1]);
+
+            objectOut.writeObject(data_niveau);
+            objectOut.close();
+            fileOut.close();
             setEnCours(false);
             //this.fermerInterfaceGraphique();
             return true;
-	
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean chargerPartie(String fichier){
@@ -171,8 +161,8 @@ public class Jeu extends Observable implements Serializable {
             this.coup_annule = data_niveau.coup_annule;
             this.coup_a_refaire = data_niveau.coup_a_refaire;
             this.joueurCourant = data_niveau.joueurCourant;
-            this.joueur1 = data_niveau.attaquant;
-            this.joueur2 = data_niveau.defenseur;
+            this.joueurs[0] = data_niveau.attaquant;
+            this.joueurs[1] = data_niveau.defenseur;
 
 
             objectIn.close();
@@ -195,10 +185,14 @@ public class Jeu extends Observable implements Serializable {
         }
         return true;
     }
-    
+
     public void joueurSuivant(){
         joueurCourant = (joueurCourant + 1) %2;
     }
+
+
+    /**Méthode getter et setter pour les joueurs*/
+
 
     public boolean enCours(){
         return enCours;
@@ -216,12 +210,22 @@ public class Jeu extends Observable implements Serializable {
         joueurCourant = i;
     }
 
+    public Joueurs getJoueur1() {
+        requireNonNull(joueurs[0], "Impossible de récupérer le joueur 1 : le joueur n'a pas été créé");
+        return joueurs[0];
+    }
+
+    public Joueurs getJoueur2() {
+        requireNonNull(joueurs[1], "Impossible de récupérer le joueur 2 : le joueur n'a pas été créé");
+        return joueurs[1];
+    }
+
     public Joueurs getJoueurCourant(){
         switch (joueurCourant) {
             case 0:
-                return joueur1;
+                return joueurs[0];
             case 1:
-                return joueur2;
+                return joueurs[1];
             default :
                 return null;
         }
@@ -230,9 +234,9 @@ public class Jeu extends Observable implements Serializable {
     public Joueurs getJoueurSuivant(){
         switch (joueurCourant) {
             case 0 :
-                return joueur2;
+                return joueurs[1];
             case 1 :
-                return joueur1;
+                return joueurs[2];
             default :
                 return null;
         }
@@ -243,17 +247,17 @@ public class Jeu extends Observable implements Serializable {
     }
 
     public Joueurs getAttaquant(){
-        if (joueur1.aPionsNoirs())
-            return joueur1;
+        if (joueurs[0].aPionsNoirs())
+            return joueurs[0];
         else
-            return joueur2;
+            return joueurs[1];
     }
 
     public Joueurs getDefenseur(){
-        if (joueur1.aPionsNoirs())
-            return joueur2;
+        if (joueurs[1].aPionsNoirs())
+            return joueurs[1];
         else
-            return joueur1;
+            return joueurs[0];
     }
 
 

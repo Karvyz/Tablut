@@ -1,6 +1,7 @@
 package Vues;
 
 import Modele.TypeJoueur;
+import Modele.TypePion;
 import Vues.JComposants.CButton;
 import Vues.JComposants.CComboxBox;
 import Vues.JComposants.CTextField;
@@ -256,7 +257,7 @@ public class VueMenuSaisies extends JPanel {
             default:
                 break;
         }
-        c.nouvellePartie(nomJ1.getText(), types[0], nomJ2.getText(), types[1]);
+        c.nouvellePartie(nomJ1.getText(), types[0], TypePion.ATTAQUANT, nomJ2.getText(), types[1], TypePion.DEFENSEUR);
         c.afficherJeu();
 
     }

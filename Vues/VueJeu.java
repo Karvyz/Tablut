@@ -112,10 +112,10 @@ class VueJeu extends JPanel {
         Joueurs vainqueur = controleur.jeu().vainqueur();
         if (vainqueur == null){return;}
         Joueurs perdant;
-        if (vainqueur == controleur.jeu().joueur1()) {
-            perdant = controleur.jeu().joueur2();
+        if (vainqueur == controleur.jeu().getJoueur1()) {
+            perdant = controleur.jeu().getJoueur2();
         } else {
-            perdant = controleur.jeu().joueur1();
+            perdant = controleur.jeu().getJoueur1();
         }
 
 
