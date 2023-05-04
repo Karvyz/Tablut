@@ -1,12 +1,10 @@
 package Controlleur;
 
-import Modele.Jeu;
-import Modele.Niveau;
-import Modele.TypeJoueur;
+import Modele.*;
 
 public class IA_difficile_MassacrePion extends IA_difficile {
-    public IA_difficile_MassacrePion(TypeJoueur type, Jeu jeu, String nom) {
-        super(type, jeu, nom);
+    public IA_difficile_MassacrePion(String nom, TypePion roleJ, Jeu j) {
+        super(nom, roleJ, j);
     }
 
     @Override

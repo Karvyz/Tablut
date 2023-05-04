@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class IA_facile extends IA {
+public class IA_facile extends Joueurs {
 
-    public IA_facile(TypeJoueur type, Jeu jeu, String nom) {
-        super(type, jeu, nom);
+    public IA_facile(String nom, TypePion roleJ, Jeu j) {
+        super(nom, TypeJoueur.IA_FACILE, roleJ, j);
     }
 
     @Override

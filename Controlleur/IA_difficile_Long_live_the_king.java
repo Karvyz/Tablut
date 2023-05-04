@@ -3,10 +3,11 @@ package Controlleur;
 import Modele.Jeu;
 import Modele.Niveau;
 import Modele.TypeJoueur;
+import Modele.TypePion;
 
 public class IA_difficile_Long_live_the_king extends IA_difficile{
-    public IA_difficile_Long_live_the_king(TypeJoueur type, Jeu jeu, String nom) {
-        super(type, jeu, nom);
+    public IA_difficile_Long_live_the_king(String nom, TypePion roleJ, Jeu j) {
+        super(nom, roleJ, j);
     }
 
     @Override
