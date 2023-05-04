@@ -43,8 +43,7 @@ public class VueMenuParties extends JPanel {
                     controleur.jeu().chargerPartie("Resources/save/" + selectedFile);
                     System.out.println(controleur.jeu().getNiveau());
                     controleur.afficherJeu();
-                    //controleur.jeu().nouvellePartie();
-                    //vues.nouvellePartie();
+                    controleur.restaurePartie();
                 }
             }
         });

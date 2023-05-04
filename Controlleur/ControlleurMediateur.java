@@ -50,7 +50,9 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		vues.nouvellePartie();
 	}
 
-
+	public void restaurePartie(){
+		jeu.setEnCours(true);
+	}
 	@Override//Deplacement en Drag&Drop
 	public void dragANDdrop(Coordonne src, Coordonne dst) {
 		if (joueurs[jeu().get_num_JoueurCourant()][typeJoueur[jeu.get_num_JoueurCourant()]].jeu(src, dst)) {// MODIF de jeu.n ici
