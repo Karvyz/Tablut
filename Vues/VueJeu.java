@@ -9,6 +9,7 @@ import java.awt.*;
 
 import static java.awt.GridBagConstraints.*;
 
+import Patterns.Observable;
 import Vues.JComposants.*;
 
 class VueJeu extends JPanel {
@@ -108,12 +109,14 @@ class VueJeu extends JPanel {
     void showEnd() {
         // TODO : Ajout du point du vainqueur
         Joueurs vainqueur = controleur.jeu().vainqueur();
+        if (vainqueur == null){return;}
         Joueurs perdant;
         if (vainqueur == controleur.jeu().joueur1()) {
             perdant = controleur.jeu().joueur2();
         } else {
             perdant = controleur.jeu().joueur1();
         }
+
 
         if (vainqueur.estHumain()) {
             endGamePanel.getComponent(0).setBackground(new Color(100, 183, 68));
@@ -405,4 +408,7 @@ class VueJeu extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
     }
+
+
+
 }
