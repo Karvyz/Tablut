@@ -11,7 +11,6 @@ public class Humain extends Joueurs {
     public Humain(int num, Jeu jeu) {
         super(HUMAIN, jeu, "Humain");
     }
-    
 
 	public boolean jeu(Coordonne src, Coordonne dst) {
         Pion depart = jeu.n.getPion(src.getX(), src.getY()); //Recupère le pion
@@ -25,8 +24,8 @@ public class Humain extends Joueurs {
         }
         //else
             //System.out.println("le pion choisit est invalide"); //on affiche deja un message quand on clique
-
 		return false;
 	}
+
 
 }

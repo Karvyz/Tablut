@@ -1,10 +1,7 @@
 package Modele;
 
-import Controlleur.IA_difficile_MassacrePion;
 import Patterns.Observable;
 import Structures.Pile;
-import Vues.CollecteurEvenements;
-import Vues.FenetrePlateau;
 import Vues.InterfaceGraphique;
 import java.io.EOFException;
 import java.io.FileInputStream;
@@ -14,8 +11,6 @@ import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.JFrame;
-import Controlleur.ControlleurMediateur;
 import java.util.Random;
 import static java.util.Objects.requireNonNull;
 
@@ -24,8 +19,6 @@ public class Jeu extends Observable{
     public Niveau n;
     private Joueurs joueur1;
     private Joueurs joueur2;
-
-    //private Historique historique;
 
     // Choix du joueur initial aléatoire
     private final Random rand;
@@ -42,44 +35,88 @@ public class Jeu extends Observable{
 
 
     public Jeu(){
-        rand = new Random();
-
-        //nouvellePartie();
-        //System.out.println(n);
+        rand = new Random(); //TODO explications de ça ??
     }
+
+
     public void nouveauJoueur(String nom, TypeJoueur type) {
         if (joueur1 == null) {
             joueur1 = new Joueurs(type, this, nom);
-            System.out.println("A revoir methode nouveauJoeur ");
-
-            //joueur1.pions().setType(TypePion.ATTAQUANT);
         }
         else if (joueur2 == null) {
-            System.out.println("A revoir methode nouveauJoeur ");
             joueur2 = new Joueurs(type, this, nom);
         }
         else {
             throw new IllegalStateException("Impossible d'ajouter un nouveau joueur : tous les joueurs ont déjà été ajoutés");
         }
     }
+
     /**
      * Crée une nouvelle partie de taille par défaut
      */
     public void nouvellePartie() {
-        /*if(joueur1 == null || joueur2 == null)
-            throw new IllegalStateException("Impossible de créer une nouvelle partie : tous les joueurs n'ont pas été ajoutés");*/
+        if(joueur1 == null || joueur2 == null)
+            throw new IllegalStateException("Impossible de créer une nouvelle partie : tous les joueurs n'ont pas été ajoutés");
 
-
-        enCours = true;
+        setEnCours(true);
+        System.out.println("Début de la partie");
         this.config = new ConfigurationJeu();
         this.n = new Niveau(config);
-        this.joueurCourant = 0;
+        this.joueurCourant = 0; //Attaquant est le joueur 0, soit J1 dans l'interface
         this.coup_annule = new Pile();
         this.coup_a_refaire = new Pile();
-        this.enCours = true;
+        //metAJour();
+    }
 
+    public void jouer(Coordonne depart, Coordonne arrive){
+        this.coup_annule.empiler(this.n.clone());
+        int i = n.deplace_pion(depart, arrive);
+        System.out.println("Déplacement du pion de (" + depart.getX() +"," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() +")");
+        if (i > 0){
+            setEnCours(false);
+            if (i == 1)
+                System.out.println("PARTIE FINI CAR ROI CAPTURE");
+            else if (i == 2)
+                System.out.println("PARTIE FINI CAR ROI EVADE");
+            else
+                System.out.println("EGALITE");
+            System.out.println(n);
+        }
 
+        //TODO test si une partie est finie;
+
+        this.coup_a_refaire.clear();
+
+        joueurSuivant();
         metAJour();
+    }
+
+    public void annuler() {
+        //System.out.print("Annuler : " + jeu().joueurActuel().nom() + " ");
+        if (coup_annule.estVide()){
+            System.out.println("Impossible d'annuler");
+            return;
+        }
+        coup_a_refaire.empiler(n.clone()); //stock l'état avant d'annuler
+        Niveau restaure = coup_annule.depiler(); //Recupère le niveau précedent
+        n = restaure.clone();
+        metAJour();
+        joueurSuivant(); //La variable du jeu doit aussi être modifie
+        System.out.println("Annulation effectué");
+    }
+
+
+    public void refaire() {
+        if (coup_a_refaire.estVide()) {
+            System.out.println("Aucun coup n'est a refaire");
+            return;
+        }
+        coup_annule.empiler(n.clone());
+        Niveau a_refaire = coup_a_refaire.depiler();
+        n = a_refaire.clone();
+        metAJour();
+        joueurSuivant();
+        System.out.println("Coup refait");
     }
 
     public Joueurs vainqueur() {
@@ -106,32 +143,6 @@ public class Jeu extends Observable{
         return joueur2;
     }
 
-    public void nouvellePartie(String fichier) { //Pour charger une partie
-       
-        //this.fermerInterfaceGraphique(); //TODO c'est juste pour faire bo mais il faudra modif
-/*
-        if (load(fichier)){
-            System.out.println("Jeu chargé depuis le fichier: " + fichier);
-        }
-        else{
-            System.out.println("Impossible de charger le jeu depuis: "+ fichier);
-        } */
-        // CollecteurEvenements control = new ControlleurMediateur(this);
-        // InterfaceGraphique IG = new InterfaceGraphique(this, control);
-        // this.setInterfaceGraphique(IG);
-        // InterfaceGraphique.demarrer(this, control, interfaceGraphique);
-
-    }
-
-    public void setInterfaceGraphique(InterfaceGraphique interfaceGraphique) {
-        this.interfaceGraphique = interfaceGraphique;
-    }
-
-    // public void fermerInterfaceGraphique() {
-    //     if (interfaceGraphique != null) {
-    //         interfaceGraphique.fermerFenetrePrincipale();
-    //     }
-    // }
 
     public boolean sauvegarderPartie(String fichier){
         try {
@@ -151,30 +162,6 @@ public class Jeu extends Observable{
 			e.printStackTrace();
 			return false;
 		}
-    }
-
-
-    public void jouer(Coordonne depart, Coordonne arrive){
-		this.coup_annule.empiler(this.n.clone());
-        int i = n.deplace_pion(depart, arrive);
-        System.out.println("Déplacement du pion de (" + depart.getX() +"," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() +")");
-        if (i > 0){
-            setEnCours(false);
-            if (i == 1)
-                System.out.println("PARTIE FINI CAR ROI CAPTURE");
-            else if (i == 2)
-                System.out.println("PARTIE FINI CAR ROI EVADE");
-            else
-                System.out.println("EGALITE");
-            System.out.println(n);
-        }
-
-        //TODO test si une partie est finie;
-
-        this.coup_a_refaire.clear();
-
-        joueurSuivant();
-        metAJour();
     }
 
     public void chargerPartie(String fichier){
@@ -210,11 +197,6 @@ public class Jeu extends Observable{
             return;
         }
     }
-
-
-
-
-    //On regarde si le joueur a manger un pion adverse
     
     public void joueurSuivant(){
         joueurCourant = (joueurCourant + 1) %2;
@@ -224,11 +206,9 @@ public class Jeu extends Observable{
         return enCours;
     }
 
-
     public void setEnCours(boolean b) {
         enCours = b;
     }
-
 
     public int get_num_JoueurCourant(){
         return joueurCourant;

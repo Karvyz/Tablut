@@ -79,51 +79,8 @@ public class VueMenuSaisies extends JPanel {
 
         menuPrincipalButton.addActionListener((e) -> controleur.afficherMenuPrincipal());
 
-        jouerButton.addActionListener((e) -> {
-            TypeJoueur[] types = new TypeJoueur[2];
-            switch(typeJ1.getSelectedIndex()) {
-                case 0:
-                    types[0] = TypeJoueur.HUMAIN;
-                    break;
-                case 1:
-                    types[0] = TypeJoueur.IA_FACILE;
-                    break;
-                case 2:
-                    types[0] = TypeJoueur.IA_MOYEN;
-                    break;
-                case 3:
-                    types[0] = TypeJoueur.IA_DIFFICILE;
-                    break;
-                default:
-                    //types[0] = TypeJoueur.HUMAIN;
-                    break;
-            }
-            switch (typeJ2.getSelectedIndex()) {
-                case 0:
-                    types[1] = TypeJoueur.HUMAIN;
-                    break;
-                case 1:
-                    types[1] = TypeJoueur.IA_FACILE;
-                    break;
-                case 2:
-                    types[1] = TypeJoueur.IA_MOYEN;
-                    break;
-                case 3:
-                    types[1] = TypeJoueur.IA_DIFFICILE;
-                    break;
-                default:
-                    //types[1] = TypeJoueur.HUMAIN;
-                    break;
-            }
-            c.nouvellePartie(
-                    nomJ1.getText(),
-                    types[0],
-                    // --
-                    nomJ2.getText(),
-                    types[1]
-            );
-            c.afficherJeu();
-        });
+        //Action lors du clic sur le bouton jouer
+        jouerButton.addActionListener((e) -> actionBoutonJouer(controleur));
 
         nomJ1.addFocusListener(new FocusAdapter() {
             final String s = nomJ1.getText();
@@ -200,7 +157,6 @@ public class VueMenuSaisies extends JPanel {
         nomJ1.setVisible(true);
         //nomJ1.setOpaque(false);
         Joueur1.add(nomJ1);
-
         DefaultComboBoxModel<String> defaultComboBoxModel1 = new DefaultComboBoxModel<>();
         defaultComboBoxModel1.addElement("Humain");
         defaultComboBoxModel1.addElement("IA Facile");
@@ -238,6 +194,7 @@ public class VueMenuSaisies extends JPanel {
         defaultComboBoxModel3.addElement("IA Facile");
         defaultComboBoxModel3.addElement("IA Moyenne");
         defaultComboBoxModel3.addElement("IA Difficile");
+        defaultComboBoxModel3.setSelectedItem("IA Facile");// Sélectionner "IA Facile" comme valeur par défaut
         typeJ2.setModel(defaultComboBoxModel3);
         Joueur2.add(typeJ2);
 
@@ -260,9 +217,47 @@ public class VueMenuSaisies extends JPanel {
 
         BoutonsQuitter.add(quitter);
         BoutonsQuitter.setMaximumSize(new Dimension(441, 30));
-
-
         MenuSaisies.add(BoutonsQuitter);
+
+    }
+
+    private void actionBoutonJouer(CollecteurEvenements c) {
+        TypeJoueur[] types = new TypeJoueur[2];
+        switch(typeJ1.getSelectedIndex()) {
+            case 0:
+                types[0] = TypeJoueur.HUMAIN;
+                break;
+            case 1:
+                types[0] = TypeJoueur.IA_FACILE;
+                break;
+            case 2:
+                types[0] = TypeJoueur.IA_MOYEN;
+                break;
+            case 3:
+                types[0] = TypeJoueur.IA_DIFFICILE;
+                break;
+            default:
+                //Par défault on fera jouer HUMAIN contre IA mais gérer dans le controleurMédiateur
+                break;
+        }
+        switch (typeJ2.getSelectedIndex()) {
+            case 0:
+                types[1] = TypeJoueur.HUMAIN;
+                break;
+            case 1:
+                types[1] = TypeJoueur.IA_FACILE;
+                break;
+            case 2:
+                types[1] = TypeJoueur.IA_MOYEN;
+                break;
+            case 3:
+                types[1] = TypeJoueur.IA_DIFFICILE;
+                break;
+            default:
+                break;
+        }
+        c.nouvellePartie(nomJ1.getText(), types[0], nomJ2.getText(), types[1]);
+        c.afficherJeu();
 
     }
     @Override

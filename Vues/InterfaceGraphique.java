@@ -54,7 +54,7 @@ public class InterfaceGraphique implements Runnable {
 
 
 		// Ajout du timer
-		Timer time = new Timer(100, new AdaptateurTemps(control));
+		Timer time = new Timer(10, new AdaptateurTemps(control));
 		time.start();
 
 		// Un clic sur le bouton de fermeture clos l'application
