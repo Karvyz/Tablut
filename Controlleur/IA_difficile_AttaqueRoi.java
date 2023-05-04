@@ -2,11 +2,12 @@ package Controlleur;
 
 import Modele.Jeu;
 import Modele.Niveau;
+import Modele.TypeJoueur;
 import Modele.TypePion;
 
 public class IA_difficile_AttaqueRoi extends IA_difficile {
-    public IA_difficile_AttaqueRoi(int num, Jeu jeu) {
-        super(num, jeu);
+    public IA_difficile_AttaqueRoi(TypeJoueur type, Jeu jeu, String nom) {
+        super(type, jeu, nom);
     }
     @Override
     public int evaluation(Niveau n) {

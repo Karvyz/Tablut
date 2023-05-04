@@ -1,9 +1,6 @@
 package Controlleur;
 
-import Modele.Coordonne;
-import Modele.Jeu;
-import Modele.Pion;
-import Modele.TypePion;
+import Modele.*;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -11,8 +8,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class IA_facile extends IA {
 
-    public IA_facile(int num, Jeu jeu) {
-        super(num, jeu);
+    public IA_facile(TypeJoueur type, Jeu jeu, String nom) {
+        super(type, jeu, nom);
     }
 
     @Override

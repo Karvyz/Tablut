@@ -8,8 +8,8 @@ import static Modele.TypeJoueur.*;
 
 public class IA extends Joueurs {
 
-    public IA(int num, Jeu jeu) {
-		super(IA_FACILE, jeu, "");
+    public IA(TypeJoueur type, Jeu jeu, String nom) {
+		super(type, jeu, nom);
     }
 
     // Méthode appelée pour tous les joueurs lors d'un clic sur le plateau
