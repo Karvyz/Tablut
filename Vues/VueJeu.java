@@ -258,7 +258,7 @@ class VueJeu extends JPanel {
         c.weightx = 1;
         c.weighty = 1;
         c.anchor = FIRST_LINE_END;
-        mainPanel.add(j1, c);
+        mainPanel.add(j1, c); //TODO A QUOI CA SERT ?
 
         c.gridx = 0;
         c.gridy = 0;
@@ -336,7 +336,6 @@ class VueJeu extends JPanel {
 
     void nouvellePartie() {
         endGamePanel.setVisible(false);
-        //System.out.println(j1.);
         vueNiveau = new VueNiveau(controleur, this, j1, j2, texteJeu);
         controleur.jeu().ajouteObservateur(vueNiveau);
 
@@ -351,7 +350,12 @@ class VueJeu extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
         mainPanel.add(vueNiveau, c);
 
+        System.out.println(j1);
         // Initialisation du niveau
+        //AFFICHAGE DES NOMS DES JOUEURS DANS LA FENETRE DU JEU
+        if(controleur.jeu().getJoueurCourant() == null){
+            System.out.println("OKK");
+        }
         j1.setName((!controleur.jeu().getJoueurCourant().estHumain() ? "IA : " : "") + controleur.jeu().getJoueurCourant().nom());
         j1.setPions(controleur.jeu().getJoueurCourant().nombrePionsManges());
 

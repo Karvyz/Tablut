@@ -8,7 +8,7 @@ import Vues.CollecteurEvenements;
 import java.sql.SQLOutput;
 
 
-public class ControlleurMediateur implements CollecteurEvenements {
+public class ControlleurMediateur implements CollecteurEvenements{
 
 	Vues vues;
 	Animation animIA1, animIA2;
@@ -16,7 +16,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 
     Jeu jeu;
 
-	final int lenteurAttente = 50;
+	final int lenteurAttente = 200;
 	int decompte;
 	private Pion selectionne;
 	private boolean pionSelec = false;
@@ -34,7 +34,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	@Override
 	public void nouvellePartie(String nomJ1, TypeJoueur typeJ1, TypePion roleJ1 ,String nomJ2, TypeJoueur typeJ2, TypePion roleJ2){
 		verifierMediateurVues("Impossible de créer une nouvelle partie");
-		System.out.println("INITialisation des joueurs \n Type des joueurs choisis pour la partie J0: " + typeJ1 +", J1: " +typeJ2);
 		jeu.nouveauJoueur(nomJ1, typeJ1, roleJ1); //Initialisation des joueurs
 		jeu.nouveauJoueur(nomJ2, typeJ2, roleJ2);
 		jeu.nouvellePartie();
@@ -42,7 +41,12 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	}
 
 	public void restaurePartie(String fichier){
-		jeu.chargerPartie(fichier);
+		Jeu nouveauJeu = jeu.chargerPartie(fichier);
+		if (nouveauJeu == null){
+			return;
+		}
+
+		this.jeu = nouveauJeu;
 		vues.restaurePartie();
 		jeu.setEnCours(true);
 	}
@@ -61,14 +65,10 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		if (jeu.joueurs[jeu().get_num_JoueurCourant()].jeu(src, dst)) {// MODIF de jeu.n ici
 			changeJoueur();
 		}
-		System.out.println(jeu().getNiveau());
-
-		System.out.println("Joeuur courant dans CM " + jeu.get_num_JoueurCourant());
 	}
 	@Override
 	public void clicSouris(int l, int c) {
 		// Lors d'un clic sur un pion, on affiche ses déplacements possibles
-		System.out.println(jeu().getNiveau());
 		Pion caseSelec = jeu.n.getPion(l,c);
 
 		if (caseSelec == null && pionSelec ){ //ICI on cherche a déplacer
@@ -134,7 +134,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 				changeJoueur();
 			else if (decompte == 0) {
 				if (jeu.joueurs[jeu.get_num_JoueurCourant()].estHumain() && jeu.joueurs[jeu.get_num_JoueurCourant()].aPionsNoirs())
-					System.out.println("C'est a vous de jouer : L'ATTAQUANT :  " + jeu.get_num_JoueurCourant());
+					System.out.println("C'est a vous de jouer : L'ATTAQUANT");
 				else
 					System.out.println("C'est a vous de jouer : LE DEFENSEUR");
 				decompte = lenteurAttente;

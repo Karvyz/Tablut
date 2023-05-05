@@ -61,7 +61,8 @@ public class Jeu extends Observable implements Serializable {
 
     }
 
-    public boolean chargerPartie(String fichier){
+    public Jeu chargerPartie(String fichier){
+        Jeu nouveauJeu = new Jeu();
         Data_Niveau data_niveau = null;
 
         try {
@@ -69,13 +70,13 @@ public class Jeu extends Observable implements Serializable {
             ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 
             data_niveau = (Data_Niveau) objectIn.readObject();
-            this.n = data_niveau.niveau;
-            this.coup_annule = data_niveau.coup_annule;
-            this.coup_a_refaire = data_niveau.coup_a_refaire;
-            this.joueurCourant = data_niveau.joueurCourant;
-            System.out.println("JOUEUR COURANT : " + joueurCourant);
-            this.joueurs[0] = data_niveau.attaquant;
-            this.joueurs[1] = data_niveau.defenseur;
+            nouveauJeu.n = data_niveau.niveau;
+            nouveauJeu.coup_annule = data_niveau.coup_annule;
+            nouveauJeu.coup_a_refaire = data_niveau.coup_a_refaire;
+            nouveauJeu.joueurCourant = data_niveau.joueurCourant;
+            System.out.println("JOUEUR COURANT : " + joueurCourant + "et joueur1: " + data_niveau.attaquant + "joueur2" + data_niveau.defenseur);
+            nouveauJeu.joueurs[0] = data_niveau.attaquant;
+            nouveauJeu.joueurs[1] = data_niveau.defenseur;
             setEnCours(true);
             objectIn.close();
             fileIn.close();
@@ -84,18 +85,18 @@ public class Jeu extends Observable implements Serializable {
 
         } catch (FileNotFoundException e) {
             System.err.println("Fichier non trouvé : " + fichier);
-            return false;
+            return null;
         } catch (EOFException | InvalidClassException e) {
             System.err.println("Erreur lors de la lecture du fichier : " + fichier);
-            return false;
+            return null;
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            return null;
         } catch (ClassNotFoundException e) {
             System.err.println("Classe Data_Niveau introuvable");
-            return false;
+            return null;
         }
-        return true;
+        return nouveauJeu;
     }
     /**Méthode utile en fin de partie*/
     public Joueurs vainqueur() {
@@ -224,6 +225,7 @@ public class Jeu extends Observable implements Serializable {
     }
 
     public Joueurs getJoueurCourant(){
+        System.out.println("JOUEUR courant " +joueurCourant + "joueur: " + joueurs[0]   );
         switch (joueurCourant) {
             case 0:
                 return joueurs[0];
