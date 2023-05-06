@@ -32,10 +32,11 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		for (int i = 0; i < joueurs.length; i++) {
 			joueurs[i][HUMAIN] = new Humain(i, jeu);
 			joueurs[i][FACILE] = new IA_facile(i, jeu);
-            joueurs[i][MOYEN] = new IA_moyen(i, jeu);
-            joueurs[i][DIFFCILE] = new IA_difficile_MassacrePion(i, jeu);
-			typeJoueur[i] = DIFFCILE; //type
+            joueurs[i][MOYEN] = new IA_difficile_Long_live_the_king(i, jeu);
+            joueurs[i][DIFFCILE] = new IA_difficile_le_roi_c_ciao(i, jeu);
+			typeJoueur[i] = MOYEN; //type
 		}
+		typeJoueur[1] = DIFFCILE;
 	}
 	
 	@Override

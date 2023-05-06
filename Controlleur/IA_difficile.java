@@ -5,14 +5,12 @@ import Modele.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static java.lang.System.exit;
-
 public abstract class IA_difficile extends IA{
 
     int nevaluation = 0;
     int bypass1 = 0;
     int bypass2 = 0;
-    static int MAX_DEPTH = 6;
+    static int MAX_DEPTH = 4;
 
     public IA_difficile(int num, Jeu jeu) {
         super(num, jeu);
