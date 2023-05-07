@@ -8,14 +8,14 @@ import java.util.Random;
 public abstract class IA_difficile extends IA{
 
     int nevaluation = 0;
-    static int MAX_DEPTH = 4;
+    static int MAX_DEPTH = 3;
 
     public IA_difficile(String nom, TypePion roleJ, Jeu j) {
         super(nom, TypeJoueur.IA_DIFFICILE, roleJ, j);
     }
 
     @Override
-    public boolean tempsEcoule() {
+    public int joue() {
         nevaluation = 0;
         long l = System.currentTimeMillis();
         //Code de l'IA renvoyer vrai une fois que le coup est joué
@@ -40,7 +40,7 @@ public abstract class IA_difficile extends IA{
                         departs.clear();
                         arrivees.clear();
                         valeur_retour = tmp;
-                        System.out.println("changement valeur retour : " + valeur_retour);
+//                        System.out.println("changement valeur retour : " + valeur_retour);
                     }
                     departs.add(pion.getCoordonne());
                     arrivees.add(deplacement);
@@ -51,10 +51,10 @@ public abstract class IA_difficile extends IA{
         int index = new Random().nextInt(departs.size());
         Coordonne pion_depart = departs.get(index);
         Coordonne pion_arrivee = arrivees.get(index);
-        jeu.jouer(pion_depart, pion_arrivee);
-        System.out.println(nb_branches + " branches");
-        System.out.println(nevaluation + " evalutations en " + (System.currentTimeMillis() -l ) + "ms");
-        return true;
+//        System.out.println(nb_branches + " branches");
+//        System.out.println(nevaluation + " evalutations en " + (System.currentTimeMillis() -l ) + "ms");
+        return jeu.jouer(pion_depart, pion_arrivee);
+
     }
 
     private int analyse_recursive(Niveau n, int depth) {

@@ -115,10 +115,10 @@ public class Jeu extends Observable implements Serializable {
 
 
     /**Méthode en rapport avec les possibilités de jeu*/
-    public void jouer(Coordonne depart, Coordonne arrive){
+    public int jouer(Coordonne depart, Coordonne arrive){
         this.coup_annule.empiler(this.n.clone());
         int i = n.deplace_pion(depart, arrive);
-        System.out.println("Déplacement du pion de (" + depart.getX() +"," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() +")");
+        // System.out.println("Déplacement du pion de (" + depart.getX() +"," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() +")");
         if (i > 0){
             setEnCours(false);
             if (i == 1)
@@ -134,9 +134,9 @@ public class Jeu extends Observable implements Serializable {
 
         this.coup_a_refaire.clear();
 
-        System.out.println("ICI");
         joueurSuivant();
         metAJour();
+        return i;
     }
 
     public void annuler() {
@@ -190,7 +190,7 @@ public class Jeu extends Observable implements Serializable {
 
 
     public void joueurSuivant(){
-        System.out.println("le "+joueurCourant + "a joué, maintenant c'est au " + (joueurCourant+1 )%2);
+//        System.out.println("le "+joueurCourant + "a joué, maintenant c'est au " + (joueurCourant+1 )%2);
         joueurCourant = (joueurCourant + 1) %2;
     }
 
@@ -225,7 +225,7 @@ public class Jeu extends Observable implements Serializable {
     }
 
     public Joueurs getJoueurCourant(){
-        System.out.println("JOUEUR courant " +joueurCourant + "joueur: " + joueurs[0]   );
+//        System.out.println("JOUEUR courant " +joueurCourant + "joueur: " + joueurs[0]   );
         switch (joueurCourant) {
             case 0:
                 return joueurs[0];
