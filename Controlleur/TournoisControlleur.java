@@ -2,6 +2,7 @@ package Controlleur;
 
 import Global.Configuration;
 import Modele.Jeu;
+import Modele.Joueurs;
 import Modele.TypeJoueur;
 import Modele.TypePion;
 
@@ -10,13 +11,18 @@ import static java.lang.System.exit;
 public class TournoisControlleur {
     Jeu jeu;
 
-    public void match(int nbParties, TypeJoueur typeJ1, TypeJoueur typeJ2){
+    public void match(){
+        int nbParties = 100;
+
         int nbVictoireJ1 = 0;
         int nbVictoireJ2 = 0;
         int nbEgalites = 0;
         for (int i = 0; i < nbParties; i++) {
             jeu = new Jeu();
-            nouvellePartie(typeJ1, typeJ2);
+
+            IA J1 = new IA_difficile_AttaqueRoi("", TypePion.ATTAQUANT, jeu);
+            IA J2 = new IA_difficile_le_roi_c_ciao("", TypePion.DEFENSEUR, jeu);
+            nouvellePartie(J1, J2);
             switch (play()) {
                 case 1:
                     nbVictoireJ1++;
@@ -36,11 +42,11 @@ public class TournoisControlleur {
         System.out.println("Defenseur J2 : " + nbVictoireJ2);
         System.out.println("Egalités : " + nbEgalites);
     }
-    private void nouvellePartie(TypeJoueur typeJ1, TypeJoueur typeJ2){
-        jeu.nouveauJoueur("IA1", typeJ1, TypePion.ATTAQUANT); //Initialisation des joueurs
-        jeu.nouveauJoueur("IA2", typeJ2, TypePion.DEFENSEUR);
+
+    private void nouvellePartie(IA J1, IA J2){
+        jeu.joueurs[0] = J1;
+        jeu.joueurs[1] = J2;
         jeu.nouvellePartie();
-        System.out.println(jeu.n);
     }
 
     private int play(){

@@ -1,4 +1,6 @@
 
+import Controlleur.IA_difficile_MassacrePion;
+import Controlleur.IA_difficile_le_roi_c_ciao;
 import Controlleur.TournoisControlleur;
 import Modele.Jeu;
 
@@ -13,7 +15,7 @@ import javax.swing.*;
 public class Tablut{
     public static void main(String[] args) {
         TournoisControlleur tournoisControlleur = new TournoisControlleur();
-        tournoisControlleur.match(100, TypeJoueur.IA_FACILE, TypeJoueur.IA_DIFFICILE);
+        tournoisControlleur.match();
     }
 }
  
