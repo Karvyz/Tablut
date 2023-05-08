@@ -6,7 +6,7 @@ public class JoueursCreation {
     public static Joueurs createJoueur(String nom, TypeJoueur type, TypePion roleJ, Jeu jeu) {
         if (type == TypeJoueur.HUMAIN) {
             return new Controlleur.Humain(nom, roleJ, jeu);
-        } else if (type == TypeJoueur.IA_FACILE || type == TypeJoueur.IA_MOYEN || type == TypeJoueur.IA_DIFFICILE) {
+        } else if (type == TypeJoueur.IA_FACILE ) {
             return new Controlleur.IA_facile(nom,roleJ, jeu);
         } else if (type == TypeJoueur.IA_MOYEN ) {
             return new Controlleur.IA_moyen(nom, roleJ, jeu);
