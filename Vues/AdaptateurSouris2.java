@@ -63,7 +63,7 @@ class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListener {
         }
 
         controleur.clicSouris(l, c);
-        System.out.println("l = " + l + ", c = " + c);
+        //System.out.println("l = " + l + ", c = " + c);
 
     }
 

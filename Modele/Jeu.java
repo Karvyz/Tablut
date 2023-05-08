@@ -90,7 +90,7 @@ public class Jeu extends Observable implements Serializable {
                 System.out.println("PARTIE FINI CAR ROI EVADE");
             else
                 System.out.println("EGALITE");
-            System.out.println(n);
+            //System.out.println(n); //Affichez le jeu en fin de partie
         }
 
         //TODO test si une partie est finie;
