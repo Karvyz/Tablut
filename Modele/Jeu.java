@@ -12,8 +12,6 @@ public class Jeu extends Observable implements Serializable {
 
     public Niveau n;
 
-    private final Random rand;
-
     public Joueurs [] joueurs = new Joueurs[2];
 
     private Joueurs vainqueur;
@@ -26,7 +24,6 @@ public class Jeu extends Observable implements Serializable {
 
 
     public Jeu(){
-        rand = new Random();
         enCours = false;
         joueurs[0] = null; //Pour être sure, peut être inutile
         joueurs[1] = null;
