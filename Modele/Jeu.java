@@ -280,5 +280,15 @@ public class Jeu extends Observable implements Serializable {
             return joueurs[0];
     }
 
+    public void reset() {
+        //this.n = new Niveau(config);
+        this.coup_annule = new Pile();
+        this.coup_a_refaire = new Pile();
+        this.joueurCourant = 0;
+        this.joueurs[0] = null;
+        this.joueurs[1] = null;
+        this.enCours = false;
+    }
+
 
 }

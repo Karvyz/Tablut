@@ -95,7 +95,11 @@ class VueJeu extends JPanel {
         endButtons.add(menu);
         endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
         endButtons.add(retry);
-        menu.addActionListener((e) -> controleur.afficherMenuPrincipal());
+        menu.addActionListener((e) -> {
+            controleur.jeu().reset();
+            controleur.afficherMenuPrincipal();
+
+        });
         retry.addActionListener((e) -> {
             endGamePanel.setVisible(false);
             controleur.partieSuivante();
