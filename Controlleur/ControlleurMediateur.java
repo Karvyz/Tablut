@@ -32,7 +32,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	@Override
 	public void nouvellePartie(String nomJ1, TypeJoueur typeJ1, TypePion roleJ1 ,String nomJ2, TypeJoueur typeJ2, TypePion roleJ2){
 		verifierMediateurVues("Impossible de créer une nouvelle partie");
-		System.out.println("INITialisation des joueurs \n Type des joueurs choisis pour la partie J0: " + typeJ1 +", J1: " +typeJ2);
+		System.out.println("Type des joueurs choisis pour la partie J0: " + typeJ1 +", J1: " +typeJ2);
 		jeu.nouveauJoueur(nomJ1, typeJ1, roleJ1); //Initialisation des joueurs
 		jeu.nouveauJoueur(nomJ2, typeJ2, roleJ2);
 		jeu.nouvellePartie();
@@ -128,7 +128,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
 					System.out.println("C'est a vous de jouer : L'ATTAQUANT ");
 				else
 					System.out.println("C'est a vous de jouer : LE DEFENSEUR");
-				System.out.println("icii");
 				decompte = lenteurAttente;
 			}
 			else {
