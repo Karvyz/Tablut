@@ -15,6 +15,8 @@ public class Jeu extends Observable implements Serializable {
     private final Random rand;
 
     public Joueurs [] joueurs = new Joueurs[2];
+
+    private Joueurs vainqueur;
     private int joueurCourant;
     private boolean enCours ;
     public Pile coup_annule;
@@ -67,7 +69,7 @@ public class Jeu extends Observable implements Serializable {
             return null;
         }
         // TODO : retourner le joueur gagnant
-        return null;
+        return vainqueur;
     }
 
     public boolean partieTerminee() {
@@ -84,11 +86,17 @@ public class Jeu extends Observable implements Serializable {
         System.out.println("Déplacement du pion de (" + depart.getX() +"," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() +")");
         if (i > 0){
             setEnCours(false);
-            if (i == 1)
+            if (i == 1) {
                 System.out.println("PARTIE FINI CAR ROI CAPTURE");
-            else if (i == 2)
+                vainqueur = joueurs[0];
+                n.enCours = false;
+            }
+            else if (i == 2) {
                 System.out.println("PARTIE FINI CAR ROI EVADE");
-            else
+                vainqueur = joueurs[1];
+                n.enCours = false;
+            }
+            else //TODO plus tard
                 System.out.println("EGALITE");
             //System.out.println(n); //Affichez le jeu en fin de partie
         }
