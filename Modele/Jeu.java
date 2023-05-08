@@ -110,6 +110,8 @@ public class Jeu extends Observable implements Serializable {
     }
 
     public void annuler() {
+
+
         //System.out.print("Annuler : " + jeu().joueurActuel().nom() + " ");
         if (coup_annule.estVide()){
             System.out.println("Impossible d'annuler");
@@ -118,8 +120,21 @@ public class Jeu extends Observable implements Serializable {
         coup_a_refaire.empiler(n.clone()); //stock l'état avant d'annuler
         Niveau restaure = coup_annule.depiler(); //Recupère le niveau précedent
         n = restaure.clone();
-        metAJour();
+
+        if ((!joueurs[0].estHumain() || !joueurs[1].estHumain())){ // Tester si on a une IA contre un humaion pour annuler le coup de l'IA et de l'humain, ATTENTION,l'IA jouera un autre coup
+            if (coup_annule.estVide()){
+                System.out.println("Impossible d'annuler");
+                return;
+            }
+            coup_a_refaire.empiler(n.clone()); //stock l'état avant d'annuler
+            restaure = coup_annule.depiler(); //Recupère le niveau précedent
+            n = restaure.clone();
+            joueurSuivant();
+        }
+
         joueurSuivant(); //La variable du jeu doit aussi être modifie
+        metAJour();
+
         System.out.println("Annulation effectué");
     }
 
