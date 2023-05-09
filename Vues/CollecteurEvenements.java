@@ -7,7 +7,7 @@ public interface CollecteurEvenements {
     void tictac();
     // void changeTaille(int t);
 
-    void clicSouris(int l, int c);
+    boolean clicSouris(Pion selec, int l, int c);
     void dragANDdrop(Coordonne coordonne, Coordonne coordonne2);
 
     void fixerMediateurVues(Vues v);
@@ -35,5 +35,7 @@ public interface CollecteurEvenements {
     void toucheClavier(String touche);
 
     void restaurePartie();
+
+    void fixeJeu(Jeu jeu);
 }
 

@@ -181,7 +181,6 @@ public class Jeu extends Observable implements Serializable {
             this.joueurs[0] = data_niveau.attaquant;
             this.joueurs[1] = data_niveau.defenseur;
 
-
             objectIn.close();
             fileIn.close();
 
@@ -201,6 +200,10 @@ public class Jeu extends Observable implements Serializable {
             return false;
         }
         return true;
+    }
+
+    public Jeu getJeu(){
+        return this;
     }
 
     public void joueurSuivant(){
@@ -253,7 +256,7 @@ public class Jeu extends Observable implements Serializable {
             case 0 :
                 return joueurs[1];
             case 1 :
-                return joueurs[2];
+                return joueurs[0];
             default :
                 return null;
         }
@@ -285,6 +288,23 @@ public class Jeu extends Observable implements Serializable {
         this.joueurs[0] = null;
         this.joueurs[1] = null;
         this.enCours = false;
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Jeu \n{");
+        sb.append("niveau: ").append(n);
+        sb.append(", joueurs: [");
+        sb.append(joueurs[0]).append(", ");
+        sb.append(joueurs[1]);
+        sb.append("], vainqueur: ").append(vainqueur);
+        sb.append(", joueurCourant: ").append(joueurCourant);
+        sb.append(", enCours: ").append(enCours);
+        sb.append(", coup_annule: ").append(coup_annule);
+        sb.append(", coup_a_refaire: ").append(coup_a_refaire);
+        sb.append(", config: ").append(config);
+        sb.append("}");
+        return sb.toString();
     }
 
 

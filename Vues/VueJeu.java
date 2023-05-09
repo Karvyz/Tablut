@@ -400,20 +400,39 @@ class VueJeu extends JPanel {
         topFrame.requestFocus();
 
         vueNiveau.miseAJour();
+    }
 
-        /*TODO POP UP début de parti quand on clique sur OK
-        JButton button = new CButton("OK");
-        button.addActionListener(e -> JOptionPane.getRootFrame().dispose());
+    void restaurePartie(){
+        endGamePanel.setVisible(false);
+        //System.out.println(controleur);
+        vueNiveau = new VueNiveau(controleur, this, j1, j2, texteJeu);
+        controleur.jeu().ajouteObservateur(vueNiveau);
 
-        if (controleur.jeu().getJoueurCourant().estHumain() && controleur.jeu().getJoueurSuivant().estHumain()) {
-            JOptionPane.showOptionDialog(null,
-                    (controleur.jeu().getJoueurCourant().estHumain() ? controleur.jeu().getJoueurCourant().nom() : "L'IA " + controleur.jeu().getJoueurCourant().nom()) + " (attaquant) débute la partie avec les pions " + (controleur.jeu().getJoueurCourant().aPionsBlancs() ? "blancs" : "noirs\n") + (controleur.jeu().getJoueurSuivant().estHumain() ? "Le joueur " + controleur.jeu().getJoueurSuivant().nom() : "L'IA " + controleur.jeu().getJoueurSuivant().nom()) + " a les pions " + (controleur.jeu().getJoueurSuivant().aPionsBlancs() ? "blancs" : "noirs" + " il est le défenseur\n"),
-                    " Début de la partie",
-                    JOptionPane.OK_OPTION,
-                    JOptionPane.INFORMATION_MESSAGE,
-                    new ImageIcon(Imager.getScaledImage("info.png", 24, 24)),
-                    new JButton[]{button}, button);
-        }*/
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        // MARK: ESPACEMENT PLATEAU GAUCHE ET DROITE
+        c.insets = new Insets(5,28,5,28);
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.anchor = GridBagConstraints.CENTER;
+        mainPanel.add(vueNiveau, c);
+
+        // Initialisation du niveau
+        j1.setName("Attaquant : " + (!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurCourant().nom());
+        j1.setPions(controleur.jeu().getJoueurCourant().nombrePionsManges());
+
+        j2.setName("Défenseur : " + (!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurSuivant().nom());
+        j2.setPions(controleur.jeu().getJoueurSuivant().nombrePionsManges());
+
+        topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        topFrame.addKeyListener(new AdaptateurClavier(controleur));
+        topFrame.setFocusable(true);
+        topFrame.requestFocus();
+
+        vueNiveau.miseAJour();
+
     }
 
 

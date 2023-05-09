@@ -16,10 +16,22 @@ public class ControlleurMediateur implements CollecteurEvenements {
 
 	final int lenteurAttente = 50;
 	int decompte;
-	private Pion selectionne;
+	//private Pion selectionne;
 	private boolean pionSelec = false;
 	public ControlleurMediateur(Jeu j)  {
 		jeu = j;
+	}
+
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		sb.append("Jeu {");
+		sb.append("niveau: ").append(jeu.n);
+		sb.append("}");
+		return sb.toString();
+	}
+
+	public void fixeJeu(Jeu j){
+		this.jeu = j;
 	}
 
 	@Override
@@ -49,6 +61,8 @@ public class ControlleurMediateur implements CollecteurEvenements {
 
 	public void restaurePartie(){
 		jeu.setEnCours(true);
+		vues.restaurePartie();
+
 	}
 
 	/**Méthode en rapport avec l'interaction HommeMachine */
@@ -59,28 +73,16 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		}
 	}
 	@Override
-	public void clicSouris(int l, int c) {
+	public boolean clicSouris(Pion selectionne, int l, int c) {
 		// Lors d'un clic sur un pion, on affiche ses déplacements possibles
-		Pion caseSelec = jeu.n.getPion(l,c);
 
-		if (caseSelec == null && pionSelec ){ //ICI on cherche a déplacer
-			Coordonne depart = new Coordonne(selectionne.getX(), selectionne.getY());
-			Coordonne arrive = new Coordonne(l, c);
-			if (jeu.joueurs[jeu.get_num_JoueurCourant()].jeu(depart, arrive )){
-				changeJoueur();
-				pionSelec = false;
-			}
+		Coordonne depart = new Coordonne(selectionne.getX(), selectionne.getY());
+		Coordonne arrive = new Coordonne(l, c);
+		if (jeu.joueurs[jeu.get_num_JoueurCourant()].jeu(depart, arrive )){
+			changeJoueur();
+			return true;
 		}
-		else{ //Selection du pion
-			if (jeu.n.check_clic_selection_pion(caseSelec, jeu.get_num_JoueurCourant())){
-				pionSelec = true;
-				selectionne = caseSelec.clone(); //on stocke le pion sélectionne
-				caseSelec.affiche_liste_deplacement(caseSelec.getDeplacement(jeu.n.plateau));
-			}
-			else{
-				System.out.println("Ce pion ne vous appartient pas");
-			}
-		}
+		return false;
 	}
 	@Override
 	public void toucheClavier(String touche) {
@@ -190,7 +192,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	@Override
 	public void afficherJeu() {
 		verifierMediateurVues("Impossible d'afficher le jeu");
-		System.out.println("Ouverture du jeu");
 		vues.afficherJeu();
 	}
 

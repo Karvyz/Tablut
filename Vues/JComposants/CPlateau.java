@@ -5,6 +5,7 @@ import Modele.Jeu;
 import Modele.Niveau;
 import Modele.Pion;
 import Patterns.Observateur;
+import Vues.AdaptateurSouris;
 import Vues.AdaptateurSouris2;
 import Vues.CollecteurEvenements;
 import Vues.Theme;
@@ -18,17 +19,20 @@ public class CPlateau extends JPanel implements Observateur {
 
     private Point pionEnDeplacement;
 
-    private Point pionSelec;
+    private Pion pionSelec;
     int bordureHaut, bordureGauche, hauteurCase, largeurCase;
     private int brillanceX = -1;
     private int brillanceY = -1;
 
     private ArrayList<Coordonne> destinationsPossibles = new ArrayList<>();
+    private Point pointSelec;
 
 
     public CPlateau(CollecteurEvenements c) {
         controleur = c;
-        AdaptateurSouris2 adaptateurSouris = new AdaptateurSouris2(c, this);
+        //AdaptateurSouris2 adaptateurSouris = new AdaptateurSouris2(c, this);
+        AdaptateurSouris adaptateurSouris = new AdaptateurSouris(c, this);
+
         addMouseListener(adaptateurSouris);
         addMouseMotionListener(adaptateurSouris);
     }
@@ -128,7 +132,7 @@ public class CPlateau extends JPanel implements Observateur {
         Jeu jeu = controleur.jeu();
         Niveau n = jeu.getNiveau();
 
-        Point selec = getPionSelec();
+        Point selec = getPointSelec();
         // TODO : Aura autour du pion
         int x = bordureGauche;
         int y = bordureHaut;
@@ -191,11 +195,20 @@ public class CPlateau extends JPanel implements Observateur {
         //miseAJour(); // Ajoutez cette ligne pour actualiser le plateau
     }
 
-    public void setPionSelec(Point point) {
-        this.pionSelec = point;
+    public void setPointSelec(Point point) {
+        this.pointSelec = point;
     }
-    public Point getPionSelec(){
+
+    public void setPionSelec(Pion pion){
+        this.pionSelec = pion;
+    }
+
+    public Pion getPionSelec(){
         return pionSelec;
+    }
+
+    public Point getPointSelec(){
+        return pointSelec;
     }
 
     @Override

@@ -40,8 +40,11 @@ public class VueMenuParties extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 String selectedFile = fileList.getSelectedValue();
                 if (selectedFile != null) {
+                    //System.out.println(controleur);
                     controleur.jeu().chargerPartie("Resources/save/" + selectedFile);
-                    System.out.println(controleur.jeu().getNiveau());
+                    //System.out.println("Ligne 43 de VueMenuParties \n" + controleur.jeu());
+                    controleur.fixeJeu(controleur.jeu().getJeu());
+                    //System.out.println(controleur);
                     controleur.afficherJeu();
                     controleur.restaurePartie();
                 }

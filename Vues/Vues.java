@@ -32,6 +32,9 @@ public class Vues {
         }
         vueJeu.nouvellePartie();
     }
+    public void restaurePartie(){
+        vueJeu.restaurePartie();
+    }
 
     private void afficher(String nom) {
         CardLayout layout = (CardLayout) frame.getContentPane().getLayout();
