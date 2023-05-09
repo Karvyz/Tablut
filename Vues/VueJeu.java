@@ -148,7 +148,11 @@ class VueJeu extends JPanel {
             if (perdant.estHumain()) {
                 endGameText.setText("Dommage! Tu as perdu contre l'IA.. une prochaine fois!");
             } else {
-                endGameText.setText("L'IA " + vainqueur.nom() + " a gagné !");
+                endGamePanel.getComponent(0).setBackground(new Color(120, 70, 50));
+                if(vainqueur.aPionsBlancs())
+                    endGameText.setText("Le défenseur, IA " + vainqueur.nom() + " a gagné !");
+                else
+                    endGameText.setText("L'attaquant, IA " + vainqueur.nom() + " a gagné !");
             }
         }
         endGamePanel.setVisible(true);
