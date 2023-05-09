@@ -98,7 +98,6 @@ class VueJeu extends JPanel {
         menu.addActionListener((e) -> {
             controleur.jeu().reset();
             controleur.afficherMenuPrincipal();
-
         });
         retry.addActionListener((e) -> {
             endGamePanel.setVisible(false);
@@ -194,8 +193,14 @@ class VueJeu extends JPanel {
                 new JMenuItem("Quitter")
         };
 
-        menu_items[0].addActionListener(e -> controleur.afficherMenuNouvellePartie());
-        menu_items[1].addActionListener(e -> controleur.afficherMenuPrincipal());
+        menu_items[0].addActionListener((e) -> {
+            controleur.jeu().reset();
+            controleur.afficherMenuNouvellePartie();
+        });
+        menu_items[1].addActionListener((e) -> {
+            controleur.jeu().reset();
+            controleur.afficherMenuPrincipal();
+        });
         menu_items[2].addActionListener(e -> controleur.toClose());
 
         for (JMenuItem menu_item: menu_items) {

@@ -90,6 +90,7 @@ public class InterfaceGraphique implements Runnable {
 				break;
 			case Vues.MENU_SAISIES:
 				vue = new VueMenuSaisies(control);
+				//vue.resetTexte();
 				break;
 			case Vues.JEU:
 				vue = new VueJeu(control);
