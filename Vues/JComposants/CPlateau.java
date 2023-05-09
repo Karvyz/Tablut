@@ -31,6 +31,7 @@ public class CPlateau extends JPanel implements Observateur {
     public CPlateau(CollecteurEvenements c) {
         controleur = c;
         //AdaptateurSouris2 adaptateurSouris = new AdaptateurSouris2(c, this);
+        //System.out.println("HERE"+controleur.jeu());
         AdaptateurSouris adaptateurSouris = new AdaptateurSouris(c, this);
 
         addMouseListener(adaptateurSouris);
