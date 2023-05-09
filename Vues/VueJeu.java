@@ -11,6 +11,7 @@ import java.io.File;
 
 import static java.awt.GridBagConstraints.*;
 
+import Modele.TypePion;
 import Vues.JComposants.*;
 
 class VueJeu extends JPanel {
@@ -194,8 +195,13 @@ class VueJeu extends JPanel {
         };
 
         menu_items[0].addActionListener((e) -> {
+            Joueurs[] joueurs = new Joueurs[2];
+            joueurs[0] = controleur.jeu().getJoueur1();
+            joueurs[1] = controleur.jeu().getJoueur2();
             controleur.jeu().reset();
-            controleur.afficherMenuNouvellePartie();
+            controleur.nouvellePartie(joueurs[0].nom(), joueurs[0].type(), TypePion.ATTAQUANT, joueurs[1].nom(), joueurs[1].type(), TypePion.DEFENSEUR);
+            controleur.afficherJeu();
+            controleur.jeu().metAJour();
         });
         menu_items[1].addActionListener((e) -> {
             controleur.jeu().reset();
