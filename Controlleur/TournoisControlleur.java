@@ -20,8 +20,8 @@ public class TournoisControlleur {
         public void run() {
             jeu = new Jeu();
 
-            IA J1 = new IA_difficile_le_roi_c_ciao("", TypePion.ATTAQUANT, jeu);
-            IA J2 = new IA_difficile_Long_live_the_king("", TypePion.DEFENSEUR, jeu);
+            IA J1 = new IA_difficile_Long_live_the_king("", TypePion.ATTAQUANT, jeu);
+            IA J2 = new IA_difficile_MassacrePion("", TypePion.DEFENSEUR, jeu);
             nouvellePartie(J1, J2);
             resultat = play();
         }

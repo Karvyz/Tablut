@@ -86,7 +86,7 @@ public class IA_difficile_le_roi_c_ciao extends IA_difficile{
                 }
                 return 20;
             } else {
-                return defenseurs - attaquants - Math.min(Math.min(counthg+countbg, counthd+countbd),Math.min(counthg+counthd, countbg+countbd)); // on retourne le nombre de defenseurs - le nombre d'attaquants - le nombre minimum de pions d'un coté du roi
+                return defenseurs - attaquants - Math.min(Math.min(g,d),Math.min(h,b)); // on retourne le nombre de defenseurs - le nombre d'attaquants - le nombre minimum de pions d'un coté du roi
             }
         }
     }
