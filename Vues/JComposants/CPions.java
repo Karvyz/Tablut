@@ -7,7 +7,7 @@ public class CPions extends JPanel {
     private final int hgap = 5;
     private boolean reverse = false;
     public CPions(boolean reverse) {
-//        this.reverse = reverse;
+        this.reverse = reverse;
         setOpaque(false);
         setBackground(null);
         setLayout(new GridLayout(1, 0, hgap, 0));
@@ -22,7 +22,7 @@ public class CPions extends JPanel {
         qualityHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2.setRenderingHints(qualityHints);
 
-        g2.setColor(!reverse ? Color.white : new Color(29, 29, 29));
+        g2.setColor(Color.white);
         g2.fillRoundRect(0, 0, getSize().width-1, getSize().height-1, 45, 45);
 
         super.paintComponent(g);
