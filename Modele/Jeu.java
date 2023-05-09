@@ -98,8 +98,9 @@ public class Jeu extends Observable implements Serializable {
         //TODO test si une partie est finie;
 
         this.coup_a_refaire.clear();
-
+        //System.out.println(this);
         joueurSuivant();
+        //System.out.println(this);
         metAJour();
     }
 
@@ -155,8 +156,9 @@ public class Jeu extends Observable implements Serializable {
             n = a_refaire.clone();
         }
 
-        metAJour();
+
         joueurSuivant();
+        metAJour();
         System.out.println("Coup refait");
     }
 
@@ -218,7 +220,9 @@ public class Jeu extends Observable implements Serializable {
     }
 
     public void joueurSuivant(){
+        //System.out.println("Avant" +joueurCourant);
         joueurCourant = (joueurCourant + 1) %2;
+        //System.out.println("Apres"  +joueurCourant);
     }
 
 
