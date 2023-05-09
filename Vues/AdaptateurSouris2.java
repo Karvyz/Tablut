@@ -131,6 +131,7 @@ class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListener {
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        System.out.println("ICIII");
         calculerDimensions();
         int hauteur = pane.getHeight() - bordureHaut - bordureBas;
         int largeur = pane.getWidth() - bordureGauche - bordureDroite;
