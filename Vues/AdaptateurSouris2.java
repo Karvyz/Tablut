@@ -129,6 +129,31 @@ class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListener {
         //pane.setCouleurDest(null);
     }
 
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        calculerDimensions();
+        int hauteur = pane.getHeight() - bordureHaut - bordureBas;
+        int largeur = pane.getWidth() - bordureGauche - bordureDroite;
+
+        if (e.getX() < bordureGauche || e.getY() < bordureHaut ||
+                e.getX() > pane.getWidth() - bordureDroite ||
+                e.getY() > pane.getHeight() - bordureBas) {
+            return;
+        }
+
+        int x = e.getX() - bordureGauche;
+        int y = e.getY() - bordureHaut;
+
+        int l = y * 9 / hauteur;
+        int c = x * 9 / largeur;
+
+        // Obtenez les informations de la case survolée (par exemple, le type de pion)
+        Pion caseSelec = controleur.jeu().n.getPion(l, c);
+
+        // Configurez le texte de l'info-bulle pour le composant CPlateau
+        pane.setToolTipText("Case (" + l + ", " + c + "): " + caseSelec);
+    }
+
     private void calculerDimensions() {
         bordureHaut = Math.round(Theme.instance().bordureHaut() * pane.getHeight() / (float) Theme.instance().hauteurPlateau());
         bordureGauche = Math.round(Theme.instance().bordureGauche() * pane.getWidth() / (float) Theme.instance().largeurPlateau());
