@@ -59,7 +59,7 @@ public class Theme {
         String theme = "assets/";
         chargerDimensions(theme);
 
-        plateau = Imager.getImageBuffer(theme + "Plateau.png");
+        plateau = Imager.getImageBuffer(theme + "Plateau2.png");
 
         blanc_inactif = Imager.getImageBuffer(theme + "PB.png");
         blanc_selectionne = Imager.getImageBuffer(theme + "PB_selectionne.png");
