@@ -97,10 +97,16 @@ class VueJeu extends JPanel {
         endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
         endButtons.add(retry);
         menu.addActionListener((e) -> {
+            mainPanel.setEnabled(true);
+            mainPanel.setFocusable(true);
+            mainPanel.setVisible(true);
             controleur.jeu().reset();
             controleur.afficherMenuPrincipal();
         });
         retry.addActionListener((e) -> {
+            mainPanel.setEnabled(true);
+            mainPanel.setFocusable(true);
+            mainPanel.setVisible(true);
             endGamePanel.setVisible(false);
             controleur.partieSuivante();
         });
@@ -156,6 +162,9 @@ class VueJeu extends JPanel {
             }
         }
         endGamePanel.setVisible(true);
+        mainPanel.setEnabled(false);
+        mainPanel.setFocusable(false);
+        mainPanel.setVisible(false);
     }
 
     private void addTop(JPanel contenu) {
