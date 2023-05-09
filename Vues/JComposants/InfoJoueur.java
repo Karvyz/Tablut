@@ -18,9 +18,7 @@ public class InfoJoueur extends JPanel {
 
     public InfoJoueur(boolean reverse) {
         setOpaque(false);
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-
-        //boolean reverse = num == 1; // 0 = blanc, 1 = noir, 2 = roi
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         setBorder(new EmptyBorder(5, !reverse ? 20 : 10, 5, !reverse ? 10 : 20));
 
@@ -33,9 +31,9 @@ public class InfoJoueur extends JPanel {
         // --
         p = new CPions(reverse);
 
-        add(!reverse ? n : p);
-        add(Box.createRigidArea(new Dimension(14, 0)));
-        add(!reverse ? p : n);
+        add(n);
+        add(Box.createRigidArea(new Dimension(0, 10)));
+        add(p);
     }
 
     public void setName(String nom) {

@@ -87,37 +87,30 @@ public class CPlateau extends JPanel implements Observateur {
 
         for (int l = 0; l < 9; l++) {
             for (int c = 0; c < 9; c++) {
-                /*if (pionEnDeplacement != null && l == pionEnDeplacement.y / hauteurCase && l == pionEnDeplacement.x / largeurCase) {
-                    continue;
-                }*/
-                //Pion courant = n.getPion(l, c);
-                // Dessin des pions, forteresses, roi, konakis
-                // - Si c'est un des coins alors on dessine les forteresses
+                // -- Dessin des pions, forteresses, roi, konakis
                 if (n.estForteresse(l, c)) {
-                    g.drawImage(Theme.instance().forteresse(), x, y, largeurCase, hauteurCase, this);
+                    g.drawImage(Theme.instance().forteresse(), x+5, y+4, largeurCase-8, hauteurCase-8, this);
                 }
                 // - Si c'est la case centrale alors on dessine le konakis
                 if (n.estKonakis(l, c)) {
-                    g.drawImage(Theme.instance().konakis(), x, y, largeurCase, hauteurCase, this);
+                    g.drawImage(Theme.instance().konakis(), x+5, y+4, largeurCase-8, hauteurCase-8, this);
                 }
 
                 //System.out.println("l = " + l + ", c = " + c);
                 //System.out.println("x = " + x + ", y = " + y);
 
                 if (n.estAttaquant(l, c)) {
-                    g.drawImage(Theme.instance().noir_inactif(), x, y, largeurCase, hauteurCase, this);
+                    g.drawImage(Theme.instance().noir_inactif(), x+5, y+4, largeurCase-8, hauteurCase-8, this);
                 } else if (n.estRoi(l, c)) {
-                    g.drawImage(Theme.instance().roi(), x, y, largeurCase, hauteurCase, this);
+                    g.drawImage(Theme.instance().roi(), x+3, y+2, largeurCase-1, hauteurCase, this);
                 } else if (n.estDefenseur(l, c)) {
-                    g.drawImage(Theme.instance().blanc_inactif(), x, y, largeurCase, hauteurCase, this);
+                    g.drawImage(Theme.instance().blanc_inactif(), x+5, y+4, largeurCase-8, hauteurCase-8, this);
                 }
                 x += largeurCase;
             }
             y += hauteurCase;
             x = bordureGauche;
         }
-
-
     }
 
     public void updateBrillanceSelection(int l, int c) {
