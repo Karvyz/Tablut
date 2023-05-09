@@ -111,6 +111,10 @@ public class Jeu extends Observable implements Serializable {
             System.out.println("Impossible d'annuler");
             return;
         }
+        if (!joueurs[0].estHumain() && coup_annule.taille() == 1){
+                System.out.println("Impossible d'annuler");
+                return;
+        }
         coup_a_refaire.empiler(n.clone()); //stock l'état avant d'annuler
         Niveau restaure = coup_annule.depiler(); //Recupère le niveau précedent
         n = restaure.clone();
@@ -141,6 +145,16 @@ public class Jeu extends Observable implements Serializable {
         coup_annule.empiler(n.clone());
         Niveau a_refaire = coup_a_refaire.depiler();
         n = a_refaire.clone();
+        if ((!joueurs[0].estHumain() || !joueurs[1].estHumain())) { // Tester si on a une IA contre un humaion pour annuler le coup de l'IA et de l'humain, ATTENTION,l'IA jouera un autre coup
+            if (coup_annule.estVide()) {
+                System.out.println("Impossible d'annuler");
+                return;
+            }
+            coup_annule.empiler(n.clone());
+            a_refaire = coup_a_refaire.depiler();
+            n = a_refaire.clone();
+        }
+
         metAJour();
         joueurSuivant();
         System.out.println("Coup refait");
