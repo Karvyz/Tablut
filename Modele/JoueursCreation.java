@@ -11,7 +11,7 @@ public class JoueursCreation {
             return new Controlleur.IA_difficile_le_roi_c_ciao(nom, roleJ, jeu);
         }
         else if (type == TypeJoueur.IA_DIFFICILE) {
-            return new Controlleur.IA_difficile_Long_live_the_king(nom, roleJ, jeu);
+            return new Controlleur.IA_expert(nom, roleJ, jeu);
         }
         else {
             throw new IllegalArgumentException("Type de joueur non supporté");
