@@ -93,7 +93,7 @@ public class CPlateau extends JPanel implements Observateur {
                     g.drawImage(Theme.instance().forteresse(), x+4, y+4, largeurCase-11, hauteurCase-10, this);
                 }
                 // - Si c'est la case centrale alors on dessine le konakis
-                if (n.estKonakis(l, c)) {
+                if (n.estKonakis(l, c) && !n.estRoi(l, c)) {
                     g.drawImage(Theme.instance().konakis(), x+5, y+4, largeurCase-8, hauteurCase-8, this);
                 }
 
