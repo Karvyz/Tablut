@@ -309,7 +309,7 @@ public class Jeu extends Observable implements Serializable {
         }
         else{
             info[0]= n.nb_pion_blc();
-            info[1]= 9 - n.nb_pion_nr();
+            info[1]= 16 - n.nb_pion_nr();
         }
         return info;
     }
