@@ -146,7 +146,7 @@ public class VueMenuSaisies extends JPanel {
 
         JLabel label1 = new JLabel(" Attaquant");
         System.out.println(label1.getFont());
-        label1.setFont(new Font(label1.getFont().getName(), Font.BOLD, 36));
+        label1.setFont(new Font("Serif", Font.BOLD, 48));
         System.out.println(label1.getFont());
         Joueur1.add(label1);
 
@@ -179,7 +179,7 @@ public class VueMenuSaisies extends JPanel {
         Joueur2.add(Box.createRigidArea(new Dimension(30, 0)));
 
         JLabel label2 = new JLabel(" Défenseur");
-        label2.setFont(label2.getFont().deriveFont(Font.BOLD));
+        label2.setFont(new Font("Serif", Font.BOLD, 48));
         Joueur2.add(label2);
 
         nomJ2.setDropMode(DropMode.USE_SELECTION);
@@ -213,7 +213,26 @@ public class VueMenuSaisies extends JPanel {
         // Quitter
         quitter = new CButton("Quitter");
         quitter.addActionListener((e) -> {
-            controleur.toClose();
+            //controleur.toClose();
+            // Créer une nouvelle fenêtre pour tester le texte d'un jlabel
+            JFrame frame = new JFrame("JLabel");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(300, 300);
+            // Ajout d'un jpanel avec deux jlabel
+            JPanel panel = new JPanel();
+            // GridLayout
+            panel.setLayout(new GridLayout(2, 1));
+            panel.setOpaque(false);
+            // Ajout des deux jlabel
+            JLabel label = new JLabel("Hello World");
+            label.setFont(new Font("Serif", Font.BOLD, 48));
+            JLabel label22 = new JLabel("Goodbye World !");
+            label22.setFont(new Font("Serif", Font.BOLD, 48));
+            panel.add(label);
+            panel.add(label22);
+            // Ajout du jpanel à la fenêtre
+            frame.getContentPane().add(panel);
+            frame.setVisible(true);
         });
 
         BoutonsQuitter.add(quitter);
