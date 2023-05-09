@@ -1,5 +1,4 @@
 package Modele;
-import Controlleur.*;
 
 public class JoueursCreation {
 
@@ -9,10 +8,10 @@ public class JoueursCreation {
         } else if (type == TypeJoueur.IA_FACILE ) {
             return new Controlleur.IA_facile(nom,roleJ, jeu);
         } else if (type == TypeJoueur.IA_MOYEN ) {
-            return new Controlleur.IA_moyen(nom, roleJ, jeu);
+            return new Controlleur.IA_difficile_le_roi_c_ciao(nom, roleJ, jeu);
         }
         else if (type == TypeJoueur.IA_DIFFICILE) {
-            return new Controlleur.IA_difficile_MassacrePion(nom, roleJ, jeu);
+            return new Controlleur.IA_difficile_Long_live_the_king(nom, roleJ, jeu);
         }
         else {
             throw new IllegalArgumentException("Type de joueur non supporté");
