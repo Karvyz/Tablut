@@ -423,10 +423,10 @@ class VueJeu extends JPanel {
 
         // Initialisation du niveau
         j1.setName("Attaquant : " + (!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurCourant().nom());
-        j1.setPions(controleur.jeu().getJoueurCourant().nombrePionsManges());
+        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
 
         j2.setName("Défenseur : " + (!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurSuivant().nom());
-        j2.setPions(controleur.jeu().getJoueurSuivant().nombrePionsManges());
+        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);
 
         topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         topFrame.addKeyListener(new AdaptateurClavier(controleur));

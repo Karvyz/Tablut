@@ -16,7 +16,7 @@ public class Jeu extends Observable implements Serializable {
     private int joueurCourant;
     private boolean enCours ;
     public Pile coup_annule;
-	public Pile coup_a_refaire;
+    public Pile coup_a_refaire;
 
     public ConfigurationJeu config;
 
@@ -112,8 +112,8 @@ public class Jeu extends Observable implements Serializable {
             return;
         }
         if (!joueurs[0].estHumain() && coup_annule.taille() == 1){
-                System.out.println("Impossible d'annuler");
-                return;
+            System.out.println("Impossible d'annuler");
+            return;
         }
         coup_a_refaire.empiler(n.clone()); //stock l'état avant d'annuler
         Niveau restaure = coup_annule.depiler(); //Recupère le niveau précedent
@@ -331,4 +331,7 @@ public class Jeu extends Observable implements Serializable {
         return info;
     }
 
+    public Jeu getJeu() {
+        return this;
+    }
 }
