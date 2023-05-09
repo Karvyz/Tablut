@@ -22,7 +22,7 @@ public class Theme {
     private Image noir_selectionne;
 
     private Image point_interrogation, err;
-    private Image roi, forteresse, konakis, roiSurKonakis;
+    private Image roi, forteresse, konakis, roi_selectionne;
 
     private Theme() {
         charger();
@@ -66,13 +66,11 @@ public class Theme {
         noir_inactif = Imager.getImageBuffer(theme + "PN.png");
         noir_selectionne = Imager.getImageBuffer(theme + "PN_selectionne.png");
         roi = Imager.getImageBuffer(theme + "Roi.png");
+        roi_selectionne = Imager.getImageBuffer(theme + "Roi_selectionne.png");
         forteresse = Imager.getImageBuffer(theme + "Forteresse.png");
         konakis = Imager.getImageBuffer(theme + "Konakis2.png");
-        roiSurKonakis = Imager.getImageBuffer(theme + "RoiSurKonakis.png");
         point_interrogation = Imager.getImageBuffer(theme + "Point-d'interrogation.png");
         err = Imager.getImageBuffer(theme + "err.png");
-
-
     }
 
     public int hauteurPlateau() {
@@ -129,6 +127,10 @@ public class Theme {
 
     public Image roi() {
         return roi;
+    }
+
+    public Image roi_selectionne() {
+        return roi_selectionne;
     }
 
     public Image forteresse() {
