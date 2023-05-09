@@ -168,6 +168,32 @@ public class Niveau implements Serializable, Cloneable {
         return false;
     }
 
+    public int nb_pion_blc(){
+        int nb = 0;
+        for (int i = 0; i < taille; i++) {
+            for (int j = 0; j < taille; j++) {
+                Pion p = plateau[i][j];
+                if (p != null && (p.getType() == TypePion.DEFENSEUR || p.getType() == TypePion.ROI)) {
+                    nb++;
+                }
+            }
+        }
+        return nb;
+    }
+
+    public int nb_pion_nr(){
+        int nb = 0;
+        for (int i = 0; i < taille; i++) {
+            for (int j = 0; j < taille; j++) {
+                Pion p = plateau[i][j];
+                if (p != null && p.getType() == TypePion.ATTAQUANT) {
+                    nb++;
+                }
+            }
+        }
+        return nb;
+    }
+
     public TypePion typePion(int x, int y) {
         return plateau[x][y].getType();
     }
