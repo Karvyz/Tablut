@@ -72,6 +72,21 @@ public class CButton extends JButton {
         return this;
     }
 
+    public CButton solution() {
+        textColor = Color.black;
+        pressedTextColor = Color.black;
+
+        normalBackgroundColor = Color.white;
+        highlightBackgroundColor = new Color(241, 241, 241, 255);
+        pressedBackgroundColor = new Color(208, 208, 208, 255);
+
+        //setPreferredSize(new Dimension(100, 100));
+        setBorder(new EmptyBorder(5, 5, 5, 5));
+
+        return this;
+    }
+
+
     public CButton vert() {
         textColor = Color.white;
         pressedTextColor = Color.white;

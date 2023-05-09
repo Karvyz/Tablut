@@ -7,7 +7,6 @@ public class ConfigurationJeu implements Serializable {
     private boolean RegicideForteresse;
     private boolean RegicideMur;
     private boolean WinTousCote;
-    private boolean RegicideDef;
     private boolean SuicideAutorise;
     private boolean PionForteresse;
 
@@ -18,7 +17,6 @@ public class ConfigurationJeu implements Serializable {
         RegicideForteresse = true; //A true on peut capturer le roi avec une forteresse
         RegicideMur = true; //On peut se servir d'un mur pour capturer le roi
         WinTousCote = false; //A true on peut faire évader le roi sur tous les bords
-        RegicideDef = false;
         SuicideAutorise = false; //A true, le joueur peut se suicider entre deux pions
         PionForteresse = true; //A true, on peut tuer un pion entre un pion adverse et une forteresse
     }
@@ -71,11 +69,4 @@ public class ConfigurationJeu implements Serializable {
         this.WinTousCote = WinTousCote;
     }
 
-    public boolean isRegicideDef() {
-        return RegicideDef;
-    }
-
-    public void setRegicideDef(boolean RegicideDef) {
-        this.RegicideDef = RegicideDef;
-    }
 }

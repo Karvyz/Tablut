@@ -111,6 +111,10 @@ public class Jeu extends Observable implements Serializable {
             System.out.println("Impossible d'annuler");
             return;
         }
+        if (!joueurs[0].estHumain() && coup_annule.taille() == 1){
+                System.out.println("Impossible d'annuler");
+                return;
+        }
         coup_a_refaire.empiler(n.clone()); //stock l'état avant d'annuler
         Niveau restaure = coup_annule.depiler(); //Recupère le niveau précedent
         n = restaure.clone();
@@ -141,6 +145,16 @@ public class Jeu extends Observable implements Serializable {
         coup_annule.empiler(n.clone());
         Niveau a_refaire = coup_a_refaire.depiler();
         n = a_refaire.clone();
+        if ((!joueurs[0].estHumain() || !joueurs[1].estHumain())) { // Tester si on a une IA contre un humaion pour annuler le coup de l'IA et de l'humain, ATTENTION,l'IA jouera un autre coup
+            if (coup_annule.estVide()) {
+                System.out.println("Impossible d'annuler");
+                return;
+            }
+            coup_annule.empiler(n.clone());
+            a_refaire = coup_a_refaire.depiler();
+            n = a_refaire.clone();
+        }
+
         metAJour();
         joueurSuivant();
         System.out.println("Coup refait");
@@ -181,6 +195,7 @@ public class Jeu extends Observable implements Serializable {
             this.joueurs[0] = data_niveau.attaquant;
             this.joueurs[1] = data_niveau.defenseur;
 
+
             objectIn.close();
             fileIn.close();
 
@@ -200,10 +215,6 @@ public class Jeu extends Observable implements Serializable {
             return false;
         }
         return true;
-    }
-
-    public Jeu getJeu(){
-        return this;
     }
 
     public void joueurSuivant(){
@@ -256,7 +267,7 @@ public class Jeu extends Observable implements Serializable {
             case 0 :
                 return joueurs[1];
             case 1 :
-                return joueurs[0];
+                return joueurs[2];
             default :
                 return null;
         }
@@ -307,5 +318,17 @@ public class Jeu extends Observable implements Serializable {
         return sb.toString();
     }
 
+    public int[] info_pion(Joueurs j){
+        int[] info = new int[2];
+        if( j.aPionsNoirs()){
+            info[0]= n.nb_pion_nr();
+            info[1]= 9 - n.nb_pion_blc();
+        }
+        else{
+            info[0]= n.nb_pion_blc();
+            info[1]= 16 - n.nb_pion_nr();
+        }
+        return info;
+    }
 
 }

@@ -13,10 +13,12 @@ public class InfoJoueur extends JPanel {
 
     private final JLabel n;
     private final JPanel p;
-    private final ImageIcon pawn;
+    private ImageIcon pawn;
     private final int hgap = 5;
+    private boolean reverse;
 
     public InfoJoueur(boolean reverse) {
+        this.reverse = reverse;
         setOpaque(false);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -26,8 +28,9 @@ public class InfoJoueur extends JPanel {
         n.setForeground(Color.WHITE);
         n.setFont(new Font("Arial", Font.BOLD, 16));
 
-        // -- TODO : ajouter les images des pions
-        pawn = new ImageIcon(Imager.getScaledImage(reverse ? "assets/PN.png" : "assets/PB.png", 25, 30));
+        // --
+        System.out.println("InfoJoueur : " + reverse);
+        pawn = new ImageIcon(Imager.getScaledImage(reverse ? "PN.png" : "PB.png", 25, 30));
         // --
         p = new CPions(reverse);
 
@@ -40,11 +43,21 @@ public class InfoJoueur extends JPanel {
         n.setText(nom);
     }
 
-    public void setPions(int nb) {
+    public void setPions(int nb1, int nb2) {
         // Affichage des pions captures
+        ImageIcon fois = new ImageIcon(Imager.getScaledImage("fois.png", 25, 30));
+        //System.out.println("setPions : " + nb);
+        pawn = new ImageIcon(Imager.getScaledImage(reverse ? "PN.png" : "PB.png", 25, 30));
         p.removeAll();
-        p.setLayout(new GridLayout(1, nb, hgap, 0));
-        for (int i = 0; i < nb; i ++) p.add(new JLabel(pawn));
+        p.setLayout(new GridLayout(2, 3, hgap, 0));
+        p.add(new JLabel(pawn));
+        p.add(new JLabel(fois));
+        p.add(new JLabel(String.valueOf(nb1)));
+        pawn = null;
+        pawn = new ImageIcon(Imager.getScaledImage(reverse ? "PB_barre.png" : "PN_barre.png", 25, 30));
+        p.add(new JLabel(pawn));
+        p.add(new JLabel(fois));
+        p.add(new JLabel(String.valueOf(nb2)));
     }
 
 }

@@ -41,16 +41,18 @@ public class CPlateau extends JPanel implements Observateur {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         calculerDimensions();
-        drawPlateau(g);
-        drawContenu(g);
-        drawDestination(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        drawPlateau(g2d);
+        drawContenu(g2d);
+        drawDestination(g2d);
 
         if (brillanceX >= 0 && brillanceY >= 0) {
-            drawBrillance(g, brillanceX, brillanceY);
+            drawBrillance(g2d, brillanceX, brillanceY);
         }
     }
 
-    private void drawDestination(Graphics g) {
+    private void drawDestination(Graphics2D g) {
         if (destinationsPossibles == null){return ;}
         for (Coordonne caseSelec : destinationsPossibles){
             int x = bordureGauche;
@@ -79,12 +81,12 @@ public class CPlateau extends JPanel implements Observateur {
     }
 
     //Permet de dessiner le plateau sous les pions
-    private void drawPlateau(Graphics g) {
+    private void drawPlateau(Graphics2D g) {
         Image current = Theme.instance().plateau();
         g.drawImage(current, 0, 0, getWidth(), getHeight(), null);
     }
 
-    private void drawContenu(Graphics g) {
+    private void drawContenu(Graphics2D g) {
         Jeu j = controleur.jeu();
         Niveau n = j.getNiveau();
         int x = bordureGauche;
@@ -97,7 +99,7 @@ public class CPlateau extends JPanel implements Observateur {
                     g.drawImage(Theme.instance().forteresse(), x+4, y+4, largeurCase-11, hauteurCase-10, this);
                 }
                 // - Si c'est la case centrale alors on dessine le konakis
-                if (n.estKonakis(l, c)) {
+                if (n.estKonakis(l, c) && !n.estRoi(l, c)) {
                     g.drawImage(Theme.instance().konakis(), x+5, y+4, largeurCase-8, hauteurCase-8, this);
                 }
 
@@ -107,7 +109,7 @@ public class CPlateau extends JPanel implements Observateur {
                 if (n.estAttaquant(l, c)) {
                     g.drawImage(Theme.instance().noir_inactif(), x+5, y+4, largeurCase-8, hauteurCase-8, this);
                 } else if (n.estRoi(l, c)) {
-                    g.drawImage(Theme.instance().roi(), x+3, y+2, largeurCase-2, hauteurCase, this);
+                    g.drawImage(Theme.instance().roi(), x+5, y+5, largeurCase-7, hauteurCase-2, this);
                 } else if (n.estDefenseur(l, c)) {
                     g.drawImage(Theme.instance().blanc_inactif(), x+5, y+4, largeurCase-8, hauteurCase-8, this);
                 }
@@ -128,7 +130,7 @@ public class CPlateau extends JPanel implements Observateur {
         repaint();
     }
 
-    public void drawBrillance(Graphics g, int l, int c) {
+    public void drawBrillance(Graphics2D g, int l, int c) {
         Jeu jeu = controleur.jeu();
         Niveau n = jeu.getNiveau();
 

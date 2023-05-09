@@ -291,14 +291,14 @@ class VueJeu extends JPanel {
         // MARK: ESPACEMENT POUR LE RESTE (hors plateau)
         c.insets = new Insets(10, 60, 0, 60);
         c.gridx = 0;
-        c.gridy = 0;
+        c.gridy = 1;
         c.weightx = 1;
         c.weighty = 1;
         c.anchor = FIRST_LINE_END;
         mainPanel.add(j2, c);
 
         c.gridx = 0;
-        c.gridy = 0;
+        c.gridy = 1;
         c.weightx = 1;
         c.weighty = 1;
         c.anchor = FIRST_LINE_START;
@@ -334,11 +334,13 @@ class VueJeu extends JPanel {
 
         JButton[] controls = {
                 new CButton(new ImageIcon(Imager.getScaledImage("assets/undo.png", 18, 18))).blanc(),
+                new CButton(new ImageIcon(Imager.getScaledImage("assets/solution.png", 40, 40))).solution(),
                 new CButton(new ImageIcon(Imager.getScaledImage("assets/redo.png", 18, 18))).blanc(),
         };
 
         controls[0].addActionListener(e -> controleur.jeu().annuler());
-        controls[1].addActionListener(e -> controleur.jeu().refaire());
+        //controls[1].addActionListener(e -> controleur.jeu().solution());
+        controls[2].addActionListener(e -> controleur.jeu().refaire());
 
         for (JButton button: controls) {
             button.setFocusable(false);
@@ -389,10 +391,10 @@ class VueJeu extends JPanel {
 
         // Initialisation du niveau
         j1.setName("Attaquant : " + (!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurCourant().nom());
-        j1.setPions(controleur.jeu().getJoueurCourant().nombrePionsManges());
+        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
 
         j2.setName("Défenseur : " + (!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurSuivant().nom());
-        j2.setPions(controleur.jeu().getJoueurSuivant().nombrePionsManges());
+        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);
 
         topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         topFrame.addKeyListener(new AdaptateurClavier(controleur));
