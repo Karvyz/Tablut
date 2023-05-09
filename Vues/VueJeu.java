@@ -295,14 +295,14 @@ class VueJeu extends JPanel {
         c.weightx = 1;
         c.weighty = 1;
         c.anchor = FIRST_LINE_END;
-        mainPanel.add(j1, c);
+        mainPanel.add(j2, c);
 
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
         c.weighty = 1;
         c.anchor = FIRST_LINE_START;
-        mainPanel.add(j2, c);
+        mainPanel.add(j1, c);
 
         // --
         c.insets = new Insets(10, 60, 0, 60);
@@ -388,10 +388,10 @@ class VueJeu extends JPanel {
         mainPanel.add(vueNiveau, c);
 
         // Initialisation du niveau
-        j1.setName((!controleur.jeu().getJoueurCourant().estHumain() ? "IA : " : "") + controleur.jeu().getJoueurCourant().nom());
+        j1.setName("Attaquant : " + (!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurCourant().nom());
         j1.setPions(controleur.jeu().getJoueurCourant().nombrePionsManges());
 
-        j2.setName((!controleur.jeu().getJoueurSuivant().estHumain() ? "IA : " : "") + controleur.jeu().getJoueurSuivant().nom());
+        j2.setName("Défenseur : " + (!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurSuivant().nom());
         j2.setPions(controleur.jeu().getJoueurSuivant().nombrePionsManges());
 
         topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
