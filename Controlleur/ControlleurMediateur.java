@@ -65,12 +65,18 @@ public class ControlleurMediateur implements CollecteurEvenements {
 
 	}
 
-	/**Méthode en rapport avec l'interaction HommeMachine */
+	/**
+	 * Méthode en rapport avec l'interaction HommeMachine
+	 *
+	 * @return
+	 */
 	@Override//Deplacement en Drag&Drop
-	public void dragANDdrop(Coordonne src, Coordonne dst) {
+	public boolean dragANDdrop(Coordonne src, Coordonne dst) {
 		if (jeu.joueurs[jeu().get_num_JoueurCourant()].jeu(src, dst)) {// MODIF de jeu.n ici
 			changeJoueur();
+			return true;
 		}
+		return false;
 	}
 	@Override
 	public boolean clicSouris(Pion selectionne, int l, int c) {

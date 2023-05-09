@@ -8,7 +8,7 @@ public interface CollecteurEvenements {
     // void changeTaille(int t);
 
     boolean clicSouris(Pion selec, int l, int c);
-    void dragANDdrop(Coordonne coordonne, Coordonne coordonne2);
+    boolean dragANDdrop(Coordonne coordonne, Coordonne coordonne2);
 
     void fixerMediateurVues(Vues v);
 
