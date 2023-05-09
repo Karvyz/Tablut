@@ -70,7 +70,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
         if(caseClique != null && !controleur.jeu().n.check_clic_selection_pion(caseClique, controleur.jeu().get_num_JoueurCourant())){
             clicSelection = false;
-            clicInutile = true;
+            clicInutile = false; //Changez ici si on veut garder les destinations affichés lors d'un clic sur pion pas a nous
             //ne rien faire, on fera au survol
             return;
         }
@@ -89,6 +89,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
     
     @Override
     public void mouseReleased(MouseEvent e) {
+        System.out.println("Clic selection : " + clicSelection);
         if(clicInutile == true || clicSelection == true){
             if (pane.getPionSelec() != null){
                 affiche_destination(pane.getPionSelec());
