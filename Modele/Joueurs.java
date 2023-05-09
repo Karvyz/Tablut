@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 import static java.util.Objects.requireNonNull;
 
-public class Joueurs implements Serializable {
+public class Joueurs implements Serializable, Cloneable {
     public int numJ;
-    protected Jeu jeu;
+    public Jeu jeu;
 
     private final String nom;
     private final TypeJoueur type;
@@ -116,4 +116,16 @@ public class Joueurs implements Serializable {
     public boolean tempsEcoule() {
 		return false;
 	}
+
+
+    @Override
+    public Joueurs clone() {
+        try {
+            Joueurs clone = (Joueurs) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }
