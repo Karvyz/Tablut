@@ -60,7 +60,7 @@ public class CPlateau extends JPanel implements Observateur {
                         //TODO mettre image des points
                         g.drawImage(Theme.instance().pointInterrogation(), x+5, y+4, largeurCase-4, hauteurCase-4, this);
                     }
-                    x += largeurCase;
+                    x += largeurCase + 1;
                 }
                 y += hauteurCase;
                 x = bordureGauche;
@@ -89,7 +89,7 @@ public class CPlateau extends JPanel implements Observateur {
             for (int c = 0; c < 9; c++) {
                 // -- Dessin des pions, forteresses, roi, konakis
                 if (n.estForteresse(l, c)) {
-                    g.drawImage(Theme.instance().forteresse(), x+5, y+4, largeurCase-8, hauteurCase-8, this);
+                    g.drawImage(Theme.instance().forteresse(), x+4, y+4, largeurCase-11, hauteurCase-10, this);
                 }
                 // - Si c'est la case centrale alors on dessine le konakis
                 if (n.estKonakis(l, c)) {
@@ -102,13 +102,17 @@ public class CPlateau extends JPanel implements Observateur {
                 if (n.estAttaquant(l, c)) {
                     g.drawImage(Theme.instance().noir_inactif(), x+5, y+4, largeurCase-8, hauteurCase-8, this);
                 } else if (n.estRoi(l, c)) {
-                    g.drawImage(Theme.instance().roi(), x+3, y+2, largeurCase-1, hauteurCase, this);
+                    g.drawImage(Theme.instance().roi(), x+3, y+2, largeurCase-2, hauteurCase, this);
                 } else if (n.estDefenseur(l, c)) {
                     g.drawImage(Theme.instance().blanc_inactif(), x+5, y+4, largeurCase-8, hauteurCase-8, this);
                 }
                 x += largeurCase;
+                if(c%2 == 0)
+                    x++;
             }
             y += hauteurCase;
+            if(l%2 == 0)
+                y++;
             x = bordureGauche;
         }
     }
