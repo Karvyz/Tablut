@@ -4,6 +4,7 @@ import Modele.Coordonne;
 import Modele.Pion;
 import Vues.JComposants.CPlateau;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -153,9 +154,23 @@ public class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListen
 
 
         // Configurez le texte de l'info-bulle pour le composant CPlateau
-        if (caseSelec != null){
+        if (caseSelec != null && controleur.jeu().n.check_clic_selection_pion(caseSelec, controleur.jeu().get_num_JoueurCourant())){
+            Color bleuTresClair = new Color(180, 220, 255);
+            UIManager.put("ToolTip.background", bleuTresClair);
+            UIManager.put("ToolTip.foreground", Color.BLACK);
             pane.setToolTipText("VOIR CE QU'on veut ecrire ");
             pane.setDestinationsPossibles(caseSelec.getDeplacement(controleur.jeu().n.plateau));
+        }
+        else if(caseSelec != null && !controleur.jeu().n.check_clic_selection_pion(caseSelec, controleur.jeu().get_num_JoueurCourant())){
+            UIManager.put("ToolTip.background", Color.RED);
+            UIManager.put("ToolTip.foreground", Color.WHITE);
+            pane.setToolTipText("Ce pion ne vous appartient pas ");
+            pane.setDestinationsPossibles(null);
+        }
+        else{
+            pane.setDestinationsPossibles(null);
+            pane.setToolTipText(null);
+
         }
 
     }

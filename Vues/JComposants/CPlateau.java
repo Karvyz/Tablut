@@ -47,6 +47,7 @@ public class CPlateau extends JPanel implements Observateur {
     }
 
     private void drawDestination(Graphics g) {
+        if (destinationsPossibles == null){return ;}
         for (Coordonne caseSelec : destinationsPossibles){
             int x = bordureGauche;
             int y = bordureHaut;
