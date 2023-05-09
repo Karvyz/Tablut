@@ -11,6 +11,7 @@ import java.io.File;
 
 import static java.awt.GridBagConstraints.*;
 
+import Modele.TypePion;
 import Vues.JComposants.*;
 
 class VueJeu extends JPanel {
@@ -25,7 +26,7 @@ class VueJeu extends JPanel {
     //private final JPanel backgroundTop, backgroundBottom;
     private JFrame topFrame;
 
-    private JPanel mainPanel, endGamePanel;
+    private JPanel mainPanel, endGamePanel, topPanel;
     Image background;
 
     VueJeu(CollecteurEvenements c) {
@@ -96,11 +97,22 @@ class VueJeu extends JPanel {
         endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
         endButtons.add(retry);
         menu.addActionListener((e) -> {
+            topPanel.setEnabled(true);
+            topPanel.setFocusable(true);
+            topPanel.setVisible(true);
+            mainPanel.setEnabled(true);
+            mainPanel.setFocusable(true);
+            mainPanel.setVisible(true);
             controleur.jeu().reset();
             controleur.afficherMenuPrincipal();
-
         });
         retry.addActionListener((e) -> {
+            topPanel.setEnabled(true);
+            topPanel.setFocusable(true);
+            topPanel.setVisible(true);
+            mainPanel.setEnabled(true);
+            mainPanel.setFocusable(true);
+            mainPanel.setVisible(true);
             endGamePanel.setVisible(false);
             controleur.partieSuivante();
         });
@@ -148,10 +160,20 @@ class VueJeu extends JPanel {
             if (perdant.estHumain()) {
                 endGameText.setText("Dommage! Tu as perdu contre l'IA.. une prochaine fois!");
             } else {
-                endGameText.setText("L'IA " + vainqueur.nom() + " a gagné !");
+                endGamePanel.getComponent(0).setBackground(new Color(120, 70, 50));
+                if(vainqueur.aPionsBlancs())
+                    endGameText.setText("Le défenseur, IA " + vainqueur.nom() + " a gagné !");
+                else
+                    endGameText.setText("L'attaquant, IA " + vainqueur.nom() + " a gagné !");
             }
         }
         endGamePanel.setVisible(true);
+        mainPanel.setEnabled(false);
+        mainPanel.setFocusable(false);
+        mainPanel.setVisible(false);
+        topPanel.setEnabled(false);
+        topPanel.setFocusable(false);
+        topPanel.setVisible(false);
     }
 
     private void addTop(JPanel contenu) {
@@ -162,7 +184,7 @@ class VueJeu extends JPanel {
         c.anchor = GridBagConstraints.PAGE_START;
         c.insets = new Insets(5, 5, 5, 5);
 
-        JPanel topPanel = new JPanel();
+        topPanel = new JPanel();
         topPanel.setOpaque(false);
         topPanel.setLayout(new GridBagLayout());
         contenu.add(topPanel, c);
@@ -190,8 +212,19 @@ class VueJeu extends JPanel {
                 new JMenuItem("Quitter")
         };
 
-        menu_items[0].addActionListener(e -> controleur.afficherMenuNouvellePartie());
-        menu_items[1].addActionListener(e -> controleur.afficherMenuPrincipal());
+        menu_items[0].addActionListener((e) -> {
+            Joueurs[] joueurs = new Joueurs[2];
+            joueurs[0] = controleur.jeu().getJoueur1();
+            joueurs[1] = controleur.jeu().getJoueur2();
+            controleur.jeu().reset();
+            controleur.nouvellePartie(joueurs[0].nom(), joueurs[0].type(), TypePion.ATTAQUANT, joueurs[1].nom(), joueurs[1].type(), TypePion.DEFENSEUR);
+            controleur.afficherJeu();
+            controleur.jeu().metAJour();
+        });
+        menu_items[1].addActionListener((e) -> {
+            controleur.jeu().reset();
+            controleur.afficherMenuPrincipal();
+        });
         menu_items[2].addActionListener(e -> controleur.toClose());
 
         for (JMenuItem menu_item: menu_items) {

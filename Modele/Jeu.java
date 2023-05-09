@@ -2,10 +2,8 @@ package Modele;
 
 import Patterns.Observable;
 import Structures.Pile;
-import Vues.InterfaceGraphique;
 
 import java.io.*;
-import java.util.Random;
 import static java.util.Objects.requireNonNull;
 
 public class Jeu extends Observable implements Serializable {
@@ -82,20 +80,19 @@ public class Jeu extends Observable implements Serializable {
         int i = n.deplace_pion(depart, arrive);
         System.out.println("Déplacement du pion de (" + depart.getX() +"," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() +")");
         if (i > 0){
-            setEnCours(false);
             if (i == 1) {
                 System.out.println("PARTIE FINI CAR ROI CAPTURE");
                 vainqueur = joueurs[0];
-                n.enCours = false;
             }
             else if (i == 2) {
                 System.out.println("PARTIE FINI CAR ROI EVADE");
                 vainqueur = joueurs[1];
-                n.enCours = false;
             }
             else //TODO plus tard
                 System.out.println("EGALITE");
             //System.out.println(n); //Affichez le jeu en fin de partie
+            setEnCours(false);
+            n.enCours = false;
         }
 
         //TODO test si une partie est finie;
@@ -170,7 +167,7 @@ public class Jeu extends Observable implements Serializable {
     }
 
     public boolean chargerPartie(String fichier){
-        Data_Niveau data_niveau = null;
+        Data_Niveau data_niveau;
 
         try {
             FileInputStream fileIn = new FileInputStream(fichier);
