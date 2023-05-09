@@ -53,7 +53,7 @@ class VueNiveau extends JPanel implements Observateur {
         });
 
         // -- Add Listener
-        plateau.addMouseListener(new AdaptateurSouris2(c, plateau));
+        //plateau.addMouseListener(new AdaptateurSouris2(c, plateau)); //TODO a voir si c'est possible
 
         top = BorderFactory.createMatteBorder(10, 0, 0, 0, Color.WHITE);
         bottom = BorderFactory.createMatteBorder(0, 0, 10, 0, Color.BLACK);

@@ -1,13 +1,17 @@
 package Vues.JComposants;
 
+import Modele.Coordonne;
 import Modele.Jeu;
 import Modele.Niveau;
+import Modele.Pion;
 import Patterns.Observateur;
+import Vues.AdaptateurSouris2;
 import Vues.CollecteurEvenements;
 import Vues.Theme;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class CPlateau extends JPanel implements Observateur {
     CollecteurEvenements controleur;
@@ -19,8 +23,14 @@ public class CPlateau extends JPanel implements Observateur {
     private int brillanceX = -1;
     private int brillanceY = -1;
 
+    private ArrayList<Coordonne> destinationsPossibles = new ArrayList<>();
+
+
     public CPlateau(CollecteurEvenements c) {
         controleur = c;
+        AdaptateurSouris2 adaptateurSouris = new AdaptateurSouris2(c, this);
+        addMouseListener(adaptateurSouris);
+        addMouseMotionListener(adaptateurSouris);
     }
 
     @Override
@@ -29,10 +39,38 @@ public class CPlateau extends JPanel implements Observateur {
         calculerDimensions();
         drawPlateau(g);
         drawContenu(g);
+        drawDestination(g);
 
         if (brillanceX >= 0 && brillanceY >= 0) {
             drawBrillance(g, brillanceX, brillanceY);
         }
+    }
+
+    private void drawDestination(Graphics g) {
+        for (Coordonne caseSelec : destinationsPossibles){
+            int x = bordureGauche;
+            int y = bordureHaut;
+            int l = caseSelec.getX() ;
+            int c = caseSelec.getY() ;
+
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+
+                    if (i == l && c == j) {
+                        //TODO mettre image des points
+                        g.drawImage(Theme.instance().pointInterrogation(), x, y, largeurCase, hauteurCase, this);
+                    }
+                    x += largeurCase;
+                }
+                y += hauteurCase;
+                x = bordureGauche;
+            }
+        }
+    }
+
+    public void setDestinationsPossibles(ArrayList<Coordonne> destinations) {
+        this.destinationsPossibles = destinations;
+        repaint();
     }
 
     //Permet de dessiner le plateau sous les pions

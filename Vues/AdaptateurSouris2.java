@@ -10,7 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.sql.SQLOutput;
 
-class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListener {
+public class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListener {
     CollecteurEvenements controleur;
     CPlateau pane;
     Point dragStart = null;
@@ -20,7 +20,7 @@ class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListener {
     int bordureGauche, bordureHaut, bordureDroite, bordureBas, hauteurCase, largeurCase ;
 
 
-    AdaptateurSouris2(CollecteurEvenements c, CPlateau pane) {
+    public AdaptateurSouris2(CollecteurEvenements c, CPlateau pane) {
         controleur = c;
         this.pane = pane;
     }
@@ -131,7 +131,6 @@ class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListener {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        System.out.println("ICIII");
         calculerDimensions();
         int hauteur = pane.getHeight() - bordureHaut - bordureBas;
         int largeur = pane.getWidth() - bordureGauche - bordureDroite;
@@ -151,8 +150,14 @@ class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListener {
         // Obtenez les informations de la case survolée (par exemple, le type de pion)
         Pion caseSelec = controleur.jeu().n.getPion(l, c);
 
+
+
         // Configurez le texte de l'info-bulle pour le composant CPlateau
-        pane.setToolTipText("Case (" + l + ", " + c + "): " + caseSelec);
+        if (caseSelec != null){
+            pane.setToolTipText("VOIR CE QU'on veut ecrire ");
+            pane.setDestinationsPossibles(caseSelec.getDeplacement(controleur.jeu().n.plateau));
+        }
+
     }
 
     private void calculerDimensions() {
