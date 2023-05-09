@@ -58,7 +58,7 @@ public class CPlateau extends JPanel implements Observateur {
 
                     if (i == l && c == j) {
                         //TODO mettre image des points
-                        g.drawImage(Theme.instance().pointInterrogation(), x, y, largeurCase, hauteurCase, this);
+                        g.drawImage(Theme.instance().pointInterrogation(), x+5, y+4, largeurCase-4, hauteurCase-4, this);
                     }
                     x += largeurCase;
                 }
