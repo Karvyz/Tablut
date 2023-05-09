@@ -26,7 +26,7 @@ class VueJeu extends JPanel {
     //private final JPanel backgroundTop, backgroundBottom;
     private JFrame topFrame;
 
-    private JPanel mainPanel, endGamePanel;
+    private JPanel mainPanel, endGamePanel, topPanel;
     Image background;
 
     VueJeu(CollecteurEvenements c) {
@@ -97,6 +97,9 @@ class VueJeu extends JPanel {
         endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
         endButtons.add(retry);
         menu.addActionListener((e) -> {
+            topPanel.setEnabled(true);
+            topPanel.setFocusable(true);
+            topPanel.setVisible(true);
             mainPanel.setEnabled(true);
             mainPanel.setFocusable(true);
             mainPanel.setVisible(true);
@@ -104,6 +107,9 @@ class VueJeu extends JPanel {
             controleur.afficherMenuPrincipal();
         });
         retry.addActionListener((e) -> {
+            topPanel.setEnabled(true);
+            topPanel.setFocusable(true);
+            topPanel.setVisible(true);
             mainPanel.setEnabled(true);
             mainPanel.setFocusable(true);
             mainPanel.setVisible(true);
@@ -165,6 +171,9 @@ class VueJeu extends JPanel {
         mainPanel.setEnabled(false);
         mainPanel.setFocusable(false);
         mainPanel.setVisible(false);
+        topPanel.setEnabled(false);
+        topPanel.setFocusable(false);
+        topPanel.setVisible(false);
     }
 
     private void addTop(JPanel contenu) {
@@ -175,7 +184,7 @@ class VueJeu extends JPanel {
         c.anchor = GridBagConstraints.PAGE_START;
         c.insets = new Insets(5, 5, 5, 5);
 
-        JPanel topPanel = new JPanel();
+        topPanel = new JPanel();
         topPanel.setOpaque(false);
         topPanel.setLayout(new GridBagLayout());
         contenu.add(topPanel, c);
