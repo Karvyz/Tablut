@@ -17,7 +17,7 @@ public class Tablut{
         }
         else {
             ArrayList<IA> ias = new ArrayList<>();
-            ias.add(new IA_facile("", TypePion.ATTAQUANT, new Jeu()));
+            ias.add(new IA_difficile_Long_live_the_king("", TypePion.ATTAQUANT, new Jeu()));
             ias.add(new IA_difficile_le_roi_c_ciao("", TypePion.ATTAQUANT, new Jeu()));
             TournoisControlleur tournoisControlleur = new TournoisControlleur(ias, 100);
             tournoisControlleur.tournois();

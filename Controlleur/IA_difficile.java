@@ -12,7 +12,7 @@ public abstract class IA_difficile extends IA{
     int nevaluation = 0;
     int bypass1 = 0;
     int bypass2 = 0;
-    static int MAX_DEPTH = 6;
+    static int MAX_DEPTH = 3;
 
     public IA_difficile(String nom, TypePion roleJ, Jeu j) {
         super(nom, TypeJoueur.IA_DIFFICILE, roleJ, j);
@@ -59,7 +59,7 @@ public abstract class IA_difficile extends IA{
         Coordonne pion_arrivee = arrivees.get(index);
 //        System.out.println(nb_branches + " branches");
 //        System.out.println(nevaluation + " evalutations en " + (System.currentTimeMillis() -l ) + "ms");
-        System.out.println(nevaluation);
+//        System.out.println(nevaluation);
         return jeu.jouer(pion_depart, pion_arrivee);
 
     }

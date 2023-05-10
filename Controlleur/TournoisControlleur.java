@@ -1,17 +1,7 @@
 package Controlleur;
 
-import Global.Configuration;
 import Modele.Jeu;
-import Modele.Joueurs;
-import Modele.TypeJoueur;
-import Modele.TypePion;
-
-import java.sql.SQLOutput;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import static java.lang.System.exit;
 
 public class TournoisControlleur {
     ArrayList<IA> ias;
@@ -102,9 +92,6 @@ public class TournoisControlleur {
                 switch (myRunables.get(i).resultat) {
                     case 1:
                         nbVictoireJ1++;
-                        break;
-                    case 2:
-                        nbVictoireJ2++;
                         break;
                     case 3:
                         nbEgalites++;
