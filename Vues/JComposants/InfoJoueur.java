@@ -12,7 +12,7 @@ import java.awt.*;
 public class InfoJoueur extends JPanel {
 
     private final JLabel n;
-    private final JPanel p;
+    public final JPanel p;
     private ImageIcon pawn;
     private final int hgap = 5;
     private boolean reverse;
@@ -58,6 +58,10 @@ public class InfoJoueur extends JPanel {
         p.add(new JLabel(pawn));
         p.add(new JLabel(fois));
         p.add(new JLabel(String.valueOf(nb2)));
+    }
+
+    public void setBackgroundJoueur(Color c) {
+        p.setBackground(c);
     }
 
 }
