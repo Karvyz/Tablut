@@ -26,6 +26,7 @@ public class CPlateau extends JPanel implements Observateur {
 
     private ArrayList<Coordonne> destinationsPossibles = new ArrayList<>();
     private Point pointSelec;
+    private Image image;
 
 
     public CPlateau(CollecteurEvenements c) {
@@ -47,10 +48,33 @@ public class CPlateau extends JPanel implements Observateur {
         drawPlateau(g2d);
         drawContenu(g2d);
         drawDestination(g2d);
+        drawDeplacement(g2d);
         drawSurbrillance(g2d);
 
         if (brillanceX >= 0 && brillanceY >= 0) {
             drawBrillance(g2d, brillanceX, brillanceY);
+        }
+    }
+
+    private void drawDeplacement(Graphics2D g2d) {
+        if (getPionEnDeplacement()!=null){
+            int x = bordureGauche;
+            int y = bordureHaut;
+            int l = getPionEnDeplacement().x;
+            int c = getPionEnDeplacement().y;
+
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+
+                    if (i == l && c == j) {
+                        //TODO mettre image des points
+                        g2d.drawImage(getImage(), x + 4, y + 4, largeurCase - 4, hauteurCase - 4, this);
+                    }
+                    x += largeurCase + 1;
+                }
+                y += hauteurCase;
+                x = bordureGauche;
+            }
         }
     }
 
@@ -69,7 +93,10 @@ public class CPlateau extends JPanel implements Observateur {
 
                     if (i == l && c == j) {
                         //TODO mettre image des points
+
                         g.drawImage(Theme.instance().pointInterrogation(), x +(largeurCase/2)-5, y + (hauteurCase/2)-5, 10, 10, this);
+
+
                     }
                     x += largeurCase;
                 }
@@ -88,7 +115,6 @@ public class CPlateau extends JPanel implements Observateur {
         Jeu J = controleur.jeu();
         Niveau n = J.getNiveau();
         if (pionSelec != null) {
-            System.out.println("pionSelec != null" + pionSelec);
             int x = pionSelec.getX();
             int y = pionSelec.getY();
 
@@ -114,6 +140,12 @@ public class CPlateau extends JPanel implements Observateur {
         for (int l = 0; l < 9; l++) {
             for (int c = 0; c < 9; c++) {
                 // -- Dessin des pions, forteresses, roi, konakis
+                if (getPionSelec() != null && l == getPionSelec().getX() && c == getPionSelec().getY()){ //Ici on efface le pion selec
+                    x += largeurCase;
+                    if (c % 2 == 0)
+                        x++;
+                    continue;
+                }
                 if (n.estForteresse(l, c)) {
                     g.drawImage(Theme.instance().forteresse(), x + 4, y + 4, largeurCase - 11, hauteurCase - 10, this);
                 }
@@ -121,9 +153,6 @@ public class CPlateau extends JPanel implements Observateur {
                 if (n.estKonakis(l, c) && !n.estRoi(l, c)) {
                     g.drawImage(Theme.instance().konakis(), x + 5, y + 4, largeurCase - 8, hauteurCase - 8, this);
                 }
-
-                //System.out.println("l = " + l + ", c = " + c);
-                //System.out.println("x = " + x + ", y = " + y);
 
                 if (n.estAttaquant(l, c)) {
                     g.drawImage(Theme.instance().noir_inactif(), x + 4, y + 4, largeurCase - 8, hauteurCase - 8, this);
@@ -213,7 +242,7 @@ public class CPlateau extends JPanel implements Observateur {
     public void setPionEnDeplacement(Point pionEnDeplacement) {
 
         this.pionEnDeplacement = pionEnDeplacement;
-        //miseAJour(); // Ajoutez cette ligne pour actualiser le plateau
+        miseAJour(); // Ajoutez cette ligne pour actualiser le plateau
     }
 
     public void setPointSelec(Point point) {
@@ -235,5 +264,22 @@ public class CPlateau extends JPanel implements Observateur {
     @Override
     public void miseAJour() {
         repaint();
+    }
+
+    public void setImage(int image) {
+        if (image == 0){
+            this.image = Theme.instance().noir_inactif();
+        }
+        else if (image == 1){
+            this.image = Theme.instance().blanc_inactif();
+        }
+        else{
+            this.image = Theme.instance().roi();
+
+        }
+    }
+
+    public Image getImage() {
+        return image;
     }
 }
