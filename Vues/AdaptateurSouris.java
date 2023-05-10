@@ -49,8 +49,9 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
                     pane.setPionEnDeplacement(null);//On ne peut pas drag
                     return;
             }
-            else if (controleur.jeu().n.check_clic_selection_pion(caseClique, controleur.jeu().get_num_JoueurCourant())){//ici oui
+            else if (controleur.jeu().n.check_clic_selection_pion(caseClique, controleur.jeu().get_num_JoueurCourant())){//ici il sert de nouvelle selection
                     pane.setPionEnDeplacement(new Point(l , c ));//Initialise point de départ du moovement pour le drag
+                    setImage(caseClique);
                     clicSelection = true;
                     return;
             }
@@ -64,6 +65,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         else if (controleur.jeu().n.check_clic_selection_pion(caseClique, controleur.jeu().get_num_JoueurCourant())){
             pane.setPionSelec(caseClique); //au laché, on affiche les dispos
             pane.setPionEnDeplacement(new Point(l , c ));//Initialise point de départ du moovement pour le drag
+            setImage(caseClique);
             clicSelection = true;
             return;
         }
@@ -71,9 +73,23 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         if(!controleur.jeu().n.check_clic_selection_pion(caseClique, controleur.jeu().get_num_JoueurCourant())){
             clicSelection = false;
             clicInutile = false; //Changez ici si on veut garder les destinations affichés lors d'un clic sur pion pas a nous
+            pane.setPionEnDeplacement(null);
         }
 
     }
+
+    private void setImage(Pion p) {
+        if (controleur.jeu().n.estAttaquant(p)){
+            pane.setImage(0);
+        }
+        else if(controleur.jeu().n.estDefenseur(p)){
+            pane.setImage(1);
+        }
+        else{
+            pane.setImage(2);
+        }
+    }
+
     @Override
     public void mouseReleased(MouseEvent e) {
         if(dragStart !=null && pane.getPionSelec() != null){
@@ -100,14 +116,10 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             //Ici on gère le drag&drop
             if (startX != l || startY != c) {
                 if (controleur.dragANDdrop(new Coordonne(startX, startY), new Coordonne(l, c)) == true){ //On teste le déplacement
-                    pane.setPionSelec(null);
-                    pane.setPionEnDeplacement(null);
                     affiche_destination(null);
                 }
-                else{//ici drag&drop echoue
-                    pane.setPionSelec(null);
-                    pane.setPionEnDeplacement(null);
-                }
+                pane.setPionSelec(null);
+                pane.setPionEnDeplacement(null);
             }
             dragStart = null;
         }
