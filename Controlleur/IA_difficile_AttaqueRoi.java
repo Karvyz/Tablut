@@ -11,7 +11,6 @@ public class IA_difficile_AttaqueRoi extends IA_difficile {
     }
     @Override
     public int evaluation(Niveau n) {
-        nevaluation++;
         int x = 0, y = 0;
         int attaquants = 0;
         int defenseurs = 0;
