@@ -127,9 +127,10 @@ public class VueMenuSaisies extends JPanel {
         // TODO: place custom component creation code here
     }
 
+    /*
     private void setupUI() {
         createUIComponents();
-        MenuSaisies.setLayout(new GridLayout(4, 1, 0, 120));
+        MenuSaisies.setLayout(new GridLayout(4, 1, 0, 100));
         MenuSaisies.setMaximumSize(new Dimension(441, 110));
         MenuSaisies.setMinimumSize(new Dimension(441, 60));
         MenuSaisies.setPreferredSize(new Dimension(441, 110));
@@ -138,6 +139,7 @@ public class VueMenuSaisies extends JPanel {
         Joueur1.setLayout(new GridLayout(1, 5, 50, 0));
         Joueur1.setOpaque(false);
         Joueur1.setMinimumSize(new Dimension(441, -1));
+        Joueur1.setMaximumSize(new Dimension(-1, 10));
 
         //Joueur1.setMaximumSize(new Dimension(441, 110/3));
 
@@ -156,6 +158,7 @@ public class VueMenuSaisies extends JPanel {
         nomJ1.setFocusable(true);
         nomJ1.setText("Joueur 1");
         nomJ1.setVisible(true);
+        nomJ1.setMaximumSize(new Dimension(-1, 20));
         //nomJ1.setOpaque(false);
         Joueur1.add(nomJ1);
         DefaultComboBoxModel<String> defaultComboBoxModel1 = new DefaultComboBoxModel<>();
@@ -241,9 +244,159 @@ public class VueMenuSaisies extends JPanel {
 
     }
 
+     */
+
+    private void setupUI() {
+        createUIComponents();
+
+        MenuSaisies.setLayout(new BoxLayout(MenuSaisies, BoxLayout.Y_AXIS)); // Utilisation du BoxLayout avec orientation verticale
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(0, 30, 0, 30); // Espacement des composants
+
+        // Joueur 1
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+
+        nomJ1.setDropMode(DropMode.USE_SELECTION);
+        nomJ1.setFocusCycleRoot(false);
+        nomJ1.setFocusTraversalPolicyProvider(false);
+        nomJ1.setFocusable(true);
+        nomJ1.setText("Joueur 1");
+        nomJ1.setVisible(true);
+        nomJ1.setColumns(10);
+        nomJ1.setMaximumSize(new Dimension(-1, 20));
+
+        DefaultComboBoxModel<String> defaultComboBoxModel1 = new DefaultComboBoxModel<>();
+        defaultComboBoxModel1.addElement("Humain");
+        defaultComboBoxModel1.addElement("IA Facile");
+        defaultComboBoxModel1.addElement("IA Moyenne");
+        defaultComboBoxModel1.addElement("IA Difficile");
+        typeJ1.setModel(defaultComboBoxModel1);
+
+        Joueur1 = createJoueurPanel("Attaquant", nomJ1, typeJ1);
+
+        add(Joueur1, constraints);
+
+        add(Box.createVerticalStrut(5)); // Espace vertical
+
+        // Joueur 2
+        constraints.gridy = 1;
+
+        nomJ2.setDropMode(DropMode.USE_SELECTION);
+        nomJ2.setFocusCycleRoot(false);
+        nomJ2.setFocusTraversalPolicyProvider(false);
+        nomJ2.setFocusable(true);
+        nomJ2.setText("Joueur 2");
+        nomJ2.setVisible(true);
+        nomJ2.setColumns(10);
+        nomJ2.setMaximumSize(new Dimension(-1, 20));
+
+        DefaultComboBoxModel<String> defaultComboBoxModel3 = new DefaultComboBoxModel<>();
+        defaultComboBoxModel3.addElement("Humain");
+        defaultComboBoxModel3.addElement("IA Facile");
+        defaultComboBoxModel3.addElement("IA Moyenne");
+        defaultComboBoxModel3.addElement("IA Difficile");
+        defaultComboBoxModel3.setSelectedItem("IA Facile");// Sélectionner "IA Facile" comme valeur par défaut
+        typeJ2.setModel(defaultComboBoxModel3);
+
+        Joueur2 = createJoueurPanel("Défenseur", nomJ2, typeJ2);
+
+        add(Joueur2, constraints);
+
+        add(Box.createVerticalStrut(5)); // Espace vertical
+
+        Boutons.add(jouerButton);
+        Boutons.add(menuPrincipalButton);
+
+        Boutons.setMaximumSize(new Dimension(441, 30));
+
+        // Boutons
+        constraints.gridy = 2;
+        add(Boutons, constraints);
+
+        add(Box.createVerticalStrut(80)); // Espace vertical
+
+        // Quitter
+        quitter = new CButton("Quitter");
+        quitter.addActionListener((e) -> {
+            //controleur.toClose();
+            // Créer une nouvelle fenêtre pour tester le texte d'un jlabel
+            JFrame frame = new JFrame("JLabel");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(300, 300);
+            // Ajout d'un jpanel avec deux jlabel
+            JPanel panel = new JPanel();
+            // GridLayout
+            panel.setLayout(new GridLayout(2, 1));
+            panel.setOpaque(false);
+            // Ajout des deux jlabel
+            JLabel label = new JLabel("Hello World");
+            label.setFont(new Font("Serif", Font.BOLD, 48));
+            JLabel label22 = new JLabel("Goodbye World !");
+            label22.setFont(new Font("Serif", Font.BOLD, 48));
+            panel.add(label);
+            panel.add(label22);
+            // Ajout du jpanel à la fenêtre
+            frame.getContentPane().add(panel);
+            frame.setVisible(true);
+        });
+
+        BoutonsQuitter.add(quitter);
+        BoutonsQuitter.setMaximumSize(new Dimension(441, 30));
+
+
+        // Bouton Quitter
+        constraints.gridy = 3;
+        add(BoutonsQuitter, constraints);
+
+        add(Box.createVerticalStrut(20)); // Espace vertical
+    }
+
+    private JPanel createJoueurPanel(String label, JTextField nomJoueur, JComboBox typeJoueur) {
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setOpaque(false);
+
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(0, 0, 0, 10); // Espacement des composants
+
+        // Ajout d'un bord à gauche
+        panel.add(Box.createRigidArea(new Dimension(30, 0)), constraints);
+
+        // Label
+        constraints.gridx = 1;
+        JLabel labelJoueur = new JLabel(label);
+        labelJoueur.setFont(labelJoueur.getFont().deriveFont(16f));
+        panel.add(labelJoueur, constraints);
+
+        // Espacement horizontal
+        constraints.gridx = 2;
+        panel.add(Box.createRigidArea(new Dimension(10, 0)), constraints);
+
+        // Nom du joueur
+        constraints.gridx = 3;
+
+        nomJoueur.setMaximumSize(new Dimension(100, 20)); // Bloquer la hauteur
+        panel.add(nomJoueur, constraints);
+
+        // Espacement horizontal
+        constraints.gridx = 4;
+        panel.add(Box.createRigidArea(new Dimension(10, 0)), constraints);
+
+        // Type de joueur
+        constraints.gridx = 5;
+        panel.add(typeJoueur, constraints);
+
+        // Espacement à droite
+        constraints.gridx = 6;
+        panel.add(Box.createRigidArea(new Dimension(30, 0)), constraints);
+
+        return panel;
+    }
+
     private void actionBoutonJouer(CollecteurEvenements c) {
         TypeJoueur[] types = new TypeJoueur[2];
-        switch(typeJ1.getSelectedIndex()) {
+        switch (typeJ1.getSelectedIndex()) {
             case 0:
                 types[0] = TypeJoueur.HUMAIN;
                 break;
@@ -280,6 +433,7 @@ public class VueMenuSaisies extends JPanel {
         c.afficherJeu();
 
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
