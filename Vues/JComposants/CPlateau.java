@@ -45,7 +45,7 @@ public class CPlateau extends JPanel implements Observateur {
         calculerDimensions();
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        //test_annuler_refaire();
+        test_annuler_refaire();
         drawPlateau(g2d);
         drawContenu(g2d);
         drawDestination(g2d);
@@ -57,14 +57,15 @@ public class CPlateau extends JPanel implements Observateur {
         }
     }
 
-    /*private void test_annuler_refaire() {
+    private void test_annuler_refaire() {
         if (controleur.jeu().test_annuler_refaire == true){
             setPointSelec(null);
             setPionSelec(null);
             setDestinationsPossibles(null);
             setPionEnDeplacement(null);
         }
-    }*/
+        controleur.jeu().setAnnuler_refaire(false);
+    }
 
 
     private void drawDeplacement(Graphics2D g2d) {

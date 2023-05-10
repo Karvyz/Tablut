@@ -20,7 +20,7 @@ public class Jeu extends Observable implements Serializable {
 
     public ConfigurationJeu config;
 
-    //public boolean test_annuler_refaire= false;
+    public boolean test_annuler_refaire= false;
 
 
     public Jeu(){
@@ -137,7 +137,7 @@ public class Jeu extends Observable implements Serializable {
 
         joueurSuivant(); //La variable du jeu doit aussi être modifie
         metAJour();
-        //test_annuler_refaire = true;
+        test_annuler_refaire = true;
         System.out.println("Annulation effectué");
     }
 
@@ -164,7 +164,7 @@ public class Jeu extends Observable implements Serializable {
         }
 
         metAJour();
-        //test_annuler_refaire = true;
+        test_annuler_refaire = true;
         System.out.println("Coup refait");
     }
 
@@ -242,6 +242,10 @@ public class Jeu extends Observable implements Serializable {
 
     public void setEnCours(boolean b) {
         enCours = b;
+    }
+
+    public void setAnnuler_refaire(boolean b) {
+        test_annuler_refaire = b;
     }
 
     public int get_num_JoueurCourant(){
