@@ -204,4 +204,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		verifierMediateurVues("Impossible d'afficher le menu des parties sauvegardées");
 		vues.afficherMenuChargerPartie();
 	}
+
+
 }
