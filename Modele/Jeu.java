@@ -21,6 +21,8 @@ public class Jeu extends Observable implements Serializable {
     public ConfigurationJeu config;
 
     public boolean test_annuler_refaire= false;
+    private Coordonne DepartIA;
+    private Coordonne ArriveIA;
 
 
     public Jeu(){
@@ -80,6 +82,11 @@ public class Jeu extends Observable implements Serializable {
     public void jouer(Coordonne depart, Coordonne arrive){
         this.coup_annule.empiler(this.n.clone());
         int i = n.deplace_pion(depart, arrive);
+        if(!getJoueurCourant().estHumain()){
+            setCoordooneJouerIA(depart, arrive);
+        }else{
+            setCoordooneJouerIA(null, null);
+        }
         System.out.println("Déplacement du pion de (" + depart.getX() +"," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() +")");
         if (i > 0){
             if (i == 1) {
@@ -106,6 +113,19 @@ public class Jeu extends Observable implements Serializable {
         joueurSuivant();
         //System.out.println(this);
         metAJour();
+    }
+
+    public void setCoordooneJouerIA(Coordonne depart, Coordonne arrive) {
+        this.DepartIA = depart;
+        this.ArriveIA = arrive;
+    }
+
+    public Coordonne getCoordooneDepartIA(){
+        return this.DepartIA;
+    }
+
+    public Coordonne getCoordooneArriveIA(){
+        return this.ArriveIA;
     }
 
     public void annuler() {

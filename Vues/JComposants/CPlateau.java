@@ -52,6 +52,21 @@ public class CPlateau extends JPanel implements Observateur {
         drawDeplacement(g2d);
         drawSurbrillance(g2d);
 
+
+        if(controleur.jeu().getCoordooneDepartIA() != null){
+            Coordonne depart = controleur.jeu().getCoordooneDepartIA();
+            int l = depart.getX();
+            int c = depart.getY();
+            Color couleurSurbrillance = new Color(135, 206, 250);
+            g.setColor(couleurSurbrillance);
+            g.fillRect((largeurCase ) * c , (hauteurCase ) * l , largeurCase , hauteurCase );
+        }
+        else{
+            controleur.jeu().setCoordooneJouerIA(null, null);
+        }
+
+
+
         if (brillanceX >= 0 && brillanceY >= 0) {
             drawBrillance(g2d, brillanceX, brillanceY);
         }
@@ -132,6 +147,7 @@ public class CPlateau extends JPanel implements Observateur {
                 g.drawImage(Theme.instance().roi_selectionne(), (largeurCase + 1) * y + 1, (hauteurCase + 1) * x + 1, largeurCase - 5, hauteurCase - 4, this);
             }
         }
+
     }
 
     //Permet de dessiner le plateau sous les pions
