@@ -38,5 +38,8 @@ public interface CollecteurEvenements {
 
     void fixeJeu(Jeu jeu);
 
+    void afficherQuickPartie();
+
+    void nouvelleQuickPartie();
 }
 

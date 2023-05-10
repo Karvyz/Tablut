@@ -5,6 +5,8 @@ import Modele.*;
 import Vues.*;
 import Vues.CollecteurEvenements;
 
+import java.util.Random;
+
 
 public class ControlleurMediateur implements CollecteurEvenements {
 
@@ -48,6 +50,24 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		jeu.nouvellePartie();
 		vues.nouvellePartie();
 	}
+
+	@Override
+	public void nouvelleQuickPartie() {
+		Random rand = new Random();
+		int randomValue = rand.nextInt(2);
+		if(randomValue == 0){
+			jeu.nouveauJoueur("Vous", TypeJoueur.HUMAIN, TypePion.ATTAQUANT);
+			jeu.nouveauJoueur("", TypeJoueur.IA_DIFFICILE, TypePion.DEFENSEUR);
+		}
+		else{
+			jeu.nouveauJoueur("Vous", TypeJoueur.HUMAIN, TypePion.DEFENSEUR);
+			jeu.nouveauJoueur("", TypeJoueur.IA_DIFFICILE, TypePion.ATTAQUANT);
+
+		}
+		jeu.nouvellePartie();;
+		vues.nouvellePartie();
+	}
+
 
 	@Override
 	public void partieSuivante() {
@@ -204,6 +224,14 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		verifierMediateurVues("Impossible d'afficher le menu des parties sauvegardées");
 		vues.afficherMenuChargerPartie();
 	}
+
+	@Override
+	public void afficherQuickPartie() {
+		verifierMediateurVues("Impossible d'afficher le jeu");
+		vues.afficherJeu();
+	}
+
+
 
 
 }

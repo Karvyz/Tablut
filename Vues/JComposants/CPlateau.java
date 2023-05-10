@@ -188,7 +188,10 @@ public class CPlateau extends JPanel implements Observateur {
                 }
                 // - Si c'est la case centrale alors on dessine le konakis, s'il n'y a pas le roi
                 if (n.estKonakis(l, c) && !n.estRoi(l, c)) {
-                    g.drawImage(Theme.instance().konakis(), x + 5, y + 4, largeurCase - 8, hauteurCase - 8, this);
+                    if(!(controleur.jeu().getCoordooneDepartIA()!=null && controleur.jeu().getCoordooneDepartIA().equals(new Coordonne(l,c)))){
+                        //setDrawFleche1(false); //pour pas remettre tout a jour
+                        g.drawImage(Theme.instance().konakis(), x + 5, y + 4, largeurCase - 8, hauteurCase - 8, this);
+                    }
                 }
 
                 if (n.estAttaquant(l, c)) {
