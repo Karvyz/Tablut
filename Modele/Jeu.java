@@ -90,6 +90,10 @@ public class Jeu extends Observable implements Serializable {
                 System.out.println("PARTIE FINI CAR ROI EVADE");
                 vainqueur = joueurs[1];
             }
+            else if (i==4){
+                System.out.println("LES DEFENSEURS ONT GAGNE CAR LES ATTAQUANTS N'ONT PLUS DE PIONS");
+                vainqueur = joueurs[1];
+            }
             else //TODO plus tard
                 System.out.println("EGALITE");
             //System.out.println(n); //Affichez le jeu en fin de partie

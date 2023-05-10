@@ -305,6 +305,9 @@ public class Niveau implements Serializable, Cloneable {
         if (a_boucle()){
             return 3;
         }
+        if (nb_pion_nr() == 0){
+            return 4;
+        }
         return 0;
 
     }
