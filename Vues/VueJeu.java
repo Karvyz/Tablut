@@ -1,12 +1,14 @@
 package Vues;
 
 import Modele.Joueurs;
+import Modele.Music;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 
 import static java.awt.GridBagConstraints.*;
@@ -209,7 +211,7 @@ class VueJeu extends JPanel {
         JMenuItem[] menu_items = {
                 new JMenuItem("Nouvelle Partie"),
                 new JMenuItem("Menu principal"),
-                new JMenuItem("Quitter")
+                new JMenuItem("Quitter"),
         };
 
         menu_items[0].addActionListener((e) -> {
@@ -227,12 +229,20 @@ class VueJeu extends JPanel {
         });
         menu_items[2].addActionListener(e -> controleur.toClose());
 
+        JCheckBoxMenuItem checkBoxMenuItemMusic = new JCheckBoxMenuItem("Musique");
+        checkBoxMenuItemMusic.setSelected(false);
+        checkBoxMenuItemMusic.addActionListener(new Music());
+
         for (JMenuItem menu_item: menu_items) {
             menu_item.setFont(new Font("Arial", Font.PLAIN, 14));
             menu_item.setBorderPainted(false);
             menu_item.setUI(new CMenuItemUI(true));
             menu.add(menu_item);
         }
+
+        checkBoxMenuItemMusic.setFont(new Font("Arial", Font.PLAIN, 14));
+        checkBoxMenuItemMusic.setBorderPainted(false);
+        menu.add(checkBoxMenuItemMusic);
 
         JButton sauvegarder = new CButton(new ImageIcon(Imager.getScaledImage("assets/Disquette.png", 20, 20))).blanc();
         sauvegarder.addActionListener(e -> ActionBoutonSauvegarder(e));

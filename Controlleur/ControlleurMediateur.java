@@ -60,8 +60,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	public void restaurePartie(){
 		vues.restaurePartie();
 		jeu.setEnCours(true);
-
-
 	}
 
 	/**
