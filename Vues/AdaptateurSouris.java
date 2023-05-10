@@ -21,6 +21,10 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
     boolean clicInutile = false;
     boolean clicSelection = false;
 
+    boolean premier_clic = false;
+
+    //boolean drawFleche;
+
 
     public AdaptateurSouris(CollecteurEvenements c, CPlateau pane) {
         controleur = c;
@@ -34,6 +38,9 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         int c = calcul_c(e);
         if (!check_ok(l,c)){return;};
 
+        pane.setDrawFleche(false); //N'importe quelle clic efface la fleche d'indication de l'IA
+        premier_clic = true;
+
         Pion caseClique = controleur.jeu().n.getPion(l,c);
 
         //Test le déplacement
@@ -44,6 +51,9 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
                 pane.setPionEnDeplacement(null);
                 dragStart = null;
                 affiche_destination(null);
+                controleur.jeu().setCoordooneJouerIA(null,null); //On met les coordonnes de la fleche a false
+                pane.setDrawFleche(true); //On prépare la fleche pour le prochain coup de l'IA
+                premier_clic = false;
                 return;
             }//Si il ne permet pas un déplacement on regarde si ce pion peut servir de nouvelle selection
             else if (controleur.jeu().n.check_clic_selection_pion(caseClique, controleur.jeu().get_num_JoueurCourant()) && caseClique.getDeplacement(controleur.jeu().n.plateau).isEmpty()){//ici il ne sert pas de nouvelle selection
@@ -52,6 +62,15 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
                     pane.setPionEnDeplacement(null);//On ne peut pas drag
                     pane.setPionSelec(null);//On ne peut pas drag
 
+                return;
+            }
+            else if(!controleur.jeu().n.check_clic_selection_pion(caseClique, controleur.jeu().get_num_JoueurCourant())){
+                //TODO a verifier c'est si on clique sur un pion adverse on affiche la fleche
+                pane.setPionEnDeplacement(null);//Initialise point de départ du moovement pour le drag
+                pane.setPionSelec(null);
+                clicSelection = false;
+                clicInutile = false; //Changez ici si on veut garder les destinations affichés lors d'un clic sur pion pas a nous
+                pane.setDrawFleche(true);
                 return;
             }
             else if (controleur.jeu().n.check_clic_selection_pion(caseClique, controleur.jeu().get_num_JoueurCourant())){//ici il sert de nouvelle selection
@@ -64,6 +83,9 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             }
             clicInutile = true;
         }
+        else{
+            //pane.setDrawFleche(false); //si on clique sur case vide, on désactive la fleche
+        }
 
         //Le pion nous appartient mais il n'y a pas de deplacement possibles
         if (!check_pion(caseClique))
@@ -73,6 +95,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             pane.setPionSelec(caseClique); //au laché, on affiche les dispos
             pane.setPionEnDeplacement(new Point(l , c ));//Initialise point de départ du moovement pour le drag
             setImage(caseClique);
+            pane.setDrawFleche(false);
             clicSelection = true;
             return;
         }
@@ -81,7 +104,9 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             clicSelection = false;
             clicInutile = false; //Changez ici si on veut garder les destinations affichés lors d'un clic sur pion pas a nous
             pane.setPionEnDeplacement(null);
-            //pane.setPionSelec(null);
+            pane.setDrawFleche(true); //TODO a verifier
+
+            //pane.setDrawFleche(true);
         }
 
     }
@@ -125,6 +150,9 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             if (startX != l || startY != c) {
                 if (controleur.dragANDdrop(new Coordonne(startX, startY), new Coordonne(l, c)) == true){ //On teste le déplacement
                     affiche_destination(null);
+                    pane.setDrawFleche(true);
+                    premier_clic=false;
+
                 }
                 pane.setPionSelec(null);
                 pane.setPionEnDeplacement(null);
@@ -169,25 +197,24 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         // Obtenez les informations de la case survolée
         Pion caseSurvole = controleur.jeu().n.getPion(l, c);
 
-        if (pane.getPionSelec() == null){
+        if (pane.getPionSelec() == null) {
             //Permet d'afficher lorsqu'on survole
-            if(controleur.jeu().n.check_clic_selection_pion(caseSurvole, controleur.jeu().get_num_JoueurCourant()) && caseSurvole.getDeplacement(controleur.jeu().n.plateau).isEmpty()){
-                affiche_destination(null);
-                UIManager.put("ToolTip.background", Color.RED);
-                UIManager.put("ToolTip.foreground", Color.WHITE);
-                pane.setToolTipText("Aucun déplacement possible ");
-            }
-            else if (controleur.jeu().n.check_clic_selection_pion(caseSurvole, controleur.jeu().get_num_JoueurCourant())){
+            if (controleur.jeu().n.check_clic_selection_pion(caseSurvole, controleur.jeu().get_num_JoueurCourant())) {
                 affiche_destination(caseSurvole); //affiche les destinations du pion survole
-                pane.setToolTipText(null);
-            }
-            else{
+                if(premier_clic == true){
+                    pane.setDrawFleche(false);
+                }
+            } else if (caseSurvole != null && !controleur.jeu().n.check_clic_selection_pion(caseSurvole, controleur.jeu().get_num_JoueurCourant())) {
+                pane.setDrawFleche(true);
                 affiche_destination(null); //affiche aucune destination
-                UIManager.put("ToolTip.background", Color.RED);
-                UIManager.put("ToolTip.foreground", Color.WHITE);
-                pane.setToolTipText("Zone invalide");
+            } else {
+                if(premier_clic == true){
+                    pane.setDrawFleche(false);
+                }
+                affiche_destination(null); //affiche aucune destination
             }
-        }else{
+        }
+        else{
             //on ne fais rien dans le survol si on a choose un pions
         }
 
