@@ -9,6 +9,7 @@ import Vues.AdaptateurSouris;
 import Vues.AdaptateurSouris2;
 import Vues.CollecteurEvenements;
 import Vues.Theme;
+import sun.plugin2.util.ColorUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,6 +28,8 @@ public class CPlateau extends JPanel implements Observateur {
     private ArrayList<Coordonne> destinationsPossibles = new ArrayList<>();
     private Point pointSelec;
     private Image image;
+
+    private boolean drawFleche =true ;
 
 
     public CPlateau(CollecteurEvenements c) {
@@ -48,52 +51,46 @@ public class CPlateau extends JPanel implements Observateur {
         test_annuler_refaire();
         drawPlateau(g2d);
         drawContenu(g2d);
-        drawDestination(g2d);
-        drawDeplacement(g2d);
-        drawSurbrillance(g2d);
+        if (controleur.jeu().getJoueur1().estHumain()||controleur.jeu().getJoueur2().estHumain()){
+            drawDestination(g2d);
+            drawDeplacement(g2d);
+            drawSurbrillance(g2d);
 
-
-        if(controleur.jeu().getCoordooneDepartIA() != null){
-            Coordonne depart = controleur.jeu().getCoordooneDepartIA();
-            int l = depart.getX();
-            int c = depart.getY();
-            Color couleurSurbrillance = new Color(135, 206, 250);
-            g.setColor(couleurSurbrillance);
-            //g.fillRect((largeurCase ) * c , (hauteurCase ) * l , largeurCase , hauteurCase );
-            System.out.println(l +"," +c);
-            switch(calcul_dir(depart, controleur.jeu().getCoordooneArriveIA())){
-
-                case 0:
-                    // Déplacement vers le bas
-                    g.drawImage(Theme.instance().pointInterrogation(), c * hauteurCase , l * largeurCase , largeurCase , hauteurCase , this);
-                    break;
-                case 1:
-                    //vers le haut
-                    g.drawImage(Theme.instance().pointInterrogation(), c * hauteurCase , l * largeurCase, largeurCase , hauteurCase , this);
-                    break;
-                case 2:
-                    // Déplacement vers la droite
-                    g.drawImage(Theme.instance().pointInterrogation(), c * hauteurCase , l * largeurCase , largeurCase , hauteurCase , this);
-                    break;
-                case 3:
-                    //vers la gauche
-                    g.drawImage(Theme.instance().pointInterrogation(), c * hauteurCase , l * largeurCase , largeurCase , hauteurCase , this);
-
-                    break;
-
-
+            if(controleur.jeu().getCoordooneDepartIA() != null && getDrawFleche() == true){
+                Coordonne depart = controleur.jeu().getCoordooneDepartIA();
+                int l = depart.getX();
+                int c = depart.getY();
+                switch(calcul_dir(depart, controleur.jeu().getCoordooneArriveIA())){
+                    case 0:
+                        // Déplacement vers le bas
+                        g2d.drawImage(Theme.instance().fleche_bas(), c * hauteurCase , l * largeurCase , largeurCase -5 , hauteurCase -5, this);
+                        break;
+                    case 1:
+                        //vers le haut
+                        g2d.drawImage(Theme.instance().fleche_haut(), c * hauteurCase , l * largeurCase, largeurCase -5 , hauteurCase -5 , this);
+                        break;
+                    case 2:
+                        // Déplacement vers la droite
+                        g2d.drawImage(Theme.instance().fleche_droite(), c * hauteurCase , l * largeurCase , largeurCase -5 , hauteurCase -5, this);
+                        break;
+                    case 3:
+                        //vers la gauche
+                        g2d.drawImage(Theme.instance().fleche_gauche(), c * hauteurCase , l * largeurCase , largeurCase -5 , hauteurCase -5 , this);
+                        break;
+                }
+                int l_arr = controleur.jeu().getCoordooneArriveIA().getX();
+                int c_arr = controleur.jeu().getCoordooneArriveIA().getY();
+                g2d.setColor(Color.orange);
+                g2d.fillRect((largeurCase ) * c_arr +5, (hauteurCase ) * l_arr+5, largeurCase - 6, hauteurCase - 6);
+                drawContenu(g2d);
+            }
+            if (brillanceX >= 0 && brillanceY >= 0) {
+                drawBrillance(g2d, brillanceX, brillanceY);
             }
         }
-        else{
-            controleur.jeu().setCoordooneJouerIA(null, null);
-        }
-
-
-
-        if (brillanceX >= 0 && brillanceY >= 0) {
-            drawBrillance(g2d, brillanceX, brillanceY);
-        }
     }
+
+
 
     public int calcul_dir(Coordonne depart, Coordonne coordonneArriveIA) {
         int deltaX = coordonneArriveIA.getX() - depart.getX();
@@ -116,18 +113,6 @@ public class CPlateau extends JPanel implements Observateur {
             return -1;
         }
     }
-
-    private void test_annuler_refaire() {
-        if (controleur.jeu().test_annuler_refaire == true){
-            setPointSelec(null);
-            setPionSelec(null);
-            setDestinationsPossibles(null);
-            setPionEnDeplacement(null);
-        }
-        controleur.jeu().setAnnuler_refaire(false);
-    }
-
-
     private void drawDeplacement(Graphics2D g2d) {
         if (getPionEnDeplacement()!=null){
             int x = bordureGauche;
@@ -162,7 +147,9 @@ public class CPlateau extends JPanel implements Observateur {
 
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
-
+                    if(controleur.jeu().getCoordooneDepartIA()!=null && controleur.jeu().getCoordooneDepartIA().equals(new Coordonne(l,c))){
+                        setDrawFleche1(false); //pour pas remettre tout a jour
+                    }
                     if (i == l && c == j) {
                         //TODO mettre image des points
                         g.drawImage(Theme.instance().pointInterrogation(), x + 4, y + 4, largeurCase - 4, hauteurCase - 4, this);
@@ -175,25 +162,7 @@ public class CPlateau extends JPanel implements Observateur {
         }
     }
 
-    public void setDestinationsPossibles(ArrayList<Coordonne> destinations) {
-        this.destinationsPossibles = destinations;
-        repaint();
-    }
 
-    public void drawSurbrillance(Graphics2D g) {
-        Jeu J = controleur.jeu();
-        Niveau n = J.getNiveau();
-        if (pionSelec != null) {
-            int x = pionSelec.getX();
-            int y = pionSelec.getY();
-
-            if (n.estRoi(x, y)) {
-                // -- Dessin du roi avec arrière-plan
-                g.drawImage(Theme.instance().roi_selectionne(), (largeurCase + 1) * y + 1, (hauteurCase + 1) * x + 1, largeurCase - 5, hauteurCase - 4, this);
-            }
-        }
-
-    }
 
     //Permet de dessiner le plateau sous les pions
     private void drawPlateau(Graphics2D g) {
@@ -242,6 +211,21 @@ public class CPlateau extends JPanel implements Observateur {
         }
     }
 
+
+    public void drawSurbrillance(Graphics2D g) {
+        Jeu J = controleur.jeu();
+        Niveau n = J.getNiveau();
+        if (pionSelec != null) {
+            int x = pionSelec.getX();
+            int y = pionSelec.getY();
+
+            if (n.estRoi(x, y)) {
+                // -- Dessin du roi avec arrière-plan
+                g.drawImage(Theme.instance().roi_selectionne(), (largeurCase + 1) * y + 1, (hauteurCase + 1) * x + 1, largeurCase - 5, hauteurCase - 4, this);
+            }
+        }
+    }
+
     public void updateBrillanceSelection(int l, int c) {
         this.brillanceX = l;
         this.brillanceY = c;
@@ -280,22 +264,18 @@ public class CPlateau extends JPanel implements Observateur {
             y += hauteurCase;
             x = bordureGauche;
         }
+    }
 
-
-        /*// TODO : implémenter un tour avec une sélection de pion à faire, puis une case à sélectionner, puis un mouvement (implicitement)
-        if (j.pionSelectionne() && (j.pion() != null)) {
-            int x = bordureGauche + j.pion().colonne() * largeurCase;
-            int y = bordureHaut + j.pion().ligne() * hauteurCase;
-
-            int l = j.pion().ligne();
-            int c = j.pion().colonne();
-
-            // TODO : Affichage des cases possibles
-
-            // - Affichage du pion selectionné (en fonction de la couleur)
-        }*/
-
-
+    private void test_annuler_refaire() {
+        if (controleur.jeu().test_annuler_refaire == true){
+            setPointSelec(null);
+            setPionSelec(null);
+            setDestinationsPossibles(null);
+            setPionEnDeplacement(null);
+            setDrawFleche(false);
+            controleur.jeu().setCoordooneJouerIA(null,null);
+        }
+        controleur.jeu().setAnnuler_refaire(false);
     }
 
     private void calculerDimensions() {
@@ -303,6 +283,24 @@ public class CPlateau extends JPanel implements Observateur {
         bordureGauche = Math.round(Theme.instance().bordureGauche() * getWidth() / (float) Theme.instance().largeurPlateau());
         hauteurCase = Math.round(Theme.instance().hauteurCase() * getHeight() / (float) Theme.instance().hauteurPlateau());
         largeurCase = Math.round(Theme.instance().largeurCase() * getWidth() / (float) Theme.instance().largeurPlateau());
+    }
+
+    public void setDrawFleche(boolean b) {
+        drawFleche = b;
+        miseAJour();
+    }
+
+    private void setDrawFleche1(boolean b) {
+        drawFleche = b;
+    }
+
+    public boolean getDrawFleche() {
+        return drawFleche;
+    }
+
+    public void setDestinationsPossibles(ArrayList<Coordonne> destinations) {
+        this.destinationsPossibles = destinations;
+        repaint();
     }
 
     public Point getPionEnDeplacement() {
