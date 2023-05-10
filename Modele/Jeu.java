@@ -95,9 +95,10 @@ public class Jeu extends Observable implements Serializable {
             n.enCours = false;
         }
 
-        //TODO test si une partie est finie;
-
-        this.coup_a_refaire.clear();
+        //Si l'IA joue, on ne dépile pas a refaire
+        if (!getJoueurCourant().estHumain()){
+            this.coup_a_refaire.clear();
+        }
         //System.out.println(this);
         joueurSuivant();
         //System.out.println(this);
@@ -146,18 +147,19 @@ public class Jeu extends Observable implements Serializable {
         coup_annule.empiler(n.clone());
         Niveau a_refaire = coup_a_refaire.depiler();
         n = a_refaire.clone();
-        if ((!joueurs[0].estHumain() || !joueurs[1].estHumain())) { // Tester si on a une IA contre un humaion pour annuler le coup de l'IA et de l'humain, ATTENTION,l'IA jouera un autre coup
-            if (coup_annule.estVide()) {
-                System.out.println("Impossible d'annuler");
+        joueurSuivant();
+
+        if (!getJoueurCourant().estHumain()) { // Tester si on a une IA contre un humaion pour annuler le coup de l'IA et de l'humain, ATTENTION,l'IA jouera un autre coup
+            if (coup_a_refaire.estVide()) {
+                System.out.println("Impossible de refaire");
                 return;
             }
             coup_annule.empiler(n.clone());
             a_refaire = coup_a_refaire.depiler();
             n = a_refaire.clone();
+            joueurSuivant();;
         }
 
-
-        joueurSuivant();
         metAJour();
         System.out.println("Coup refait");
     }
