@@ -100,7 +100,7 @@ public class Jeu extends Observable implements Serializable {
         //Si l'IA joue, on ne dépile pas a refaire
         if (!getJoueurCourant().estHumain()){
             this.coup_a_refaire.clear();
-            test_annuler_refaire = false;
+            //test_annuler_refaire = false;
         }
         //System.out.println(this);
         joueurSuivant();
