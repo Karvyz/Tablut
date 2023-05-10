@@ -8,8 +8,8 @@ public class CPions extends JPanel {
     private boolean reverse = false;
     public CPions(boolean reverse) {
         this.reverse = reverse;
-        setOpaque(false);
-        setBackground(null);
+        setOpaque(true);
+        //setBackground(null);
         setLayout(new GridLayout(1, 0, hgap, 0));
         setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
     }
