@@ -68,7 +68,7 @@ public class CPlateau extends JPanel implements Observateur {
 
                     if (i == l && c == j) {
                         //TODO mettre image des points
-                        g2d.drawImage(getImage(), x + 5, y + 4, largeurCase - 4, hauteurCase - 4, this);
+                        g2d.drawImage(getImage(), x + 4, y + 4, largeurCase - 4, hauteurCase - 4, this);
                     }
                     x += largeurCase + 1;
                 }
@@ -93,7 +93,7 @@ public class CPlateau extends JPanel implements Observateur {
 
                     if (i == l && c == j) {
                         //TODO mettre image des points
-                        g.drawImage(Theme.instance().pointInterrogation(), x + 5, y + 4, largeurCase - 4, hauteurCase - 4, this);
+                        g.drawImage(Theme.instance().pointInterrogation(), x + 4, y + 4, largeurCase - 4, hauteurCase - 4, this);
                     }
                     x += largeurCase + 1;
                 }
@@ -112,7 +112,6 @@ public class CPlateau extends JPanel implements Observateur {
         Jeu J = controleur.jeu();
         Niveau n = J.getNiveau();
         if (pionSelec != null) {
-            System.out.println("pionSelec != null" + pionSelec);
             int x = pionSelec.getX();
             int y = pionSelec.getY();
 
@@ -138,6 +137,12 @@ public class CPlateau extends JPanel implements Observateur {
         for (int l = 0; l < 9; l++) {
             for (int c = 0; c < 9; c++) {
                 // -- Dessin des pions, forteresses, roi, konakis
+                if (getPionSelec() != null && l == getPionSelec().getX() && c == getPionSelec().getY()){ //Ici on efface le pion selec
+                    x += largeurCase;
+                    if (c % 2 == 0)
+                        x++;
+                    continue;
+                }
                 if (n.estForteresse(l, c)) {
                     g.drawImage(Theme.instance().forteresse(), x + 4, y + 4, largeurCase - 11, hauteurCase - 10, this);
                 }
@@ -145,9 +150,6 @@ public class CPlateau extends JPanel implements Observateur {
                 if (n.estKonakis(l, c) && !n.estRoi(l, c)) {
                     g.drawImage(Theme.instance().konakis(), x + 5, y + 4, largeurCase - 8, hauteurCase - 8, this);
                 }
-
-                //System.out.println("l = " + l + ", c = " + c);
-                //System.out.println("x = " + x + ", y = " + y);
 
                 if (n.estAttaquant(l, c)) {
                     g.drawImage(Theme.instance().noir_inactif(), x + 4, y + 4, largeurCase - 8, hauteurCase - 8, this);

@@ -38,7 +38,8 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         if (pane.getPionSelec() != null){
             pane.setPionEnDeplacement(null);//On ne peut pas drag
             if (controleur.clicSouris(pane.getPionSelec(), l, c) == true){ //Si on clique après avoir selectionne un pion on check si le coup est juste
-                pane.setPionSelec(null);
+                pane.setPionSelec(null); //On déselectionne après avoir joué un coup
+                pane.setPionEnDeplacement(null);
                 dragStart = null;
                 affiche_destination(null);
                 return;
@@ -47,10 +48,13 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
                     clicSelection = false;
                     clicInutile = false;
                     pane.setPionEnDeplacement(null);//On ne peut pas drag
-                    return;
+                    pane.setPionSelec(null);//On ne peut pas drag
+
+                return;
             }
             else if (controleur.jeu().n.check_clic_selection_pion(caseClique, controleur.jeu().get_num_JoueurCourant())){//ici il sert de nouvelle selection
                     pane.setPionEnDeplacement(new Point(l , c ));//Initialise point de départ du moovement pour le drag
+                    pane.setPionSelec(caseClique);
                     setImage(caseClique);
                     clicSelection = true;
                     return;
@@ -74,6 +78,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             clicSelection = false;
             clicInutile = false; //Changez ici si on veut garder les destinations affichés lors d'un clic sur pion pas a nous
             pane.setPionEnDeplacement(null);
+            //pane.setPionSelec(null);
         }
 
     }
