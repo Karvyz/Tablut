@@ -20,7 +20,6 @@ public abstract class IA_difficile extends IA{
 
     @Override
     public int joue() {
-        System.out.println("yessaie");
         nevaluation = 0;
         bypass1 = 0;
         bypass2 = 0;

@@ -2,7 +2,6 @@ package Controlleur;
 
 import Modele.Jeu;
 import Modele.Niveau;
-import Modele.TypeJoueur;
 import Modele.TypePion;
 
 public class IA_difficile_le_roi_c_ciao extends IA_difficile{
@@ -72,7 +71,7 @@ public class IA_difficile_le_roi_c_ciao extends IA_difficile{
             if (attaquants<3 || (d < 1 || g < 1 || b < 1 || h < 1)) {
                 return Integer.MIN_VALUE;
             } else {
-                return attaquants - defenseurs * 2;
+                return 8-defenseurs-(16-attaquants);
             }
         } else { // defenseur
             if (countbd + counthd + d < 2 || countbg + counthg + g < 2 || countbd + countbg + b < 2 || counthd + counthg + h < 2) {
@@ -85,7 +84,7 @@ public class IA_difficile_le_roi_c_ciao extends IA_difficile{
                 }
                 return 20;
             } else {
-                return defenseurs - attaquants - Math.min(Math.min(g,d),Math.min(h,b)); // on retourne le nombre de defenseurs - le nombre d'attaquants - le nombre minimum de pions d'un coté du roi
+                return 16-attaquants-(8-defenseurs); // on retourne le nombre de defenseurs - le nombre d'attaquants - le nombre minimum de pions d'un coté du roi
             }
         }
     }

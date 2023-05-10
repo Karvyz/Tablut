@@ -1,13 +1,10 @@
 
 import Controlleur.*;
 import Modele.Jeu;
-
-import Modele.TypeJoueur;
 import Modele.TypePion;
 import Vues.CollecteurEvenements;
 import Vues.InterfaceGraphique;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 
