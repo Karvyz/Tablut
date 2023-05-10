@@ -56,6 +56,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
                     pane.setPionEnDeplacement(new Point(l , c ));//Initialise point de départ du moovement pour le drag
                     pane.setPionSelec(caseClique);
                     setImage(caseClique);
+                    affiche_destination(caseClique);
                     clicSelection = true;
                     return;
             }
