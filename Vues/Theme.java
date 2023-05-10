@@ -69,7 +69,7 @@ public class Theme {
         roi_selectionne = Imager.getImageBuffer(theme + "Roi_selectionne.png");
         forteresse = Imager.getImageBuffer(theme + "Forteresse.png");
         konakis = Imager.getImageBuffer(theme + "Konakis2.png");
-        point_interrogation = Imager.getImageBuffer(theme + "Point-d'interrogation.png");
+        point_interrogation = Imager.getImageBuffer(theme + "Capture1.png");
         err = Imager.getImageBuffer(theme + "err.png");
     }
 
