@@ -1,6 +1,7 @@
 package Vues;
 
 import Modele.Coordonne;
+import Modele.Niveau;
 import Modele.Pion;
 import Vues.JComposants.CPlateau;
 
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 
 public class AdaptateurSouris extends MouseAdapter implements MouseMotionListener {
     CollecteurEvenements controleur;
+
     CPlateau pane;
     Point dragStart = null;
     int bordureGauche, bordureHaut, bordureDroite, bordureBas;
@@ -152,6 +154,9 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             if (!check_ok(l,c)){return;};
             pionEnDeplacement.setLocation(l, c); //modifie les coordonne du Point pionEnDeplacement
             pane.setPionEnDeplacement(pionEnDeplacement);
+        }
+        else{
+            pane.setPointSelec(null);
         }
     }
 

@@ -37,5 +37,6 @@ public interface CollecteurEvenements {
     void restaurePartie();
 
     void fixeJeu(Jeu jeu);
+
 }
 

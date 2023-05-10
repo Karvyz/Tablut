@@ -20,6 +20,8 @@ public class Jeu extends Observable implements Serializable {
 
     public ConfigurationJeu config;
 
+    public boolean test_annuler_refaire= false;
+
 
     public Jeu(){
         enCours = false;
@@ -98,6 +100,7 @@ public class Jeu extends Observable implements Serializable {
         //Si l'IA joue, on ne dépile pas a refaire
         if (!getJoueurCourant().estHumain()){
             this.coup_a_refaire.clear();
+            //test_annuler_refaire = false;
         }
         //System.out.println(this);
         joueurSuivant();
@@ -134,7 +137,7 @@ public class Jeu extends Observable implements Serializable {
 
         joueurSuivant(); //La variable du jeu doit aussi être modifie
         metAJour();
-
+        test_annuler_refaire = true;
         System.out.println("Annulation effectué");
     }
 
@@ -161,6 +164,7 @@ public class Jeu extends Observable implements Serializable {
         }
 
         metAJour();
+        test_annuler_refaire = true;
         System.out.println("Coup refait");
     }
 
@@ -238,6 +242,10 @@ public class Jeu extends Observable implements Serializable {
 
     public void setEnCours(boolean b) {
         enCours = b;
+    }
+
+    public void setAnnuler_refaire(boolean b) {
+        test_annuler_refaire = b;
     }
 
     public int get_num_JoueurCourant(){
