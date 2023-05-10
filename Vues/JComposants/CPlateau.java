@@ -59,7 +59,30 @@ public class CPlateau extends JPanel implements Observateur {
             int c = depart.getY();
             Color couleurSurbrillance = new Color(135, 206, 250);
             g.setColor(couleurSurbrillance);
-            g.fillRect((largeurCase ) * c , (hauteurCase ) * l , largeurCase , hauteurCase );
+            //g.fillRect((largeurCase ) * c , (hauteurCase ) * l , largeurCase , hauteurCase );
+            System.out.println(l +"," +c);
+            switch(calcul_dir(depart, controleur.jeu().getCoordooneArriveIA())){
+
+                case 0:
+                    // Déplacement vers le bas
+                    g.drawImage(Theme.instance().pointInterrogation(), c * hauteurCase , l * largeurCase , largeurCase , hauteurCase , this);
+                    break;
+                case 1:
+                    //vers le haut
+                    g.drawImage(Theme.instance().pointInterrogation(), c * hauteurCase , l * largeurCase, largeurCase , hauteurCase , this);
+                    break;
+                case 2:
+                    // Déplacement vers la droite
+                    g.drawImage(Theme.instance().pointInterrogation(), c * hauteurCase , l * largeurCase , largeurCase , hauteurCase , this);
+                    break;
+                case 3:
+                    //vers la gauche
+                    g.drawImage(Theme.instance().pointInterrogation(), c * hauteurCase , l * largeurCase , largeurCase , hauteurCase , this);
+
+                    break;
+
+
+            }
         }
         else{
             controleur.jeu().setCoordooneJouerIA(null, null);
@@ -69,6 +92,28 @@ public class CPlateau extends JPanel implements Observateur {
 
         if (brillanceX >= 0 && brillanceY >= 0) {
             drawBrillance(g2d, brillanceX, brillanceY);
+        }
+    }
+
+    public int calcul_dir(Coordonne depart, Coordonne coordonneArriveIA) {
+        int deltaX = coordonneArriveIA.getX() - depart.getX();
+        int deltaY = coordonneArriveIA.getY() - depart.getY();
+
+        if (deltaX > 0 && Math.abs(deltaX) >= Math.abs(deltaY)) {
+            // Déplacement vers le bas
+            return 0;
+        } else if (deltaX < 0 && Math.abs(deltaX) >= Math.abs(deltaY)) {
+            // Déplacement vers le haut
+            return 1;
+        } else if (deltaY > 0 && Math.abs(deltaY) >= Math.abs(deltaX)) {
+            // Déplacement vers la droite
+            return 2;
+        } else if (deltaY < 0 && Math.abs(deltaY) >= Math.abs(deltaX)) {
+            // Déplacement vers la gauche
+            return 3;
+        } else {
+            // Aucune direction valide trouvée
+            return -1;
         }
     }
 
