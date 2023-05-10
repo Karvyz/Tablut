@@ -67,8 +67,26 @@ class VueNiveau extends JPanel implements Observateur {
 
         j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
         j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);
-        texteJeu.setText(" Au tour de " + controleur.jeu().getJoueurCourant().nom() + " de jouer ! ");
+        //texteJeu.setText(" Au tour de " + controleur.jeu().getJoueurCourant().nom() + " de jouer ! ");
 
+
+        // Modif couleur arrière plan du joueur courant
+        if(controleur.jeu().getJoueurCourant() == controleur.jeu().getJoueur1()) {
+            // Créez une instance de bordure avec un style spécifique
+            Border border = BorderFactory.createLineBorder(new Color(9, 106, 9), 8);
+
+            j1.p.setBorder(border);
+
+            j2.p.setBorder(null);
+        } else {
+            Border border = BorderFactory.createLineBorder(new Color(9, 106, 9), 8);
+
+            j2.p.setBorder(border);
+
+            j1.p.setBorder(null);
+        }
+
+        /*
         // Actualisation de l'affichage du joueur courant
         if(controleur.jeu().getJoueurCourant().aPionsBlancs()) {
             texteJeu.setBackground(new Color(165, 42, 0));
@@ -78,5 +96,7 @@ class VueNiveau extends JPanel implements Observateur {
             texteJeu.setForeground(Color.BLACK);
         }
         texteJeu.setOpaque(true);
+
+         */
     }
 }

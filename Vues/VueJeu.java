@@ -265,6 +265,7 @@ class VueJeu extends JPanel {
         c.weightx = 1;
         topPanel.add(buttonsPanel, c);
 
+        /*
         // --
         c.insets = new Insets(8, 0, 0, 0);
         JPanel textPanel = new JPanel();
@@ -278,7 +279,8 @@ class VueJeu extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
         c.gridy = 0;
-        topPanel.add(textPanel, c);
+        //topPanel.add(textPanel, c);
+        */
     }
 
     private void addMain(JPanel contenu) {
