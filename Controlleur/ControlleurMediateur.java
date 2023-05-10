@@ -23,11 +23,9 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	}
 
 	public String toString(){
-		StringBuilder sb = new StringBuilder();
-		sb.append("Jeu {");
-		sb.append("niveau: ").append(jeu.n);
-		sb.append("}");
-		return sb.toString();
+		return "Jeu {" +
+				"niveau: " + jeu.n +
+				"}\njoueur courant = " + jeu.getJoueurCourant() + "\n";
 	}
 
 	public void fixeJeu(Jeu j){

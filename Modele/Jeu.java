@@ -198,6 +198,7 @@ public class Jeu extends Observable implements Serializable {
             this.joueurCourant = data_niveau.joueurCourant;
             this.joueurs[0] = data_niveau.attaquant;
             this.joueurs[1] = data_niveau.defenseur;
+            this.config = data_niveau.config;
 
 
             objectIn.close();
