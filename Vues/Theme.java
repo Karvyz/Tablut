@@ -38,7 +38,7 @@ public class Theme {
     private void chargerDimensions(String theme) {
         Properties p = new Properties();
 
-        InputStream in = chargerFichier(theme + "/dimensions.cfg");
+        InputStream in = chargerFichier(theme + "dimensions.cfg");
 
         try {
             p.load(in);
