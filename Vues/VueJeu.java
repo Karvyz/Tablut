@@ -16,7 +16,7 @@ import static java.awt.GridBagConstraints.*;
 import Modele.TypePion;
 import Vues.JComposants.*;
 
-class VueJeu extends JPanel {
+public class VueJeu extends JPanel {
 
     CollecteurEvenements controleur;
     VueNiveau vueNiveau;
@@ -125,10 +125,9 @@ class VueJeu extends JPanel {
         add(endGamePanel);
     }
 
-    void showEnd() {
+    public void showEnd() {
         // TODO : Ajout du point du vainqueur
         Joueurs vainqueur = controleur.jeu().vainqueur();
-        if (vainqueur == null){return;}
         Joueurs perdant;
         if (vainqueur == controleur.jeu().getJoueur1()) {
             perdant = controleur.jeu().getJoueur2();

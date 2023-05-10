@@ -5,10 +5,8 @@ import Modele.Jeu;
 import Modele.Niveau;
 import Modele.Pion;
 import Patterns.Observateur;
-import Vues.AdaptateurSouris;
-import Vues.AdaptateurSouris2;
-import Vues.CollecteurEvenements;
-import Vues.Theme;
+import Vues.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -29,9 +27,12 @@ public class CPlateau extends JPanel implements Observateur {
 
     private boolean drawFleche =true ;
 
+    VueNiveau parent;
 
-    public CPlateau(CollecteurEvenements c) {
+
+    public CPlateau(CollecteurEvenements c, VueNiveau p) {
         controleur = c;
+        parent = p;
         //AdaptateurSouris2 adaptateurSouris = new AdaptateurSouris2(c, this);
         //System.out.println("HERE"+controleur.jeu());
         AdaptateurSouris adaptateurSouris = new AdaptateurSouris(c, this);
@@ -85,6 +86,17 @@ public class CPlateau extends JPanel implements Observateur {
             if (brillanceX >= 0 && brillanceY >= 0) {
                 drawBrillance(g2d, brillanceX, brillanceY);
             }
+        }
+
+        if (!controleur.jeu().enCours() && controleur.jeu().vainqueur()!=null){
+            System.out.println(controleur.jeu().vainqueur() + "," + controleur.jeu().enCours());
+            try {
+                Thread.sleep(2500);
+            } catch (InterruptedException e) {
+            }
+            parent.setOK(true);
+            parent.miseAJour();
+            parent.setOK(false);
         }
     }
 
@@ -333,6 +345,7 @@ public class CPlateau extends JPanel implements Observateur {
     @Override
     public void miseAJour() {
         repaint();
+
     }
 
     public void setImage(int image) {

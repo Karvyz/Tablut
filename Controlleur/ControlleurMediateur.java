@@ -72,6 +72,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	@Override
 	public void partieSuivante() {
 		verifierJeu("Impossible de passer à la partie suivante");
+		System.out.println("Partie suivante");
 		jeu.nouvellePartie();
 		vues.nouvellePartie();
 		afficherJeu();
@@ -139,14 +140,16 @@ public class ControlleurMediateur implements CollecteurEvenements {
 		if (jeu.enCours()) {
 			//System.out.println(jeu);
 			if (jeu == null || jeu().partieTerminee()) {
+				jeu.setEnCours(false); //on indique a l'IG que le jeu est fini
+				jeu.metAJour();
 				return;
 			}
 
+			//TODO verifier si c'est utile ça
 			if (jeu().n.PlusdePion(jeu().get_num_JoueurCourant())) {
 				jeu().setEnCours(false);
 				System.out.println("Le joueur blanc a gagné car l'attaquant n'a plus de pion");
 			}
-			//TODO ici l'IA joue instanténément donc problème pour annuler coup en IA vs Humain
 			else if (jeu.joueurs[jeu.get_num_JoueurCourant()].tempsEcoule()) //Un humain renvoi tjr false, une IA renvoi vrai lorsquelle a joué(jeu effectué dans tempsEcoule())
 				changeJoueur();
 			else if (decompte == 0) {
@@ -164,7 +167,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
 	void changeJoueur() {
 		decompte = lenteurAttente;
 	}
-
 
 	/**Méthode en rapport avec l'IHM*/
 	@Override

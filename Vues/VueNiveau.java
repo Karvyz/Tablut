@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-class VueNiveau extends JPanel implements Observateur {
+public class VueNiveau extends JPanel implements Observateur {
     CollecteurEvenements controleur;
     CPlateau plateau;
     MatteBorder top, bottom;
@@ -19,10 +19,12 @@ class VueNiveau extends JPanel implements Observateur {
     TexteJeu texteJeu;
     VueJeu parent;
 
+    boolean ok;
+
     VueNiveau(CollecteurEvenements c, VueJeu p, InfoJoueur j1, InfoJoueur j2, TexteJeu texteJeu) {
         controleur = c;
         parent = p;
-        plateau = new CPlateau(c);
+        plateau = new CPlateau(c, this);
         this.j1 = j1;
         this.j2 = j2;
         this.texteJeu = texteJeu;
@@ -61,9 +63,6 @@ class VueNiveau extends JPanel implements Observateur {
 
     @Override
     public void miseAJour() {
-        if (controleur.jeu().partieTerminee()) {
-            parent.showEnd();
-        }
 
         j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);
         j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
@@ -85,18 +84,13 @@ class VueNiveau extends JPanel implements Observateur {
             j1.p.setBorder(null);
             j1.p.setBorder(border2);
         }
-
-        /*
-        // Actualisation de l'affichage du joueur courant
-        if(controleur.jeu().getJoueurCourant().aPionsBlancs()) {
-            texteJeu.setBackground(new Color(165, 42, 0));
-            texteJeu.setForeground(Color.WHITE);
-        } else {
-            texteJeu.setBackground(Color.WHITE);
-            texteJeu.setForeground(Color.BLACK);
+        if (ok){
+            parent.showEnd();
         }
-        texteJeu.setOpaque(true);
 
-         */
+    }
+
+    public void setOK(boolean b) {
+        ok = b;
     }
 }

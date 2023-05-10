@@ -64,17 +64,16 @@ public class Jeu extends Observable implements Serializable {
 
     /**Méthode utile en fin de partie*/
     public Joueurs vainqueur() {
-        if (!partieTerminee()) {
-            return null;
+        if (vainqueur != null){
+            // TODO : retourner le joueur gagnant
+            return vainqueur;
         }
-        // TODO : retourner le joueur gagnant
-        return vainqueur;
+        return null;
+
     }
 
     public boolean partieTerminee() {
-        if(n==null)
-            return false;
-        return n.estTermine();
+        return vainqueur() != null;
     }
 
 
@@ -82,12 +81,11 @@ public class Jeu extends Observable implements Serializable {
     public void jouer(Coordonne depart, Coordonne arrive){
         this.coup_annule.empiler(this.n.clone());
         int i = n.deplace_pion(depart, arrive);
-        if(!getJoueurCourant().estHumain()){
+        if(!getJoueurCourant().estHumain()){//Coordonne pour afficher le mouvement joué par l'IA
             setCoordooneJouerIA(depart, arrive);
         }else{
             setCoordooneJouerIA(null, null);
         }
-        System.out.println("Déplacement du pion de (" + depart.getX() +"," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() +")");
         if (i > 0){
             if (i == 1) {
                 System.out.println("PARTIE FINI CAR ROI CAPTURE");
@@ -99,19 +97,13 @@ public class Jeu extends Observable implements Serializable {
             }
             else //TODO plus tard
                 System.out.println("EGALITE");
-            //System.out.println(n); //Affichez le jeu en fin de partie
-            setEnCours(false);
-            n.enCours = false;
         }
 
         //Si l'IA joue, on ne dépile pas a refaire
         if (!getJoueurCourant().estHumain()){
             this.coup_a_refaire.clear();
-            //test_annuler_refaire = false;
         }
-        //System.out.println(this);
         joueurSuivant();
-        //System.out.println(this);
         metAJour();
     }
 
@@ -257,7 +249,7 @@ public class Jeu extends Observable implements Serializable {
 
 
     public boolean enCours(){
-        return enCours;
+        return this.enCours;
     }
 
     public void setEnCours(boolean b) {
