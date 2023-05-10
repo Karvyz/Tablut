@@ -29,6 +29,12 @@ class VueMenuPrincipal extends JPanel {
             c.afficherMenuChargerPartie();
         });
 
+        JButton QuickPlay = new CButton("Partie Rapide");
+        QuickPlay.addActionListener((e) -> {
+            c.nouvelleQuickPartie();
+            c.afficherQuickPartie();
+        });
+
         JButton regles = new CButton("Règles");
         regles.addActionListener((e) -> {
             c.afficherRegles();
@@ -43,6 +49,7 @@ class VueMenuPrincipal extends JPanel {
         Component[] components = {
                 nouvellePartie,
                 chargerPartie,
+                QuickPlay,
                 regles,
                 Box.createRigidArea(new Dimension(10, 30)),
                 quitter
