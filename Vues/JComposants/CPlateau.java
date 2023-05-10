@@ -9,8 +9,6 @@ import Vues.AdaptateurSouris;
 import Vues.AdaptateurSouris2;
 import Vues.CollecteurEvenements;
 import Vues.Theme;
-import sun.plugin2.util.ColorUtil;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
