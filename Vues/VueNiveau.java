@@ -65,25 +65,25 @@ class VueNiveau extends JPanel implements Observateur {
             parent.showEnd();
         }
 
-        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
-        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);
+        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);
+        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
         //texteJeu.setText(" Au tour de " + controleur.jeu().getJoueurCourant().nom() + " de jouer ! ");
 
 
+        Border border = BorderFactory.createLineBorder(Color.GREEN, 8);
+        //new Color(9, 106, 9)
+
+        Border border2 = BorderFactory.createLineBorder(Color.WHITE, 8);
         // Modif couleur arrière plan du joueur courant
         if(controleur.jeu().getJoueurCourant() == controleur.jeu().getJoueur1()) {
             // Créez une instance de bordure avec un style spécifique
-            Border border = BorderFactory.createLineBorder(new Color(9, 106, 9), 8);
-
             j1.p.setBorder(border);
-
             j2.p.setBorder(null);
+            j2.p.setBorder(border2);
         } else {
-            Border border = BorderFactory.createLineBorder(new Color(9, 106, 9), 8);
-
             j2.p.setBorder(border);
-
             j1.p.setBorder(null);
+            j1.p.setBorder(border2);
         }
 
         /*

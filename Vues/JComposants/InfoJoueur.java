@@ -43,21 +43,27 @@ public class InfoJoueur extends JPanel {
         n.setText(nom);
     }
 
-    public void setPions(int nb1, int nb2) {
+    public void setPions(int nb1) {
         // Affichage des pions captures
-        ImageIcon fois = new ImageIcon(Imager.getScaledImage("fois.png", 25, 30));
+        ImageIcon fois = new ImageIcon(Imager.getScaledImage("fois.png", 50, 60));
         //System.out.println("setPions : " + nb);
-        pawn = new ImageIcon(Imager.getScaledImage(reverse ? "PN.png" : "PB.png", 25, 30));
+        pawn = new ImageIcon(Imager.getScaledImage(reverse ? "PN.png" : "PB.png", 50, 60));
         p.removeAll();
-        p.setLayout(new GridLayout(2, 3, hgap, 0));
+        p.setLayout(new GridLayout(1, 3, hgap, 0));
         p.add(new JLabel(pawn));
         p.add(new JLabel(fois));
-        p.add(new JLabel(String.valueOf(nb1)));
+        String nb = String.valueOf(nb1);
+        JLabel l = new JLabel(nb);
+        l.setFont(new Font("Arial", Font.BOLD, 18));
+        p.add(l);
+        /*
         pawn = null;
         pawn = new ImageIcon(Imager.getScaledImage(reverse ? "PB_barre.png" : "PN_barre.png", 25, 30));
         p.add(new JLabel(pawn));
         p.add(new JLabel(fois));
         p.add(new JLabel(String.valueOf(nb2)));
+
+         */
     }
 
     public void setBackgroundJoueur(Color c) {
