@@ -5,14 +5,13 @@ import Modele.Niveau;
 import Modele.TypePion;
 
 public class IA_expert extends IA_difficile{
-    public IA_expert(String nom, TypePion roleJ, Jeu j) {
-        super(nom, roleJ, j);
+    public IA_expert(String nom, TypePion roleJ, Jeu j, long timeLimitMs) {
+        super(nom, roleJ, j, timeLimitMs);
     }
 
     @Override
-    public int evaluation(Niveau n) {
+    public float evaluation(Niveau n) {
         int eval = 0, attaquants = 16, defenseurs = 8;
-        nevaluation++;
         if (jeu.get_num_JoueurCourant() == 0) { // attaquant
             //on regarde les contours de la map et s'il y a deux attaquants collés ou un attaquant collé à une Forteresse ou des defenseurs sur cette ligne/colonne on baisse l'evaluation
             //si il y a rien de tout ça on augmente l'evaluation

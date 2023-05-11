@@ -5,12 +5,12 @@ import Modele.Niveau;
 import Modele.TypePion;
 
 public class IA_difficile_le_roi_c_ciao extends IA_difficile{
-    public IA_difficile_le_roi_c_ciao(String nom, TypePion roleJ, Jeu j) {
-        super(nom, roleJ, j);
+    public IA_difficile_le_roi_c_ciao(String nom, TypePion roleJ, Jeu j, long timeLimitMs) {
+        super(nom, roleJ, j, timeLimitMs);
     }
 
     @Override
-    public int evaluation(Niveau n) {
+    public float evaluation(Niveau n) {
         int x = 0, y = 0;
         int attaquants = 0;
         int defenseurs = 0;
