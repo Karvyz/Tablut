@@ -46,7 +46,7 @@ public class VueMenuParties extends JPanel {
                     controleur.fixeJeu(controleur.jeu().getJeu());
                     //System.out.println(controleur);
                     controleur.afficherJeu();
-                    controleur.restaurePartie();
+
                 }
             }
         });

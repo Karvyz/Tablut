@@ -84,7 +84,7 @@ public class Jeu extends Observable implements Serializable {
     /**
      * Méthode en rapport avec les possibilités de jeu
      */
-    public void jouer(Coordonne depart, Coordonne arrive) {
+    public int jouer(Coordonne depart, Coordonne arrive) {
         this.coup_annule.empiler(this.n.clone());
         int i = n.deplace_pion(depart, arrive);
         if (!getJoueurCourant().estHumain()) {
@@ -116,6 +116,7 @@ public class Jeu extends Observable implements Serializable {
         joueurSuivant();
         //System.out.println(this);
         metAJour();
+        return i;
     }
 
     public void setCoordooneJouerIA(Coordonne depart, Coordonne arrive) {
@@ -307,9 +308,9 @@ public class Jeu extends Observable implements Serializable {
         switch (joueurCourant) {
             case 0:
                 return joueurs[1];
-            case 1:
-                return joueurs[2];
-            default:
+            case 1 :
+                return joueurs[0];
+            default :
                 return null;
         }
     }

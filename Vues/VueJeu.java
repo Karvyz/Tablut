@@ -399,6 +399,7 @@ class VueJeu extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
         mainPanel.add(vueNiveau, c);
 
+        System.out.println(j1);
         // Initialisation du niveau
         j1.setName("Attaquant : " + (!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurCourant().nom());
         j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);

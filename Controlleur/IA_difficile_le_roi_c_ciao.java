@@ -2,17 +2,15 @@ package Controlleur;
 
 import Modele.Jeu;
 import Modele.Niveau;
-import Modele.TypeJoueur;
 import Modele.TypePion;
 
-public class IA_difficile_le_roi_c_ciao extends IA_difficile {
-    public IA_difficile_le_roi_c_ciao(String nom, TypePion roleJ, Jeu j) {
-        super(nom, roleJ, j);
+public class IA_difficile_le_roi_c_ciao extends IA_difficile{
+    public IA_difficile_le_roi_c_ciao(String nom, TypePion roleJ, Jeu j, long timeLimitMs) {
+        super(nom, roleJ, j, timeLimitMs);
     }
 
     @Override
-    public int evaluation(Niveau n) {
-        nevaluation++;
+    public float evaluation(Niveau n) {
         int x = 0, y = 0;
         int attaquants = 0;
         int defenseurs = 0;
@@ -73,7 +71,7 @@ public class IA_difficile_le_roi_c_ciao extends IA_difficile {
             if (attaquants < 3 || (d < 1 || g < 1 || b < 1 || h < 1)) {
                 return Integer.MIN_VALUE;
             } else {
-                return attaquants - defenseurs * 2;
+                return 8-defenseurs-(16-attaquants);
             }
         } else { // defenseur
             if (countbd + counthd + d < 2 || countbg + counthg + g < 2 || countbd + countbg + b < 2 || counthd + counthg + h < 2) {
@@ -86,7 +84,7 @@ public class IA_difficile_le_roi_c_ciao extends IA_difficile {
                 }
                 return 20;
             } else {
-                return defenseurs - attaquants - Math.min(Math.min(counthg + countbg, counthd + countbd), Math.min(counthg + counthd, countbg + countbd)); // on retourne le nombre de defenseurs - le nombre d'attaquants - le nombre minimum de pions d'un coté du roi
+                return 16-attaquants-(8-defenseurs); // on retourne le nombre de defenseurs - le nombre d'attaquants - le nombre minimum de pions d'un coté du roi
             }
         }
     }
