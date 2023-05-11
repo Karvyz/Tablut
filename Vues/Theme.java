@@ -24,6 +24,8 @@ public class Theme {
     private Image point_interrogation, err;
     private Image roi, forteresse, konakis, roi_selectionne;
 
+    private Image fleche_bas, fleche_droite, fleche_gauche, fleche_haut;
+
     private Theme() {
         charger();
     }
@@ -71,6 +73,10 @@ public class Theme {
         konakis = Imager.getImageBuffer(theme + "Konakis2.png");
         point_interrogation = Imager.getImageBuffer(theme + "Point-d'interrogation.png");
         err = Imager.getImageBuffer(theme + "err.png");
+        fleche_bas = Imager.getImageBuffer(theme + "fleche_bas.png");
+        fleche_droite = Imager.getImageBuffer(theme + "fleche_droite.png");
+        fleche_gauche = Imager.getImageBuffer(theme + "fleche_gauche.png");
+        fleche_haut = Imager.getImageBuffer(theme + "fleche_haut.png");
     }
 
     public int hauteurPlateau() {
@@ -142,6 +148,15 @@ public class Theme {
     }
 
     public Image pointInterrogation(){return point_interrogation;}
+
+    public Image fleche_bas(){return fleche_bas;}
+
+    public Image fleche_droite(){return fleche_droite;}
+
+    public Image fleche_gauche(){return fleche_gauche;}
+
+    public Image fleche_haut(){return fleche_haut;}
+
 
     public Image err() {
         return err;
