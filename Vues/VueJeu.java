@@ -265,22 +265,18 @@ class VueJeu extends JPanel {
         c.weightx = 1;
         topPanel.add(buttonsPanel, c);
 
-        /*
-        // --
+        // -- Réserve pions mangés
         c.insets = new Insets(8, 0, 0, 0);
-        JPanel textPanel = new JPanel();
-        textPanel.setOpaque(false);
-        texteJeu = new TexteJeu();
-        texteJeu.setFont(new Font("Arial", Font.PLAIN, 18));
-        texteJeu.setForeground(Color.white);
-        textPanel.add(texteJeu);
+        JPanel pionsPanel = new JPanel();
+        pionsPanel.setOpaque(false);
+        texteJeu = new TexteJeu(0, 0);
+        pionsPanel.add(texteJeu);
 
         c.fill = GridBagConstraints.BOTH;
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
         c.gridy = 0;
-        //topPanel.add(textPanel, c);
-        */
+        topPanel.add(pionsPanel, c);
     }
 
     private void addMain(JPanel contenu) {

@@ -17,34 +17,42 @@ public class TexteJeu extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
         nombre1 = new JLabel(String.valueOf(nb1));
-        nombre1.setFont(new Font("Arial", Font.BOLD, 14));
+        nombre1.setFont(new Font("Arial", Font.BOLD, 20));
+        nombre1.setForeground(Color.BLACK);
 
         nombre2 = new JLabel(String.valueOf(nb2));
-        nombre2.setFont(new Font("Arial", Font.BOLD, 14));
+        nombre2.setFont(new Font("Arial", Font.BOLD, 20));
+        nombre2.setForeground(Color.BLACK);
 
         setBorder(new EmptyBorder(7, 25, 7, 25));
         setOpaque(false);
-        setBackground(new Color(0, 0, 0, 0));
+        //setBackground(new Color(0, 0, 0, 0));
+        setBackground(Color.WHITE);
 
         // - Chargements des images
         ImageIcon fois = new ImageIcon(Imager.getScaledImage("fois.png", 25, 30));
         ImageIcon PB = new ImageIcon(Imager.getScaledImage("PB_barre.png", 25, 30));
         ImageIcon PN = new ImageIcon(Imager.getScaledImage("PN_barre.png", 25, 30));
 
+        add(new JLabel(PN));
+        add(Box.createRigidArea(new Dimension(15, 0)));
+        add(new JLabel(fois));
+        add(Box.createRigidArea(new Dimension(15, 0)));
+        add(nombre1);
+
+        add(Box.createRigidArea(new Dimension(20, 0)));
 
         add(new JLabel(PB));
+        add(Box.createRigidArea(new Dimension(15, 0)));
         add(new JLabel(fois));
-        add(new JLabel(String.valueOf(nb1)));
+        add(Box.createRigidArea(new Dimension(15, 0)));
+        add(nombre2);
 
-        add(Box.createRigidArea(new Dimension(10, 0)));
-
-        add(new JLabel(PN));
-        add(new JLabel(fois));
-        add(new JLabel(String.valueOf(nb2)));
     }
 
-    public TexteJeu(String s) {
-        add(new JLabel(s));
+    public void set(int nb1, int nb2) {
+        nombre1.setText(String.valueOf(nb1));
+        nombre2.setText(String.valueOf(nb2));
     }
 
     @Override
