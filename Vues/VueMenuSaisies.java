@@ -273,7 +273,7 @@ public class VueMenuSaisies extends JPanel {
         defaultComboBoxModel1.addElement("IA Difficile");
         typeJ1.setModel(defaultComboBoxModel1);
 
-        Joueur1 = createJoueurPanel("Attaquant", nomJ1, typeJ1);
+        Joueur1 = createJoueurPanel(true, "Attaquant", nomJ1, typeJ1);
 
         add(Joueur1, constraints);
 
@@ -299,7 +299,7 @@ public class VueMenuSaisies extends JPanel {
         defaultComboBoxModel3.setSelectedItem("IA Facile");// Sélectionner "IA Facile" comme valeur par défaut
         typeJ2.setModel(defaultComboBoxModel3);
 
-        Joueur2 = createJoueurPanel("Défenseur", nomJ2, typeJ2);
+        Joueur2 = createJoueurPanel(false, "Défenseur", nomJ2, typeJ2);
 
         add(Joueur2, constraints);
 
@@ -319,9 +319,9 @@ public class VueMenuSaisies extends JPanel {
         // Quitter
         quitter = new CButton("Quitter");
         quitter.addActionListener((e) -> {
-            //controleur.toClose();
+            controleur.toClose();
             // Créer une nouvelle fenêtre pour tester le texte d'un jlabel
-            JFrame frame = new JFrame("JLabel");
+            /*JFrame frame = new JFrame("JLabel");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(300, 300);
             // Ajout d'un jpanel avec deux jlabel
@@ -338,7 +338,7 @@ public class VueMenuSaisies extends JPanel {
             panel.add(label22);
             // Ajout du jpanel à la fenêtre
             frame.getContentPane().add(panel);
-            frame.setVisible(true);
+            frame.setVisible(true);*/
         });
 
         BoutonsQuitter.add(quitter);
@@ -352,7 +352,7 @@ public class VueMenuSaisies extends JPanel {
         add(Box.createVerticalStrut(20)); // Espace vertical
     }
 
-    private JPanel createJoueurPanel(String label, JTextField nomJoueur, JComboBox typeJoueur) {
+    private JPanel createJoueurPanel(boolean reverse, String label, JTextField nomJoueur, JComboBox typeJoueur) {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);
 
@@ -364,9 +364,27 @@ public class VueMenuSaisies extends JPanel {
         panel.add(Box.createRigidArea(new Dimension(30, 0)), constraints);
 
         // Label
+        // Chargement de l'image à partir d'un fichier
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource(reverse ? "/Resources/assets/PN.png" : "/Resources/assets/PB.png"));
+
+        Image image = imageIcon.getImage();
+
+        // Redimensionner l'image en utilisant les dimensions souhaitées
+        Image resizedImage = image.getScaledInstance(50, 60, Image.SCALE_SMOOTH);
+
+        // Créer un nouvel ImageIcon avec l'image redimensionnée
+        ImageIcon resizedImageIcon = new ImageIcon(resizedImage);
+
         constraints.gridx = 1;
-        JLabel labelJoueur = new JLabel(label);
-        labelJoueur.setFont(labelJoueur.getFont().deriveFont(16f));
+        JLabel labelJoueur = new JLabel(resizedImageIcon);
+        //labelJoueur.setOpaque(false);
+        //labelJoueur.setMinimumSize(new Dimension(25, 30));
+        //labelJoueur.setPreferredSize(new Dimension(30, 36));
+        //labelJoueur.setMaximumSize(new Dimension(30, 36));
+        //Font labelFont = new Font("Serif", Font.BOLD, 48);
+        //labelJoueur.setFont(labelFont);
+        //labelJoueur.setPreferredSize(new Dimension(labelJoueur.getPreferredSize().width, labelFont.getSize()));
+        //labelJoueur.setOpaque(true);
         panel.add(labelJoueur, constraints);
 
         // Espacement horizontal
