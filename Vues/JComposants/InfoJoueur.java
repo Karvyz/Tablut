@@ -9,6 +9,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+import static Vues.Imager.getImageIcon;
+
 public class InfoJoueur extends JPanel {
 
     public final JLabel n;
@@ -29,7 +31,7 @@ public class InfoJoueur extends JPanel {
         n.setFont(new Font("Arial", Font.BOLD, 16));
 
         // --
-        System.out.println("InfoJoueur : " + reverse);
+        //System.out.println("InfoJoueur : " + reverse);
         pawn = new ImageIcon(Imager.getScaledImage(reverse ? "PN.png" : "PB.png", 25, 30));
         // --
         p = new CPions(reverse);
@@ -44,6 +46,7 @@ public class InfoJoueur extends JPanel {
     }
 
     public void setPions(int nb1) {
+        setBackgroundJoueur(Color.GRAY);
         // Affichage des pions captures
         ImageIcon fois = new ImageIcon(Imager.getScaledImage("fois.png", 50, 60));
         //System.out.println("setPions : " + nb);

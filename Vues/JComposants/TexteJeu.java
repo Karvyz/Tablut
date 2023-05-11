@@ -5,11 +5,16 @@ import Vues.Imager;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
+
+import static Vues.Imager.getImageIcon;
 
 public class TexteJeu extends JPanel {
 
     JLabel nombre1;
     JLabel nombre2;
+    ImageIcon backgroundimage;
+    private Shape shape;
 
     public TexteJeu(int nb1, int nb2) {
         super();
@@ -27,7 +32,9 @@ public class TexteJeu extends JPanel {
         setBorder(new EmptyBorder(7, 25, 7, 25));
         setOpaque(false);
         //setBackground(new Color(0, 0, 0, 0));
-        setBackground(Color.WHITE);
+        //setBackground(Color.GRAY);
+        //setBackground(new Color(200, 200, 200));
+        backgroundimage = getImageIcon("fond_pierre.png");
 
         // - Chargements des images
         ImageIcon fois = new ImageIcon(Imager.getScaledImage("fois.png", 20, 24));
@@ -59,6 +66,12 @@ public class TexteJeu extends JPanel {
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        if (shape == null || !shape.getBounds().equals(getBounds())) {
+            shape = new RoundRectangle2D.Float(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
+        }
+        g2.setClip(shape);
+
         RenderingHints qualityHints = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         qualityHints.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2.setRenderingHints(qualityHints);
@@ -67,6 +80,9 @@ public class TexteJeu extends JPanel {
         int radius = 35;
         g2.fillRoundRect(0, 0, radius > 0 ? getWidth() - 1 : getWidth(), radius > 0 ? getHeight() - 1 : getHeight(), radius, radius);
 
+        this.backgroundimage.paintIcon(null, g, 0, 0);
+
+        super.paintComponent(g);
     }
 }
 
