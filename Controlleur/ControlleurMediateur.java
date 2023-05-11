@@ -5,6 +5,7 @@ import Modele.*;
 import Vues.*;
 import Vues.CollecteurEvenements;
 
+import java.io.*;
 import java.util.Random;
 
 
@@ -18,7 +19,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
 
     final int lenteurAttente = 50;
     int decompte;
-    //private Pion selectionne;
+
     private boolean pionSelec = false;
 
     public ControlleurMediateur(Jeu j) {
@@ -28,7 +29,8 @@ public class ControlleurMediateur implements CollecteurEvenements {
     public String toString() {
         return "Jeu {" +
                 "niveau: " + jeu.n +
-                "}\njoueur courant = " + jeu.getJoueurCourant() + "\n";
+                "}\njoueur courant = " + jeu.getJoueurCourant() + "\n" +
+                jeu().enCours() +"\n";
     }
 
     public void fixeJeu(Jeu j) {
@@ -85,6 +87,66 @@ public class ControlleurMediateur implements CollecteurEvenements {
         jeu.setEnCours(true);
     }
 
+    public boolean sauvegarderPartie(String fichier) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(fichier);
+            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+            System.out.println("Sauvegarde du jeu dans le fichier: " + fichier);
+            Data_Niveau data_niveau = new Data_Niveau(jeu.config, jeu.n, jeu.coup_annule, jeu.coup_a_refaire, jeu.get_num_JoueurCourant(), jeu.joueurs[0], jeu.joueurs[1], jeu.enCours());
+
+            objectOut.writeObject(data_niveau);
+            objectOut.close();
+            fileOut.close();
+
+            return true;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean chargerPartie(String fichier) {
+        Data_Niveau data_niveau;
+
+        try {
+            FileInputStream fileIn = new FileInputStream(fichier);
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+
+            data_niveau = (Data_Niveau) objectIn.readObject();
+            jeu.n = data_niveau.niveau;
+            jeu.coup_annule = data_niveau.coup_annule;
+            jeu.coup_a_refaire = data_niveau.coup_a_refaire;
+            jeu.set_num_JoueurCourant(data_niveau.get_JC());
+            jeu.joueurs[0] = data_niveau.attaquant;
+            jeu.joueurs[1] = data_niveau.defenseur;
+            jeu.config = data_niveau.config;
+            jeu.setEnCours(data_niveau.enCours);
+            jeu.joueurs[0].fixeJeuJoueur(jeu);
+            jeu.joueurs[1].fixeJeuJoueur(jeu);
+
+
+            objectIn.close();
+            fileIn.close();
+
+            System.out.println("Le jeu a été chargé.");
+
+        } catch (FileNotFoundException e) {
+            System.err.println("Fichier non trouvé : " + fichier);
+            return false;
+        } catch (EOFException | InvalidClassException e) {
+            System.err.println("Erreur lors de la lecture du fichier : " + fichier);
+            return false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } catch (ClassNotFoundException e) {
+            System.err.println("Classe Data_Niveau introuvable");
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Méthode en rapport avec l'interaction HommeMachine
      *
@@ -129,19 +191,21 @@ public class ControlleurMediateur implements CollecteurEvenements {
         }
     }
 
-    /**
-     * Méthode permettant la permutation des joueurs
-     */
-    public void tictac() {
-
+    public void tictac2(){
         if (animDemarrage == null) {
             int lenteurAnimation = Integer.parseInt(Configuration.instance().lirePropriete("LenteurAnimationDemarrage"));
             animDemarrage = new AnimationDemarrage(lenteurAnimation, this);
         }
         if (!animDemarrage.terminee()) {
             animDemarrage.temps();
-            return;
         }
+    }
+    /**
+     * Méthode permettant la permutation des joueurs
+     */
+    public void tictac() {
+
+
 
         if (jeu.enCours()) {
             //System.out.println(jeu);

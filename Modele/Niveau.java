@@ -18,9 +18,6 @@ public class Niveau implements Serializable, Cloneable {
     public Pion[][] plateau = new Pion[taille][taille];
     public Hashtable<String, Integer> data = new Hashtable<>();
 
-    public boolean enCours = true;
-
-
     //On creer le plateau de jeu
     public Niveau(ConfigurationJeu config) {
         this.config = config;
@@ -673,11 +670,6 @@ public class Niveau implements Serializable, Cloneable {
             }
         }
         return false;
-    }
-
-    public boolean estTermine() {
-        // Si le roi est sur une des cases au bord du plateau
-        return !enCours;
     }
 
     @Override

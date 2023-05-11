@@ -5,9 +5,6 @@ import java.io.Serializable;
 import static java.util.Objects.requireNonNull;
 
 public class Joueurs implements Serializable {
-    public int numJ;
-    protected Jeu jeu;
-
     private final String nom;
     private final TypeJoueur type;
     private final TypePion roleJ;
@@ -16,6 +13,8 @@ public class Joueurs implements Serializable {
     private int nombrePionsManges;
     private int nombreVictoires;
     static int HANDICAP_MAX = 3;
+
+    protected Jeu jeu;
 
     public Joueurs(String nom, TypeJoueur type, TypePion roleJ, Jeu j) {
         requireNonNull(nom, "Le nom du joueur ne doit pas être null");
@@ -47,6 +46,18 @@ public class Joueurs implements Serializable {
         return type;
     }
 
+    public void fixeJeuJoueur(Jeu j){
+        this.jeu = j;
+    }
+
+    public boolean aPionsBlancs() {
+        return pions == TypePion.DEFENSEUR;
+    }
+
+    public boolean aPionsNoirs() {
+        return pions == TypePion.ATTAQUANT;
+    }
+
     public boolean estIaFacile() {
         return type == TypeJoueur.IA_FACILE;
     }
@@ -61,14 +72,6 @@ public class Joueurs implements Serializable {
 
     public TypePion typePions() {
         return pions;
-    }
-
-    public boolean aPionsBlancs() {
-        return pions == TypePion.DEFENSEUR;
-    }
-
-    public boolean aPionsNoirs() {
-        return pions == TypePion.ATTAQUANT;
     }
 
     public int nombrePionsManges() {
@@ -86,6 +89,7 @@ public class Joueurs implements Serializable {
     void ajouterVictoire() {
         nombreVictoires++;
     }
+
 
     void enleverVictoire() {
         if (nombreVictoires == 0) {

@@ -202,6 +202,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
         // Obtenez les informations de la case survolée
         Pion caseSurvole = controleur.jeu().n.getPion(l, c);
+        pane.setSurvole(caseSurvole);
 
         if (pane.getPionSelec() == null) {
             //Permet d'afficher lorsqu'on survole

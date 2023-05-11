@@ -5,6 +5,8 @@ import Modele.*;
 public interface CollecteurEvenements {
 
     void tictac();
+
+    void tictac2();
     // void changeTaille(int t);
 
     boolean clicSouris(Pion selec, int l, int c);
@@ -42,5 +44,9 @@ public interface CollecteurEvenements {
     void afficherQuickPartie();
 
     void nouvelleQuickPartie();
+
+    boolean chargerPartie(String s);
+
+    boolean sauvegarderPartie(String fileName);
 }
 

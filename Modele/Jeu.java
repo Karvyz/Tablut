@@ -25,9 +25,8 @@ public class Jeu extends Observable implements Serializable {
     private Coordonne DepartIA;
     private Coordonne ArriveIA;
 
-
     public Jeu() {
-        enCours = false;
+        setEnCours(false);
         joueurs[0] = null; //Pour être sure, peut être inutile
         joueurs[1] = null;
     }
@@ -75,9 +74,7 @@ public class Jeu extends Observable implements Serializable {
     }
 
     public boolean partieTerminee() {
-        if (n == null)
-            return false;
-        return n.estTermine();
+        return !enCours();
     }
 
 
@@ -104,7 +101,6 @@ public class Jeu extends Observable implements Serializable {
                 System.out.println("EGALITE");
             //System.out.println(n); //Affichez le jeu en fin de partie
             setEnCours(false);
-            n.enCours = false;
         }
 
         //Si l'IA joue, on ne dépile pas a refaire
@@ -192,63 +188,7 @@ public class Jeu extends Observable implements Serializable {
         System.out.println("Coup refait");
     }
 
-    public boolean sauvegarderPartie(String fichier) {
-        try {
-            FileOutputStream fileOut = new FileOutputStream(fichier);
-            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-            System.out.println("Sauvegarde du jeu dans le fichier: " + fichier);
-            Data_Niveau data_niveau = new Data_Niveau(this.config, this.n, this.coup_annule, this.coup_a_refaire, joueurCourant, joueurs[0], joueurs[1]);
 
-            objectOut.writeObject(data_niveau);
-            objectOut.close();
-            fileOut.close();
-            setEnCours(false);
-            //this.fermerInterfaceGraphique();
-            return true;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean chargerPartie(String fichier) {
-        Data_Niveau data_niveau;
-
-        try {
-            FileInputStream fileIn = new FileInputStream(fichier);
-            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-
-            data_niveau = (Data_Niveau) objectIn.readObject();
-            this.n = data_niveau.niveau;
-            this.coup_annule = data_niveau.coup_annule;
-            this.coup_a_refaire = data_niveau.coup_a_refaire;
-            this.joueurCourant = data_niveau.joueurCourant;
-            this.joueurs[0] = data_niveau.attaquant;
-            this.joueurs[1] = data_niveau.defenseur;
-            this.config = data_niveau.config;
-
-
-            objectIn.close();
-            fileIn.close();
-
-            System.out.println("Le jeu a été chargé.");
-
-        } catch (FileNotFoundException e) {
-            System.err.println("Fichier non trouvé : " + fichier);
-            return false;
-        } catch (EOFException | InvalidClassException e) {
-            System.err.println("Erreur lors de la lecture du fichier : " + fichier);
-            return false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        } catch (ClassNotFoundException e) {
-            System.err.println("Classe Data_Niveau introuvable");
-            return false;
-        }
-        return true;
-    }
 
     public void joueurSuivant() {
         //System.out.println("Avant" +joueurCourant);
@@ -308,7 +248,7 @@ public class Jeu extends Observable implements Serializable {
             case 0:
                 return joueurs[1];
             case 1:
-                return joueurs[2];
+                return joueurs[0];
             default:
                 return null;
         }
@@ -345,16 +285,12 @@ public class Jeu extends Observable implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Jeu \n{");
+        sb.append(", enCours: ").append(enCours);
         sb.append("niveau: ").append(n);
         sb.append(", joueurs: [");
         sb.append(joueurs[0]).append(", ");
         sb.append(joueurs[1]);
-        sb.append("], vainqueur: ").append(vainqueur);
         sb.append(", joueurCourant: ").append(joueurCourant);
-        sb.append(", enCours: ").append(enCours);
-        sb.append(", coup_annule: ").append(coup_annule);
-        sb.append(", coup_a_refaire: ").append(coup_a_refaire);
-        sb.append(", config: ").append(config);
         sb.append("}");
         return sb.toString();
     }
