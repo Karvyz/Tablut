@@ -308,7 +308,7 @@ public class Jeu extends Observable implements Serializable {
             case 0:
                 return joueurs[1];
             case 1:
-                return joueurs[2];
+                return joueurs[0];
             default:
                 return null;
         }
