@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class InfoJoueur extends JPanel {
 
-    private final JLabel n;
+    public final JLabel n;
     public final JPanel p;
     private ImageIcon pawn;
     private final int hgap = 5;

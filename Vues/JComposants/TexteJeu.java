@@ -1,38 +1,50 @@
 package Vues.JComposants;
 
+import Vues.Imager;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class TexteJeu extends JPanel {
 
-    private JLabel text;
+    JLabel nombre1;
+    JLabel nombre2;
 
-    public TexteJeu(String texte) {
+    public TexteJeu(int nb1, int nb2) {
         super();
 
-        text = new JLabel(texte);
-        text.setFont(new Font("Arial", Font.BOLD, 14));
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+
+        nombre1 = new JLabel(String.valueOf(nb1));
+        nombre1.setFont(new Font("Arial", Font.BOLD, 14));
+
+        nombre2 = new JLabel(String.valueOf(nb2));
+        nombre2.setFont(new Font("Arial", Font.BOLD, 14));
 
         setBorder(new EmptyBorder(7, 25, 7, 25));
         setOpaque(false);
         setBackground(new Color(0, 0, 0, 0));
 
-        add(text);
+        // - Chargements des images
+        ImageIcon fois = new ImageIcon(Imager.getScaledImage("fois.png", 25, 30));
+        ImageIcon PB = new ImageIcon(Imager.getScaledImage("PB_barre.png", 25, 30));
+        ImageIcon PN = new ImageIcon(Imager.getScaledImage("PN_barre.png", 25, 30));
+
+
+        add(new JLabel(PB));
+        add(new JLabel(fois));
+        add(new JLabel(String.valueOf(nb1)));
+
+        add(Box.createRigidArea(new Dimension(10, 0)));
+
+        add(new JLabel(PN));
+        add(new JLabel(fois));
+        add(new JLabel(String.valueOf(nb2)));
     }
 
-    public TexteJeu() {
-        this("");
-    }
-
-    @Override
-    public void setForeground(Color fg) {
-//        super.setForeground(fg);
-        if (text != null) text.setForeground(fg);
-    }
-
-    public void setText(String texte) {
-        text.setText(texte);
+    public TexteJeu(String s) {
+        add(new JLabel(s));
     }
 
     @Override
