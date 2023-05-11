@@ -30,7 +30,7 @@ public class TexteJeu extends JPanel {
         setBackground(Color.WHITE);
 
         // - Chargements des images
-        ImageIcon fois = new ImageIcon(Imager.getScaledImage("fois.png", 25, 30));
+        ImageIcon fois = new ImageIcon(Imager.getScaledImage("fois.png", 20, 24));
         ImageIcon PB = new ImageIcon(Imager.getScaledImage("PB_barre.png", 25, 30));
         ImageIcon PN = new ImageIcon(Imager.getScaledImage("PN_barre.png", 25, 30));
 
