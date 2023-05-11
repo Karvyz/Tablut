@@ -5,7 +5,7 @@ import Modele.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public abstract class IA_difficile extends IA{
+public abstract class IA_difficile extends IA {
 
     int nevaluation = 0;
     static int MAX_DEPTH = 4;
@@ -19,7 +19,7 @@ public abstract class IA_difficile extends IA{
         nevaluation = 0;
         long l = System.currentTimeMillis();
         //Code de l'IA renvoyer vrai une fois que le coup est joué
-        TypePion current_type = ((jeu.get_num_JoueurCourant()) % 2 ) == 0 ? TypePion.ATTAQUANT : TypePion.DEFENSEUR;
+        TypePion current_type = ((jeu.get_num_JoueurCourant()) % 2) == 0 ? TypePion.ATTAQUANT : TypePion.DEFENSEUR;
         ArrayList<Pion> pions = jeu.n.getPions(current_type);
         int valeur_retour = Integer.MIN_VALUE;
         ArrayList<Coordonne> departs = new ArrayList<>();
@@ -35,7 +35,7 @@ public abstract class IA_difficile extends IA{
                 int tmp = analyse_recursive(clone, 1);
                 if (retour != 0)
                     tmp = Integer.MAX_VALUE;
-                if (tmp >= valeur_retour){
+                if (tmp >= valeur_retour) {
                     if (tmp > valeur_retour) {
                         departs.clear();
                         arrivees.clear();
@@ -53,19 +53,19 @@ public abstract class IA_difficile extends IA{
         Coordonne pion_arrivee = arrivees.get(index);
         jeu.jouer(pion_depart, pion_arrivee);
         System.out.println(nb_branches + " branches");
-        System.out.println(nevaluation + " evalutations en " + (System.currentTimeMillis() -l ) + "ms");
+        System.out.println(nevaluation + " evalutations en " + (System.currentTimeMillis() - l) + "ms");
         return true;
     }
 
     private int analyse_recursive(Niveau n, int depth) {
-        TypePion current_type = ((jeu.get_num_JoueurCourant() + depth) % 2 ) == 0 ? TypePion.ATTAQUANT : TypePion.DEFENSEUR;
+        TypePion current_type = ((jeu.get_num_JoueurCourant() + depth) % 2) == 0 ? TypePion.ATTAQUANT : TypePion.DEFENSEUR;
         ArrayList<Pion> pions = n.getPions(current_type);
 
         int valeur_retour = Integer.MAX_VALUE;
         if (depth % 2 == 0)
             valeur_retour = Integer.MIN_VALUE;
         for (Pion pion : pions) {
-            ArrayList<Coordonne> deplacements= pion.getDeplacement(n.plateau);
+            ArrayList<Coordonne> deplacements = pion.getDeplacement(n.plateau);
             for (Coordonne deplacement : deplacements) {
                 Niveau clone = n.clone();
                 int valeur_deplacement = clone.deplace_pion(pion.getCoordonne(), deplacement);
@@ -76,23 +76,21 @@ public abstract class IA_difficile extends IA{
                 }
                 if (depth == MAX_DEPTH - 1) {
                     return evaluation(clone);
-                }
-                else {
+                } else {
                     int tmp = analyse_recursive(clone, depth + 1);
                     if (depth % 2 == 0) {
-                        if (tmp > valeur_retour){
+                        if (tmp > valeur_retour) {
                             valeur_retour = tmp;
                         }
-                    }
-                    else {
-                        if (tmp < valeur_retour){
+                    } else {
+                        if (tmp < valeur_retour) {
                             valeur_retour = tmp;
                         }
                     }
                 }
             }
         }
-        return  valeur_retour;
+        return valeur_retour;
     }
 
     public abstract int evaluation(Niveau n);

@@ -31,6 +31,7 @@ public class CButton extends JButton {
         setBorder(new EmptyBorder(10, 25, 10, 25));
         setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
+
     public CButton() {
         this("");
     }
@@ -53,10 +54,11 @@ public class CButton extends JButton {
             g2.setColor(pressedBackgroundColor);
             setForeground(pressedTextColor);
         } else {
-            if (getModel().isRollover()) g2.setColor(highlightBackgroundColor); else g2.setColor(normalBackgroundColor);
+            if (getModel().isRollover()) g2.setColor(highlightBackgroundColor);
+            else g2.setColor(normalBackgroundColor);
             setForeground(textColor);
         }
-        g2.fillRoundRect(0, 0, radius > 0 ? getSize().width-1 : getSize().width, radius > 0 ? getSize().height-1 : getSize().height, radius, radius);
+        g2.fillRoundRect(0, 0, radius > 0 ? getSize().width - 1 : getSize().width, radius > 0 ? getSize().height - 1 : getSize().height, radius, radius);
 
         super.paintComponent(g);
     }

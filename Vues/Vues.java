@@ -32,7 +32,8 @@ public class Vues {
         }
         vueJeu.nouvellePartie();
     }
-    public void restaurePartie(){
+
+    public void restaurePartie() {
         vueJeu.restaurePartie();
     }
 
@@ -57,7 +58,9 @@ public class Vues {
         afficher(JEU);
     }
 
-    public void afficherMenuChargerPartie(){afficher(MENU_PARTIES);}
+    public void afficherMenuChargerPartie() {
+        afficher(MENU_PARTIES);
+    }
 
     public void close() {
         frame.setVisible(true);

@@ -65,7 +65,7 @@ public class TexteJeu extends JPanel {
 
         g2.setColor(getBackground());
         int radius = 35;
-        g2.fillRoundRect(0, 0, radius > 0 ? getWidth()-1 : getWidth(), radius > 0 ? getHeight()-1 : getHeight(), radius, radius);
+        g2.fillRoundRect(0, 0, radius > 0 ? getWidth() - 1 : getWidth(), radius > 0 ? getHeight() - 1 : getHeight(), radius, radius);
 
     }
 }

@@ -9,6 +9,7 @@ public class IA_difficile_AttaqueRoi extends IA_difficile {
     public IA_difficile_AttaqueRoi(String nom, TypePion roleJ, Jeu j) {
         super(nom, roleJ, j);
     }
+
     @Override
     public int evaluation(Niveau n) {
         nevaluation++;
@@ -57,7 +58,7 @@ public class IA_difficile_AttaqueRoi extends IA_difficile {
             }
         }
         if (jeu.get_num_JoueurCourant() == 0) { // attaquant
-            if (countbd < 2 && counthd < 2 || countbg < 2 && counthg < 2 || countbd < 2 && countbg < 2 || counthd < 2 && counthg < 2 || attaquants<3) {
+            if (countbd < 2 && counthd < 2 || countbg < 2 && counthg < 2 || countbd < 2 && countbg < 2 || counthd < 2 && counthg < 2 || attaquants < 3) {
                 return Integer.MIN_VALUE;
             } else {
                 return attaquants - defenseurs * 2;
@@ -66,7 +67,7 @@ public class IA_difficile_AttaqueRoi extends IA_difficile {
             if (countbd < 2 && counthd < 2 || countbg < 2 && counthg < 2 || countbd < 2 && countbg < 2 || counthd < 2 && counthg < 2) {
                 return Integer.MAX_VALUE;
             } else {
-                return defenseurs - attaquants - Math.min(Math.min(counthg+countbg, counthd+countbd),Math.min(counthg+counthd, countbg+countbd)); // on retourne le nombre de defenseurs - le nombre d'attaquants - le nombre minimum de pions d'un coté du roi
+                return defenseurs - attaquants - Math.min(Math.min(counthg + countbg, counthd + countbd), Math.min(counthg + counthd, countbg + countbd)); // on retourne le nombre de defenseurs - le nombre d'attaquants - le nombre minimum de pions d'un coté du roi
             }
         }
     }

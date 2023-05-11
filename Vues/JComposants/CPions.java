@@ -6,6 +6,7 @@ import java.awt.*;
 public class CPions extends JPanel {
     private final int hgap = 5;
     private boolean reverse = false;
+
     public CPions(boolean reverse) {
         this.reverse = reverse;
         setOpaque(true);
@@ -23,7 +24,7 @@ public class CPions extends JPanel {
         g2.setRenderingHints(qualityHints);
 
         g2.setColor(Color.white);
-        g2.fillRoundRect(0, 0, getSize().width-1, getSize().height-1, 45, 45);
+        g2.fillRoundRect(0, 0, getSize().width - 1, getSize().height - 1, 45, 45);
 
         super.paintComponent(g);
     }

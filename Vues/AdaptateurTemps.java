@@ -30,14 +30,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AdaptateurTemps implements ActionListener {
-	CollecteurEvenements control;
+    CollecteurEvenements control;
 
-	AdaptateurTemps(CollecteurEvenements c) {
-		control = c;
-	}
+    AdaptateurTemps(CollecteurEvenements c) {
+        control = c;
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		control.tictac();
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        control.tictac();
+    }
 }

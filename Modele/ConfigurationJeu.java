@@ -11,7 +11,6 @@ public class ConfigurationJeu implements Serializable {
     private boolean PionForteresse;
 
 
-
     public ConfigurationJeu() {
         RegicideTrone = true; //A true on peut capturer le roi avec le trone
         RegicideForteresse = true; //A true on peut capturer le roi avec une forteresse
@@ -21,19 +20,19 @@ public class ConfigurationJeu implements Serializable {
         PionForteresse = true; //A true, on peut tuer un pion entre un pion adverse et une forteresse
     }
 
-    public boolean isPF(){
+    public boolean isPF() {
         return PionForteresse;
     }
 
-    public void setPF(boolean PionForteresse){
+    public void setPF(boolean PionForteresse) {
         this.PionForteresse = PionForteresse;
     }
 
-    public boolean isSA(){
+    public boolean isSA() {
         return SuicideAutorise;
     }
 
-    public void setSA(boolean SuicideAutorise){
+    public void setSA(boolean SuicideAutorise) {
         this.SuicideAutorise = SuicideAutorise;
     }
 

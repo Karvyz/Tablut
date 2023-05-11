@@ -128,7 +128,9 @@ class VueJeu extends JPanel {
     void showEnd() {
         // TODO : Ajout du point du vainqueur
         Joueurs vainqueur = controleur.jeu().vainqueur();
-        if (vainqueur == null){return;}
+        if (vainqueur == null) {
+            return;
+        }
         Joueurs perdant;
         if (vainqueur == controleur.jeu().getJoueur1()) {
             perdant = controleur.jeu().getJoueur2();
@@ -163,7 +165,7 @@ class VueJeu extends JPanel {
                 endGameText.setText("Dommage! Tu as perdu contre l'IA.. une prochaine fois!");
             } else {
                 endGamePanel.getComponent(0).setBackground(new Color(120, 70, 50));
-                if(vainqueur.aPionsBlancs())
+                if (vainqueur.aPionsBlancs())
                     endGameText.setText("Le défenseur, IA " + vainqueur.nom() + " a gagné !");
                 else
                     endGameText.setText("L'attaquant, IA " + vainqueur.nom() + " a gagné !");
@@ -233,7 +235,7 @@ class VueJeu extends JPanel {
         checkBoxMenuItemMusic.setSelected(false);
         checkBoxMenuItemMusic.addActionListener(new Music());
 
-        for (JMenuItem menu_item: menu_items) {
+        for (JMenuItem menu_item : menu_items) {
             menu_item.setFont(new Font("Arial", Font.PLAIN, 14));
             menu_item.setBorderPainted(false);
             menu_item.setUI(new CMenuItemUI(true));
@@ -350,7 +352,7 @@ class VueJeu extends JPanel {
         //controls[1].addActionListener(e -> controleur.jeu().solution());
         controls[2].addActionListener(e -> controleur.jeu().refaire());
 
-        for (JButton button: controls) {
+        for (JButton button : controls) {
             button.setFocusable(false);
             controlsPanel.add(button);
         }
@@ -360,7 +362,7 @@ class VueJeu extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 1;
-        c.insets = new Insets(10,10,10,10);
+        c.insets = new Insets(10, 10, 10, 10);
         bottomPanel.add(controlsPanel, c);
     }
 
@@ -389,7 +391,7 @@ class VueJeu extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         // MARK: ESPACEMENT PLATEAU GAUCHE ET DROITE
-        c.insets = new Insets(5,28,5,28);
+        c.insets = new Insets(5, 28, 5, 28);
         c.gridx = 0;
         c.gridy = 1;
         c.weightx = 1;
@@ -412,7 +414,7 @@ class VueJeu extends JPanel {
         vueNiveau.miseAJour();
     }
 
-    void restaurePartie(){
+    void restaurePartie() {
         endGamePanel.setVisible(false);
         //System.out.println(controleur);
         vueNiveau = new VueNiveau(controleur, this, j1, j2, texteJeu);
@@ -421,7 +423,7 @@ class VueJeu extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         // MARK: ESPACEMENT PLATEAU GAUCHE ET DROITE
-        c.insets = new Insets(5,28,5,28);
+        c.insets = new Insets(5, 28, 5, 28);
         c.gridx = 0;
         c.gridy = 1;
         c.weightx = 1;
@@ -506,6 +508,7 @@ class VueJeu extends JPanel {
             saveGame();
         }
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -516,7 +519,6 @@ class VueJeu extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
     }
-
 
 
 }

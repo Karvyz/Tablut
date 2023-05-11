@@ -46,7 +46,7 @@ class VueNiveau extends JPanel implements Observateur {
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                int size =  Math.min(plateauPanel.getWidth(), plateauPanel.getHeight());
+                int size = Math.min(plateauPanel.getWidth(), plateauPanel.getHeight());
                 plateau.setPreferredSize(new Dimension(size, size));
                 plateauPanel.revalidate();
             }
@@ -76,7 +76,7 @@ class VueNiveau extends JPanel implements Observateur {
 
         Border border2 = BorderFactory.createLineBorder(Color.WHITE, 8);
         // Modif couleur arrière plan du joueur courant
-        if(controleur.jeu().getJoueurCourant() == controleur.jeu().getJoueur1()) {
+        if (controleur.jeu().getJoueurCourant() == controleur.jeu().getJoueur1()) {
             // Créez une instance de bordure avec un style spécifique
             j2.p.setBorder(null);
             j2.p.setBorder(border2);

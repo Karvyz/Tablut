@@ -5,7 +5,7 @@ import Modele.Niveau;
 import Modele.TypeJoueur;
 import Modele.TypePion;
 
-public class IA_difficile_le_roi_c_ciao extends IA_difficile{
+public class IA_difficile_le_roi_c_ciao extends IA_difficile {
     public IA_difficile_le_roi_c_ciao(String nom, TypePion roleJ, Jeu j) {
         super(nom, roleJ, j);
     }
@@ -56,7 +56,7 @@ public class IA_difficile_le_roi_c_ciao extends IA_difficile{
                             else { // si la case est sur la meme ligne que le roi
                                 b++;
                             }
-                        }else{ // si la case est sur la meme ligne que le roi
+                        } else { // si la case est sur la meme ligne que le roi
                             if (j < y) // si la case est a gauche du roi
                                 g++;
                             else if (j > y) // si la case est a droite du roi
@@ -67,31 +67,31 @@ public class IA_difficile_le_roi_c_ciao extends IA_difficile{
             }
         }
         if (jeu.get_num_JoueurCourant() == 0) { // attaquant
-            if (peut_tuer_roi(x,y,n)) {
+            if (peut_tuer_roi(x, y, n)) {
                 return Integer.MAX_VALUE;
             }
-            if (attaquants<3 || (d < 1 || g < 1 || b < 1 || h < 1)) {
+            if (attaquants < 3 || (d < 1 || g < 1 || b < 1 || h < 1)) {
                 return Integer.MIN_VALUE;
             } else {
                 return attaquants - defenseurs * 2;
             }
         } else { // defenseur
             if (countbd + counthd + d < 2 || countbg + counthg + g < 2 || countbd + countbg + b < 2 || counthd + counthg + h < 2) {
-                if (x == 0 || y == 0 || x == 8 || y == 8){
+                if (x == 0 || y == 0 || x == 8 || y == 8) {
                     if (x == 0 && y == 0 || x == 0 && y == 8 || x == 8 && y == 0 || x == 8 && y == 8) {
                         return 100;
-                    }else {
+                    } else {
                         return 30;
                     }
                 }
                 return 20;
             } else {
-                return defenseurs - attaquants - Math.min(Math.min(counthg+countbg, counthd+countbd),Math.min(counthg+counthd, countbg+countbd)); // on retourne le nombre de defenseurs - le nombre d'attaquants - le nombre minimum de pions d'un coté du roi
+                return defenseurs - attaquants - Math.min(Math.min(counthg + countbg, counthd + countbd), Math.min(counthg + counthd, countbg + countbd)); // on retourne le nombre de defenseurs - le nombre d'attaquants - le nombre minimum de pions d'un coté du roi
             }
         }
     }
 
-    public boolean peut_tuer_roi(int x, int y, Niveau n){
+    public boolean peut_tuer_roi(int x, int y, Niveau n) {
         return ((x == 8 || n.estAttaquant(x + 1, y) || n.estForteresse(x + 1, y) || n.estKonakis(x + 1, y))
                 && (x == 0 || n.estAttaquant(x - 1, y) || n.estForteresse(x - 1, y) || n.estKonakis(x - 1, y))
                 && (y == 8 || n.estAttaquant(x, y + 1) || n.estForteresse(x, y + 1) || n.estKonakis(x, y + 1))

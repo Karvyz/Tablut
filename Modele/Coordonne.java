@@ -2,25 +2,25 @@ package Modele;
 
 import java.io.Serializable;
 
-public class Coordonne implements Cloneable, Serializable{
+public class Coordonne implements Cloneable, Serializable {
     int x;
     int y;
 
-    public Coordonne(int x, int y){
+    public Coordonne(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public Coordonne(Coordonne coordonne){
+    public Coordonne(Coordonne coordonne) {
         this.x = coordonne.x;
         this.y = coordonne.y;
     }
 
-    public int getX(){
+    public int getX() {
         return this.x;
     }
 
-    public int getY(){
+    public int getY() {
         return this.y;
     }
 
@@ -28,12 +28,12 @@ public class Coordonne implements Cloneable, Serializable{
     public boolean equals(Object obj) {
         if (obj == null) return false;
         if (!(obj instanceof Coordonne)) return false;
-        
+
         Coordonne other = (Coordonne) obj;
         return this.x == other.x && this.y == other.y;
     }
 
-    public String toString(){
+    public String toString() {
         return "(" + this.x + ", " + this.y + ")";
     }
 
@@ -45,5 +45,5 @@ public class Coordonne implements Cloneable, Serializable{
             throw new AssertionError(); // Ne devrait pas arriver car on implémente Cloneable
         }
     }
-    
+
 }

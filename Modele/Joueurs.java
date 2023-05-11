@@ -106,14 +106,14 @@ public class Joueurs implements Serializable {
     }
 
     // Méthode appelée pour tous les joueurs lors d'un clic sur le plateau
-	// Si un joueur n'est pas concerné, il lui suffit de l'ignorer
+    // Si un joueur n'est pas concerné, il lui suffit de l'ignorer
     public boolean jeu(Coordonne i, Coordonne j) {
-		return false;
-	}
+        return false;
+    }
 
     // Méthode appelée pour tous les joueurs une fois le temps écoulé
-	// Si un joueur n'est pas concerné, il lui suffit de l'ignorer
+    // Si un joueur n'est pas concerné, il lui suffit de l'ignorer
     public boolean tempsEcoule() {
-		return false;
-	}
+        return false;
+    }
 }

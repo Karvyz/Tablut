@@ -21,7 +21,7 @@ public class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListen
 
     private boolean draw_destination = false;
 
-    int bordureGauche, bordureHaut, bordureDroite, bordureBas, hauteurCase, largeurCase ;
+    int bordureGauche, bordureHaut, bordureDroite, bordureBas, hauteurCase, largeurCase;
 
 
     public AdaptateurSouris2(CollecteurEvenements c, CPlateau pane) {
@@ -49,24 +49,22 @@ public class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListen
         int c = x * 9 / largeur;
 
 
-
         Pion caseSelec = controleur.jeu().n.getPion(l, c);
         /*if (caseSelec != null && !caseSelec.equals(pane.getPionSelec())){
             Deux_cliques = false;
         }*/
 
         if (!Deux_cliques)
-            pane.updateBrillanceSelection(l,c);
+            pane.updateBrillanceSelection(l, c);
 
         if (!controleur.jeu().n.check_clic_selection_pion(caseSelec, controleur.jeu().get_num_JoueurCourant())) {
             pane.setPionEnDeplacement(null);
             pane.setPionSelec(null);
             Deux_cliques = false;
-            pane.updateBrillanceSelection(-1,-1); //TODO A discuter savoir si on met en surbrillance le clic sur un mauvais pion
-        }
-        else {
+            pane.updateBrillanceSelection(-1, -1); //TODO A discuter savoir si on met en surbrillance le clic sur un mauvais pion
+        } else {
             //pane.setPionSelec(new Point(l, c )); //on donne colonne puis lignes ici
-            pane.setPionEnDeplacement(new Point(l , c ));//Initialise point de départ du moov
+            pane.setPionEnDeplacement(new Point(l, c));//Initialise point de départ du moov
             Deux_cliques = true;
         }
 
@@ -158,7 +156,7 @@ public class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListen
         // Obtenez les informations de la case survolée (par exemple, le type de pion)
         Pion caseSelec = controleur.jeu().n.getPion(l, c);
 
-        if (caseSelec != null && controleur.jeu().n.check_clic_selection_pion(caseSelec, controleur.jeu().get_num_JoueurCourant())){
+        if (caseSelec != null && controleur.jeu().n.check_clic_selection_pion(caseSelec, controleur.jeu().get_num_JoueurCourant())) {
             Color bleuTresClair = new Color(180, 220, 255);
             UIManager.put("ToolTip.background", bleuTresClair);
             UIManager.put("ToolTip.foreground", Color.BLACK);
@@ -166,14 +164,12 @@ public class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListen
             pane.setToolTipText(null);
             affiche_feedbak(caseSelec);
 
-        }
-        else if(caseSelec != null && !controleur.jeu().n.check_clic_selection_pion(caseSelec, controleur.jeu().get_num_JoueurCourant())){
+        } else if (caseSelec != null && !controleur.jeu().n.check_clic_selection_pion(caseSelec, controleur.jeu().get_num_JoueurCourant())) {
             UIManager.put("ToolTip.background", Color.RED);
             UIManager.put("ToolTip.foreground", Color.WHITE);
             pane.setToolTipText("Ce pion ne vous appartient pas ");
             pane.setDestinationsPossibles(null);
-        }
-        else {
+        } else {
             pane.setDestinationsPossibles(null);
             pane.setToolTipText(null);
         }
@@ -182,12 +178,12 @@ public class AdaptateurSouris2 extends MouseAdapter implements MouseMotionListen
 
     private void affiche_feedbak(Pion caseSelec) {
         ArrayList<Coordonne> liste = caseSelec.getDeplacement(controleur.jeu().n.plateau);
-        if (liste.isEmpty()){
+        if (liste.isEmpty()) {
             UIManager.put("ToolTip.background", Color.RED);
             UIManager.put("ToolTip.foreground", Color.WHITE);
             pane.setToolTipText("Aucun déplacement possible ");
             pane.setDestinationsPossibles(null);
-        }else{
+        } else {
             pane.setDestinationsPossibles(liste);
         }
     }

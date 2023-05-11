@@ -147,15 +147,25 @@ public class Theme {
         return konakis;
     }
 
-    public Image pointInterrogation(){return point_interrogation;}
+    public Image pointInterrogation() {
+        return point_interrogation;
+    }
 
-    public Image fleche_bas(){return fleche_bas;}
+    public Image fleche_bas() {
+        return fleche_bas;
+    }
 
-    public Image fleche_droite(){return fleche_droite;}
+    public Image fleche_droite() {
+        return fleche_droite;
+    }
 
-    public Image fleche_gauche(){return fleche_gauche;}
+    public Image fleche_gauche() {
+        return fleche_gauche;
+    }
 
-    public Image fleche_haut(){return fleche_haut;}
+    public Image fleche_haut() {
+        return fleche_haut;
+    }
 
 
     public Image err() {
