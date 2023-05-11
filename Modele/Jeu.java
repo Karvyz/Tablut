@@ -308,9 +308,9 @@ public class Jeu extends Observable implements Serializable {
         switch (joueurCourant) {
             case 0:
                 return joueurs[1];
-            case 1 :
+            case 1:
                 return joueurs[0];
-            default :
+            default:
                 return null;
         }
     }
