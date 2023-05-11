@@ -41,7 +41,7 @@ public class CTextField extends JTextField {
         g2.setRenderingHints(qualityHints);
 
         g2.setColor(getBackground());
-        g2.fillRoundRect(0, 0, getSize().width-1, getSize().height-1, radius, radius);
+        g2.fillRoundRect(0, 0, getSize().width - 1, getSize().height - 1, radius, radius);
 
         this.backgroundimage.paintIcon(null, g, 0, 0);
 

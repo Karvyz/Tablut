@@ -1,38 +1,58 @@
 package Vues.JComposants;
 
+import Vues.Imager;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class TexteJeu extends JPanel {
 
-    private JLabel text;
+    JLabel nombre1;
+    JLabel nombre2;
 
-    public TexteJeu(String texte) {
+    public TexteJeu(int nb1, int nb2) {
         super();
 
-        text = new JLabel(texte);
-        text.setFont(new Font("Arial", Font.BOLD, 14));
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+
+        nombre1 = new JLabel(String.valueOf(nb1));
+        nombre1.setFont(new Font("Arial", Font.BOLD, 20));
+        nombre1.setForeground(Color.BLACK);
+
+        nombre2 = new JLabel(String.valueOf(nb2));
+        nombre2.setFont(new Font("Arial", Font.BOLD, 20));
+        nombre2.setForeground(Color.BLACK);
 
         setBorder(new EmptyBorder(7, 25, 7, 25));
         setOpaque(false);
-        setBackground(new Color(0, 0, 0, 0));
+        //setBackground(new Color(0, 0, 0, 0));
+        setBackground(Color.WHITE);
 
-        add(text);
+        // - Chargements des images
+        ImageIcon fois = new ImageIcon(Imager.getScaledImage("fois.png", 20, 24));
+        ImageIcon PB = new ImageIcon(Imager.getScaledImage("PB_barre.png", 25, 30));
+        ImageIcon PN = new ImageIcon(Imager.getScaledImage("PN_barre.png", 25, 30));
+
+        add(new JLabel(PN));
+        add(Box.createRigidArea(new Dimension(15, 0)));
+        add(new JLabel(fois));
+        add(Box.createRigidArea(new Dimension(15, 0)));
+        add(nombre1);
+
+        add(Box.createRigidArea(new Dimension(20, 0)));
+
+        add(new JLabel(PB));
+        add(Box.createRigidArea(new Dimension(15, 0)));
+        add(new JLabel(fois));
+        add(Box.createRigidArea(new Dimension(15, 0)));
+        add(nombre2);
+
     }
 
-    public TexteJeu() {
-        this("");
-    }
-
-    @Override
-    public void setForeground(Color fg) {
-//        super.setForeground(fg);
-        if (text != null) text.setForeground(fg);
-    }
-
-    public void setText(String texte) {
-        text.setText(texte);
+    public void set(int nb1, int nb2) {
+        nombre1.setText(String.valueOf(nb1));
+        nombre2.setText(String.valueOf(nb2));
     }
 
     @Override
@@ -45,7 +65,7 @@ public class TexteJeu extends JPanel {
 
         g2.setColor(getBackground());
         int radius = 35;
-        g2.fillRoundRect(0, 0, radius > 0 ? getWidth()-1 : getWidth(), radius > 0 ? getHeight()-1 : getHeight(), radius, radius);
+        g2.fillRoundRect(0, 0, radius > 0 ? getWidth() - 1 : getWidth(), radius > 0 ? getHeight() - 1 : getHeight(), radius, radius);
 
     }
 }

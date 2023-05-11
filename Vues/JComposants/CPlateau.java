@@ -9,6 +9,7 @@ import Vues.AdaptateurSouris;
 import Vues.AdaptateurSouris2;
 import Vues.CollecteurEvenements;
 import Vues.Theme;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class CPlateau extends JPanel implements Observateur {
     private Point pointSelec;
     private Image image;
 
-    private boolean drawFleche =true ;
+    private boolean drawFleche = true;
 
 
     public CPlateau(CollecteurEvenements c) {
@@ -49,37 +50,37 @@ public class CPlateau extends JPanel implements Observateur {
         test_annuler_refaire();
         drawPlateau(g2d);
         drawContenu(g2d);
-        if (controleur.jeu().getJoueur1().estHumain()||controleur.jeu().getJoueur2().estHumain()){
+        if (controleur.jeu().getJoueur1().estHumain() || controleur.jeu().getJoueur2().estHumain()) {
             drawDestination(g2d);
             drawDeplacement(g2d);
             drawSurbrillance(g2d);
 
-            if(controleur.jeu().getCoordooneDepartIA() != null && getDrawFleche() == true){
+            if (controleur.jeu().getCoordooneDepartIA() != null && getDrawFleche() == true) {
                 Coordonne depart = controleur.jeu().getCoordooneDepartIA();
                 int l = depart.getX();
                 int c = depart.getY();
-                switch(calcul_dir(depart, controleur.jeu().getCoordooneArriveIA())){
+                switch (calcul_dir(depart, controleur.jeu().getCoordooneArriveIA())) {
                     case 0:
                         // Déplacement vers le bas
-                        g2d.drawImage(Theme.instance().fleche_bas(), c * hauteurCase , l * largeurCase , largeurCase -5 , hauteurCase -5, this);
+                        g2d.drawImage(Theme.instance().fleche_bas(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
                         break;
                     case 1:
                         //vers le haut
-                        g2d.drawImage(Theme.instance().fleche_haut(), c * hauteurCase , l * largeurCase, largeurCase -5 , hauteurCase -5 , this);
+                        g2d.drawImage(Theme.instance().fleche_haut(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
                         break;
                     case 2:
                         // Déplacement vers la droite
-                        g2d.drawImage(Theme.instance().fleche_droite(), c * hauteurCase , l * largeurCase , largeurCase -5 , hauteurCase -5, this);
+                        g2d.drawImage(Theme.instance().fleche_droite(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
                         break;
                     case 3:
                         //vers la gauche
-                        g2d.drawImage(Theme.instance().fleche_gauche(), c * hauteurCase , l * largeurCase , largeurCase -5 , hauteurCase -5 , this);
+                        g2d.drawImage(Theme.instance().fleche_gauche(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
                         break;
                 }
                 int l_arr = controleur.jeu().getCoordooneArriveIA().getX();
                 int c_arr = controleur.jeu().getCoordooneArriveIA().getY();
                 g2d.setColor(Color.orange);
-                g2d.fillRect((largeurCase ) * c_arr +5, (hauteurCase ) * l_arr+5, largeurCase - 6, hauteurCase - 6);
+                g2d.fillRect((largeurCase) * c_arr + 5, (hauteurCase) * l_arr + 5, largeurCase - 6, hauteurCase - 6);
                 drawContenu(g2d);
             }
             if (brillanceX >= 0 && brillanceY >= 0) {
@@ -87,7 +88,6 @@ public class CPlateau extends JPanel implements Observateur {
             }
         }
     }
-
 
 
     public int calcul_dir(Coordonne depart, Coordonne coordonneArriveIA) {
@@ -111,8 +111,9 @@ public class CPlateau extends JPanel implements Observateur {
             return -1;
         }
     }
+
     private void drawDeplacement(Graphics2D g2d) {
-        if (getPionEnDeplacement()!=null){
+        if (getPionEnDeplacement() != null) {
             int x = bordureGauche;
             int y = bordureHaut;
             int l = getPionEnDeplacement().x;
@@ -145,7 +146,7 @@ public class CPlateau extends JPanel implements Observateur {
 
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
-                    if(controleur.jeu().getCoordooneDepartIA()!=null && controleur.jeu().getCoordooneDepartIA().equals(new Coordonne(l,c))){
+                    if (controleur.jeu().getCoordooneDepartIA() != null && controleur.jeu().getCoordooneDepartIA().equals(new Coordonne(l, c))) {
                         setDrawFleche1(false); //pour pas remettre tout a jour
                     }
                     if (i == l && c == j) {
@@ -164,7 +165,6 @@ public class CPlateau extends JPanel implements Observateur {
     }
 
 
-
     //Permet de dessiner le plateau sous les pions
     private void drawPlateau(Graphics2D g) {
         Image current = Theme.instance().plateau();
@@ -180,7 +180,7 @@ public class CPlateau extends JPanel implements Observateur {
         for (int l = 0; l < 9; l++) {
             for (int c = 0; c < 9; c++) {
                 // -- Dessin des pions, forteresses, roi, konakis
-                if (getPionSelec() != null && l == getPionSelec().getX() && c == getPionSelec().getY()){ //Ici on efface le pion selec
+                if (getPionSelec() != null && l == getPionSelec().getX() && c == getPionSelec().getY()) { //Ici on efface le pion selec
                     x += largeurCase;
                     if (c % 2 == 0)
                         x++;
@@ -191,7 +191,7 @@ public class CPlateau extends JPanel implements Observateur {
                 }
                 // - Si c'est la case centrale alors on dessine le konakis, s'il n'y a pas le roi
                 if (n.estKonakis(l, c) && !n.estRoi(l, c)) {
-                    if(!(controleur.jeu().getCoordooneDepartIA()!=null && controleur.jeu().getCoordooneDepartIA().equals(new Coordonne(l,c)))){
+                    if (!(controleur.jeu().getCoordooneDepartIA() != null && controleur.jeu().getCoordooneDepartIA().equals(new Coordonne(l, c)))) {
                         //setDrawFleche1(false); //pour pas remettre tout a jour
                         g.drawImage(Theme.instance().konakis(), x + 5, y + 4, largeurCase - 8, hauteurCase - 8, this);
                     }
@@ -271,13 +271,13 @@ public class CPlateau extends JPanel implements Observateur {
     }
 
     private void test_annuler_refaire() {
-        if (controleur.jeu().test_annuler_refaire == true){
+        if (controleur.jeu().test_annuler_refaire == true) {
             setPointSelec(null);
             setPionSelec(null);
             setDestinationsPossibles(null);
             setPionEnDeplacement(null);
             setDrawFleche(false);
-            controleur.jeu().setCoordooneJouerIA(null,null);
+            controleur.jeu().setCoordooneJouerIA(null, null);
         }
         controleur.jeu().setAnnuler_refaire(false);
     }
@@ -339,13 +339,11 @@ public class CPlateau extends JPanel implements Observateur {
     }
 
     public void setImage(int image) {
-        if (image == 0){
+        if (image == 0) {
             this.image = Theme.instance().noir_inactif();
-        }
-        else if (image == 1){
+        } else if (image == 1) {
             this.image = Theme.instance().blanc_inactif();
-        }
-        else{
+        } else {
             this.image = Theme.instance().roi();
 
         }

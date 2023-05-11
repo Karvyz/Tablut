@@ -36,6 +36,6 @@ class VueDemarrage extends JPanel {
 
         int x = 0;
 
-        g.drawImage(logo, x, ((h-logoHeight)/2), logoWidth, logoHeight, null);
+        g.drawImage(logo, x, ((h - logoHeight) / 2), logoWidth, logoHeight, null);
     }
 }

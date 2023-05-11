@@ -4,17 +4,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Pion implements Cloneable, Serializable{
+public class Pion implements Cloneable, Serializable {
     private Coordonne coordonne;
     private TypePion type; //0 pion Noir, 1 pion Blanc, 
 
 
-    public Pion(int x, int y, TypePion type){
+    public Pion(int x, int y, TypePion type) {
         coordonne = new Coordonne(x, y);
         this.type = type;
     }
-    
-    public Pion(Coordonne coordonne, TypePion type){
+
+    public Pion(Coordonne coordonne, TypePion type) {
         this.coordonne = coordonne;
         this.type = type;
     }
@@ -30,35 +30,35 @@ public class Pion implements Cloneable, Serializable{
             throw new AssertionError("La classe Pion doit être cloneable", e);
         }
     }
-    
-    
+
+
     public TypePion getType() {
         return type;
     }
-    
-    public Coordonne getCoordonne(){
+
+    public Coordonne getCoordonne() {
         return coordonne;
     }
-    
-    public int getX(){
+
+    public int getX() {
         return this.coordonne.x;
     }
-    
-    public int getY(){
+
+    public int getY() {
         return this.coordonne.y;
     }
-    
-    public void setX(int x){
+
+    public void setX(int x) {
         this.coordonne.x = x;
     }
-    
-    public void setY(int y){
+
+    public void setY(int y) {
         this.coordonne.y = y;
     }
 
 
-    public void setCoordonne(Coordonne c){
-        this.coordonne =c;
+    public void setCoordonne(Coordonne c) {
+        this.coordonne = c;
     }
 
     @Override
@@ -78,58 +78,58 @@ public class Pion implements Cloneable, Serializable{
         return x != 4 || y != 4;
     }
 
-    private void getDeplacementVerticaList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
+    private void getDeplacementVerticaList(Pion[][] plateau, ArrayList<Coordonne> deplacement) {
         int x = coordonne.x;
         int y = coordonne.y;
         int i = 1;
         //On regarde les cases en haut
-        while(x-i >= 0 && plateau[x-i][y] == null){
+        while (x - i >= 0 && plateau[x - i][y] == null) {
             if (emplacementValide(x - i, y))
-                deplacement.add(new Coordonne(x-i, y));
+                deplacement.add(new Coordonne(x - i, y));
             i++;
         }
         //On regarde les cases en bas
         i = 1;
-        while(x+i < 9 && plateau[x+i][y] == null){
+        while (x + i < 9 && plateau[x + i][y] == null) {
             if (emplacementValide(x + i, y))
-                deplacement.add(new Coordonne(x+i, y));
+                deplacement.add(new Coordonne(x + i, y));
             i++;
         }
     }
 
-    private void getDeplacementHorizontaleList(Pion[][] plateau, ArrayList<Coordonne> deplacement){
+    private void getDeplacementHorizontaleList(Pion[][] plateau, ArrayList<Coordonne> deplacement) {
         int x = coordonne.x;
         int y = coordonne.y;
         int i = 1;
         //On regarde les cases à gauche
-        while(y-i >= 0 && plateau[x][y-i] == null){
+        while (y - i >= 0 && plateau[x][y - i] == null) {
             if (emplacementValide(x, y - i))
                 deplacement.add(new Coordonne(x, y - i));
             i++;
         }
         //On regarde les cases à droite
         i = 1;
-        while(y+i < 9 && plateau[x][y+i] == null){
+        while (y + i < 9 && plateau[x][y + i] == null) {
             if (emplacementValide(x, y + i))
                 deplacement.add(new Coordonne(x, y + i));
             i++;
         }
     }
 
-    public ArrayList<Coordonne> getDeplacement(Pion[][] plateau){
+    public ArrayList<Coordonne> getDeplacement(Pion[][] plateau) {
         ArrayList<Coordonne> deplacement = new ArrayList<Coordonne>();
         getDeplacementVerticaList(plateau, deplacement);
         getDeplacementHorizontaleList(plateau, deplacement);
         return deplacement;
     }
 
-    public void affiche_liste_deplacement(ArrayList<Coordonne> liste){
+    public void affiche_liste_deplacement(ArrayList<Coordonne> liste) {
         if (liste.isEmpty())
             System.out.println("Aucun déplacement possible pour ce pion");
-        else{
+        else {
             System.out.print("Déplacements possibles { ");
-            for(Coordonne c : liste){
-                System.out.print("(" + c.getX() + "," + c.getY() +") ");
+            for (Coordonne c : liste) {
+                System.out.print("(" + c.getX() + "," + c.getY() + ") ");
             }
             System.out.println("}");
         }

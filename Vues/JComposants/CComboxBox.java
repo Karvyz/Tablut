@@ -11,7 +11,7 @@ public class CComboxBox extends JComboBox {
         super();
         setEditor(new CComboxBoxEditor());
         setRenderer(new CComboxBoxRenderer());
-        setUI(new BasicComboBoxUI(){
+        setUI(new BasicComboBoxUI() {
             @Override
             protected JButton createArrowButton() {
                 JButton b = new CButton().carre();
@@ -19,7 +19,7 @@ public class CComboxBox extends JComboBox {
                 b.setText("▼");
                 b.setFocusPainted(false);
                 b.setFocusable(false);
-                b.setBorder(new EmptyBorder(0,0,0,0));
+                b.setBorder(new EmptyBorder(0, 0, 0, 0));
                 b.setBorderPainted(false);
                 return b;
             }

@@ -30,12 +30,12 @@ public class Imager {
     }
 
     public static Image getScaledImage(Image image, int width, int height) {
-        double scaleX = ((double)width / (double)image.getWidth(null));
-        double scaleY = ((double)height / (double)image.getHeight(null));
+        double scaleX = ((double) width / (double) image.getWidth(null));
+        double scaleY = ((double) height / (double) image.getHeight(null));
         if (scaleX < 1 && scaleY < 1)
             return getDownscaledImage(image, width, height);
 
-        AffineTransform xform =  AffineTransform.getScaleInstance(scaleX, scaleY);
+        AffineTransform xform = AffineTransform.getScaleInstance(scaleX, scaleY);
         image = new AffineTransformOp(xform, AffineTransformOp.TYPE_BICUBIC).filter((BufferedImage) image, null);
         return image;
     }
