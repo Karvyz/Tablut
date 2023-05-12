@@ -439,8 +439,7 @@ class VueJeu extends JPanel {
         j1.setName("Attaquant : " + (!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurCourant().nom());
         j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);
 
-        //j2.setName("Défenseur : " + (!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurSuivant().nom());
-        j2.setName("Defenseur : HUMAIN BUG");
+        j2.setName("Défenseur : " + (!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurSuivant().nom());
         j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
 
         topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);

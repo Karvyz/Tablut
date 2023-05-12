@@ -72,7 +72,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
         vues.nouvellePartie();
     }
 
-
     @Override
     public void partieSuivante() {
         verifierJeu("Impossible de passer à la partie suivante");
@@ -203,8 +202,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
      * Méthode permettant la permutation des joueurs
      */
     public void tictac() {
-
-
 
         if (jeu.enCours()) {
             //System.out.println(jeu);

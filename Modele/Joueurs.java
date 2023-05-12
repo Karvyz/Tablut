@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import static java.util.Objects.requireNonNull;
 
-public class Joueurs implements Serializable {
+public class Joueurs implements Serializable, Cloneable {
     private final String nom;
     private final TypeJoueur type;
     private final TypePion roleJ;
@@ -14,7 +14,7 @@ public class Joueurs implements Serializable {
     private int nombreVictoires;
     static int HANDICAP_MAX = 3;
 
-    protected Jeu jeu;
+    public Jeu jeu;
 
     public Joueurs(String nom, TypeJoueur type, TypePion roleJ, Jeu j) {
         requireNonNull(nom, "Le nom du joueur ne doit pas être null");
@@ -32,6 +32,18 @@ public class Joueurs implements Serializable {
         pions = roleJ;
         nombrePionsManges = 0;
 
+    }
+
+    // Méthode appelée pour tous les joueurs lors d'un clic sur le plateau
+    // Si un joueur n'est pas concerné, il lui suffit de l'ignorer
+    public boolean jeu(Coordonne i, Coordonne j) {
+        return false;
+    }
+
+    // Méthode appelée pour tous les joueurs une fois le temps écoulé
+    // Si un joueur n'est pas concerné, il lui suffit de l'ignorer
+    public boolean tempsEcoule() {
+        return false;
     }
 
     public String nom() {
@@ -56,6 +68,28 @@ public class Joueurs implements Serializable {
 
     public boolean aPionsNoirs() {
         return pions == TypePion.ATTAQUANT;
+    }
+
+    @Override
+    public String toString() {
+        return "Joueur{" +
+                "nom='" + nom + "'" +
+                ", type=" + type +
+                ", pions=" + pions +
+                ", nombrePionsManges=" + nombrePionsManges +
+                ", nombreVictoires=" + nombreVictoires +
+                "}";
+    }
+
+    @Override
+    public Joueurs clone() {
+        try {
+            Joueurs clone = (Joueurs) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 
     public boolean estIaFacile() {
@@ -90,7 +124,6 @@ public class Joueurs implements Serializable {
         nombreVictoires++;
     }
 
-
     void enleverVictoire() {
         if (nombreVictoires == 0) {
             throw new IllegalStateException("Impossible d'enlever une victoire au joueur : aucune victoire");
@@ -98,26 +131,4 @@ public class Joueurs implements Serializable {
         nombreVictoires--;
     }
 
-    @Override
-    public String toString() {
-        return "Joueur{" +
-                "nom='" + nom + "'" +
-                ", type=" + type +
-                ", pions=" + pions +
-                ", nombrePionsManges=" + nombrePionsManges +
-                ", nombreVictoires=" + nombreVictoires +
-                "}";
-    }
-
-    // Méthode appelée pour tous les joueurs lors d'un clic sur le plateau
-    // Si un joueur n'est pas concerné, il lui suffit de l'ignorer
-    public boolean jeu(Coordonne i, Coordonne j) {
-        return false;
-    }
-
-    // Méthode appelée pour tous les joueurs une fois le temps écoulé
-    // Si un joueur n'est pas concerné, il lui suffit de l'ignorer
-    public boolean tempsEcoule() {
-        return false;
-    }
 }
