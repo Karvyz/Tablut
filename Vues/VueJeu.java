@@ -113,6 +113,8 @@ class VueJeu extends JPanel {
         });
         retry.addActionListener((e) -> {
             endGameDialog.setVisible(false);
+            System.out.println("here");
+            controleur.fin();
             controleur.partieSuivante();
         });
 
