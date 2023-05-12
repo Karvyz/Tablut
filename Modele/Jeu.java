@@ -1,9 +1,11 @@
 package Modele;
 
 import Patterns.Observable;
+import Structures.CoordonnePair;
 import Structures.Pile;
 
 import java.io.*;
+import java.util.Stack;
 
 import static java.util.Objects.requireNonNull;
 
@@ -18,6 +20,9 @@ public class Jeu extends Observable implements Serializable {
     private boolean enCours;
     public Pile coup_annule;
     public Pile coup_a_refaire;
+
+    public Stack<CoordonnePair> pileIA_annule ;
+    public Stack<CoordonnePair> pileIA_refaire ;
 
     public ConfigurationJeu config;
 
@@ -58,6 +63,8 @@ public class Jeu extends Observable implements Serializable {
         }
         this.coup_annule = new Pile();
         this.coup_a_refaire = new Pile();
+        this.pileIA_annule =  new Stack<>();
+        this.pileIA_refaire =  new Stack<>();
         setEnCours(true);
 
     }
@@ -69,7 +76,6 @@ public class Jeu extends Observable implements Serializable {
         if (!partieTerminee()) {
             return null;
         }
-        // TODO : retourner le joueur gagnant
         return vainqueur;
     }
 
@@ -86,6 +92,7 @@ public class Jeu extends Observable implements Serializable {
         int i = n.deplace_pion(depart, arrive);
         if (!getJoueurCourant().estHumain()) {
             setCoordooneJouerIA(depart, arrive);
+            pileIA_annule.push(new CoordonnePair(depart, arrive));
         } else {
             setCoordooneJouerIA(null, null);
         }
@@ -99,18 +106,15 @@ public class Jeu extends Observable implements Serializable {
                 vainqueur = joueurs[1];
             } else //TODO plus tard
                 System.out.println("EGALITE");
-            //System.out.println(n); //Affichez le jeu en fin de partie
             setEnCours(false);
         }
 
         //Si l'IA joue, on ne dépile pas a refaire
         if (!getJoueurCourant().estHumain()) {
             this.coup_a_refaire.clear();
-            //test_annuler_refaire = false;
+            pileIA_refaire.clear();
         }
-        //System.out.println(this);
         joueurSuivant();
-        //System.out.println(this);
         metAJour();
         return i;
     }
@@ -123,6 +127,7 @@ public class Jeu extends Observable implements Serializable {
     public Coordonne getCoordooneDepartIA() {
         return this.DepartIA;
     }
+
 
     public Coordonne getCoordooneArriveIA() {
         return this.ArriveIA;
@@ -152,6 +157,19 @@ public class Jeu extends Observable implements Serializable {
             coup_a_refaire.empiler(n.clone()); //stock l'état avant d'annuler
             restaure = coup_annule.depiler(); //Recupère le niveau précedent
             n = restaure.clone();
+
+            if(!pileIA_annule.isEmpty()){
+                CoordonnePair a_rempiler = pileIA_annule.pop(); //On supprime le coup joué
+                pileIA_refaire.push(a_rempiler);
+                if(pileIA_annule.size() == 0){
+                    setCoordooneJouerIA(null, null);
+                }
+                else{
+                    CoordonnePair sommet = pileIA_annule.peek(); //On récupère le coup a affiche
+                    setCoordooneJouerIA(sommet.getdepart(), sommet.getarrive());
+                }
+            }
+
             joueurSuivant();
         }
 
@@ -180,8 +198,11 @@ public class Jeu extends Observable implements Serializable {
             coup_annule.empiler(n.clone());
             a_refaire = coup_a_refaire.depiler();
             n = a_refaire.clone();
+            CoordonnePair sommet = pileIA_refaire.pop();
+            pileIA_annule.push(sommet);
+            setCoordooneJouerIA(sommet.getdepart(), sommet.getarrive());
             joueurSuivant();
-            ;
+
         }
 
         metAJour();

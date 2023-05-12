@@ -13,9 +13,8 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 public class AdaptateurSouris extends MouseAdapter implements MouseMotionListener {
-    CollecteurEvenements controleur;
-
-    CPlateau pane;
+    CollecteurEvenements ctrl;
+    CPlateau plateau;
     Point dragStart = null;
     int bordureGauche, bordureHaut, bordureDroite, bordureBas;
     boolean clicInutile = false;
@@ -26,9 +25,9 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
     //boolean drawFleche;
 
 
-    public AdaptateurSouris(CollecteurEvenements c, CPlateau pane) {
-        controleur = c;
-        this.pane = pane;
+    public AdaptateurSouris(CollecteurEvenements c, CPlateau plateau) {
+        ctrl = c;
+        this.plateau = plateau;
     }
 
     @Override
@@ -39,44 +38,46 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         if (!check_ok(l, c)) {
             return;
         }
-        ;
 
-        pane.setDrawFleche(false); //N'importe quelle clic efface la fleche d'indication de l'IA
+        plateau.setDrawFleche(false); //N'importe quelle clic efface la fleche d'indication de l'IA
         premier_clic = true;
 
-        Pion caseClique = controleur.jeu().n.getPion(l, c);
+        Pion caseClique = ctrl.jeu().n.getPion(l, c);
 
         //Test le déplacement
-        if (pane.getPionSelec() != null) {
-            pane.setPionEnDeplacement(null);//On ne peut pas drag
-            if (controleur.clicSouris(pane.getPionSelec(), l, c) == true) { //Si on clique après avoir selectionne un pion on check si le coup est juste
-                pane.setPionSelec(null); //On déselectionne après avoir joué un coup
-                pane.setPionEnDeplacement(null);
+        if (plateau.getPionSelec() != null) {
+            plateau.setPionEnDeplacement(null);//On ne peut pas drag
+            if (ctrl.clicSouris(plateau.getPionSelec(), l, c) == true) { //Si on clique après avoir selectionne un pion on check si le coup est juste
+                plateau.setPionSelec(null); //On déselectionne après avoir joué un coup
+                plateau.setPionEnDeplacement(null);
                 dragStart = null;
                 affiche_destination(null);
-                controleur.jeu().setCoordooneJouerIA(null, null); //On met les coordonnes de la fleche a false
-                pane.setDrawFleche(true); //On prépare la fleche pour le prochain coup de l'IA
+                ctrl.jeu().setCoordooneJouerIA(null, null); //On met les coordonnes de la fleche a false
+                plateau.setDrawFleche(true); //On prépare la fleche pour le prochain coup de l'IA
                 premier_clic = false;
                 return;
             }//Si il ne permet pas un déplacement on regarde si ce pion peut servir de nouvelle selection
-            else if (controleur.jeu().n.check_clic_selection_pion(caseClique, controleur.jeu().get_num_JoueurCourant()) && caseClique.getDeplacement(controleur.jeu().n.plateau).isEmpty()) {//ici il ne sert pas de nouvelle selection
+            else if (ctrl.jeu().n.check_clic_selection_pion(caseClique, ctrl.jeu().get_num_JoueurCourant()) && caseClique.getDeplacement(ctrl.jeu().n.plateau).isEmpty()) {//ici il ne sert pas de nouvelle selection
                 clicSelection = false;
                 clicInutile = false;
-                pane.setPionEnDeplacement(null);//On ne peut pas drag
-                pane.setPionSelec(null);//On ne peut pas drag
+                plateau.setPionEnDeplacement(null);//On ne peut pas drag
+                plateau.setPionSelec(null);//On ne peut pas drag
 
                 return;
-            } else if (!controleur.jeu().n.check_clic_selection_pion(caseClique, controleur.jeu().get_num_JoueurCourant())) {
-                //TODO a verifier c'est si on clique sur un pion adverse on affiche la fleche
-                pane.setPionEnDeplacement(null);//Initialise point de départ du moovement pour le drag
-                pane.setPionSelec(null);
+            } else if (!ctrl.jeu().n.check_clic_selection_pion(caseClique, ctrl.jeu().get_num_JoueurCourant())) {
+                plateau.setPionEnDeplacement(null);//Initialise point de départ du moovement pour le drag
+                plateau.setPionSelec(null);
                 clicSelection = false;
                 clicInutile = false; //Changez ici si on veut garder les destinations affichés lors d'un clic sur pion pas a nous
-                pane.setDrawFleche(true);
+                if (caseClique == null){
+                    plateau.setDrawFleche(false);
+                    return;
+                }
+                plateau.setDrawFleche(true);
                 return;
-            } else if (controleur.jeu().n.check_clic_selection_pion(caseClique, controleur.jeu().get_num_JoueurCourant())) {//ici il sert de nouvelle selection
-                pane.setPionEnDeplacement(new Point(l, c));//Initialise point de départ du moovement pour le drag
-                pane.setPionSelec(caseClique);
+            } else if (ctrl.jeu().n.check_clic_selection_pion(caseClique, ctrl.jeu().get_num_JoueurCourant())) {//ici il sert de nouvelle selection
+                plateau.setPionEnDeplacement(new Point(l, c));//Initialise point de départ du moovement pour le drag
+                plateau.setPionSelec(caseClique);
                 setImage(caseClique);
                 affiche_destination(caseClique);
                 clicSelection = true;
@@ -84,91 +85,89 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             }
             clicInutile = true;
         } else {
-            //pane.setDrawFleche(false); //si on clique sur case vide, on désactive la fleche
+            plateau.setDrawFleche(false); //si on clique sur case vide, on désactive la fleche
         }
 
         //Le pion nous appartient mais il n'y a pas de deplacement possibles
-        if (!check_pion(caseClique))
+        if (!check_pion(caseClique)) {
             return;
+        }
             //Le pion nous appartient, on affiche ses dispos
-        else if (controleur.jeu().n.check_clic_selection_pion(caseClique, controleur.jeu().get_num_JoueurCourant())) {
-            pane.setPionSelec(caseClique); //au laché, on affiche les dispos
-            pane.setPionEnDeplacement(new Point(l, c));//Initialise point de départ du moovement pour le drag
+        else if (ctrl.jeu().n.check_clic_selection_pion(caseClique, ctrl.jeu().get_num_JoueurCourant())) {
+            plateau.setPionSelec(caseClique); //au laché, on affiche les dispos
+            plateau.setPionEnDeplacement(new Point(l, c));//Initialise point de départ du moovement pour le drag
             setImage(caseClique);
-            pane.setDrawFleche(false);
+            plateau.setDrawFleche(false);
             clicSelection = true;
             return;
         }
         //le pion nous appartient pas ou c'est une case vide
-        if (!controleur.jeu().n.check_clic_selection_pion(caseClique, controleur.jeu().get_num_JoueurCourant())) {
+        if (!ctrl.jeu().n.check_clic_selection_pion(caseClique, ctrl.jeu().get_num_JoueurCourant())) {
             clicSelection = false;
             clicInutile = false; //Changez ici si on veut garder les destinations affichés lors d'un clic sur pion pas a nous
-            pane.setPionEnDeplacement(null);
-            pane.setDrawFleche(true); //TODO a verifier
-
-            //pane.setDrawFleche(true);
+            plateau.setPionEnDeplacement(null);
+            plateau.setDrawFleche(true);
         }
 
     }
 
     private void setImage(Pion p) {
-        if (controleur.jeu().n.estAttaquant(p)) {
-            pane.setImage(0);
-        } else if (controleur.jeu().n.estDefenseur(p)) {
-            pane.setImage(1);
+        if (ctrl.jeu().n.estAttaquant(p)) {
+            plateau.setImage(0);
+        } else if (ctrl.jeu().n.estDefenseur(p)) {
+            plateau.setImage(1);
         } else {
-            pane.setImage(2);
+            plateau.setImage(2);
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (dragStart != null && pane.getPionSelec() != null) {
+        if (dragStart != null && plateau.getPionSelec() != null) {
             int l = calcul_l(e);
             int c = calcul_c(e);
             if (!check_ok(l, c)) {
                 return;
             }
-            ;
 
-            Pion caseLache = controleur.jeu().n.getPion(l, c);
+            Pion caseLache = ctrl.jeu().n.getPion(l, c);
 
-            int startX = pane.getPionSelec().getX();
-            int startY = pane.getPionSelec().getY();
+            int startX = plateau.getPionSelec().getX();
+            int startY = plateau.getPionSelec().getY();
 
             //Ici on gère le cas ou l'on clique sur un pion de la même couleur que le notre
-            if (controleur.jeu().n.check_clic_selection_pion(caseLache, controleur.jeu().get_num_JoueurCourant())) {
-                pane.setPionSelec(caseLache);
-                affiche_destination(pane.getPionSelec());
+            if (ctrl.jeu().n.check_clic_selection_pion(caseLache, ctrl.jeu().get_num_JoueurCourant())) {
+                plateau.setPionSelec(caseLache);
+                affiche_destination(plateau.getPionSelec());
                 clicInutile = false;
                 return;
             } else {
-                pane.setPionSelec(null);
+                plateau.setPionSelec(null);
                 affiche_destination(null);
             }
 
             //Ici on gère le drag&drop
             if (startX != l || startY != c) {
-                if (controleur.dragANDdrop(new Coordonne(startX, startY), new Coordonne(l, c)) == true) { //On teste le déplacement
+                if (ctrl.dragANDdrop(new Coordonne(startX, startY), new Coordonne(l, c)) == true) { //On teste le déplacement
                     affiche_destination(null);
-                    pane.setDrawFleche(true);
+                    plateau.setDrawFleche(true);
                     premier_clic = false;
 
                 }
-                pane.setPionSelec(null);
-                pane.setPionEnDeplacement(null);
+                plateau.setPionSelec(null);
+                plateau.setPionEnDeplacement(null);
             }
             dragStart = null;
         }
         //Ici on gère le cas ou on clique sur un de nos pions, puis sur un pion adverse ou case vide, en enlève l'affichage des déplacements dispos
-        if (pane.getPionEnDeplacement() == null) {
+        if (plateau.getPionEnDeplacement() == null) {
             if (clicInutile == true || clicSelection == true) {
-                if (pane.getPionSelec() != null) {
-                    affiche_destination(pane.getPionSelec());
+                if (plateau.getPionSelec() != null) {
+                    affiche_destination(plateau.getPionSelec());
                     clicInutile = false;
                 }
             } else {
-                pane.setPionSelec(null);
+                plateau.setPionSelec(null);
                 affiche_destination(null);
             }
         }
@@ -176,7 +175,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        Point pionEnDeplacement = pane.getPionEnDeplacement();
+        Point pionEnDeplacement = plateau.getPionEnDeplacement();
         if (pionEnDeplacement != null) {
             int l = calcul_l(e);
             int c = calcul_c(e);
@@ -185,9 +184,9 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             }
             ;
             pionEnDeplacement.setLocation(l, c); //modifie les coordonne du Point pionEnDeplacement
-            pane.setPionEnDeplacement(pionEnDeplacement);
+            plateau.setPionEnDeplacement(pionEnDeplacement);
         } else {
-            pane.setPointSelec(null);
+            plateau.setPointSelec(null);
         }
     }
 
@@ -201,22 +200,22 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         ;
 
         // Obtenez les informations de la case survolée
-        Pion caseSurvole = controleur.jeu().n.getPion(l, c);
-        pane.setSurvole(caseSurvole);
+        Pion caseSurvole = ctrl.jeu().n.getPion(l, c);
+        plateau.setSurvole(caseSurvole);
 
-        if (pane.getPionSelec() == null) {
+        if (plateau.getPionSelec() == null) {
             //Permet d'afficher lorsqu'on survole
-            if (controleur.jeu().n.check_clic_selection_pion(caseSurvole, controleur.jeu().get_num_JoueurCourant())) {
+            if (ctrl.jeu().n.check_clic_selection_pion(caseSurvole, ctrl.jeu().get_num_JoueurCourant())) {
                 affiche_destination(caseSurvole); //affiche les destinations du pion survole
                 if (premier_clic == true) {
-                    pane.setDrawFleche(false);
+                    plateau.setDrawFleche(false);
                 }
-            } else if (caseSurvole != null && !controleur.jeu().n.check_clic_selection_pion(caseSurvole, controleur.jeu().get_num_JoueurCourant())) {
-                pane.setDrawFleche(true);
+            } else if (caseSurvole != null && !ctrl.jeu().n.check_clic_selection_pion(caseSurvole, ctrl.jeu().get_num_JoueurCourant())) {
+                plateau.setDrawFleche(true);
                 affiche_destination(null); //affiche aucune destination
             } else {
                 if (premier_clic == true) {
-                    pane.setDrawFleche(false);
+                    plateau.setDrawFleche(false);
                 }
                 affiche_destination(null); //affiche aucune destination
             }
@@ -228,21 +227,21 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
     private void affiche_destination(Pion pionSelec) {//Permet l'affichage des destinations données pour un Pion donné
         if (pionSelec == null) {
-            pane.setDestinationsPossibles(null);
+            plateau.setDestinationsPossibles(null);
             return;
         }
-        ArrayList<Coordonne> liste = pionSelec.getDeplacement(controleur.jeu().n.plateau);
+        ArrayList<Coordonne> liste = pionSelec.getDeplacement(ctrl.jeu().n.plateau);
         if (liste.isEmpty()) {
-            pane.setDestinationsPossibles(null);
+            plateau.setDestinationsPossibles(null);
         } else {
-            pane.setToolTipText(null);
-            pane.setDestinationsPossibles(liste);
+            plateau.setToolTipText(null);
+            plateau.setDestinationsPossibles(liste);
         }
     }
 
     private void calculerDimensions() {
-        bordureHaut = Math.round(Theme.instance().bordureHaut() * pane.getHeight() / (float) Theme.instance().hauteurPlateau());
-        bordureGauche = Math.round(Theme.instance().bordureGauche() * pane.getWidth() / (float) Theme.instance().largeurPlateau());
+        bordureHaut = Math.round(Theme.instance().bordureHaut() * plateau.getHeight() / (float) Theme.instance().hauteurPlateau());
+        bordureGauche = Math.round(Theme.instance().bordureGauche() * plateau.getWidth() / (float) Theme.instance().largeurPlateau());
     }
 
     private boolean check_ok(int l, int c) {
@@ -253,10 +252,10 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
     }
 
     private boolean check_pion(Pion p) {
-        if (controleur.jeu().n.check_clic_selection_pion(p, controleur.jeu().get_num_JoueurCourant()) && p.getDeplacement(controleur.jeu().n.plateau).isEmpty()) {
+        if (ctrl.jeu().n.check_clic_selection_pion(p, ctrl.jeu().get_num_JoueurCourant()) && p.getDeplacement(ctrl.jeu().n.plateau).isEmpty()) {
             clicSelection = false;
             clicInutile = false;
-            pane.setPionEnDeplacement(null);//On ne peut pas drag
+            plateau.setPionEnDeplacement(null);//On ne peut pas drag
             return false;
         }
         return true;
@@ -264,10 +263,10 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
     private int calcul_l(MouseEvent e) {
         calculerDimensions();
-        int hauteur = pane.getHeight() - bordureHaut - bordureBas;
+        int hauteur = plateau.getHeight() - bordureHaut - bordureBas;
         if (e.getX() < bordureGauche || e.getY() < bordureHaut ||
-                e.getX() > pane.getWidth() - bordureDroite ||
-                e.getY() > pane.getHeight() - bordureBas) {
+                e.getX() > plateau.getWidth() - bordureDroite ||
+                e.getY() > plateau.getHeight() - bordureBas) {
             return -1;
         }
 
@@ -278,11 +277,11 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
     private int calcul_c(MouseEvent e) {
         calculerDimensions();
-        int largeur = pane.getWidth() - bordureGauche - bordureDroite;
+        int largeur = plateau.getWidth() - bordureGauche - bordureDroite;
 
         if (e.getX() < bordureGauche || e.getY() < bordureHaut ||
-                e.getX() > pane.getWidth() - bordureDroite ||
-                e.getY() > pane.getHeight() - bordureBas) {
+                e.getX() > plateau.getWidth() - bordureDroite ||
+                e.getY() > plateau.getHeight() - bordureBas) {
             return -1;
         }
 

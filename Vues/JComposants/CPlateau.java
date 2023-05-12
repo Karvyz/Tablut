@@ -63,7 +63,7 @@ public class CPlateau extends JPanel implements Observateur {
             setDestinationsPossibles(null);
             setPionEnDeplacement(null);
             setDrawFleche(false);
-            controleur.jeu().setCoordooneJouerIA(null, null);
+            //controleur.jeu().setCoordooneJouerIA(null, null);
         }
         controleur.jeu().setAnnuler_refaire(false);
     }
@@ -173,6 +173,11 @@ public class CPlateau extends JPanel implements Observateur {
             drawDestination(g2d);
             drawDeplacement(g2d);
             drawSurbrillance(g2d);
+
+            //System.out.println("here");
+            if ((controleur.jeu().getCoordooneDepartIA() != null)){//TODO delete
+                //System.out.println(controleur.jeu().getCoordooneDepartIA() +","+ getDrawFleche());
+            }
 
             if ((controleur.jeu().getCoordooneDepartIA() != null && getDrawFleche() == true)) {
                 Coordonne depart = controleur.jeu().getCoordooneDepartIA();
