@@ -3,13 +3,12 @@ package Controlleur;
 import Modele.*;
 
 public class IA_difficile_MassacrePion extends IA_difficile {
-    public IA_difficile_MassacrePion(String nom, TypePion roleJ, Jeu j) {
-        super(nom, roleJ, j);
+    public IA_difficile_MassacrePion(String nom, TypePion roleJ, Jeu j, long timeLimitMs) {
+        super(nom, roleJ, j, timeLimitMs);
     }
 
     @Override
-    public int evaluation(Niveau n) {
-        nevaluation++;
+    public float evaluation(Niveau n) {
         int attaquants = 16;
         int defenseurs = 8;
         for (int i = 0; i < n.getTaille(); i++) {

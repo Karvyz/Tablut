@@ -61,6 +61,7 @@ class VueJeu extends JPanel {
     private void addEndGame() {
         endGamePanel = new JPanel(new GridBagLayout());
         endGamePanel.setOpaque(true);
+        //endGamePanel.setOpaque(false);
         endGamePanel.setVisible(false);
         endGamePanel.setBackground(new Color(23, 23, 23, 163));
 
@@ -171,13 +172,15 @@ class VueJeu extends JPanel {
                     endGameText.setText("L'attaquant, IA " + vainqueur.nom() + " a gagné !");
             }
         }
-        endGamePanel.setVisible(true);
-        mainPanel.setEnabled(false);
-        mainPanel.setFocusable(false);
-        mainPanel.setVisible(false);
         topPanel.setEnabled(false);
         topPanel.setFocusable(false);
         topPanel.setVisible(false);
+        endGamePanel.setVisible(true);
+        endGamePanel.setEnabled(true);
+        endGamePanel.setFocusable(true);
+        mainPanel.setEnabled(false);
+        mainPanel.setFocusable(false);
+        //mainPanel.setVisible(false);
     }
 
     private void addTop(JPanel contenu) {
@@ -399,6 +402,7 @@ class VueJeu extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
         mainPanel.add(vueNiveau, c);
 
+        System.out.println(j1);
         // Initialisation du niveau
         j1.setName("Attaquant : " + (!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurCourant().nom());
         j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);

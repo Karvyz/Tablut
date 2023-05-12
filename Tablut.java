@@ -1,22 +1,28 @@
 
+import Controlleur.*;
 import Modele.Jeu;
-
-import Controlleur.ControlleurMediateur;
+import Modele.TypePion;
 import Vues.CollecteurEvenements;
 import Vues.InterfaceGraphique;
 
-import javax.swing.*;
+import java.util.ArrayList;
 
 
 public class Tablut{
     public static void main(String[] args) {
-        try {
-            //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-        } catch (Exception ignored) {
+        if (args.length == 0) {
+            Jeu j = new Jeu();
+            CollecteurEvenements control = new ControlleurMediateur(j);
+            InterfaceGraphique.demarrer(control);
         }
-        Jeu j = new Jeu();
-        CollecteurEvenements control = new ControlleurMediateur(j);
-        InterfaceGraphique.demarrer(control);
+        else {
+            ArrayList<IA> ias = new ArrayList<>();
+            ias.add(new IA_facile("", TypePion.ATTAQUANT, new Jeu()));
+            ias.add(new IA_facile("", TypePion.DEFENSEUR, new Jeu()));
+            TournoisControlleur tournoisControlleur = new TournoisControlleur(ias, 1000);
+//            tournoisControlleur.match(ias.get(0), ias.get(1), 0, 0);
+            tournoisControlleur.tournois();
+        }
     }
 }
  

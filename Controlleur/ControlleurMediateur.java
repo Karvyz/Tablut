@@ -8,19 +8,18 @@ import Vues.CollecteurEvenements;
 import java.io.*;
 import java.util.Random;
 
-
-public class ControlleurMediateur implements CollecteurEvenements {
+public class ControlleurMediateur implements CollecteurEvenements{
 
     Vues vues;
     Animation animIA1, animIA2;
     Animation animDemarrage;
 
     Jeu jeu;
-
     final int lenteurAttente = 50;
     int decompte;
 
     private boolean pionSelec = false;
+
 
     public ControlleurMediateur(Jeu j) {
         jeu = j;
