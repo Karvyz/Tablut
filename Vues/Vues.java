@@ -12,6 +12,8 @@ public class Vues {
     JFrame frame;
     VueJeu vueJeu;
 
+    VueMenuParties vueMenuParties;
+
     final static String DEMARRAGE = "Démarrage";
     final static String MENU_PRINCIPAL = "Menu Principal";
     final static String MENU_SAISIES = "Nouvelle Partie";
@@ -26,6 +28,10 @@ public class Vues {
         vueJeu = vue;
     }
 
+    void fixerVueMenuParties(VueMenuParties vue) {
+        vueMenuParties = vue;
+    }
+
     public void nouvellePartie() {
         if (vueJeu == null) {
             throw new IllegalStateException("Impossible de créer une nouvelle partie : vue du jeu non fixée");
@@ -38,6 +44,10 @@ public class Vues {
     }
 
     private void afficher(String nom) {
+        if (nom.equals(MENU_PARTIES) && vueMenuParties != null) {
+            vueMenuParties.refreshFileList();
+        }
+
         CardLayout layout = (CardLayout) frame.getContentPane().getLayout();
         layout.show(frame.getContentPane(), nom);
     }

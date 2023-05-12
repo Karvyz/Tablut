@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FilenameFilter;
 
@@ -27,6 +29,20 @@ public class VueMenuParties extends JPanel {
         fileListModel = new DefaultListModel<>();
         fileList = new JList<>(fileListModel);
         fileList.setFont(new Font("Arial", Font.PLAIN, 18)); // Changez la taille du texte des fichiers ici
+        // Ajout de l'écouteur de double-clic ici
+        fileList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                JList list = (JList)evt.getSource();
+                if (evt.getClickCount() == 2) {  // Double-clic
+                    // Trouver l'index de l'élément sélectionné
+                    int index = list.locationToIndex(evt.getPoint());
+                    if (index >= 0) {
+                        // Simuler le clic sur le bouton de chargement
+                        loadButton.doClick();
+                    }
+                }
+            }
+        });
         JScrollPane scrollPane = new JScrollPane(fileList);
         add(scrollPane, BorderLayout.CENTER);
 
@@ -69,7 +85,7 @@ public class VueMenuParties extends JPanel {
         refreshFileList();
     }
 
-    private void refreshFileList() {
+    public void refreshFileList() {
         File saveDir = new File("Resources/save/");
         if (saveDir.exists() && saveDir.isDirectory()) {
             File[] saveFiles = saveDir.listFiles(new FilenameFilter() {

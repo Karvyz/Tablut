@@ -78,6 +78,8 @@ public class ControlleurMediateur implements CollecteurEvenements{
         jeu.nouvellePartie();
         vues.nouvellePartie();
         afficherJeu();
+
+
     }
 
     public void restaurePartie() {

@@ -52,114 +52,21 @@ public class CPlateau extends JPanel implements Observateur {
         test_annuler_refaire();
         drawPlateau(g2d);
         drawContenu(g2d);
-        if (controleur.jeu().getJoueur1().estHumain() || controleur.jeu().getJoueur2().estHumain()) {
-            drawDestination(g2d);
-            drawDeplacement(g2d);
-            drawSurbrillance(g2d);
+        drawMouvIA(g2d);
 
-            if ((controleur.jeu().getCoordooneDepartIA() != null && getDrawFleche() == true)) {
-                Coordonne depart = controleur.jeu().getCoordooneDepartIA();
-                if (depart == null){return;}
-                int l = depart.getX();
-                int c = depart.getY();
-                switch (calcul_dir(depart, controleur.jeu().getCoordooneArriveIA())) {
-                    case 0:
-                        // Déplacement vers le bas
-                        g2d.drawImage(Theme.instance().fleche_bas(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
-                        break;
-                    case 1:
-                        //vers le haut
-                        g2d.drawImage(Theme.instance().fleche_haut(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
-                        break;
-                    case 2:
-                        // Déplacement vers la droite
-                        g2d.drawImage(Theme.instance().fleche_droite(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
-                        break;
-                    case 3:
-                        //vers la gauche
-                        g2d.drawImage(Theme.instance().fleche_gauche(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
-                        break;
-                }
-                int l_arr = controleur.jeu().getCoordooneArriveIA().getX();
-                int c_arr = controleur.jeu().getCoordooneArriveIA().getY();
-                g2d.setColor(Color.orange);
-                g2d.fillRect((largeurCase) * c_arr + 5, (hauteurCase) * l_arr + 5, largeurCase - 6, hauteurCase - 6);
-                drawContenu(g2d);
-            }
-        }
     }
 
-    public int calcul_dir(Coordonne depart, Coordonne coordonneArriveIA) {
-        int deltaX = coordonneArriveIA.getX() - depart.getX();
-        int deltaY = coordonneArriveIA.getY() - depart.getY();
-
-        if (deltaX > 0 && Math.abs(deltaX) >= Math.abs(deltaY)) {
-            // Déplacement vers le bas
-            return 0;
-        } else if (deltaX < 0 && Math.abs(deltaX) >= Math.abs(deltaY)) {
-            // Déplacement vers le haut
-            return 1;
-        } else if (deltaY > 0 && Math.abs(deltaY) >= Math.abs(deltaX)) {
-            // Déplacement vers la droite
-            return 2;
-        } else if (deltaY < 0 && Math.abs(deltaY) >= Math.abs(deltaX)) {
-            // Déplacement vers la gauche
-            return 3;
-        } else {
-            // Aucune direction valide trouvée
-            return -1;
+    private void test_annuler_refaire() {
+        if (controleur.jeu().test_annuler_refaire == true) {
+            setPointSelec(null);
+            setPionSelec(null);
+            setDestinationsPossibles(null);
+            setPionEnDeplacement(null);
+            setDrawFleche(false);
+            controleur.jeu().setCoordooneJouerIA(null, null);
         }
+        controleur.jeu().setAnnuler_refaire(false);
     }
-
-    private void drawDeplacement(Graphics2D g2d) {
-        if (getPionEnDeplacement() != null) {
-            int x = bordureGauche;
-            int y = bordureHaut;
-            int l = getPionEnDeplacement().x;
-            int c = getPionEnDeplacement().y;
-
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
-
-                    if (i == l && c == j) {
-                        //TODO mettre image des points
-                        g2d.drawImage(getImage(), x + 4, y + 4, largeurCase - 4, hauteurCase - 4, this);
-                    }
-                    x += largeurCase + 1;
-                }
-                y += hauteurCase;
-                x = bordureGauche;
-            }
-        }
-    }
-
-    private void drawDestination(Graphics2D g) {
-        if (destinationsPossibles == null) {
-            return;
-        }
-        for (Coordonne caseSelec : destinationsPossibles) {
-            int x = bordureGauche;
-            int y = bordureHaut;
-            int l = caseSelec.getX();
-            int c = caseSelec.getY();
-
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
-                    if (controleur.jeu().getCoordooneDepartIA() != null && controleur.jeu().getCoordooneDepartIA().equals(new Coordonne(l, c))) {
-                        setDrawFleche1(false); //pour pas remettre tout a jour
-                    }
-                    if (i == l && c == j) {
-                        //TODO mettre image des points
-                        g.drawImage(Theme.instance().pointInterrogation(), x +(largeurCase/2)-5, y + (hauteurCase/2)-5, 10, 10, this);
-                    }
-                    x += largeurCase;
-                }
-                y += hauteurCase;
-                x = bordureGauche;
-            }
-        }
-    }
-
 
     //Permet de dessiner le plateau sous les pions
     private void drawPlateau(Graphics2D g) {
@@ -212,6 +119,93 @@ public class CPlateau extends JPanel implements Observateur {
     }
 
 
+    private void drawDeplacement(Graphics2D g2d) {
+        if (getPionEnDeplacement() != null) {
+            int x = bordureGauche;
+            int y = bordureHaut;
+            int l = getPionEnDeplacement().x;
+            int c = getPionEnDeplacement().y;
+
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+
+                    if (i == l && c == j) {
+                        //TODO mettre image des points
+                        g2d.drawImage(getImage(), x + 4, y + 4, largeurCase - 4, hauteurCase - 4, this);
+                    }
+                    x += largeurCase + 1;
+                }
+                y += hauteurCase;
+                x = bordureGauche;
+            }
+        }
+    }
+
+    private void drawDestination(Graphics2D g) {
+        if (destinationsPossibles == null) {
+            return;
+        }
+        for (Coordonne caseSelec : destinationsPossibles) {
+            int x = bordureGauche;
+            int y = bordureHaut;
+            int l = caseSelec.getX();
+            int c = caseSelec.getY();
+
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    if (controleur.jeu().getCoordooneDepartIA() != null && controleur.jeu().getCoordooneDepartIA().equals(new Coordonne(l, c))) {
+                        setDrawFleche1(false); //pour pas remettre tout a jour
+                    }
+                    if (i == l && c == j) {
+                        //TODO mettre image des points
+                        g.drawImage(Theme.instance().pointInterrogation(), x +(largeurCase/2)-5, y + (hauteurCase/2)-5, 10, 10, this);
+                    }
+                    x += largeurCase;
+                }
+                y += hauteurCase;
+                x = bordureGauche;
+            }
+        }
+    }
+
+    private void drawMouvIA(Graphics2D g2d) {
+        if (controleur.jeu().getJoueur1().estHumain() || controleur.jeu().getJoueur2().estHumain()) {
+            drawDestination(g2d);
+            drawDeplacement(g2d);
+            drawSurbrillance(g2d);
+
+            if ((controleur.jeu().getCoordooneDepartIA() != null && getDrawFleche() == true)) {
+                Coordonne depart = controleur.jeu().getCoordooneDepartIA();
+                if (depart == null){return;}
+                int l = depart.getX();
+                int c = depart.getY();
+                switch (calcul_dir(depart, controleur.jeu().getCoordooneArriveIA())) {
+                    case 0:
+                        // Déplacement vers le bas
+                        g2d.drawImage(Theme.instance().fleche_bas(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
+                        break;
+                    case 1:
+                        //vers le haut
+                        g2d.drawImage(Theme.instance().fleche_haut(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
+                        break;
+                    case 2:
+                        // Déplacement vers la droite
+                        g2d.drawImage(Theme.instance().fleche_droite(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
+                        break;
+                    case 3:
+                        //vers la gauche
+                        g2d.drawImage(Theme.instance().fleche_gauche(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
+                        break;
+                }
+                int l_arr = controleur.jeu().getCoordooneArriveIA().getX();
+                int c_arr = controleur.jeu().getCoordooneArriveIA().getY();
+                g2d.setColor(Color.orange);
+                g2d.fillRect((largeurCase) * c_arr + 5, (hauteurCase) * l_arr + 5, largeurCase - 6, hauteurCase - 6);
+                drawContenu(g2d);
+            }
+        }
+    }
+
     public void drawSurbrillance(Graphics2D g) {
         Jeu J = controleur.jeu();
         Niveau n = J.getNiveau();
@@ -226,22 +220,33 @@ public class CPlateau extends JPanel implements Observateur {
         }
     }
 
+    public int calcul_dir(Coordonne depart, Coordonne coordonneArriveIA) {
+        int deltaX = coordonneArriveIA.getX() - depart.getX();
+        int deltaY = coordonneArriveIA.getY() - depart.getY();
+
+        if (deltaX > 0 && Math.abs(deltaX) >= Math.abs(deltaY)) {
+            // Déplacement vers le bas
+            return 0;
+        } else if (deltaX < 0 && Math.abs(deltaX) >= Math.abs(deltaY)) {
+            // Déplacement vers le haut
+            return 1;
+        } else if (deltaY > 0 && Math.abs(deltaY) >= Math.abs(deltaX)) {
+            // Déplacement vers la droite
+            return 2;
+        } else if (deltaY < 0 && Math.abs(deltaY) >= Math.abs(deltaX)) {
+            // Déplacement vers la gauche
+            return 3;
+        } else {
+            // Aucune direction valide trouvée
+            return -1;
+        }
+    }
+
+
     public void updateBrillanceSelection(int l, int c) {
         this.brillanceX = l;
         this.brillanceY = c;
         repaint();
-    }
-
-    private void test_annuler_refaire() {
-        if (controleur.jeu().test_annuler_refaire == true) {
-            setPointSelec(null);
-            setPionSelec(null);
-            setDestinationsPossibles(null);
-            setPionEnDeplacement(null);
-            setDrawFleche(false);
-            controleur.jeu().setCoordooneJouerIA(null, null);
-        }
-        controleur.jeu().setAnnuler_refaire(false);
     }
 
     private void calculerDimensions() {

@@ -99,6 +99,7 @@ public class InterfaceGraphique implements Runnable {
                 break;
             case Vues.MENU_PARTIES:
                 vue = new VueMenuParties(control);
+                vues.fixerVueMenuParties((VueMenuParties) vue);
                 break;
             default:
                 throw new IllegalArgumentException("Nom de vue incorrect : " + nom);
