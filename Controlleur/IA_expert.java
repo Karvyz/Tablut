@@ -68,11 +68,7 @@ public class IA_expert extends IA_difficile{
                     }
                 }
             }
-            if (attaquants == 0){
-                return -1000;
-            } else {
-                return eval+(defenseurs-attaquants);
-            }
+            return eval+(defenseurs-attaquants);
         } else { //defenseur
             for (int i = 0; i < n.getTaille(); i++) {
                 for (int j = 0; j < n.getTaille(); j++) {
