@@ -113,6 +113,7 @@ class VueJeu extends JPanel {
         });
         retry.addActionListener((e) -> {
             endGameDialog.setVisible(false);
+            controleur.fin();
             controleur.partieSuivante();
         });
 
@@ -219,12 +220,14 @@ class VueJeu extends JPanel {
             Joueurs[] joueurs = new Joueurs[2];
             joueurs[0] = controleur.jeu().getJoueur1();
             joueurs[1] = controleur.jeu().getJoueur2();
+            controleur.fin();
             controleur.jeu().reset();
             controleur.nouvellePartie(joueurs[0].nom(), joueurs[0].type(), TypePion.ATTAQUANT, joueurs[1].nom(), joueurs[1].type(), TypePion.DEFENSEUR);
             controleur.afficherJeu();
             controleur.jeu().metAJour();
         });
         menu_items[1].addActionListener((e) -> {
+            controleur.fin();
             controleur.jeu().reset();
             controleur.afficherMenuPrincipal();
         });

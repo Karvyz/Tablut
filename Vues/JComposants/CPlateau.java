@@ -182,6 +182,7 @@ public class CPlateau extends JPanel implements Observateur {
     }
 
     private void drawMouvIA(Graphics2D g2d) {
+
         if (controleur.jeu().getJoueur1().estHumain() || controleur.jeu().getJoueur2().estHumain()) {
             drawDestination(g2d);
             drawDeplacement(g2d);

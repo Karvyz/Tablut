@@ -30,8 +30,10 @@ public class ControlleurMediateur implements CollecteurEvenements{
             return "";
         return "Jeu {" +
                 "niveau: " + jeu.n +
-                "}\njoueur courant = " + jeu.getJoueurCourant() + "\n" +
-                jeu().enCours() +"\n";
+                "}\njoueur 1 = " + jeu.getJoueur1() +
+                "\njoueur 2 = " + jeu.getJoueur2() +
+                "\n jeu().enCours() +\n";
+
     }
 
     public void fixeJeu(Jeu j) {
