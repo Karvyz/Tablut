@@ -1,5 +1,6 @@
 package Modele;
 
+import Controlleur.IA_difficile_le_roi_c_ciao;
 import Patterns.Observable;
 import Structures.Pile;
 
@@ -24,6 +25,8 @@ public class Jeu extends Observable implements Serializable {
     public boolean test_annuler_refaire = false;
     private Coordonne DepartIA;
     private Coordonne ArriveIA;
+
+    private Coup aideIA;
 
     public Jeu() {
         setEnCours(false);
@@ -82,6 +85,7 @@ public class Jeu extends Observable implements Serializable {
      * Méthode en rapport avec les possibilités de jeu
      */
     public int jouer(Coup coup) {
+        setAideIA(null);
         this.coup_annule.empiler(this.n.clone());
         int i = n.deplace_pion(coup);
         if (!getJoueurCourant().estHumain()) {
@@ -113,6 +117,20 @@ public class Jeu extends Observable implements Serializable {
         //System.out.println(this);
         metAJour();
         return i;
+    }
+
+    public Coup getAideIA() {
+        return aideIA;
+    }
+
+    public void setAideIA(Coup aideIA) {
+        this.aideIA = aideIA;
+    }
+
+    public void solution() {
+        Coup aide = new IA_difficile_le_roi_c_ciao("", TypePion.ATTAQUANT, this, 50).meilleurCoup();
+        setAideIA(aide);
+        metAJour();
     }
 
     public void setCoordooneJouerIA(Coordonne depart, Coordonne arrive) {
@@ -158,6 +176,7 @@ public class Jeu extends Observable implements Serializable {
         joueurSuivant(); //La variable du jeu doit aussi être modifie
         metAJour();
         test_annuler_refaire = true;
+        setAideIA(null);
         System.out.println("Annulation effectué");
     }
 
@@ -186,6 +205,7 @@ public class Jeu extends Observable implements Serializable {
 
         metAJour();
         test_annuler_refaire = true;
+        setAideIA(null);
         System.out.println("Coup refait");
     }
 
@@ -311,4 +331,6 @@ public class Jeu extends Observable implements Serializable {
     public Jeu getJeu() {
         return this;
     }
+
+
 }

@@ -42,6 +42,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         ;
 
         pane.setDrawFleche(false); //N'importe quelle clic efface la fleche d'indication de l'IA
+        controleur.jeu().setAideIA(null);
         premier_clic = true;
 
         Pion caseClique = controleur.jeu().n.getPion(l, c);
