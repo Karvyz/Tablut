@@ -39,6 +39,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             return;
         }
 
+        ctrl.jeu().setAideIA(null);
         plateau.setDrawFleche(false); //N'importe quelle clic efface la fleche d'indication de l'IA
         premier_clic = true;
 

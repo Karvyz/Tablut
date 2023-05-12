@@ -2,7 +2,6 @@ package Modele;
 
 import Controlleur.IA_difficile_le_roi_c_ciao;
 import Patterns.Observable;
-import Structures.CoordonnePair;
 import Structures.Pile;
 
 import java.io.*;
@@ -22,8 +21,8 @@ public class Jeu extends Observable implements Serializable {
     public Pile coup_annule;
     public Pile coup_a_refaire;
 
-    public Stack<CoordonnePair> pileIA_annule ;
-    public Stack<CoordonnePair> pileIA_refaire ;
+    public Stack<Coup> pileIA_annule ;
+    public Stack<Coup> pileIA_refaire ;
 
     public ConfigurationJeu config;
 
@@ -97,7 +96,7 @@ public class Jeu extends Observable implements Serializable {
         int i = n.deplace_pion(coup);
         if (!getJoueurCourant().estHumain()) {
             setCoordooneJouerIA(coup.depart, coup.arrivee);
-            pileIA_annule.push(new CoordonnePair(coup.depart, coup.arrive));
+            pileIA_annule.push(new Coup(coup.depart, coup.arrivee));
         } else {
             setCoordooneJouerIA(null, null);
         }
@@ -181,14 +180,14 @@ public class Jeu extends Observable implements Serializable {
             n = restaure.clone();
 
             if(!pileIA_annule.isEmpty()){
-                CoordonnePair a_rempiler = pileIA_annule.pop(); //On supprime le coup joué
+                Coup a_rempiler = pileIA_annule.pop(); //On supprime le coup joué
                 pileIA_refaire.push(a_rempiler);
                 if(pileIA_annule.size() == 0){
                     setCoordooneJouerIA(null, null);
                 }
                 else{
-                    CoordonnePair sommet = pileIA_annule.peek(); //On récupère le coup a affiche
-                    setCoordooneJouerIA(sommet.getdepart(), sommet.getarrive());
+                    Coup sommet = pileIA_annule.peek(); //On récupère le coup a affiche
+                    setCoordooneJouerIA(sommet.depart, sommet.arrivee);
                 }
             }
 
@@ -221,9 +220,9 @@ public class Jeu extends Observable implements Serializable {
             coup_annule.empiler(n.clone());
             a_refaire = coup_a_refaire.depiler();
             n = a_refaire.clone();
-            CoordonnePair sommet = pileIA_refaire.pop();
+            Coup sommet = pileIA_refaire.pop();
             pileIA_annule.push(sommet);
-            setCoordooneJouerIA(sommet.getdepart(), sommet.getarrive());
+            setCoordooneJouerIA(sommet.depart, sommet.arrivee);
             joueurSuivant();
 
         }
