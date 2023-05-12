@@ -144,7 +144,7 @@ public class CPlateau extends JPanel implements Observateur {
 
                     if (i == l && c == j) {
                         //TODO mettre image des points
-                        g2d.drawImage(getImage(), largeurCase, y + 4, largeurCase - 4, hauteurCase - 4, this);
+                        g2d.drawImage(getImage(), x + 4, y + 4, largeurCase - 4, hauteurCase - 4, this);
                     }
                     x += largeurCase + 1;
                 }
