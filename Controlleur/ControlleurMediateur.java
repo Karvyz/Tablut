@@ -121,7 +121,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
 		}
 
 		if (jeu.enCours()) {
-			if (jeu == null || jeu().partieTerminee()) {
+			if (jeu == null) {
 				return;
 			}
 

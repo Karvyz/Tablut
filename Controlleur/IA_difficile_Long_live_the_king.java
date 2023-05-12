@@ -6,12 +6,12 @@ import Modele.TypeJoueur;
 import Modele.TypePion;
 
 public class IA_difficile_Long_live_the_king extends IA_difficile{
-    public IA_difficile_Long_live_the_king(String nom, TypePion roleJ, Jeu j) {
-        super(nom, roleJ, j);
+    public IA_difficile_Long_live_the_king(String nom, TypePion roleJ, Jeu j, long timeLimitMs) {
+        super(nom, roleJ, j, timeLimitMs);
     }
 
     @Override
-    public int evaluation(Niveau n) {
+    public float evaluation(Niveau n) {
         int x = 0, y = 0;
         int attaquants = 0, defenseurs = 0, eval = 0, check = 0, check2 = 0;
         for (int i = 0; i < n.getTaille(); i++) {

@@ -3,115 +3,142 @@ package Controlleur;
 import Modele.*;
 
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 import java.util.Random;
 
 import static java.lang.System.exit;
 
 public abstract class IA_difficile extends IA{
 
-    int nevaluation = 0;
-    int bypass1 = 0;
-    int bypass2 = 0;
-    static int MAX_DEPTH = 3;
+    TypePion monType;
+    TypePion typeAdversaire;
+    PriorityQueue<Etat> etats;
+    long timeLimitMs;
+    int maxDepth;
 
-    public IA_difficile(String nom, TypePion roleJ, Jeu j) {
-        super(nom, TypeJoueur.IA_DIFFICILE, roleJ, j);
+    class Etat implements Comparable<Etat> {
+        Niveau niveau;
+        float evaluation;
+        Coup coupAJouer;
+        int depth;
+
+        Etat(Niveau niveau, float evaluation, Coup coupAJouer, int depth) {
+            this.niveau = niveau;
+            this.evaluation = evaluation;
+            this.coupAJouer = coupAJouer;
+            this.depth = depth;
+        }
+        @Override
+        public int compareTo(Etat o) {
+            float result = o.evaluation - evaluation;
+            if (result > 0)
+                return 1;
+            if (result == 0)
+                return 0;
+            return -1;
+        }
+    }
+
+    class Coup{
+        Coordonne depart;
+        Coordonne arrivee;
+
+        Coup(Coordonne depart, Coordonne arrivee) {
+            this.depart = depart;
+            this.arrivee = arrivee;
+        }
+    }
+
+    public IA_difficile(String nom, TypePion roleJ, Jeu j, long timeLimitMs) {
+        super(nom, TypeJoueur.IA_MOYEN, roleJ, j);
+        this.timeLimitMs = timeLimitMs;
     }
 
     @Override
-    public int joue() {
-        nevaluation = 0;
-        bypass1 = 0;
-        bypass2 = 0;
-        long l = System.currentTimeMillis();
-        //Code de l'IA renvoyer vrai une fois que le coup est joué
-        TypePion current_type = ((jeu.get_num_JoueurCourant()) % 2 ) == 0 ? TypePion.ATTAQUANT : TypePion.DEFENSEUR;
-        ArrayList<Pion> pions = jeu.n.getPions(current_type);
-        int valeur_retour = Integer.MIN_VALUE;
-        ArrayList<Coordonne> departs = new ArrayList<>();
-        ArrayList<Coordonne> arrivees = new ArrayList<>();
-        int nb_branches = 0;
-        for (Pion pion : pions) {
-            ArrayList<Coordonne> deplacements = pion.getDeplacement(jeu.n.plateau);
+    int joue() {
+        long endtime = System.currentTimeMillis() + timeLimitMs;
+        int nb_evals = 0;
+        etats = new PriorityQueue<>();
+        if (((jeu.get_num_JoueurCourant()) % 2 ) == 0) {
+            monType = TypePion.ATTAQUANT;
+            typeAdversaire = TypePion.DEFENSEUR;
+        }
+        else {
+            monType = TypePion.DEFENSEUR;
+            typeAdversaire = TypePion.ATTAQUANT;
+        }
 
+        etats.add(new Etat(jeu.n.clone(), 0, null, 0));
+        while (System.currentTimeMillis() < endtime) {
+            Etat e = etats.poll();
+            Coup overide = coups(e);
+            nb_evals++;
+            if (overide != null) {
+//                System.out.println("fini en avance");
+//                System.out.println("nb evals : " + nb_evals);
+                return jeu.jouer(overide.depart, overide.arrivee);
+            }
+
+        }
+        Etat meilleurCoup = etats.poll();
+//        System.out.println("fini");
+//        System.out.println("nb evals : " + nb_evals);
+//        System.out.println("max_depth : " + meilleurCoup.depth);
+        return jeu.jouer(meilleurCoup.coupAJouer.depart, meilleurCoup.coupAJouer.arrivee);
+    }
+
+    Coup coups(Etat e) {
+        if (e.niveau == null) {
+            System.out.println("niveau");
+            exit(1);
+        }
+        if (maxDepth < e.depth + 2)
+            maxDepth = e.depth + 2;
+        ArrayList<Pion> pions = e.niveau.getPions(monType);
+        for (Pion pion : pions) {
+            ArrayList<Coordonne> deplacements = pion.getDeplacement(e.niveau.plateau);
             for (int i = 0; i < deplacements.size(); i++) {
-                nb_branches++;
-                Niveau clone = jeu.n.clone();
-                int retour = clone.deplace_pion(pion.getCoordonne(), deplacements.get(i));
-                int tmp = analyse_recursive(clone, 1, Integer.MAX_VALUE);
-                if (retour != 0)
-                    tmp = Integer.MAX_VALUE;
-                if (tmp >= valeur_retour) {
-                    if (tmp > valeur_retour) {
-                        departs.clear();
-                        arrivees.clear();
-                        valeur_retour = tmp;
-//                        System.out.println("changement valeur retour : " + valeur_retour);
-
-                    }
-                    departs.add(pion.getCoordonne());
-                    arrivees.add(deplacements.get(i));
+                Coup coupAJouer = e.coupAJouer;
+                if (coupAJouer == null)
+                    coupAJouer = new Coup(pion.getCoordonne(), deplacements.get(i));
+                Niveau clone = e.niveau.clone();
+                int val_depl = clone.deplace_pion(pion.getCoordonne(), deplacements.get(i));
+                if (val_depl > 0) {
+                    if (val_depl < 3)
+                        return coupAJouer;
+                    continue;
                 }
+                reponse(clone, coupAJouer, e.depth + 2);
             }
         }
-        int index = new Random().nextInt(departs.size());
-        Coordonne pion_depart = departs.get(index);
-        Coordonne pion_arrivee = arrivees.get(index);
-//        System.out.println(nb_branches + " branches");
-//        System.out.println(nevaluation + " evalutations en " + (System.currentTimeMillis() -l ) + "ms");
-//        System.out.println(nevaluation);
-        return jeu.jouer(pion_depart, pion_arrivee);
-
+        return null;
     }
 
-    private int analyse_recursive(Niveau n, int depth, int alphaBetaLimit) {
-
-        TypePion current_type = ((jeu.get_num_JoueurCourant() + depth) % 2 ) == 0 ? TypePion.ATTAQUANT : TypePion.DEFENSEUR;
-
-        ArrayList<Pion> pions = n.getPions(current_type);
-
-        int valeur_retour = Integer.MAX_VALUE;
-        if (depth % 2 == 0)
-            valeur_retour = Integer.MIN_VALUE;
+    void reponse(Niveau niveau, Coup coupAJouer, int depth) {
+        ArrayList<Pion> pions = niveau.getPions(typeAdversaire);
+        Etat reponseMinimale = new Etat(null, Integer.MAX_VALUE, null, depth);
         for (Pion pion : pions) {
-            ArrayList<Coordonne> deplacements= pion.getDeplacement(n.plateau);
-            for (Coordonne deplacement : deplacements) {
-                Niveau clone = n.clone();
-                int valeur_deplacement = clone.deplace_pion(pion.getCoordonne(), deplacement);
-                if (valeur_deplacement != 0) {
-                    if (depth % 2 == 0)
-                        return Integer.MAX_VALUE - depth;
-                    return Integer.MIN_VALUE + depth;
+            ArrayList<Coordonne> deplacements = pion.getDeplacement(niveau.plateau);
+            for (int i = 0; i < deplacements.size(); i++) {
+                Niveau clone = niveau.clone();
+                float eval = 0;
+                int valeur = clone.deplace_pion(pion.getCoordonne(), deplacements.get(i));
+                if (valeur == 1 || valeur == 2) {
+                    etats.add(new Etat(clone, Integer.MIN_VALUE, coupAJouer, depth));
+                    return;
                 }
-                if (depth == MAX_DEPTH - 1) {
-                    nevaluation++;
-                    return evaluation(clone);
-                }
-                else {
-                    int tmp = analyse_recursive(clone, depth + 1, valeur_retour);
-                    if (depth % 2 == 0) {
-                        if (tmp < alphaBetaLimit) {
-                            bypass1++;
-                            return tmp;
-                        }
-                        if (tmp > valeur_retour){
-                            valeur_retour = tmp;
-                        }
-                    }
-                    else {
-                        if (tmp > alphaBetaLimit) {
-                            bypass2++;
-                            return tmp;
-                        }
-                        if (tmp < valeur_retour){
-                            valeur_retour = tmp;
-                        }
-                    }
+                if (valeur != 3)
+                    eval = evaluation(clone);
+                if (eval < reponseMinimale.evaluation) {
+                    reponseMinimale = new Etat(clone, eval, coupAJouer, depth);
                 }
             }
         }
-        return  valeur_retour;
+        if (reponseMinimale.niveau == null)
+            return;
+        reponseMinimale.evaluation -= depth * 0.1;
+        etats.add(reponseMinimale);
     }
 
-    public abstract int evaluation(Niveau n);
+    public abstract float evaluation(Niveau n);
 }

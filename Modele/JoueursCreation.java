@@ -12,7 +12,7 @@ public class JoueursCreation {
             case IA_MOYEN:
                 return new Controlleur.IA_moyen(nom, roleJ, jeu);
             case IA_DIFFICILE:
-                return new Controlleur.IA_difficile_le_roi_c_ciao(nom, roleJ, jeu);
+                return new Controlleur.IA_difficile_le_roi_c_ciao(nom, roleJ, jeu, 1000);
         }
         return null;
     }

@@ -105,6 +105,9 @@ public class TournoisControlleur {
         }
         victoires.get(k).add(nbVictoireJ1);
         defaites.get(k).add(nbVictoireJ2);
+        System.out.println("Attaquant J1 : " + nbVictoireJ1);
+        System.out.println("Defenseur J2 : " + nbVictoireJ2);
+        System.out.println("Egalités : " + nbEgalites);
     }
 
 
