@@ -332,8 +332,8 @@ public class Jeu extends Observable implements Serializable {
         this.pileIA_annule =  new Stack<>();
         this.pileIA_refaire =  new Stack<>();
         this.joueurCourant = 0;
-        //this.joueurs[0] = null;
-        //this.joueurs[1] = null;
+        this.joueurs[0] = null;//TODO a revoir, on doit pas tout le temps mettre a null
+        this.joueurs[1] = null;
         this.vainqueur = null;
         this.enCours = false;
         /*this.joueurs[0].fixeJeuJoueur(this);
