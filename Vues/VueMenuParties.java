@@ -71,6 +71,36 @@ public class VueMenuParties extends JPanel {
 
         buttonPanel.add(Box.createRigidArea(new Dimension(10, 0))); // Ajouter un espacement entre les boutons
 
+        JButton deleteButton = new JButton("Supprimer la partie");
+        deleteButton.setMaximumSize(new Dimension(150, 30));
+
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedFile = fileList.getSelectedValue();
+                if (selectedFile != null) {
+                    // Affiche une boîte de dialogue de confirmation
+                    int response = JOptionPane.showConfirmDialog(null,
+                            "Êtes-vous sûr de vouloir supprimer "+selectedFile+" ?",
+                            "Confirmer la suppression",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE);
+                    if (response == JOptionPane.YES_OPTION) {
+                        // Si l'utilisateur clique sur Oui, supprime le fichier
+                        File file = new File("Resources/save/" + selectedFile);
+                        if (file.delete()) {
+                            // Le fichier a été supprimé avec succès, rafraîchir la liste
+                            refreshFileList();
+                        } else {
+                            // Une erreur s'est produite lors de la suppression du fichier
+                            System.out.println("Une erreur s'est produite lors de la suppression du fichier.");
+                        }
+                    }
+                }
+            }
+        });
+        buttonPanel.add(deleteButton);
+
         backButton = new JButton("Retour");
         backButton.addActionListener(new ActionListener() {
             @Override

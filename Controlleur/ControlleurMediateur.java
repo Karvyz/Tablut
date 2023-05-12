@@ -95,7 +95,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
             FileOutputStream fileOut = new FileOutputStream(fichier);
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
             System.out.println("Sauvegarde du jeu dans le fichier: " + fichier);
-            Data_Niveau data_niveau = new Data_Niveau(jeu.config, jeu.n, jeu.coup_annule, jeu.coup_a_refaire, jeu.get_num_JoueurCourant(), jeu.joueurs[0], jeu.joueurs[1], jeu.enCours());
+            Data_Niveau data_niveau = new Data_Niveau(jeu.config, jeu.n, jeu.coup_annule, jeu.coup_a_refaire, jeu.pileIA_annule, jeu.pileIA_refaire, jeu.get_num_JoueurCourant(), jeu.joueurs[0], jeu.joueurs[1], jeu.enCours());
 
             objectOut.writeObject(data_niveau);
             objectOut.close();
@@ -120,6 +120,8 @@ public class ControlleurMediateur implements CollecteurEvenements{
             jeu.n = data_niveau.niveau;
             jeu.coup_annule = data_niveau.coup_annule;
             jeu.coup_a_refaire = data_niveau.coup_a_refaire;
+            jeu.pileIA_annule = data_niveau.pileIA_annule;
+            jeu.pileIA_refaire = data_niveau.pileIA_refaire;
             jeu.set_num_JoueurCourant(data_niveau.get_JC());
             jeu.joueurs[0] = data_niveau.attaquant;
             jeu.joueurs[1] = data_niveau.defenseur;

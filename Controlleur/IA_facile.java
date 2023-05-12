@@ -23,6 +23,6 @@ public class IA_facile extends IA {
             deplacements = pion.getDeplacement(jeu.n.plateau);
 
         }while (deplacements.size() == 0);
-        return jeu.jouer(pion.getCoordonne(), deplacements.get(ThreadLocalRandom.current().nextInt(0, deplacements.size())));
+        return jeu.jouer(new Coup(pion.getCoordonne(), deplacements.get(ThreadLocalRandom.current().nextInt(0, deplacements.size()))));
     }
 }

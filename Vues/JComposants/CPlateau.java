@@ -1,9 +1,6 @@
 package Vues.JComposants;
 
-import Modele.Coordonne;
-import Modele.Jeu;
-import Modele.Niveau;
-import Modele.Pion;
+import Modele.*;
 import Patterns.Observateur;
 import Vues.AdaptateurSouris;
 import Vues.AdaptateurSouris2;
@@ -53,6 +50,19 @@ public class CPlateau extends JPanel implements Observateur {
         drawPlateau(g2d);
         drawContenu(g2d);
         drawMouvIA(g2d);
+        if(controleur.jeu().getAideIA() != null){
+            Coup aide = controleur.jeu().getAideIA();
+            int l_dep = aide.depart.getX();
+            int c_dep = aide.depart.getY();
+            int l_arr = aide.arrivee.getX();
+            int c_arr = aide.arrivee.getY();
+
+            g2d.setColor(Color.green);
+            g2d.fillRect((largeurCase) * c_dep + 5, (hauteurCase) * l_dep + 5, largeurCase - 6, hauteurCase - 6);
+
+            g2d.fillRect((largeurCase) * c_arr + 5, (hauteurCase) * l_arr + 5, largeurCase - 6, hauteurCase - 6);
+            drawContenu(g2d);
+        }
 
     }
 
@@ -63,7 +73,7 @@ public class CPlateau extends JPanel implements Observateur {
             setDestinationsPossibles(null);
             setPionEnDeplacement(null);
             setDrawFleche(false);
-            controleur.jeu().setCoordooneJouerIA(null, null);
+            //controleur.jeu().setCoordooneJouerIA(null, null);
         }
         controleur.jeu().setAnnuler_refaire(false);
     }
@@ -173,6 +183,11 @@ public class CPlateau extends JPanel implements Observateur {
             drawDestination(g2d);
             drawDeplacement(g2d);
             drawSurbrillance(g2d);
+
+            //System.out.println("here");
+            if ((controleur.jeu().getCoordooneDepartIA() != null)){//TODO delete
+                //System.out.println(controleur.jeu().getCoordooneDepartIA() +","+ getDrawFleche());
+            }
 
             if ((controleur.jeu().getCoordooneDepartIA() != null && getDrawFleche() == true)) {
                 Coordonne depart = controleur.jeu().getCoordooneDepartIA();

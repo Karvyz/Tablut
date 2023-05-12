@@ -348,7 +348,7 @@ class VueJeu extends JPanel {
         };
 
         controls[0].addActionListener(e -> controleur.jeu().annuler());
-        //controls[1].addActionListener(e -> controleur.jeu().solution());
+        controls[1].addActionListener(e -> controleur.jeu().solution());
         controls[2].addActionListener(e -> controleur.jeu().refaire());
 
         for (JButton button : controls) {
