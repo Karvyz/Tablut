@@ -53,7 +53,7 @@ class VueJeu extends JPanel {
         addMain(contenu);
         addBottom(contenu);
 
-        addEndGame();
+        //addEndGame();
         add(contenu);
         //add(background);
     }
@@ -175,12 +175,12 @@ class VueJeu extends JPanel {
         topPanel.setEnabled(false);
         topPanel.setFocusable(false);
         topPanel.setVisible(false);
-        endGamePanel.setVisible(true);
         endGamePanel.setEnabled(true);
         endGamePanel.setFocusable(true);
         mainPanel.setEnabled(false);
         mainPanel.setFocusable(false);
-        //mainPanel.setVisible(false);
+        mainPanel.setVisible(false);
+        endGamePanel.setVisible(true);
     }
 
     private void addTop(JPanel contenu) {
