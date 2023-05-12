@@ -278,23 +278,22 @@ public class Niveau implements Serializable, Cloneable {
 
 
     //int = 0 coup joué , 1 noir on gagné, 2 blanc on gagné
-    public int deplace_pion(Coordonne depart, Coordonne dst) {
+    public int deplace_pion(Coup coup) {
+        Pion p = plateau[coup.depart.x][coup.depart.y];
+        setVide(coup.depart.x, coup.depart.y);
+        plateau[coup.arrivee.x][coup.arrivee.y] = p;
 
-        Pion p = plateau[depart.x][depart.y];
-        setVide(depart.x, depart.y);
-        plateau[dst.x][dst.y] = p;
-
-        p.setCoordonne(dst);
+        p.setCoordonne(coup.arrivee);
         if (!PionSeSuicide(p)) {
             AMangerPion(p);
         }
 
         if (estAttaquant(p)) {
-            if (AMangerRoi(dst))
+            if (AMangerRoi(coup.arrivee))
                 return 1;
         }
         if (estRoi(p)) {
-            if (estForteresse(dst.x, dst.y) || (estContreBord(dst.x, dst.y) && config.isWinTousCote()))
+            if (estForteresse(coup.arrivee.x, coup.arrivee.y) || (estContreBord(coup.arrivee.x, coup.arrivee.y) && config.isWinTousCote()))
                 return 2;
         }
         if (a_boucle()) {

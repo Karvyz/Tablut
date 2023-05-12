@@ -81,15 +81,15 @@ public class Jeu extends Observable implements Serializable {
     /**
      * Méthode en rapport avec les possibilités de jeu
      */
-    public int jouer(Coordonne depart, Coordonne arrive) {
+    public int jouer(Coup coup) {
         this.coup_annule.empiler(this.n.clone());
-        int i = n.deplace_pion(depart, arrive);
+        int i = n.deplace_pion(coup);
         if (!getJoueurCourant().estHumain()) {
-            setCoordooneJouerIA(depart, arrive);
+            setCoordooneJouerIA(coup.depart, coup.arrivee);
         } else {
             setCoordooneJouerIA(null, null);
         }
-        System.out.println("Déplacement du pion de (" + depart.getX() + "," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() + ")");
+        System.out.println("Déplacement du pion de (" + coup.depart.getX() + "," + coup.depart.getY() + ") en (" + coup.arrivee.getX() + "," + coup.arrivee.getY() + ")");
         if (i > 0) {
             if (i == 1) {
                 System.out.println("PARTIE FINI CAR ROI CAPTURE");
