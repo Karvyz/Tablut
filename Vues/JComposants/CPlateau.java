@@ -49,6 +49,9 @@ public class CPlateau extends JPanel implements Observateur {
         test_annuler_refaire();
         drawPlateau(g2d);
         drawContenu(g2d);
+        if(controleur.jeu().debutPartie()){
+            setDrawFleche1(false);
+        }
         drawMouvIA(g2d);
         if(controleur.jeu().getAideIA() != null){
             Coup aide = controleur.jeu().getAideIA();
