@@ -1,5 +1,6 @@
 package Modele;
 
+import Controlleur.IA_difficile_le_roi_c_ciao;
 import Patterns.Observable;
 import Structures.CoordonnePair;
 import Structures.Pile;
@@ -29,6 +30,8 @@ public class Jeu extends Observable implements Serializable {
     public boolean test_annuler_refaire = false;
     private Coordonne DepartIA;
     private Coordonne ArriveIA;
+
+    private Coup aideIA;
 
     public Jeu() {
         setEnCours(false);
@@ -76,6 +79,7 @@ public class Jeu extends Observable implements Serializable {
         if (!partieTerminee()) {
             return null;
         }
+        // TODO : retourner le joueur gagnant
         return vainqueur;
     }
 
@@ -87,16 +91,17 @@ public class Jeu extends Observable implements Serializable {
     /**
      * Méthode en rapport avec les possibilités de jeu
      */
-    public int jouer(Coordonne depart, Coordonne arrive) {
+    public int jouer(Coup coup) {
+        setAideIA(null);
         this.coup_annule.empiler(this.n.clone());
-        int i = n.deplace_pion(depart, arrive);
+        int i = n.deplace_pion(coup);
         if (!getJoueurCourant().estHumain()) {
-            setCoordooneJouerIA(depart, arrive);
-            pileIA_annule.push(new CoordonnePair(depart, arrive));
+            setCoordooneJouerIA(coup.depart, coup.arrivee);
+            pileIA_annule.push(new CoordonnePair(coup.depart, coup.arrive));
         } else {
             setCoordooneJouerIA(null, null);
         }
-        System.out.println("Déplacement du pion de (" + depart.getX() + "," + depart.getY() + ") en (" + arrive.getX() + "," + arrive.getY() + ")");
+        System.out.println("Déplacement du pion de (" + coup.depart.getX() + "," + coup.depart.getY() + ") en (" + coup.arrivee.getX() + "," + coup.arrivee.getY() + ")");
         if (i > 0) {
             if (i == 1) {
                 System.out.println("PARTIE FINI CAR ROI CAPTURE");
@@ -106,6 +111,7 @@ public class Jeu extends Observable implements Serializable {
                 vainqueur = joueurs[1];
             } else //TODO plus tard
                 System.out.println("EGALITE");
+            //System.out.println(n); //Affichez le jeu en fin de partie
             setEnCours(false);
         }
 
@@ -114,9 +120,25 @@ public class Jeu extends Observable implements Serializable {
             this.coup_a_refaire.clear();
             pileIA_refaire.clear();
         }
+        //System.out.println(this);
         joueurSuivant();
+        //System.out.println(this);
         metAJour();
         return i;
+    }
+
+    public Coup getAideIA() {
+        return aideIA;
+    }
+
+    public void setAideIA(Coup aideIA) {
+        this.aideIA = aideIA;
+    }
+
+    public void solution() {
+        Coup aide = new IA_difficile_le_roi_c_ciao("", TypePion.ATTAQUANT, this, 50).meilleurCoup();
+        setAideIA(aide);
+        metAJour();
     }
 
     public void setCoordooneJouerIA(Coordonne depart, Coordonne arrive) {
@@ -176,6 +198,7 @@ public class Jeu extends Observable implements Serializable {
         joueurSuivant(); //La variable du jeu doit aussi être modifie
         metAJour();
         test_annuler_refaire = true;
+        setAideIA(null);
         System.out.println("Annulation effectué");
     }
 
@@ -207,6 +230,7 @@ public class Jeu extends Observable implements Serializable {
 
         metAJour();
         test_annuler_refaire = true;
+        setAideIA(null);
         System.out.println("Coup refait");
     }
 

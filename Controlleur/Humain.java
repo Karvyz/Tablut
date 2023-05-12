@@ -16,7 +16,7 @@ public class Humain extends Joueurs {
         Pion depart = jeu.n.getPion(src.getX(), src.getY()); //Recupère le pion
         if (jeu.n.check_clic_selection_pion(depart, jeu.get_num_JoueurCourant())) { //Vérifie que le Pions choisit est bien de notre Type, joueur 0 implique de jouer les Attaquants et joueur 1 implique de jouer Defenseurs et Roi
             if (jeu.n.check_clic_selection_dest(depart, dst.getX(), dst.getY())) { //On vérifie que la case d'arrive est accessible
-                jeu.jouer(src, dst);
+                jeu.jouer(new Coup(src, dst));
                 return true;
             } else
                 System.out.println("Déplacement impossible");
