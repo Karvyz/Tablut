@@ -1,6 +1,8 @@
 package Modele;
 
-public enum TypePion {
+import java.io.Serializable;
+
+public enum TypePion implements Serializable {
     ATTAQUANT,
     DEFENSEUR,
     ROI

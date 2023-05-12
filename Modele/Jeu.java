@@ -49,7 +49,12 @@ public class Jeu extends Observable implements Serializable {
         } else if (joueurs[1] == null && roleJ == TypePion.DEFENSEUR) {
             joueurs[1] = JoueursCreation.createJoueur(nom, type, roleJ, this);
 
-        } else {
+        }/*else if(joueurs[0] != null && roleJ == TypePion.ATTAQUANT){
+            joueurs[0] = JoueursCreation.createJoueur(joueurs[0].nom(),joueurs[0].type(),joueurs[0].RoleJoueur(), this);
+        } else if (joueurs[1] != null && roleJ == TypePion.DEFENSEUR) {
+            joueurs[1] = JoueursCreation.createJoueur(joueurs[1].nom(), joueurs[1].type(), joueurs[1].RoleJoueur(), this);
+
+        } */else {
             throw new IllegalStateException("Impossible d'ajouter un nouveau joueur : tous les joueurs ont déjà été ajoutés");
         }
     }
@@ -71,7 +76,6 @@ public class Jeu extends Observable implements Serializable {
         this.pileIA_refaire =  new Stack<>();
         setDebutPartie(true);
         setEnCours(true);
-
     }
 
     /**
@@ -328,10 +332,12 @@ public class Jeu extends Observable implements Serializable {
         this.pileIA_annule =  new Stack<>();
         this.pileIA_refaire =  new Stack<>();
         this.joueurCourant = 0;
-        this.joueurs[0] = null;
-        this.joueurs[1] = null;
+        //this.joueurs[0] = null;
+        //this.joueurs[1] = null;
         this.vainqueur = null;
         this.enCours = false;
+        /*this.joueurs[0].fixeJeuJoueur(this);
+        this.joueurs[1].fixeJeuJoueur(this);*/
     }
 
     public String toString() {

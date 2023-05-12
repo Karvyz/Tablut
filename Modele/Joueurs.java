@@ -58,6 +58,8 @@ public class Joueurs implements Serializable, Cloneable {
         return type;
     }
 
+    public TypePion RoleJoueur() { return roleJ;}
+
     public void fixeJeuJoueur(Jeu j){
         this.jeu = j;
     }

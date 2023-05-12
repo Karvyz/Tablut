@@ -1,5 +1,8 @@
 package Modele;
-public class Coup {
+
+import java.io.Serializable;
+
+public class Coup implements Serializable {
     public Coordonne depart;
     public Coordonne arrivee;
     public Coup(Coordonne depart, Coordonne arrivee) {

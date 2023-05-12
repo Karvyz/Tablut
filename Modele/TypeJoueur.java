@@ -1,6 +1,8 @@
 package Modele;
 
-public enum TypeJoueur {
+import java.io.Serializable;
+
+public enum TypeJoueur implements Serializable {
     HUMAIN("Humain", 0),
     IA_FACILE("IA Facile", 1),
     IA_MOYEN("IA Moyen", 2),
