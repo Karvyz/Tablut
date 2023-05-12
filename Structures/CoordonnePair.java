@@ -2,7 +2,9 @@ package Structures;
 
 import Modele.Coordonne;
 
-public class CoordonnePair {
+import java.io.Serializable;
+
+public class CoordonnePair implements Serializable {
     private Coordonne depart;
     private Coordonne arrive;
 
