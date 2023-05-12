@@ -63,15 +63,15 @@ public class Niveau implements Serializable, Cloneable {
                 "    A    ",
                 "   AAA   "};
 
-//        String[] tab = {"         ",
-//                        "   R     ",
-//                        "         ",
-//                        "         ",
-//                        "         ",
-//                        "         ",
-//                        "         ",
-//                        "A        ",
-//                        "         "};
+        /*String[] tab = {" RA      ",
+                        "A A      ",
+                        " A       ",
+                        "         ",
+                        "         ",
+                        "         ",
+                        "         ",
+                        "A        ",
+                        "         "};*/
 
         for (int i = 0; i < taille; i++) {
             for (int j = 0; j < taille; j++) {

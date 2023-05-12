@@ -51,5 +51,6 @@ public interface CollecteurEvenements {
 
     void fin();
 
+    boolean getStop();
 }
 

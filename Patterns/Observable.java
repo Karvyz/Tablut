@@ -34,16 +34,26 @@ package Patterns;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 
 public class Observable {
 	List<Observateur> observateurs;
 
 	public Observable() {
-		observateurs = new ArrayList<>();
+		observateurs = new CopyOnWriteArrayList<>();
 	}
 
 	public void ajouteObservateur(Observateur o) {
 		observateurs.add(o);
+	}
+
+	public void supprimeObservateur(Observateur o) {
+		observateurs.remove(o);
+	}
+
+	public void supprimeTousObservateurs() {
+		observateurs.clear();
 	}
 
 	public void metAJour() {
@@ -56,3 +66,4 @@ public class Observable {
 		}
 	}
 }
+

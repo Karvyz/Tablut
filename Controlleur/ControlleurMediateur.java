@@ -11,14 +11,14 @@ import java.util.Random;
 public class ControlleurMediateur implements CollecteurEvenements{
 
     Vues vues;
-    Animation animIA1, animIA2;
+
     Animation animDemarrage;
 
     public Jeu jeu;
     final int lenteurAttente = 50;
     int decompte;
-
     private boolean pionSelec = false;
+    public boolean Stop;
 
 
     public ControlleurMediateur(Jeu j) {
@@ -45,7 +45,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
     }
 
     public void fin() {
-        jeu = null;
+        Stop = true;
     }
 
     /**
@@ -55,14 +55,18 @@ public class ControlleurMediateur implements CollecteurEvenements{
     public void nouvellePartie(String nomJ1, TypeJoueur typeJ1, TypePion roleJ1, String nomJ2, TypeJoueur typeJ2, TypePion roleJ2) {
         verifierMediateurVues("Impossible de créer une nouvelle partie");
         System.out.println("Type des joueurs choisis pour la partie J0: " + typeJ1 + ", J1: " + typeJ2);
+        jeu.supprimeTousObservateurs();
         jeu.nouveauJoueur(nomJ1, typeJ1, roleJ1); //Initialisation des joueurs
         jeu.nouveauJoueur(nomJ2, typeJ2, roleJ2);
         jeu.nouvellePartie();
         vues.nouvellePartie();
+        Stop = false;
+
     }
 
     @Override
     public void nouvelleQuickPartie() {
+        jeu.supprimeTousObservateurs();
         Random rand = new Random();
         int randomValue = rand.nextInt(2);
         if (randomValue == 0) {
@@ -75,6 +79,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
         }
         jeu.nouvellePartie();
         vues.nouvellePartie();
+        Stop = false;
     }
 
     @Override
@@ -83,11 +88,13 @@ public class ControlleurMediateur implements CollecteurEvenements{
         jeu.nouvellePartie();
         vues.nouvellePartie();
         afficherJeu();
+        Stop = false;
     }
 
     public void restaurePartie() {
         vues.restaurePartie();
         jeu.setEnCours(true);
+        Stop = false;
     }
 
     public boolean sauvegarderPartie(String fichier) {
@@ -221,8 +228,12 @@ public class ControlleurMediateur implements CollecteurEvenements{
                 System.out.println("Le joueur blanc a gagné car l'attaquant n'a plus de pion");
             }
             //TODO ici l'IA joue instanténément donc problème pour annuler coup en IA vs Humain
-            else if (jeu.joueurs[jeu.get_num_JoueurCourant()].tempsEcoule()) //Un humain renvoi tjr false, une IA renvoi vrai lorsquelle a joué(jeu effectué dans tempsEcoule())
+            else if (jeu.joueurs[jeu.get_num_JoueurCourant()].tempsEcoule()) { //Un humain renvoi tjr false, une IA renvoi vrai lorsquelle a joué(jeu effectué dans tempsEcoule())
+                if(Stop == true){
+                    return;
+                }
                 changeJoueur();
+            }
             else if (decompte == 0) {
                 if (jeu.joueurs[jeu.get_num_JoueurCourant()].estHumain() && jeu.joueurs[jeu.get_num_JoueurCourant()].aPionsNoirs())
                     System.out.println("C'est a vous de jouer : L'ATTAQUANT ");
@@ -307,5 +318,8 @@ public class ControlleurMediateur implements CollecteurEvenements{
         vues.afficherJeu();
     }
 
+    public boolean getStop(){
+        return Stop;
+    }
 
 }
