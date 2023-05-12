@@ -14,7 +14,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
     Animation animIA1, animIA2;
     Animation animDemarrage;
 
-    Jeu jeu;
+    public Jeu jeu;
     final int lenteurAttente = 50;
     int decompte;
 
@@ -26,6 +26,8 @@ public class ControlleurMediateur implements CollecteurEvenements{
     }
 
     public String toString() {
+        if(jeu == null)
+            return "";
         return "Jeu {" +
                 "niveau: " + jeu.n +
                 "}\njoueur courant = " + jeu.getJoueurCourant() + "\n" +
@@ -40,6 +42,10 @@ public class ControlleurMediateur implements CollecteurEvenements{
     public Jeu jeu() {
         verifierJeu("Impossible de renvoyer un jeu");
         return jeu;
+    }
+
+    public void fin() {
+        jeu = null;
     }
 
     /**
@@ -68,7 +74,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
 
         }
         jeu.nouvellePartie();
-        ;
         vues.nouvellePartie();
     }
 
@@ -78,8 +83,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
         jeu.nouvellePartie();
         vues.nouvellePartie();
         afficherJeu();
-
-
     }
 
     public void restaurePartie() {

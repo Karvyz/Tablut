@@ -28,7 +28,8 @@ class VueJeu extends JPanel {
     //private final JPanel backgroundTop, backgroundBottom;
     private JFrame topFrame;
 
-    private JPanel mainPanel, endGamePanel, topPanel;
+    private JPanel mainPanel, topPanel;
+    private JDialog endGameDialog;
     Image background;
 
     VueJeu(CollecteurEvenements c) {
@@ -38,9 +39,6 @@ class VueJeu extends JPanel {
         j2 = new InfoJoueur(false);
 
         setLayout(new OverlayLayout(this));
-
-        // Fin partie
-        JPanel endGamePanel = new JPanel();
 
         // Chargement des assets
         background = Imager.getImageBuffer("assets/Mur.png");
@@ -53,16 +51,26 @@ class VueJeu extends JPanel {
         addMain(contenu);
         addBottom(contenu);
 
-        addEndGame();
         add(contenu);
-        //add(background);
+    }
+
+    private JDialog EndGameDialog() {
+        JDialog dialog = new JDialog(JOptionPane.getRootFrame(), "Fin de partie", true);
+        dialog.setResizable(false);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setSize(800, 200);
+        dialog.setLocationRelativeTo(null);
+        endGameText = new JLabel("");
+        return dialog;
     }
 
     private void addEndGame() {
-        endGamePanel = new JPanel(new GridBagLayout());
-        endGamePanel.setOpaque(true);
-        //endGamePanel.setOpaque(false);
-        endGamePanel.setVisible(false);
+        if (endGameDialog == null) {
+            endGameDialog = EndGameDialog();
+            endGameDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            endGameDialog.setLocationRelativeTo(null);
+        }
+        JPanel endGamePanel = new JPanel();
         endGamePanel.setBackground(new Color(23, 23, 23, 163));
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -84,7 +92,6 @@ class VueJeu extends JPanel {
 
         banner.setBorder(new EmptyBorder(30, 0, 30, 0));
         banner.setBackground(new Color(100, 183, 68));
-        endGameText = new JLabel("game over t tro nul");
         endGameText.setFont(new Font("Arial", Font.BOLD, 30));
         endGameText.setForeground(Color.white);
         banner.add(endGameText, gbc2);
@@ -100,30 +107,22 @@ class VueJeu extends JPanel {
         endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
         endButtons.add(retry);
         menu.addActionListener((e) -> {
-            topPanel.setEnabled(true);
-            topPanel.setFocusable(true);
-            topPanel.setVisible(true);
-            mainPanel.setEnabled(true);
-            mainPanel.setFocusable(true);
-            mainPanel.setVisible(true);
-            controleur.jeu().reset();
+            endGameDialog.setVisible(false);
+            controleur.fin();
             controleur.afficherMenuPrincipal();
         });
         retry.addActionListener((e) -> {
-            topPanel.setEnabled(true);
-            topPanel.setFocusable(true);
-            topPanel.setVisible(true);
-            mainPanel.setEnabled(true);
-            mainPanel.setFocusable(true);
-            mainPanel.setVisible(true);
-            endGamePanel.setVisible(false);
+            endGameDialog.setVisible(false);
             controleur.partieSuivante();
         });
 
         banner.add(endButtons, gbc2);
         endGamePanel.add(banner, gbc);
 
-        add(endGamePanel);
+        endGamePanel.setSize(1000, 600);
+
+        endGameDialog.add(endGamePanel);
+        //endGameDialog.pack();
     }
 
     void showEnd() {
@@ -139,9 +138,13 @@ class VueJeu extends JPanel {
             perdant = controleur.jeu().getJoueur1();
         }
 
+        // Fin partie
+        if(endGameDialog == null) {
+            endGameDialog = EndGameDialog();
+        }
 
         if (vainqueur.estHumain()) {
-            endGamePanel.getComponent(0).setBackground(new Color(100, 183, 68));
+            endGameDialog.getComponent(0).setBackground(new Color(100, 183, 68));
             if (!perdant.estHumain()) {
                 switch (perdant.type()) {
                     case IA_FACILE:
@@ -161,26 +164,19 @@ class VueJeu extends JPanel {
                 endGameText.setText(vainqueur.nom() + " a gagné !\n" + perdant.nom() + " a perdu..");
             }
         } else {
-            endGamePanel.getComponent(0).setBackground(new Color(201, 67, 67));
+            endGameDialog.getComponent(0).setBackground(new Color(201, 67, 67));
             if (perdant.estHumain()) {
                 endGameText.setText("Dommage! Tu as perdu contre l'IA.. une prochaine fois!");
             } else {
-                endGamePanel.getComponent(0).setBackground(new Color(120, 70, 50));
+                endGameDialog.getComponent(0).setBackground(new Color(120, 70, 50));
                 if (vainqueur.aPionsBlancs())
                     endGameText.setText("Le défenseur, IA " + vainqueur.nom() + " a gagné !");
                 else
                     endGameText.setText("L'attaquant, IA " + vainqueur.nom() + " a gagné !");
             }
         }
-        topPanel.setEnabled(false);
-        topPanel.setFocusable(false);
-        topPanel.setVisible(false);
-        endGamePanel.setVisible(true);
-        endGamePanel.setEnabled(true);
-        endGamePanel.setFocusable(true);
-        mainPanel.setEnabled(false);
-        mainPanel.setFocusable(false);
-        //mainPanel.setVisible(false);
+        addEndGame();
+        endGameDialog.setVisible(true);
     }
 
     private void addTop(JPanel contenu) {
@@ -387,9 +383,15 @@ class VueJeu extends JPanel {
     }
 
     void nouvellePartie() {
-        endGamePanel.setVisible(false);
         vueNiveau = new VueNiveau(controleur, this, j1, j2, texteJeu);
         controleur.jeu().ajouteObservateur(vueNiveau);
+
+        topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        System.out.println(topFrame);
+
+        topFrame.addKeyListener(new AdaptateurClavier(controleur));
+        topFrame.setFocusable(true);
+        topFrame.requestFocus();
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -410,19 +412,19 @@ class VueJeu extends JPanel {
         j2.setName("Défenseur : " + (!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurSuivant().nom());
         j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
 
-        topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        topFrame.addKeyListener(new AdaptateurClavier(controleur));
-        topFrame.setFocusable(true);
-        topFrame.requestFocus();
-
         vueNiveau.miseAJour();
     }
 
     void restaurePartie() {
-        endGamePanel.setVisible(false);
-        //System.out.println(controleur);
         vueNiveau = new VueNiveau(controleur, this, j1, j2, texteJeu);
         controleur.jeu().ajouteObservateur(vueNiveau);
+
+        topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        System.out.println(topFrame);
+
+        topFrame.addKeyListener(new AdaptateurClavier(controleur));
+        topFrame.setFocusable(true);
+        topFrame.requestFocus();
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -442,13 +444,7 @@ class VueJeu extends JPanel {
         j2.setName("Défenseur : " + (!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurSuivant().nom());
         j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
 
-        topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        topFrame.addKeyListener(new AdaptateurClavier(controleur));
-        topFrame.setFocusable(true);
-        topFrame.requestFocus();
-
         vueNiveau.miseAJour();
-
     }
 
 
@@ -523,6 +519,4 @@ class VueJeu extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
     }
-
-
 }
