@@ -357,7 +357,7 @@ public class Jeu extends Observable implements Serializable {
         int[] info = new int[2];
         if (j.aPionsNoirs()) {
             info[0] = n.nb_pion_nr();
-            info[1] = 9 - n.nb_pion_blc();
+            info[1] = 8 - n.nb_pion_blc();
         } else {
             info[0] = n.nb_pion_blc();
             info[1] = 16 - n.nb_pion_nr();

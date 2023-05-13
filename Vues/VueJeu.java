@@ -121,14 +121,14 @@ class VueJeu extends JPanel {
 
         menu.addActionListener((e) -> {
             endGameDialog.setVisible(false);
-            controleur.fin();
+            controleur.jeu().reset();
+            //controleur.fin();
             controleur.afficherMenuPrincipal();
         });
         retry.addActionListener((e) -> {
             endGameDialog.setVisible(false);
             controleur.partieSuivante();
         });
-        //endGameDialog.pack();
     }
 
     void showEnd() {
@@ -182,7 +182,7 @@ class VueJeu extends JPanel {
             } else {
                 endGameDialog.getComponent(0).setBackground(new Color(120, 70, 50));
                 String typeIA = "";
-                switch (perdant.type()) {
+                switch (vainqueur.type()) {
                     case IA_FACILE:
                         typeIA = "facile";
                         break;
@@ -244,11 +244,12 @@ class VueJeu extends JPanel {
 
         menu_items[0].addActionListener((e) -> {
             Joueurs[] joueurs = new Joueurs[2];
-            controleur.jeu().reset();
-            joueurs[0] = controleur.jeu().getJoueur1();//TODO ici par exemple il faut voir mais faire getJoueur est surement une erreur
+            joueurs[0] = controleur.jeu().getJoueur1();
             joueurs[1] = controleur.jeu().getJoueur2();
 
+            controleur.jeu().reset();
             controleur.nouvellePartie(joueurs[0].nom(), joueurs[0].type(), TypePion.ATTAQUANT, joueurs[1].nom(), joueurs[1].type(), TypePion.DEFENSEUR);
+            texteJeu = new TexteJeu(0, 0);
             controleur.afficherJeu();
             controleur.jeu().metAJour();
         });
