@@ -374,7 +374,7 @@ public class Jeu extends Observable implements Serializable {
         return debutPartie;
     }
 
-    private  void setDebutPartie(boolean b){
+    public void setDebutPartie(boolean b){
         debutPartie = b;
     }
 }
