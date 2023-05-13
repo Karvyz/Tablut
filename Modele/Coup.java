@@ -10,4 +10,9 @@ public class Coup implements Serializable {
         this.depart = depart;
         this.arrivee = arrivee;
     }
+
+    @Override
+    public String toString() {
+        return depart + " -> " + arrivee;
+    }
 }

@@ -66,10 +66,10 @@ public class IA_difficile_le_roi_c_ciao extends IA_difficile{
         }
         if (jeu.get_num_JoueurCourant() == 0) { // attaquant
             if (peut_tuer_roi(x, y, n)) {
-                return Integer.MAX_VALUE;
+                return 10000;
             }
             if (attaquants < 3 || (d < 1 || g < 1 || b < 1 || h < 1)) {
-                return Integer.MIN_VALUE;
+                return -10000;
             } else {
                 return 8-defenseurs-(16-attaquants);
             }
