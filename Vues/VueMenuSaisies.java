@@ -123,132 +123,7 @@ public class VueMenuSaisies extends JPanel {
         });
     }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
-
-    /*
     private void setupUI() {
-        createUIComponents();
-        MenuSaisies.setLayout(new GridLayout(4, 1, 0, 100));
-        MenuSaisies.setMaximumSize(new Dimension(441, 110));
-        MenuSaisies.setMinimumSize(new Dimension(441, 60));
-        MenuSaisies.setPreferredSize(new Dimension(441, 110));
-
-        Joueur1 = new JPanel();
-        Joueur1.setLayout(new GridLayout(1, 5, 50, 0));
-        Joueur1.setOpaque(false);
-        Joueur1.setMinimumSize(new Dimension(441, -1));
-        Joueur1.setMaximumSize(new Dimension(-1, 10));
-
-        //Joueur1.setMaximumSize(new Dimension(441, 110/3));
-
-        // Ajouter un bord à gauche
-        Joueur1.add(Box.createRigidArea(new Dimension(30, 0)));
-
-        JLabel label1 = new JLabel(" Attaquant");
-        System.out.println(label1.getFont());
-        label1.setFont(new Font("Serif", Font.BOLD, 48));
-        System.out.println(label1.getFont());
-        Joueur1.add(label1);
-
-        nomJ1.setDropMode(DropMode.USE_SELECTION);
-        nomJ1.setFocusCycleRoot(false);
-        nomJ1.setFocusTraversalPolicyProvider(false);
-        nomJ1.setFocusable(true);
-        nomJ1.setText("Joueur 1");
-        nomJ1.setVisible(true);
-        nomJ1.setMaximumSize(new Dimension(-1, 20));
-        //nomJ1.setOpaque(false);
-        Joueur1.add(nomJ1);
-        DefaultComboBoxModel<String> defaultComboBoxModel1 = new DefaultComboBoxModel<>();
-        defaultComboBoxModel1.addElement("Humain");
-        defaultComboBoxModel1.addElement("IA Facile");
-        defaultComboBoxModel1.addElement("IA Moyenne");
-        defaultComboBoxModel1.addElement("IA Difficile");
-        typeJ1.setModel(defaultComboBoxModel1);
-        Joueur1.add(typeJ1);
-
-        Joueur1.add(Box.createRigidArea(new Dimension(30, 0)));
-
-        MenuSaisies.add(Joueur1);
-
-        Joueur2 = new JPanel();
-        Joueur2.setLayout(new GridLayout(1, 5, 50, 0));
-        Joueur2.setOpaque(false);
-
-        //Joueur2.setMaximumSize(new Dimension(441, 110/3));
-
-        Joueur2.add(Box.createRigidArea(new Dimension(30, 0)));
-
-        JLabel label2 = new JLabel(" Défenseur");
-        label2.setFont(new Font("Serif", Font.BOLD, 48));
-        Joueur2.add(label2);
-
-        nomJ2.setDropMode(DropMode.USE_SELECTION);
-        nomJ2.setFocusCycleRoot(false);
-        nomJ2.setFocusTraversalPolicyProvider(false);
-        nomJ2.setFocusable(true);
-        nomJ2.setText("Joueur 2");
-        nomJ2.setVisible(true);
-        Joueur2.add(nomJ2);
-
-        DefaultComboBoxModel<String> defaultComboBoxModel3 = new DefaultComboBoxModel<>();
-        defaultComboBoxModel3.addElement("Humain");
-        defaultComboBoxModel3.addElement("IA Facile");
-        defaultComboBoxModel3.addElement("IA Moyenne");
-        defaultComboBoxModel3.addElement("IA Difficile");
-        defaultComboBoxModel3.setSelectedItem("IA Facile");// Sélectionner "IA Facile" comme valeur par défaut
-        typeJ2.setModel(defaultComboBoxModel3);
-        Joueur2.add(typeJ2);
-
-        Joueur2.add(Box.createRigidArea(new Dimension(30, 0)));
-
-        MenuSaisies.add(Joueur2);
-
-        Boutons.add(jouerButton);
-        Boutons.add(menuPrincipalButton);
-
-        Boutons.setMaximumSize(new Dimension(441, 30));
-
-        MenuSaisies.add(Boutons);
-
-        // Quitter
-        quitter = new CButton("Quitter");
-        quitter.addActionListener((e) -> {
-            //controleur.toClose();
-            // Créer une nouvelle fenêtre pour tester le texte d'un jlabel
-            JFrame frame = new JFrame("JLabel");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(300, 300);
-            // Ajout d'un jpanel avec deux jlabel
-            JPanel panel = new JPanel();
-            // GridLayout
-            panel.setLayout(new GridLayout(2, 1));
-            panel.setOpaque(false);
-            // Ajout des deux jlabel
-            JLabel label = new JLabel("Hello World");
-            label.setFont(new Font("Serif", Font.BOLD, 48));
-            JLabel label22 = new JLabel("Goodbye World !");
-            label22.setFont(new Font("Serif", Font.BOLD, 48));
-            panel.add(label);
-            panel.add(label22);
-            // Ajout du jpanel à la fenêtre
-            frame.getContentPane().add(panel);
-            frame.setVisible(true);
-        });
-
-        BoutonsQuitter.add(quitter);
-        BoutonsQuitter.setMaximumSize(new Dimension(441, 30));
-        MenuSaisies.add(BoutonsQuitter);
-
-    }
-
-     */
-
-    private void setupUI() {
-        createUIComponents();
-
         MenuSaisies.setLayout(new BoxLayout(MenuSaisies, BoxLayout.Y_AXIS)); // Utilisation du BoxLayout avec orientation verticale
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(0, 30, 0, 30); // Espacement des composants
@@ -370,21 +245,13 @@ public class VueMenuSaisies extends JPanel {
         Image image = imageIcon.getImage();
 
         // Redimensionner l'image en utilisant les dimensions souhaitées
-        Image resizedImage = image.getScaledInstance(50, 60, Image.SCALE_SMOOTH);
+        Image resizedImage = image.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
 
         // Créer un nouvel ImageIcon avec l'image redimensionnée
         ImageIcon resizedImageIcon = new ImageIcon(resizedImage);
 
         constraints.gridx = 1;
         JLabel labelJoueur = new JLabel(resizedImageIcon);
-        //labelJoueur.setOpaque(false);
-        //labelJoueur.setMinimumSize(new Dimension(25, 30));
-        //labelJoueur.setPreferredSize(new Dimension(30, 36));
-        //labelJoueur.setMaximumSize(new Dimension(30, 36));
-        //Font labelFont = new Font("Serif", Font.BOLD, 48);
-        //labelJoueur.setFont(labelFont);
-        //labelJoueur.setPreferredSize(new Dimension(labelJoueur.getPreferredSize().width, labelFont.getSize()));
-        //labelJoueur.setOpaque(true);
         panel.add(labelJoueur, constraints);
 
         // Espacement horizontal
