@@ -5,10 +5,12 @@ import Modele.Joueurs;
 import Modele.TypeJoueur;
 import Modele.TypePion;
 
+import java.io.Serializable;
+
 import static Modele.TypeJoueur.*;
 
-public abstract class IA extends Joueurs {
-
+public abstract class IA extends Joueurs implements Serializable {
+    private static final long serialVersionUID = 1L;
     public IA(String nom, TypeJoueur type, TypePion roleJ, Jeu j) {
         super(nom, type, roleJ, j);
     }

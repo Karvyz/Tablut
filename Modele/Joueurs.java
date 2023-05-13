@@ -5,6 +5,7 @@ import java.io.Serializable;
 import static java.util.Objects.requireNonNull;
 
 public class Joueurs implements Serializable, Cloneable {
+    private static final long serialVersionUID = 1L;
     private final String nom;
     private final TypeJoueur type;
     private final TypePion roleJ;

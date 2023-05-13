@@ -3,6 +3,7 @@ package Modele;
 import java.io.Serializable;
 
 public class ConfigurationJeu implements Serializable {
+    private static final long serialVersionUID = 1L;
     private boolean RegicideTrone;
     private boolean RegicideForteresse;
     private boolean RegicideMur;
