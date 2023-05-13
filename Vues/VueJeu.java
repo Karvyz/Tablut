@@ -28,7 +28,7 @@ class VueJeu extends JPanel {
     //private final JPanel backgroundTop, backgroundBottom;
     private JFrame topFrame;
 
-    private JPanel mainPanel, topPanel;
+    private JPanel mainPanel, topPanel, endGamePanel;
     private JDialog endGameDialog;
     Image background;
 
@@ -70,8 +70,12 @@ class VueJeu extends JPanel {
             endGameDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             endGameDialog.setLocationRelativeTo(null);
         }
-        JPanel endGamePanel = new JPanel();
-        endGamePanel.setBackground(new Color(23, 23, 23, 163));
+
+        Container contentPane = endGameDialog.getContentPane();
+
+        contentPane.removeAll();
+
+        //endGamePanel.setBackground(new Color(23, 23, 23, 163));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -91,7 +95,8 @@ class VueJeu extends JPanel {
         gbc2.anchor = PAGE_START;
 
         banner.setBorder(new EmptyBorder(30, 0, 30, 0));
-        banner.setBackground(new Color(100, 183, 68));
+        //banner.setBackground(new Color(100, 183, 68));
+        banner.setOpaque(false);
         endGameText.setFont(new Font("Arial", Font.BOLD, 30));
         endGameText.setForeground(Color.white);
         banner.add(endGameText, gbc2);
@@ -106,16 +111,6 @@ class VueJeu extends JPanel {
         endButtons.add(menu);
         endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
         endButtons.add(retry);
-        menu.addActionListener((e) -> {
-            endGameDialog.setVisible(false);
-            controleur.fin();
-            controleur.afficherMenuPrincipal();
-        });
-        retry.addActionListener((e) -> {
-            endGameDialog.setVisible(false);
-            controleur.fin();
-            controleur.partieSuivante();
-        });
 
         banner.add(endButtons, gbc2);
         endGamePanel.add(banner, gbc);
@@ -123,6 +118,16 @@ class VueJeu extends JPanel {
         endGamePanel.setSize(1000, 600);
 
         endGameDialog.add(endGamePanel);
+
+        menu.addActionListener((e) -> {
+            endGameDialog.setVisible(false);
+            controleur.fin();
+            controleur.afficherMenuPrincipal();
+        });
+        retry.addActionListener((e) -> {
+            endGameDialog.setVisible(false);
+            controleur.partieSuivante();
+        });
         //endGameDialog.pack();
     }
 
@@ -144,21 +149,25 @@ class VueJeu extends JPanel {
             endGameDialog = EndGameDialog();
         }
 
+        endGamePanel = new JPanel();
+
         if (vainqueur.estHumain()) {
+            endGamePanel.setBackground(new Color(100, 183, 68));
             endGameDialog.getComponent(0).setBackground(new Color(100, 183, 68));
+            endGameDialog.setTitle("Victoire !");
             if (!perdant.estHumain()) {
                 switch (perdant.type()) {
                     case IA_FACILE:
-                        endGameText.setText("Tu as gagné contre l'IA facile! C'était \"facile\"..");
+                        endGameText.setText("Tu as gagné contre l'IA facile ! C'était \"facile\"..");
                         break;
                     case IA_MOYEN:
-                        endGameText.setText("Tu as gagné contre l'IA moyenne! Essaye l'IA difficile!");
+                        endGameText.setText("Tu as gagné contre l'IA moyenne ! Essaye l'IA difficile!");
                         break;
                     case IA_DIFFICILE:
-                        endGameText.setText("Tu as gagné contre l'IA difficile, t'es un roi!");
+                        endGameText.setText("Tu as gagné contre l'IA difficile, t'es un roi !");
                         break;
                     default:
-                        endGameText.setText("Tu as gagné contre.. un alien?");
+                        endGameText.setText("Tu as gagné contre.. un alien ?");
                         break;
                 }
             } else {
@@ -166,14 +175,31 @@ class VueJeu extends JPanel {
             }
         } else {
             endGameDialog.getComponent(0).setBackground(new Color(201, 67, 67));
+            endGamePanel.setBackground(new Color(201, 67, 67));
             if (perdant.estHumain()) {
+                endGameDialog.setTitle("Défaite !");
                 endGameText.setText("Dommage! Tu as perdu contre l'IA.. une prochaine fois!");
             } else {
                 endGameDialog.getComponent(0).setBackground(new Color(120, 70, 50));
+                String typeIA = "";
+                switch (perdant.type()) {
+                    case IA_FACILE:
+                        typeIA = "facile";
+                        break;
+                    case IA_MOYEN:
+                        typeIA = "moyenne";
+                        break;
+                    case IA_DIFFICILE:
+                        typeIA = "difficile";
+                        break;
+                    default:
+                        typeIA = "alien";
+                        break;
+                }
                 if (vainqueur.aPionsBlancs())
-                    endGameText.setText("Le défenseur, IA " + vainqueur.nom() + " a gagné !");
+                    endGameText.setText("Le défenseur, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
                 else
-                    endGameText.setText("L'attaquant, IA " + vainqueur.nom() + " a gagné !");
+                    endGameText.setText("L'attaquant, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
             }
         }
         addEndGame();
