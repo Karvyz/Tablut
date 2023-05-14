@@ -16,7 +16,7 @@ public class InfoJoueur extends JPanel {
     public final JLabel n;
     public final JPanel p;
     private ImageIcon pawn;
-    private final int hgap = 5;
+    private final int hgap = 20;
     private boolean reverse;
 
     public InfoJoueur(boolean reverse) {
@@ -28,7 +28,7 @@ public class InfoJoueur extends JPanel {
 
         n = new JLabel();
         n.setForeground(Color.WHITE);
-        n.setFont(new Font("Arial", Font.BOLD, 16));
+        n.setFont(new Font("Arial", Font.BOLD, 18));
 
         // --
         //System.out.println("InfoJoueur : " + reverse);
@@ -52,12 +52,12 @@ public class InfoJoueur extends JPanel {
         //System.out.println("setPions : " + nb);
         pawn = new ImageIcon(Imager.getScaledImage(reverse ? "PN.png" : "PB.png", 60, 60));
         p.removeAll();
-        p.setLayout(new GridLayout(1, 3, hgap, 0));
+        //p.setLayout(new GridLayout(1, 2, 0, 0));
+        p.setLayout(new FlowLayout(FlowLayout.CENTER, hgap, 0));
         p.add(new JLabel(pawn));
-        //p.add(new JLabel(fois));
         String nb = String.valueOf(nb1);
         JLabel l = new JLabel(nb);
-        l.setFont(new Font("Arial", Font.BOLD, 18));
+        l.setFont(new Font("Arial", Font.BOLD, 26));
         p.add(l);
     }
 

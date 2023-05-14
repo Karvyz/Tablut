@@ -16,9 +16,6 @@ public class CPions extends JPanel {
     public CPions(boolean reverse) {
         this.reverse = reverse;
         setOpaque(false);
-        //setBackground(null);
-        setLayout(new GridLayout(1, 0, hgap, 0));
-        //setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
         backgroundimage = getImageIcon("fond_pierre.png");
         setBorder(new EmptyBorder(5, 5, 5, 5));
     }
