@@ -1,5 +1,7 @@
 package Vues;
 
+import Vues.JComposants.CButton;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,22 +14,86 @@ import java.io.FilenameFilter;
 public class VueMenuParties extends JPanel {
     private JList<String> fileList;
     private DefaultListModel<String> fileListModel;
+    private JButton menuPrincipalButton;
     private JButton loadButton;
     private JButton backButton;
+    private JButton deleteButton;
     private CollecteurEvenements controleur;
 
     Vues vues;
 
     public VueMenuParties(CollecteurEvenements controleur) {
         this.controleur = controleur;
+
+        menuPrincipalButton = new CButton();
+        loadButton = new CButton().vert();
+        deleteButton = new CButton().rouge();
+
         initializeComponents();
     }
 
     private void initializeComponents() {
-        setLayout(new BorderLayout());
+        //setLayout(new GridLayout(8, 3, -1, -1));
+        setLayout(new GridBagLayout());
 
+        // Espace vertical
+        Box verticalSpace0 = Box.createVerticalBox();
+        verticalSpace0.add(Box.createVerticalStrut(10));
+        GridBagConstraints gspacer0 = new GridBagConstraints();
+        gspacer0.gridx = 1;
+        gspacer0.gridy = 0;
+        gspacer0.gridwidth = 3;
+        gspacer0.gridheight = 1;
+        gspacer0.fill = GridBagConstraints.VERTICAL;
+        gspacer0.anchor = GridBagConstraints.CENTER;
+        gspacer0.weightx = 1.0;
+        add(verticalSpace0, gspacer0);
+
+        // Texte "Choisir une partie à charger ou à supprimer :" (label1)
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.gridwidth = 3;
+        gbc.gridheight = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.CENTER;
+        final JLabel label1 = new JLabel();
+        Font label1Font = new Font("Arial", Font.BOLD, 20);
+        if (label1Font != null) label1.setFont(label1Font);
+        label1.setForeground(new Color(0x000000));
+        label1.setText("Choisir une partie à charger ou à supprimer :");
+        add(label1, gbc);
+
+        // Espaces vertical
+        Box verticalSpace1 = Box.createVerticalBox();
+        verticalSpace1.add(Box.createVerticalStrut(10));
+        GridBagConstraints gspacer1 = new GridBagConstraints();
+        gspacer1.gridx = 1;
+        gspacer1.gridy = 2;
+        gspacer1.gridwidth = 3;
+        gspacer1.gridheight = 1;
+        gspacer1.fill = GridBagConstraints.VERTICAL;
+        gspacer1.anchor = GridBagConstraints.CENTER;
+        add(verticalSpace1, gspacer1);
+
+        // Espaces horizontal
+        Box horizontalSpace1 = Box.createHorizontalBox();
+        horizontalSpace1.add(Box.createHorizontalStrut(20));
+        GridBagConstraints gspacer2 = new GridBagConstraints();
+        gspacer2.gridx = 0;
+        gspacer2.gridy = 3;
+        gspacer2.gridwidth = 1;
+        gspacer2.gridheight = 1;
+        gspacer2.fill = GridBagConstraints.HORIZONTAL;
+        gspacer2.anchor = GridBagConstraints.CENTER;
+        add(horizontalSpace1, gspacer2);
+
+
+        // Liste des parties sauvegardées (fileList)
         fileListModel = new DefaultListModel<>();
         fileList = new JList<>(fileListModel);
+        fileList.setForeground(new Color(-16777216));
+        fileList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         fileList.setFont(new Font("Arial", Font.PLAIN, 18)); // Changez la taille du texte des fichiers ici
         // Ajout de l'écouteur de double-clic ici
         fileList.addMouseListener(new MouseAdapter() {
@@ -43,14 +109,65 @@ public class VueMenuParties extends JPanel {
                 }
             }
         });
+
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.CENTER;
+
         JScrollPane scrollPane = new JScrollPane(fileList);
-        add(scrollPane, BorderLayout.CENTER);
+        scrollPane.setBackground(new Color(-16777216));
+        //scrollPane.setForeground(new Color(-16777216));
+        scrollPane.setOpaque(false);
+        add(scrollPane, gbc);
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+        // Espaces horizontal
+        Box horizontalSpace2 = Box.createHorizontalBox();
+        horizontalSpace2.add(Box.createHorizontalStrut(20));
+        GridBagConstraints gspacer3 = new GridBagConstraints();
+        gspacer3.gridx = 2;
+        gspacer3.gridy = 3;
+        gspacer3.gridwidth = 1;
+        gspacer3.gridheight = 1;
+        gspacer3.fill = GridBagConstraints.HORIZONTAL;
+        gspacer3.anchor = GridBagConstraints.CENTER;
+        add(horizontalSpace2, gspacer3);
 
-        loadButton = new JButton("Charger la partie");
+        // Espaces vertical
+        Box verticalSpace2 = Box.createVerticalBox();
+        verticalSpace2.add(Box.createVerticalGlue());
+        GridBagConstraints gspacer4 = new GridBagConstraints();
+        gspacer4.gridx = 1;
+        gspacer4.gridy = 4;
+        gspacer4.gridwidth = 3;
+        gspacer4.gridheight = GridBagConstraints.REMAINDER;
+        gspacer4.fill = GridBagConstraints.VERTICAL;
+        gspacer4.anchor = GridBagConstraints.CENTER;
+        add(verticalSpace2, gspacer4);
+
+        // Panel pour les boutons "Charger la partie" et "Supprimer la partie"
+        JPanel panel1 = new JPanel();
+        panel1.setLayout(new GridLayout(1, 2, -1, -1));
+        panel1.setOpaque(false);
+
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        gbc.gridwidth = 3;
+        gbc.gridheight = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+        add(panel1, gbc);
+
+        loadButton.setFocusable(true);
+        loadButton.setHideActionText(false);
+        loadButton.setHorizontalTextPosition(SwingConstants.LEFT);
+        loadButton.setText("Charger Partie");
         loadButton.setMaximumSize(new Dimension(150, 30)); // Changez la taille du bouton "Charger la partie" ici
+
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -58,21 +175,28 @@ public class VueMenuParties extends JPanel {
                 if (selectedFile != null) {
                     //System.out.println(controleur);
                     if (controleur.chargerPartie("Resources/save/" + selectedFile) == false){
-                        System.out.println("Ligne 43 de VueMenuParties ");
+                        System.out.println("Ligne 177 de VueMenuParties ");
                     }
                     controleur.fixeJeu(controleur.jeu().getJeu());
-                    //System.out.println(controleur);
                     controleur.afficherJeu();
                     controleur.restaurePartie();
                 }
             }
         });
-        buttonPanel.add(loadButton);
 
-        buttonPanel.add(Box.createRigidArea(new Dimension(10, 0))); // Ajouter un espacement entre les boutons
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel1.add(loadButton, gbc);
 
-        JButton deleteButton = new JButton("Supprimer la partie");
+        deleteButton.setHideActionText(false);
+        deleteButton.setHorizontalTextPosition(SwingConstants.LEFT);
         deleteButton.setMaximumSize(new Dimension(150, 30));
+        deleteButton.setText("Supprimer Partie");
 
         deleteButton.addActionListener(new ActionListener() {
             @Override
@@ -99,18 +223,44 @@ public class VueMenuParties extends JPanel {
                 }
             }
         });
-        buttonPanel.add(deleteButton);
 
-        backButton = new JButton("Retour");
-        backButton.addActionListener(new ActionListener() {
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel1.add(deleteButton, gbc);
+
+        gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        gbc.gridwidth = 3;
+        gbc.gridheight = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = GridBagConstraints.CENTER;
+        menuPrincipalButton.setBackground(new Color(-3949375));
+        menuPrincipalButton.setText("Menu Principal");
+        menuPrincipalButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controleur.afficherMenuPrincipal();
             }
         });
-        buttonPanel.add(backButton);
+        add(menuPrincipalButton, gbc);
 
-        add(buttonPanel, BorderLayout.SOUTH);
+        // Espace vertical
+        Box verticalSpace3 = Box.createVerticalBox();
+        verticalSpace3.add(Box.createVerticalStrut(10));
+        GridBagConstraints gspacer5 = new GridBagConstraints();
+        gspacer5.gridx = 1;
+        gspacer5.gridy = 7;
+        gspacer5.gridwidth = 3;
+        gspacer5.gridheight = 1;
+        gspacer5.fill = GridBagConstraints.VERTICAL;
+        gspacer5.anchor = GridBagConstraints.CENTER;
+        add(verticalSpace3, gspacer5);
 
         refreshFileList();
     }
@@ -134,211 +284,3 @@ public class VueMenuParties extends JPanel {
         }
     }
 }
-
-
-
-/*package Vues;
-
-//import Global.Sauvegarde;
-import Vues.JComposants.CButton;
-
-import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import javax.swing.plaf.FontUIResource;
-import javax.swing.text.StyleContext;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Locale;
-
-public class VueMenuParties extends JPanel {
-
-    CollecteurEvenements controleur;
-    private JButton chargerPartie;
-    private JButton supprimerPartie;
-    private JButton menuPrincipalButton;
-    private JPanel MenuParties;
-    private JScrollPane Allparties;
-    private JList list1;
-    Image t;
-    final String[] selected = new String[1];
-
-    public VueMenuParties(CollecteurEvenements c) {
-        controleur = c;
-
-        menuPrincipalButton = new CButton();
-        chargerPartie = new CButton().vert();
-        supprimerPartie = new CButton().rouge();
-        list1 = new JList();
-
-        // Chargement des assets
-        //t = Imager.getImageBuffer("assets/topbanner.png");
-
-        MenuParties = this;
-
-        $$$setupUI$$$();
-
-        menuPrincipalButton.addActionListener((e) -> controleur.afficherMenuPrincipal());
-
-        chargerPartie.addActionListener((e) -> {
-            System.out.println("Chargement de : " + selected[0]);
-            *//*controleur.jeu().chargerPartie("sauvegarde.save");*//*
-        });
-
-        supprimerPartie.addActionListener((e) -> {
-            System.out.println("Suppression de : " + selected[0]);
-            //Sauvegarde.supprimer(selected[0]);
-        });
-    }
-
-    *//**
- * Method generated by IntelliJ IDEA GUI Designer
- * >>> IMPORTANT!! <<<
- * DO NOT edit this method OR call it in your code!
- *
- * @noinspection ALL
- * @noinspection ALL
- * @noinspection ALL
- *//*
-    private void $$$setupUI$$$() {
-        createUIComponents();
-        MenuParties = new JPanel();
-        MenuParties.setLayout(new GridLayout(8, 3));
-
-        JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridLayout(1, 2));
-        panel1.setOpaque(false);
-        MenuParties.add(panel1);
-
-        JButton supprimerPartie = new JButton("Supprimer Partie");
-        supprimerPartie.setBackground(new Color(-3949375));
-        supprimerPartie.setForeground(new Color(-54016));
-        supprimerPartie.setHideActionText(false);
-        supprimerPartie.setHorizontalTextPosition(SwingConstants.CENTER);
-        panel1.add(supprimerPartie);
-
-        JButton chargerPartie = new JButton("Charger Partie");
-        chargerPartie.setBackground(new Color(-3949375));
-        chargerPartie.setFocusable(true);
-        chargerPartie.setForeground(new Color(-16744180));
-        chargerPartie.setHideActionText(false);
-        chargerPartie.setHorizontalTextPosition(SwingConstants.CENTER);
-        panel1.add(chargerPartie);
-
-        JScrollPane Allparties = new JScrollPane();
-        Allparties.setBackground(new Color(-16777216));
-        Allparties.setForeground(new Color(-16777216));
-        Allparties.setOpaque(false);
-        MenuParties.add(Allparties);
-
-        JList list1 = new JList();
-        Font list1Font = new Font(null, Font.PLAIN, 14);
-        list1.setFont(list1Font);
-        list1.setForeground(new Color(-16777216));
-        list1.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        DefaultListModel<String> defaultListModel1 = new DefaultListModel<>();
-        defaultListModel1.addElement("\"Essai\" 03/04/2022   Joueur1 : \"David\", Joueur2 : \"Tom\"");
-        defaultListModel1.addElement("\"Essai 2\" 04/04/2022   Joueur1 : \"Léonard\", Joueur2 : \"Victoria\"");
-        defaultListModel1.addElement("\"Essai 3\" 05/04/2022   Joueur1 : \"Tata\", Joueur2 : \"Toto\"");
-        defaultListModel1.addElement("\"Essai 4\" 06/04/2022   Joueur1 : \"Toto\", Joueur2 : IA FAcile \"Alpha\"");
-        defaultListModel1.addElement("\"Essai 5\" 07/04/2022   Joueur1 : \"Tata\", Joueur2 : \"Toto\"");
-        list1.setModel(defaultListModel1);
-        list1.setOpaque(false);
-        list1.setPreferredSize(new Dimension(300, 357));
-        list1.setSelectionForeground(new Color(-9541531));
-        list1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        list1.setVisibleRowCount(10);
-        Allparties.setViewportView(list1);
-
-        *//*
-        MenuParties.add(new JPanel());
-        MenuParties.add(new JPanel());
-        MenuParties.add(new JPanel());
-        MenuParties.add(new JPanel());
-        MenuParties.add(new JPanel());
-        MenuParties.add(new JPanel());
-        MenuParties.add(new JPanel());
-
-         *//*
-    }
-
-    *//**
- * @noinspection ALL
- *//*
-    private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
-        if (currentFont == null) return null;
-        String resultName;
-        if (fontName == null) {
-            resultName = currentFont.getName();
-        } else {
-            Font testFont = new Font(fontName, Font.PLAIN, 10);
-            if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
-                resultName = fontName;
-            } else {
-                resultName = currentFont.getName();
-            }
-        }
-        Font font = new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
-        boolean isMac = System.getProperty("os.name", "").toLowerCase(Locale.ENGLISH).startsWith("mac");
-        Font fontWithFallback = isMac ? new Font(font.getFamily(), font.getStyle(), font.getSize()) : new StyleContext().getFont(font.getFamily(), font.getStyle(), font.getSize());
-        return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
-    }
-
-    *//**
- * @noinspection ALL
- *//*
-    public JComponent $$$getRootComponent$$$() {
-        return MenuParties;
-    }
-
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        int w = getWidth(), h = getHeight();
-        Color color1 = new Color(255, 140, 85);
-        Color color2 = new Color(255, 120, 105);
-        GradientPaint gp = new GradientPaint(0, 0, color1, w, h, color2);
-        g2d.setPaint(gp);
-        g2d.fillRect(0, 0, w, h);
-
-        if (t != null) {
-            int width = (int) (getWidth() * 1.7);
-            int height = (t.getHeight(null) * width) / t.getWidth(null);
-            g.drawImage(t, 0, 0, width, height, null);
-        }
-
-        // Création du model avec les string que l'on veut
-        final DefaultListModel defaultListModel2 = new DefaultListModel();
-        //defaultListModel2.addElement("Essai 1");
-
-        // Partie récupération des noms de parties sauvegardées
-        *//*
-        if (Sauvegarde.liste() == null) {
-            defaultListModel2.addElement("");
-        } else {
-            for (String s : Sauvegarde.liste()) {
-                defaultListModel2.addElement(s);
-            }
-        }
-
-        // Assignation du modele créé à la liste courante
-        list1.setModel(defaultListModel2);
-        *//*
-
-        list1.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                selected[0] = String.valueOf(list1.getSelectedValue());
-            }
-        });
-    }
-}*/
