@@ -119,7 +119,7 @@ public abstract class IA_difficile extends IA{
                 float eval = 0;
                 int valeur = clone.deplace_pion(new Coup(pion.getCoordonne(), deplacements.get(i)));
                 if (valeur == 1 || valeur == 2) {
-                    etats.add(new Etat(clone, Integer.MIN_VALUE, coupAJouer, depth));
+                    etats.add(new Etat(clone, Integer.MIN_VALUE + depth, coupAJouer, depth));
                     return;
                 }
                 if (valeur != 3)

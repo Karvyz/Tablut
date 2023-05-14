@@ -10,6 +10,7 @@ import java.util.Stack;
 import static java.util.Objects.requireNonNull;
 
 public class Jeu extends Observable implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public Niveau n;
 
@@ -374,7 +375,7 @@ public class Jeu extends Observable implements Serializable {
         return debutPartie;
     }
 
-    private  void setDebutPartie(boolean b){
+    public void setDebutPartie(boolean b){
         debutPartie = b;
     }
 }

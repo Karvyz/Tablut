@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 
 public class Pion implements Cloneable, Serializable {
+    private static final long serialVersionUID = 1L;
     private Coordonne coordonne;
     private TypePion type; //0 pion Noir, 1 pion Blanc, 
 

@@ -8,6 +8,8 @@ public enum TypeJoueur implements Serializable {
     IA_MOYEN("IA Moyen", 2),
     IA_DIFFICILE("IA Difficile", 3);
 
+    private static final long serialVersionUID = 1L;
+
     public static final int NOMBRE = values().length;
 
     private final String nom;

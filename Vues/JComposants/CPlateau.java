@@ -107,10 +107,7 @@ public class CPlateau extends JPanel implements Observateur {
                 }
                 // - Si c'est la case centrale alors on dessine le konakis, s'il n'y a pas le roi
                 if (n.estKonakis(l, c) && !n.estRoi(l, c)) {
-                    if (!(controleur.jeu().getCoordooneDepartIA() != null && controleur.jeu().getCoordooneDepartIA().equals(new Coordonne(l, c)))) {
-                        //setDrawFleche1(false); //pour pas remettre tout a jour
-                        g.drawImage(Theme.instance().konakis(), x + 5, y + 4, largeurCase - 8, hauteurCase - 8, this);
-                    }
+                    g.drawImage(Theme.instance().konakis(), x + 5, y + 4, largeurCase - 8, hauteurCase - 8, this);
                 }
 
                 if (n.estAttaquant(l, c)) {
@@ -198,23 +195,28 @@ public class CPlateau extends JPanel implements Observateur {
                 if (depart == null){return;}
                 int l = depart.getX();
                 int c = depart.getY();
-                switch (calcul_dir(depart, controleur.jeu().getCoordooneArriveIA())) {
-                    case 0:
-                        // Déplacement vers le bas
-                        g2d.drawImage(Theme.instance().fleche_bas(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
-                        break;
-                    case 1:
-                        //vers le haut
-                        g2d.drawImage(Theme.instance().fleche_haut(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
-                        break;
-                    case 2:
-                        // Déplacement vers la droite
-                        g2d.drawImage(Theme.instance().fleche_droite(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
-                        break;
-                    case 3:
-                        //vers la gauche
-                        g2d.drawImage(Theme.instance().fleche_gauche(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
-                        break;
+                if (controleur.jeu().n.estKonakis(l,c)){
+                    //on ne dessine pas la fleche sur le konaki. on comprend que le roi est parti de son trone
+                }else{
+                    switch (calcul_dir(depart, controleur.jeu().getCoordooneArriveIA())) {
+                        case 0:
+                            // Déplacement vers le bas
+                            g2d.drawImage(Theme.instance().fleche_bas(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
+                            break;
+                        case 1:
+                            //vers le haut
+                            g2d.drawImage(Theme.instance().fleche_haut(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
+                            break;
+                        case 2:
+                            // Déplacement vers la droite
+                            g2d.drawImage(Theme.instance().fleche_droite(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
+                            break;
+                        case 3:
+                            //vers la gauche
+                            g2d.drawImage(Theme.instance().fleche_gauche(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
+                            break;
+                    }
+
                 }
                 int l_arr = controleur.jeu().getCoordooneArriveIA().getX();
                 int c_arr = controleur.jeu().getCoordooneArriveIA().getY();
@@ -222,6 +224,7 @@ public class CPlateau extends JPanel implements Observateur {
                 g2d.fillRect((largeurCase) * c_arr + 5, (hauteurCase) * l_arr + 5, largeurCase - 6, hauteurCase - 6);
                 drawContenu(g2d);
             }
+
         }
     }
 

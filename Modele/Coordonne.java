@@ -3,6 +3,7 @@ package Modele;
 import java.io.Serializable;
 
 public class Coordonne implements Cloneable, Serializable {
+    private static final long serialVersionUID = 1L;
     int x;
     int y;
 

@@ -95,6 +95,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
 
     public void restaurePartie() {
         vues.restaurePartie();
+        jeu.setDebutPartie(true); //Pour éviter l'affichage de la fleche du coup de l'IA si une partie IA vs humain a ete joue
         jeu.setEnCours(true);
         Stop = false;
     }
