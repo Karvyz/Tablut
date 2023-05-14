@@ -2,6 +2,10 @@ package Vues.JComposants;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
@@ -25,6 +29,20 @@ public class CTextField extends JTextField {
         setFont(new Font("Arial", Font.PLAIN, 20));
         setBorder(new EmptyBorder(5, 5, 5, 5));
         setCursor(new Cursor(Cursor.TEXT_CURSOR));
+
+        ((AbstractDocument) getDocument()).setDocumentFilter(new DocumentFilter() {
+            private int maxLength = 20; // Nombre maximum de caractères
+
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+                // Vérifie si la longueur du texte après remplacement dépasse la limite
+                if ((fb.getDocument().getLength() + text.length() - length) <= maxLength) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+                // Sinon, ignore le remplacement du texte
+            }
+        });
+
     }
 
     protected void paintComponent(Graphics g) {

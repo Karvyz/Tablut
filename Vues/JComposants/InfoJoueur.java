@@ -35,10 +35,14 @@ public class InfoJoueur extends JPanel {
         pawn = new ImageIcon(Imager.getScaledImage(reverse ? "PN.png" : "PB.png", 60, 60));
         // --
         p = new CPions(reverse);
+        //p.setMaximumSize(new Dimension(100, -1));
+        //p.setPreferredSize(new Dimension(100, -1));
 
-        add(n);
+        add(n, BorderLayout.CENTER);
         add(Box.createRigidArea(new Dimension(0, 10)));
+        add(Box.createVerticalGlue());
         add(p);
+        add(Box.createVerticalGlue());
     }
 
     public void setName(String nom) {
@@ -53,12 +57,17 @@ public class InfoJoueur extends JPanel {
         pawn = new ImageIcon(Imager.getScaledImage(reverse ? "PN.png" : "PB.png", 60, 60));
         p.removeAll();
         //p.setLayout(new GridLayout(1, 2, 0, 0));
+
         p.setLayout(new FlowLayout(FlowLayout.CENTER, hgap, 0));
+
         p.add(new JLabel(pawn));
+
         String nb = String.valueOf(nb1);
         JLabel l = new JLabel(nb);
         l.setFont(new Font("Arial", Font.BOLD, 26));
+
         p.add(l);
+        p.revalidate(); // Actualiser le contenu du JPanel p
     }
 
     public void setBackgroundJoueur(Color c) {

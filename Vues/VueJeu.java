@@ -75,8 +75,6 @@ class VueJeu extends JPanel {
 
         contentPane.removeAll();
 
-        //endGamePanel.setBackground(new Color(23, 23, 23, 163));
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -95,7 +93,6 @@ class VueJeu extends JPanel {
         gbc2.anchor = PAGE_START;
 
         banner.setBorder(new EmptyBorder(30, 0, 30, 0));
-        //banner.setBackground(new Color(100, 183, 68));
         banner.setOpaque(false);
         endGameText.setFont(new Font("Arial", Font.BOLD, 30));
         endGameText.setForeground(Color.white);
@@ -326,32 +323,20 @@ class VueJeu extends JPanel {
         // -----------
 
         c.fill = GridBagConstraints.NONE;
-        // MARK: ESPACEMENT POUR LE RESTE (hors plateau)
-        c.insets = new Insets(10, 60, 0, 60);
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.anchor = FIRST_LINE_END;
-        mainPanel.add(j2, c);
 
+        // - J1
+        c.insets = new Insets(10, 10, 0, 30);
         c.gridx = 0;
         c.gridy = 1;
-        c.weightx = 1;
+        c.weightx = 0;
         c.weighty = 1;
         c.anchor = FIRST_LINE_START;
         mainPanel.add(j1, c);
 
-        // --
-        c.insets = new Insets(10, 60, 0, 60);
-        c.fill = NONE;
-        c.gridx = 0;
-        c.gridy = 2;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.anchor = PAGE_END;
-
-        mainPanel.add(addUserActions(), c);
+        // - J2
+        c.insets = new Insets(10, 30, 0, 10);
+        c.anchor = FIRST_LINE_END;
+        mainPanel.add(j2, c);
     }
 
     private void addBottom(JPanel contenu) {
@@ -397,17 +382,6 @@ class VueJeu extends JPanel {
     private JPanel addUserActions() {
         JPanel userActions = new JPanel();
         userActions.setOpaque(false);
-
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.NONE;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.anchor = GridBagConstraints.CENTER;
-
-        c.gridy = 1;
-        c.anchor = GridBagConstraints.LAST_LINE_START;
         return userActions;
     }
 
@@ -435,10 +409,44 @@ class VueJeu extends JPanel {
 
         System.out.println(j1);
         // Initialisation du niveau
-        j1.setName("Attaquant : " + (!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurCourant().nom());
+        String s1 = "";
+        if(!controleur.jeu().getJoueurCourant().estHumain()) {
+            s1 = "IA";
+            switch(controleur.jeu().getJoueurCourant().type()) {
+                case IA_FACILE:
+                    s1 += " Facile";
+                    break;
+                case IA_MOYEN:
+                    s1 = " Moyen";
+                    break;
+                case IA_DIFFICILE:
+                    s1 = " Difficile";
+                    break;
+            }
+        } else {
+            s1 = controleur.jeu().getJoueurCourant().nom();
+        }
+        j1.setName(s1);
         j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);
 
-        j2.setName("Défenseur : " + (!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurSuivant().nom());
+        String s2 = "";
+        if(!controleur.jeu().getJoueurSuivant().estHumain()) {
+            s2 = "IA";
+            switch(controleur.jeu().getJoueurSuivant().type()) {
+                case IA_FACILE:
+                    s2 += " Facile";
+                    break;
+                case IA_MOYEN:
+                    s2 = " Moyen";
+                    break;
+                case IA_DIFFICILE:
+                    s2 = " Difficile";
+                    break;
+            }
+        } else {
+            s2 = controleur.jeu().getJoueurSuivant().nom();
+        }
+        j2.setName(s2);
         j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
 
         vueNiveau.miseAJour();
@@ -467,10 +475,10 @@ class VueJeu extends JPanel {
         mainPanel.add(vueNiveau, c);
 
         // Initialisation du niveau
-        j1.setName("Attaquant : " + (!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurCourant().nom());
+        j1.setName((!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurCourant().nom());
         j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);
 
-        j2.setName("Défenseur : " + (!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurSuivant().nom());
+        j2.setName((!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurSuivant().nom());
         j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
 
         vueNiveau.miseAJour();
