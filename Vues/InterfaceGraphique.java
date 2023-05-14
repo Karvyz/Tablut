@@ -50,9 +50,6 @@ public class InterfaceGraphique implements Runnable {
 
         control.fixerMediateurVues(vues);
 
-        // Ajout des listeners
-
-
         // Ajout du timer
         Timer time = new Timer(16, new AdaptateurTemps(control));
         time.start();
@@ -62,7 +59,7 @@ public class InterfaceGraphique implements Runnable {
 
         // On fixe la taille et centre la fenêtre
         frame.setSize(width, height);
-        frame.setMinimumSize(new Dimension(1040, 666));
+        frame.setMinimumSize(new Dimension(1200, 675));
         frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
