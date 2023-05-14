@@ -7,6 +7,10 @@ import Vues.JComposants.CComboxBox;
 import Vues.JComposants.CTextField;
 
 import javax.swing.*;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -136,9 +140,9 @@ public class VueMenuSaisies extends JPanel {
         nomJ1.setFocusCycleRoot(false);
         nomJ1.setFocusTraversalPolicyProvider(false);
         nomJ1.setFocusable(true);
-        nomJ1.setText("Joueur 1");
+        nomJ1.setText("Nom de l'attaquant");
         nomJ1.setVisible(true);
-        nomJ1.setColumns(10);
+        nomJ1.setColumns(14);
         nomJ1.setMaximumSize(new Dimension(-1, 20));
 
         DefaultComboBoxModel<String> defaultComboBoxModel1 = new DefaultComboBoxModel<>();
@@ -161,9 +165,9 @@ public class VueMenuSaisies extends JPanel {
         nomJ2.setFocusCycleRoot(false);
         nomJ2.setFocusTraversalPolicyProvider(false);
         nomJ2.setFocusable(true);
-        nomJ2.setText("Joueur 2");
+        nomJ2.setText("Nom du défenseur");
         nomJ2.setVisible(true);
-        nomJ2.setColumns(10);
+        nomJ2.setColumns(14);
         nomJ2.setMaximumSize(new Dimension(-1, 20));
 
         DefaultComboBoxModel<String> defaultComboBoxModel3 = new DefaultComboBoxModel<>();
