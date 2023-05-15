@@ -417,14 +417,26 @@ class VueJeu extends JPanel {
                 new CButton(new ImageIcon(Imager.getScaledImage("assets/redo.png", 18, 18))).blanc(),
         };
 
-        controls[0].addActionListener(e -> controleur.jeu().annuler());
+        controls[0].setEnabled(false);
+        controls[2].setEnabled(false);
+
+        controls[0].addActionListener((e) -> {
+            controleur.jeu().annuler();
+            ModifBoutonUndo();
+            ModifBoutonRedo();
+
+        });
 
         controls[1].addActionListener((e) -> {
             if (!controleur.jeu().partieTerminee()){
                 controleur.jeu().solution();
                 }
         });
-        controls[2].addActionListener(e -> controleur.jeu().refaire());
+        controls[2].addActionListener((e) -> {
+            controleur.jeu().refaire();
+            ModifBoutonUndo();
+            ModifBoutonRedo();
+        });
 
         for (JButton button : controls) {
             button.setFocusable(false);
