@@ -12,7 +12,8 @@ public class Tablut{
     public static void main(String[] args) {
         if (args.length == 0) {
             Jeu j = new Jeu();
-            CollecteurEvenements control = new ControlleurMediateur(j);
+            CollecteurEvenements control = new ControlleurMediateur();
+            control.fixeJeu(j);
             InterfaceGraphique.demarrer(control);
         }
         else {
