@@ -4,7 +4,6 @@ import Modele.Coordonne;
 import Modele.Niveau;
 import Modele.Pion;
 import Vues.JComposants.CPlateau;
-import com.sun.org.apache.bcel.internal.generic.ACONST_NULL;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,8 +22,6 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
     boolean premier_clic = false;
 
-    //boolean drawFleche;
-
 
     public AdaptateurSouris(CollecteurEvenements c, CPlateau plateau) {
         ctrl = c;
@@ -33,7 +30,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
     @Override
     public void mousePressed(MouseEvent e) { //Méthode executé lors d'un clic
-        if (ctrl.jeu().partieTerminee()){
+        if (ctrl.jeu().partieTerminee()) {
             return;
         }
 
@@ -79,7 +76,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
                 clicSelection = false;
                 clicInutile = false; //Changez ici si on veut garder les destinations affichés lors d'un clic sur pion pas a nous
                 plateau.setDessineCroix(new Point(l, c));
-                if (caseClique == null){
+                if (caseClique == null) {
                     plateau.setDrawFleche(false);
                     return;
                 }
@@ -102,7 +99,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         if (!check_pion(caseClique)) {
             return;
         }
-            //Le pion nous appartient, on affiche ses dispos
+        //Le pion nous appartient, on affiche ses dispos
         else if (ctrl.jeu().n.check_clic_selection_pion(caseClique, ctrl.jeu().get_num_JoueurCourant())) {
             plateau.setPionSelec(caseClique); //au laché, on affiche les dispos
             plateau.setPionEnDeplacement(new Point(l, c));//Initialise point de départ du moovement pour le drag
@@ -193,10 +190,8 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             int l = calcul_l(e);
             int c = calcul_c(e);
             if (!check_ok(l, c)) {
-
                 return;
             }
-            ;
             pionEnDeplacement.setLocation(l, c); //modifie les coordonne du Point pionEnDeplacement
             plateau.setPionEnDeplacement(pionEnDeplacement);
         } else {
@@ -206,7 +201,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if (ctrl.jeu().partieTerminee()){
+        if (ctrl.jeu().partieTerminee()) {
             return;
         }
 
@@ -215,7 +210,6 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         if (!check_ok(l, c)) {
             return;
         }
-        ;
 
         // Obtenez les informations de la case survolée
         Pion caseSurvole = ctrl.jeu().n.getPion(l, c);
