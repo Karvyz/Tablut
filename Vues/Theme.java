@@ -22,7 +22,7 @@ public class Theme {
     private Image noir_selectionne;
 
     private Image point_interrogation, err;
-    private Image roi, forteresse, konakis, roi_selectionne;
+    private Image roi,  roi_selectionne;
 
     private Image fleche_bas, fleche_droite, fleche_gauche, fleche_haut;
 
@@ -69,8 +69,6 @@ public class Theme {
         noir_selectionne = Imager.getImageBuffer(theme + "PN_selectionne.png");
         roi = Imager.getImageBuffer(theme + "Roi.png");
         roi_selectionne = Imager.getImageBuffer(theme + "Roi_selectionne.png");
-        forteresse = Imager.getImageBuffer(theme + "Forteresse.png");
-        konakis = Imager.getImageBuffer(theme + "Konakis2.png");
         point_interrogation = Imager.getImageBuffer(theme + "Capture1.png");
         err = Imager.getImageBuffer(theme + "err.png");
         fleche_bas = Imager.getImageBuffer(theme + "fleche_bas.png");
@@ -139,13 +137,6 @@ public class Theme {
         return roi_selectionne;
     }
 
-    public Image forteresse() {
-        return forteresse;
-    }
-
-    public Image konakis() {
-        return konakis;
-    }
 
     public Image pointInterrogation() {
         return point_interrogation;
