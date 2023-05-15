@@ -20,6 +20,8 @@ public class VueMenuParties extends JPanel {
     private JButton deleteButton;
     private CollecteurEvenements controleur;
 
+    Image background;
+
     Vues vues;
 
     public VueMenuParties(CollecteurEvenements controleur) {
@@ -28,6 +30,9 @@ public class VueMenuParties extends JPanel {
         menuPrincipalButton = new CButton();
         loadButton = new CButton().vert();
         deleteButton = new CButton().rouge();
+
+        // Chargement des assets
+        background = Imager.getImageBuffer("logo.png");
 
         initializeComponents();
     }
@@ -38,15 +43,14 @@ public class VueMenuParties extends JPanel {
 
         // Espace vertical
         Box verticalSpace0 = Box.createVerticalBox();
-        verticalSpace0.add(Box.createVerticalStrut(10));
+        verticalSpace0.add(Box.createVerticalStrut(2));
         GridBagConstraints gspacer0 = new GridBagConstraints();
         gspacer0.gridx = 1;
         gspacer0.gridy = 0;
         gspacer0.gridwidth = 3;
         gspacer0.gridheight = 1;
-        gspacer0.fill = GridBagConstraints.VERTICAL;
+        gspacer0.fill = GridBagConstraints.HORIZONTAL;
         gspacer0.anchor = GridBagConstraints.CENTER;
-        gspacer0.weightx = 1.0;
         add(verticalSpace0, gspacer0);
 
         // Texte "Choisir une partie à charger ou à supprimer :" (label1)
@@ -55,7 +59,7 @@ public class VueMenuParties extends JPanel {
         gbc.gridy = 1;
         gbc.gridwidth = 3;
         gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
         final JLabel label1 = new JLabel();
         Font label1Font = new Font("Arial", Font.BOLD, 20);
@@ -66,7 +70,7 @@ public class VueMenuParties extends JPanel {
 
         // Espaces vertical
         Box verticalSpace1 = Box.createVerticalBox();
-        verticalSpace1.add(Box.createVerticalStrut(10));
+        verticalSpace1.add(Box.createVerticalStrut(100));
         GridBagConstraints gspacer1 = new GridBagConstraints();
         gspacer1.gridx = 1;
         gspacer1.gridy = 2;
@@ -78,7 +82,7 @@ public class VueMenuParties extends JPanel {
 
         // Espaces horizontal
         Box horizontalSpace1 = Box.createHorizontalBox();
-        horizontalSpace1.add(Box.createHorizontalStrut(20));
+        horizontalSpace1.add(Box.createHorizontalStrut((this.getWidth() - 300) / 2));
         GridBagConstraints gspacer2 = new GridBagConstraints();
         gspacer2.gridx = 0;
         gspacer2.gridy = 3;
@@ -95,6 +99,7 @@ public class VueMenuParties extends JPanel {
         fileList.setForeground(new Color(-16777216));
         fileList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         fileList.setFont(new Font("Arial", Font.PLAIN, 18)); // Changez la taille du texte des fichiers ici
+        //fileList.setPreferredSize(new Dimension(-1, 200));
         // Ajout de l'écouteur de double-clic ici
         fileList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
@@ -118,15 +123,14 @@ public class VueMenuParties extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        JScrollPane scrollPane = new JScrollPane(fileList);
+        JScrollPane scrollPane = new JScrollPane(fileList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBackground(new Color(-16777216));
-        //scrollPane.setForeground(new Color(-16777216));
-        scrollPane.setOpaque(false);
+        //scrollPane.setOpaque(false);
         add(scrollPane, gbc);
 
         // Espaces horizontal
         Box horizontalSpace2 = Box.createHorizontalBox();
-        horizontalSpace2.add(Box.createHorizontalStrut(20));
+        horizontalSpace2.add(Box.createHorizontalStrut((this.getWidth() - 300) / 2));
         GridBagConstraints gspacer3 = new GridBagConstraints();
         gspacer3.gridx = 2;
         gspacer3.gridy = 3;
@@ -138,12 +142,12 @@ public class VueMenuParties extends JPanel {
 
         // Espaces vertical
         Box verticalSpace2 = Box.createVerticalBox();
-        verticalSpace2.add(Box.createVerticalGlue());
+        verticalSpace2.add(Box.createVerticalStrut(100));
         GridBagConstraints gspacer4 = new GridBagConstraints();
         gspacer4.gridx = 1;
         gspacer4.gridy = 4;
         gspacer4.gridwidth = 3;
-        gspacer4.gridheight = GridBagConstraints.REMAINDER;
+        gspacer4.gridheight = 1;
         gspacer4.fill = GridBagConstraints.VERTICAL;
         gspacer4.anchor = GridBagConstraints.CENTER;
         add(verticalSpace2, gspacer4);
@@ -156,9 +160,9 @@ public class VueMenuParties extends JPanel {
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 5;
-        gbc.gridwidth = 3;
+        gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
         add(panel1, gbc);
 
@@ -166,7 +170,7 @@ public class VueMenuParties extends JPanel {
         loadButton.setHideActionText(false);
         loadButton.setHorizontalTextPosition(SwingConstants.LEFT);
         loadButton.setText("Charger Partie");
-        loadButton.setMaximumSize(new Dimension(150, 30)); // Changez la taille du bouton "Charger la partie" ici
+        //loadButton.setPreferredSize(new Dimension(100, 50));
 
         loadButton.addActionListener(new ActionListener() {
             @Override
@@ -189,13 +193,13 @@ public class VueMenuParties extends JPanel {
         gbc.gridy = 0;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
         panel1.add(loadButton, gbc);
+        //add(loadButton, gbc);
 
         deleteButton.setHideActionText(false);
         deleteButton.setHorizontalTextPosition(SwingConstants.LEFT);
-        deleteButton.setMaximumSize(new Dimension(150, 30));
         deleteButton.setText("Supprimer Partie");
 
         deleteButton.addActionListener(new ActionListener() {
@@ -229,18 +233,30 @@ public class VueMenuParties extends JPanel {
         gbc.gridy = 0;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
         panel1.add(deleteButton, gbc);
 
+        // Espace vertical
+        Box verticalSpace3 = Box.createVerticalBox();
+        verticalSpace3.add(Box.createVerticalStrut(100));
+        GridBagConstraints gspacer5 = new GridBagConstraints();
+        gspacer5.gridx = 1;
+        gspacer5.gridy = 6;
+        gspacer5.gridwidth = 3;
+        gspacer5.gridheight = 1;
+        gspacer5.fill = GridBagConstraints.VERTICAL;
+        gspacer5.anchor = GridBagConstraints.CENTER;
+        add(verticalSpace3, gspacer5);
+
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 6;
-        gbc.gridwidth = 3;
+        gbc.gridy = 7;
+        gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
-        menuPrincipalButton.setBackground(new Color(-3949375));
+        gbc.insets = new Insets(0, 0, 10, 0);
         menuPrincipalButton.setText("Menu Principal");
         menuPrincipalButton.addActionListener(new ActionListener() {
             @Override
@@ -249,18 +265,6 @@ public class VueMenuParties extends JPanel {
             }
         });
         add(menuPrincipalButton, gbc);
-
-        // Espace vertical
-        Box verticalSpace3 = Box.createVerticalBox();
-        verticalSpace3.add(Box.createVerticalStrut(10));
-        GridBagConstraints gspacer5 = new GridBagConstraints();
-        gspacer5.gridx = 1;
-        gspacer5.gridy = 7;
-        gspacer5.gridwidth = 3;
-        gspacer5.gridheight = 1;
-        gspacer5.fill = GridBagConstraints.VERTICAL;
-        gspacer5.anchor = GridBagConstraints.CENTER;
-        add(verticalSpace3, gspacer5);
 
         refreshFileList();
     }
@@ -282,5 +286,16 @@ public class VueMenuParties extends JPanel {
                 }
             }
         }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        // Affichage de l'image d'arrière plan
+        g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
     }
 }
