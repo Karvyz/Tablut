@@ -173,7 +173,7 @@ public class Jeu extends Observable implements Serializable {
     public boolean peutAnnuler() {
         if(coup_annule.estVide())
             return false;
-        if (!joueurs[0].estHumain() && coup_annule.taille() == 1)
+        if (!joueurs[0].estHumain() && coup_annule.size() == 1)
             return false;
         // Inutile je pense ??
         /*
