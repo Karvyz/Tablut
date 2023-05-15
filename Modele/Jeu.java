@@ -1,6 +1,7 @@
 package Modele;
 
-import Controlleur.IA_difficile_le_roi_c_ciao;
+import Controlleur.IA_DifficileTemps;
+import Controlleur.heuristiques.HeuristiqueLeRoiCCiao;
 import Patterns.Observable;
 import Structures.Pile;
 
@@ -143,7 +144,7 @@ public class Jeu extends Observable implements Serializable {
     }
 
     public void solution() {
-        Coup aide = new IA_difficile_le_roi_c_ciao("", TypePion.ATTAQUANT, this, 50).meilleurCoup();
+        Coup aide = new IA_DifficileTemps("", TypePion.ATTAQUANT, this, new HeuristiqueLeRoiCCiao(), 50).meilleurCoup();
         setAideIA(aide);
         metAJour();
     }

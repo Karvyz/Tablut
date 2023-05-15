@@ -1,17 +1,12 @@
-package Controlleur;
+package Controlleur.heuristiques;
 
-import Modele.Jeu;
 import Modele.Niveau;
-import Modele.TypeJoueur;
 import Modele.TypePion;
 
-public class IA_difficile_AttaqueRoi extends IA_difficile {
-    public IA_difficile_AttaqueRoi(String nom, TypePion roleJ, Jeu j, long timeLimitMs) {
-        super(nom, roleJ, j, timeLimitMs);
-    }
+public class HeuristiqueAttaqueRoi extends Heuristique {
 
     @Override
-    public float evaluation(Niveau n) {
+    public float evaluation(Niveau n, TypePion typePion) {
         int x = 0, y = 0;
         int attaquants = 0;
         int defenseurs = 0;
@@ -56,7 +51,7 @@ public class IA_difficile_AttaqueRoi extends IA_difficile {
                 }
             }
         }
-        if (jeu.get_num_JoueurCourant() == 0) { // attaquant
+        if (typePion == TypePion.ATTAQUANT) { // attaquant
             if (countbd < 2 && counthd < 2 || countbg < 2 && counthg < 2 || countbd < 2 && countbg < 2 || counthd < 2 && counthg < 2 || attaquants < 3) {
                 return -10000;
             } else {
@@ -69,10 +64,5 @@ public class IA_difficile_AttaqueRoi extends IA_difficile {
                 return defenseurs - attaquants - Math.min(Math.min(counthg + countbg, counthd + countbd), Math.min(counthg + counthd, countbg + countbd)); // on retourne le nombre de defenseurs - le nombre d'attaquants - le nombre minimum de pions d'un coté du roi
             }
         }
-    }
-
-    @Override
-    public String toString() {
-        return "ATTAQUE ROI";
     }
 }

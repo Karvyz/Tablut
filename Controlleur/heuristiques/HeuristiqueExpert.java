@@ -1,18 +1,14 @@
-package Controlleur;
+package Controlleur.heuristiques;
 
 import Modele.Jeu;
 import Modele.Niveau;
 import Modele.TypePion;
 
-public class IA_expert extends IA_difficile{
-    public IA_expert(String nom, TypePion roleJ, Jeu j, long timeLimitMs) {
-        super(nom, roleJ, j, timeLimitMs);
-    }
-
+public class HeuristiqueExpert extends Heuristique {
     @Override
-    public float evaluation(Niveau n) {
+    public float evaluation(Niveau n, TypePion typePion) {
         int eval = 0, attaquants = 16, defenseurs = 8;
-        if (jeu.get_num_JoueurCourant() == 0) { // attaquant
+        if (typePion == TypePion.ATTAQUANT) { // attaquant
             //on regarde les contours de la map et s'il y a deux attaquants collés ou un attaquant collé à une Forteresse ou des defenseurs sur cette ligne/colonne on baisse l'evaluation
             //si il y a rien de tout ça on augmente l'evaluation
             for(int i = 0; i < n.getTaille(); i++){

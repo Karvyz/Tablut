@@ -1,17 +1,13 @@
-package Controlleur;
+package Controlleur.heuristiques;
 
 import Modele.Jeu;
 import Modele.Niveau;
-import Modele.TypeJoueur;
 import Modele.TypePion;
 
-public class IA_difficile_Long_live_the_king extends IA_difficile{
-    public IA_difficile_Long_live_the_king(String nom, TypePion roleJ, Jeu j, long timeLimitMs) {
-        super(nom, roleJ, j, timeLimitMs);
-    }
+public class HeuristiqueLongLiveTheKing extends Heuristique {
 
     @Override
-    public float evaluation(Niveau n) {
+    public float evaluation(Niveau n, TypePion typePion) {
         int x = 0, y = 0;
         int attaquants = 0, defenseurs = 0, eval = 0, check = 0, check2 = 0;
         for (int i = 0; i < n.getTaille(); i++) {
@@ -33,7 +29,7 @@ public class IA_difficile_Long_live_the_king extends IA_difficile{
                 }
             }
         }
-        if (jeu.get_num_JoueurCourant() != 0) {
+        if (typePion != TypePion.ATTAQUANT) {
             for (int i = x - 2; i < x + 2; i++) {
                 for (int j = y - 2; j < y + 2; j++) {
                     if (n.estAttaquant(i, j)) {
