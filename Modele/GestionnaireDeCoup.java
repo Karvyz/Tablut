@@ -45,6 +45,8 @@ public class GestionnaireDeCoup {
         else{
             annuler_IAvIA();
         }
+        jeu.metAJour();
+        jeu.test_annuler_refaire = true;
     }
 
     public void refaire() {
@@ -66,8 +68,6 @@ public class GestionnaireDeCoup {
         else{
             refaire_IAvIA();
         }
-        jeu.metAJour();
-        jeu.test_annuler_refaire = true;
 
     }
 
@@ -77,6 +77,7 @@ public class GestionnaireDeCoup {
         Niveau restaure = coup_annule.depiler(); //Recupère le niveau précedent
         jeu.n = restaure.clone();
         if (nb_coups == 2){
+            coup_a_refaire.empiler(jeu.n.clone()); //stock l'état avant d'annuler
             restaure = coup_annule.depiler(); //Depile le coup qu'avait joué l'humain
             jeu.n = restaure.clone();
         }
@@ -88,8 +89,15 @@ public class GestionnaireDeCoup {
     }
 
     private void annuler_HvIA() {
-        annule_coups(2);
+        if(coup_annule.size() == 1){ //Lorsque on gagne on joue que 1 coup, si on consulte, il peut rester que 1 coups
+            annule_coups(1);
+        }else {
+            annule_coups(2);
+        }
 
+        if(pileIA_annule.isEmpty()){
+            return;
+        }
         //le coup de l'ia:
         Coup a_rempiler = pileIA_annule.pop(); //On supprime le coup joué
         pileIA_refaire.push(a_rempiler);
@@ -107,7 +115,8 @@ public class GestionnaireDeCoup {
 
     public void annuler_IAvH(){
         if(coup_annule.size() == 1){
-            jeu.setCoordooneJouerIA(null, null);
+            Coup sommet = pileIA_annule.peek(); //On récupère le coup a affiche
+            jeu.setCoordooneJouerIA(sommet.depart, sommet.arrivee);
             System.out.println("L'IA a joué que un coup, on ne peut pas l'annuler");
             return;
         }
@@ -141,7 +150,12 @@ public class GestionnaireDeCoup {
     }
 
     private void refaire_HvIA(){
-        refaire_coups(2);
+        if (coup_a_refaire.size() == 1){
+            refaire_coups(1);
+        }
+        else{
+            refaire_coups(2);
+        }
         Coup sommet = pileIA_refaire.pop();
         pileIA_annule.push(sommet);
         jeu.setCoordooneJouerIA(sommet.depart, sommet.arrivee);
@@ -151,7 +165,6 @@ public class GestionnaireDeCoup {
     public void refaire_IAvH(){
         if(coup_a_refaire.size() <= 1){
             jeu.setCoordooneJouerIA(null, null);
-            System.out.println("Impossible de refaire");
             return;
         }
 
