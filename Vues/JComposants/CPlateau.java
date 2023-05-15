@@ -42,16 +42,16 @@ public class CPlateau extends JPanel implements Observateur {
 
     @Override
     protected void paintComponent(Graphics g) {
+
         super.paintComponent(g);
         calculerDimensions();
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        verif_debut_partie();
         test_annuler_refaire();
         drawPlateau(g2d);
         drawContenu(g2d);
-        if(controleur.jeu().debutPartie()){
-            setDrawFleche1(false);
-        }
+
         drawMouvIA(g2d);
         if(controleur.jeu().getAideIA() != null){
             Coup aide = controleur.jeu().getAideIA();
@@ -67,6 +67,21 @@ public class CPlateau extends JPanel implements Observateur {
             drawContenu(g2d);
         }
 
+    }
+
+    private void verif_debut_partie() {
+        if(controleur.jeu().debutPartie()) {
+            setPionEnDeplacement(null);
+            setDestinationsPossibles(null);
+            if(controleur.jeu().getCoordooneDepartIA()==null){
+                setDrawFleche1(false);
+            }
+            setPionSelec(null);
+            setSurvole(null);
+            setPointSelec(null);
+            miseAJour();
+
+        }
     }
 
     private void test_annuler_refaire() {
@@ -293,8 +308,9 @@ public class CPlateau extends JPanel implements Observateur {
 
     public void setDestinationsPossibles(ArrayList<Coordonne> destinations) {
         this.destinationsPossibles = destinations;
-        repaint();
+        miseAJour();
     }
+
 
     public Point getPionEnDeplacement() {
         return pionEnDeplacement;

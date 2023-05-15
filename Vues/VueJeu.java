@@ -246,12 +246,14 @@ class VueJeu extends JPanel {
 
             controleur.jeu().reset();
             controleur.nouvellePartie(joueurs[0].nom(), joueurs[0].type(), TypePion.ATTAQUANT, joueurs[1].nom(), joueurs[1].type(), TypePion.DEFENSEUR);
+            controleur.jeu().setCoordooneJouerIA(null,null);
             texteJeu = new TexteJeu(0, 0);
             controleur.afficherJeu();
             controleur.jeu().metAJour();
         });
         menu_items[1].addActionListener((e) -> {
             controleur.jeu().reset();
+            controleur.jeu().setCoordooneJouerIA(null,null);
             controleur.afficherMenuPrincipal();
         });
         menu_items[2].addActionListener(e -> controleur.toClose());
