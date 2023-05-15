@@ -6,17 +6,24 @@ import Modele.TypePion;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Random;
 
 public class Tournois2Controlleur {
 
-    static int coupsLimit = 100;
+    static int coupsLimit = 200;
     public void tournois2() {
+        Random random = new Random();
         ArrayList<IA> ias = new ArrayList<>();
         ias.add(new IA_facile("", TypePion.ATTAQUANT, new Jeu()));
-        ias.add(new IA_difficile_le_roi_c_ciao("", TypePion.ATTAQUANT, new Jeu(), 20));
-        ias.add(new IA_difficile_MassacrePion("", TypePion.ATTAQUANT, new Jeu(), 20));
-        ias.add(new IA_difficile_Long_live_the_king("", TypePion.ATTAQUANT, new Jeu(), 20));
-        ias.add(new IA_difficile_AttaqueRoi("", TypePion.ATTAQUANT, new Jeu(), 20));
+        ias.add(new IA_difficile_le_roi_c_ciao("", TypePion.ATTAQUANT, new Jeu(), 0));
+        ias.add(new IA_difficile_MassacrePion("", TypePion.ATTAQUANT, new Jeu(), 0));
+        ias.add(new IA_difficile_Long_live_the_king("", TypePion.ATTAQUANT, new Jeu(), 0));
+        ias.add(new IA_difficile_AttaqueRoi("", TypePion.ATTAQUANT, new Jeu(), 0));
+        ias.add(new IA_expert("", TypePion.ATTAQUANT, new Jeu(), 0));
+        ias.add(new IA_Fusion("", TypePion.ATTAQUANT, new Jeu(), 0, 1, 1, 1, 1));
+        for (int i = 0; i < 10; i++) {
+            ias.add(new IA_Fusion("", TypePion.ATTAQUANT, new Jeu(), 0, random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat()));
+        }
         ArrayList<Integer> nbVictAttaque = new ArrayList<>();
         ArrayList<Integer> nbVictDefense = new ArrayList<>();
         for (int i = 0; i < ias.size(); i++) {
@@ -38,13 +45,14 @@ public class Tournois2Controlleur {
                         nbVictAttaque.set(i, nbVictAttaque.get(i) + 1);
                         break;
                     case 2:
-                        nbVictDefense.set(i, nbVictDefense.get(i) + 1);
+                        nbVictDefense.set(j, nbVictDefense.get(j) + 1);
                         break;
                     default:
                 }
             }
         }
         for (int i = 0; i < ias.size(); i++) {
+            System.out.println(ias.get(i));
             System.out.println("attaques : " + nbVictAttaque.get(i));
             System.out.println("defenses : " + nbVictDefense.get(i));
         }

@@ -70,4 +70,9 @@ public class IA_difficile_AttaqueRoi extends IA_difficile {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "ATTAQUE ROI";
+    }
 }

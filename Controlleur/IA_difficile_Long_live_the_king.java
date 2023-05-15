@@ -100,4 +100,9 @@ public class IA_difficile_Long_live_the_king extends IA_difficile{
         }
         return eval;
     }
+
+    @Override
+    public String toString() {
+        return "LLTK";
+    }
 }

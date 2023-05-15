@@ -95,4 +95,9 @@ public class IA_difficile_le_roi_c_ciao extends IA_difficile{
                 && (y == 8 || n.estAttaquant(x, y + 1) || n.estForteresse(x, y + 1) || n.estKonakis(x, y + 1))
                 && (y == 0 || n.estAttaquant(x, y - 1) || n.estForteresse(x, y - 1) || n.estKonakis(x, y - 1)));
     }
+
+    @Override
+    public String toString() {
+        return "LRCC";
+    }
 }
