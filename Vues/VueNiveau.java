@@ -61,6 +61,8 @@ class VueNiveau extends JPanel implements Observateur {
 
     @Override
     public void miseAJour() {
+        parent.ModifBoutonUndo();
+        parent.ModifBoutonRedo();
         if (controleur.jeu().partieTerminee()) {
             //controleur.jeu().metAJour();
             parent.showEnd();

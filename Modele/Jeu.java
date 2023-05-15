@@ -165,6 +165,21 @@ public class Jeu extends Observable implements Serializable {
         return this.ArriveIA;
     }
 
+    public boolean peutAnnuler() {
+        if(coup_annule.estVide())
+            return false;
+        if (!joueurs[0].estHumain() && coup_annule.taille() == 1)
+            return false;
+        // Inutile je pense ??
+        /*
+        if ((!joueurs[0].estHumain() || !joueurs[1].estHumain())) { // Tester si on a une IA contre un humaion pour annuler le coup de l'IA et de l'humain, ATTENTION,l'IA jouera un autre coup
+            if (coup_annule.estVide())
+                return false;
+        }
+         */
+        return true;
+    }
+
     public void annuler() {
 
 
@@ -212,6 +227,12 @@ public class Jeu extends Observable implements Serializable {
         System.out.println("Annulation effectué");
     }
 
+
+    public boolean peutRefaire() {
+        if (coup_a_refaire.estVide())
+            return false;
+        return true;
+    }
 
     public void refaire() {
         if (coup_a_refaire.estVide()) {

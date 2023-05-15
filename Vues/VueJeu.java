@@ -32,6 +32,8 @@ class VueJeu extends JPanel {
     private JDialog endGameDialog;
     Image background;
 
+    JButton[] controls = new JButton[3];
+
     VueJeu(CollecteurEvenements c) {
         controleur = c;
 
@@ -395,7 +397,7 @@ class VueJeu extends JPanel {
         JPanel controlsPanel = new JPanel();
         controlsPanel.setOpaque(false);
 
-        JButton[] controls = {
+        controls = new JButton[]{
                 new CButton(new ImageIcon(Imager.getScaledImage("assets/undo.png", 18, 18))).blanc(),
                 new CButton(new ImageIcon(Imager.getScaledImage("assets/solution.png", 40, 40))).solution(),
                 new CButton(new ImageIcon(Imager.getScaledImage("assets/redo.png", 18, 18))).blanc(),
@@ -426,9 +428,17 @@ class VueJeu extends JPanel {
 
     void ModifBoutonUndo() {
         if (controleur.jeu().peutAnnuler()) {
-            undo.setEnabled(true);
+            controls[0].setEnabled(true);
         } else {
-            undo.setEnabled(false);
+            controls[0].setEnabled(false);
+        }
+    }
+
+    void ModifBoutonRedo() {
+        if (controleur.jeu().peutRefaire()) {
+            controls[2].setEnabled(true);
+        } else {
+            controls[2].setEnabled(false);
         }
     }
 
