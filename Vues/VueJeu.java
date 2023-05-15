@@ -500,7 +500,6 @@ class VueJeu extends JPanel {
         controleur.jeu().ajouteObservateur(vueNiveau);
 
         topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        System.out.println(topFrame);
 
         topFrame.addKeyListener(new AdaptateurClavier(controleur));
         topFrame.setFocusable(true);
