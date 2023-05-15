@@ -100,7 +100,13 @@ public class CPlateau extends JPanel implements Observateur {
 
         for (int l = 0; l < 9; l++) {
             for (int c = 0; c < 9; c++) {
+
                 // -- Dessin des pions, forteresses, roi, konakis
+                if(controleur.jeu().partieTerminee()){
+                    setPionSelec(null);
+                    setPionEnDeplacement(null);
+                }
+
                 if (getPionSelec() != null && l == getPionSelec().getX() && c == getPionSelec().getY() && !controleur.jeu().partieTerminee()) { //Ici on efface le pion selec, sauf si partie_fini
                     x += largeurCase;
                     if (c % 2 == 0)
@@ -166,7 +172,6 @@ public class CPlateau extends JPanel implements Observateur {
             }
         }
         else if(controleur.jeu().partieTerminee()){
-            System.out.println(controleur.jeu().getNiveau());
             drawContenu(g2d); //bien affiche le dernier coup en clic-clic
         }
     }
