@@ -171,11 +171,24 @@ class VueJeu extends JPanel {
                 }
             } else {
                 endGamePanel.setBackground(new Color(85, 91, 97));
-                endGameText.setText(vainqueur.nom() + " a gagné !\n" + perdant.nom() + " a perdu.");
+                String svainqueur = "";
+                if(vainqueur.nom().equals("Nom de l'attaquant"))
+                    svainqueur = "L'attaquant";
+                else if (vainqueur.nom().equals("Nom du défenseur"))
+                    svainqueur = "Le défenseur";
+                else
+                    svainqueur = vainqueur.nom();
+                String sperdant = "";
+                if(perdant.nom().equals("Nom de l'attaquant"))
+                    sperdant = "L'attaquant";
+                else if (perdant.nom().equals("Nom du défenseur"))
+                    sperdant = "Le défenseur";
+                else
+                    sperdant = perdant.nom();
+                endGameText.setText("<html>" + svainqueur + " a gagné !<br>" + sperdant + " a perdu.</html>");
             }
         } else {
             endGameDialog.getComponent(0).setBackground(new Color(201, 67, 67));
-            //endGamePanel.setBackground(new Color(201, 67, 67));
             endGamePanel.setBackground(new Color(85, 91, 97));
             String typeIA = "";
             switch (vainqueur.type()) {
@@ -210,7 +223,7 @@ class VueJeu extends JPanel {
                     if(vainqueur.nom().equals("Nom de l'attaquant"))
                         endGameText.setText("L'attaquant, IA " + typeIA + " a gagné !");
                     else
-                    endGameText.setText("L'attaquant, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
+                        endGameText.setText("L'attaquant, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
                 }
             }
         }
