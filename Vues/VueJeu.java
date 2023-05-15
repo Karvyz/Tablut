@@ -442,7 +442,10 @@ class VueJeu extends JPanel {
 
     void ModifBoutonUndo() {
         if (controleur.jeu().peutAnnuler()) {
-            controls[0].setEnabled(true);
+            if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
+                controls[0].setEnabled(false);
+            else
+                controls[0].setEnabled(true);
         } else {
             controls[0].setEnabled(false);
         }
@@ -456,7 +459,10 @@ class VueJeu extends JPanel {
 
     void ModifBoutonRedo() {
         if (controleur.jeu().peutRefaire()) {
-            controls[2].setEnabled(true);
+            if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
+                controls[2].setEnabled(false);
+            else
+                controls[2].setEnabled(true);
         } else {
             controls[2].setEnabled(false);
         }
