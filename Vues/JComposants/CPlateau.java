@@ -177,6 +177,9 @@ public class CPlateau extends JPanel implements Observateur {
                 x = bordureGauche;
             }
         }
+        else if(controleur.jeu().partieTerminee()){
+            drawContenu(g2d); //bien affiche le dernier coup en clic-clic
+        }
     }
 
     private void drawDestination(Graphics2D g) {

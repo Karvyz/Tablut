@@ -36,6 +36,8 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         int l = calcul_l(e);
         int c = calcul_c(e);
         if (!check_ok(l, c)) {
+            plateau.setPionSelec(null);
+            plateau.setPionEnDeplacement(null);
             return;
         }
 
@@ -128,6 +130,9 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             int l = calcul_l(e);
             int c = calcul_c(e);
             if (!check_ok(l, c)) {
+                plateau.setPionSelec(null);
+                plateau.setPionEnDeplacement(null);
+                plateau.setDestinationsPossibles(null);
                 return;
             }
 
