@@ -95,9 +95,6 @@ public class CPlateau extends JPanel implements Observateur {
     private void drawContenu(Graphics2D g) {
         Jeu j = controleur.jeu();
         Niveau n = j.getNiveau();
-        if (controleur.jeu().partieTerminee()){
-            System.out.println(n);
-        }
         int x = bordureGauche;
         int y = bordureHaut;
 
