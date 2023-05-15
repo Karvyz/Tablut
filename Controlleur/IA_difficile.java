@@ -29,16 +29,16 @@ public abstract class IA_difficile extends IA{
             Coup overide = coups(e);
             nb_evals++;
             if (overide != null) {
-                System.out.println("fini en avance");
-                System.out.println("nb evals : " + nb_evals);
+//                System.out.println("fini en avance");
+//                System.out.println("nb evals : " + nb_evals);
                 return overide;
             }
 
         }
         Etat meilleurCoup = etats.poll();
-        System.out.println("fini");
-        System.out.println("nb evals : " + nb_evals);
-        System.out.println("max_depth : " + meilleurCoup.depth);
+//        System.out.println("fini");
+//        System.out.println("nb evals : " + nb_evals);
+//        System.out.println("max_depth : " + meilleurCoup.depth);
         return meilleurCoup.coupAJouer;
     }
 
@@ -84,7 +84,6 @@ public abstract class IA_difficile extends IA{
 
     Coup coups(Etat e) {
         if (e.niveau == null) {
-            System.out.println("niveau");
             exit(1);
         }
         if (maxDepth < e.depth + 2)
