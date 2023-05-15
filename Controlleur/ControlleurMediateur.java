@@ -21,8 +21,8 @@ public class ControlleurMediateur implements CollecteurEvenements{
 
 
 
-    public ControlleurMediateur(Jeu j) {
-        jeu = j;
+    public ControlleurMediateur() {
+        //on utilise fixeJeu
     }
 
     public String toString() {

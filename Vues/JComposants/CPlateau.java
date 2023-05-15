@@ -56,7 +56,6 @@ public class CPlateau extends JPanel implements Observateur {
         drawAideIA(g2d);
         drawCroixRouge(g2d);
 
-
     }
 
 
