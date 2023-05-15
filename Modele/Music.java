@@ -15,8 +15,7 @@ public class Music implements ActionListener {
     public Music() {
         try {
             // Charger le fichier audio
-            //AudioInputStream audioStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/Resources/Celtic-Ritual.wav"));
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/Resources/Test.wav"));
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/Resources/Celtic-Ritual.wav"));
 
             // Créer un Clip à partir du flux audio
             clip = AudioSystem.getClip();

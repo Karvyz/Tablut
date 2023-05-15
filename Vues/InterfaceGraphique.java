@@ -13,7 +13,6 @@ public class InterfaceGraphique implements Runnable {
     boolean maximized;
 
     InterfaceGraphique(CollecteurEvenements c) {
-        //j = jeu;
         control = c;
     }
 
@@ -59,7 +58,6 @@ public class InterfaceGraphique implements Runnable {
 
         // On fixe la taille et centre la fenêtre
         frame.setSize(width, height);
-        frame.setMinimumSize(new Dimension(1200, 675));
         frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);

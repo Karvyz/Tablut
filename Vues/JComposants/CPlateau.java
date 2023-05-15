@@ -117,14 +117,6 @@ public class CPlateau extends JPanel implements Observateur {
                         x++;
                     continue;
                 }
-                if (n.estForteresse(l, c)) {
-                    g.drawImage(Theme.instance().forteresse(), x + (largeurCase/2)-30, y + (hauteurCase/2)-30, 60, 60, this);
-                }
-                // - Si c'est la case centrale alors on dessine le konakis, s'il n'y a pas le roi
-                if (n.estKonakis(l, c) && !n.estRoi(l, c)) {
-                    g.drawImage(Theme.instance().konakis(), x + 5, y + 4, largeurCase - 8, hauteurCase - 8, this);
-                }
-
                 if (n.estAttaquant(l, c)) {
                     g.drawImage(Theme.instance().noir_inactif(), x +(largeurCase/2)-20, y + (hauteurCase/2)-20, 50, 50, this);
                 } else if (n.estRoi(l, c)) {
@@ -198,7 +190,7 @@ public class CPlateau extends JPanel implements Observateur {
         if (controleur.jeu().getJoueur1().estHumain() || controleur.jeu().getJoueur2().estHumain()) {
             drawDestination(g2d);
             drawDeplacement(g2d);
-            drawSurbrillance(g2d);
+            //drawSurbrillance(g2d);
 
             //System.out.println("here");
             if ((controleur.jeu().getCoordooneDepartIA() != null)){//TODO delete
