@@ -17,12 +17,14 @@ public class Theme {
     private int hauteurCase, largeurCase;
     private Image plateau;
     private Image blanc_inactif;
-    private Image blanc_selectionne;
+
     private Image noir_inactif;
-    private Image noir_selectionne;
 
     private Image point_interrogation, err;
-    private Image roi, forteresse, konakis, roi_selectionne;
+
+    private Image roi;
+
+    private Image croix;
 
     private Image fleche_bas, fleche_droite, fleche_gauche, fleche_haut;
 
@@ -64,19 +66,16 @@ public class Theme {
         plateau = Imager.getImageBuffer(theme + "Plateau3.png");
 
         blanc_inactif = Imager.getImageBuffer(theme + "PB.png");
-        blanc_selectionne = Imager.getImageBuffer(theme + "PB_selectionne.png");
+
         noir_inactif = Imager.getImageBuffer(theme + "PN.png");
-        noir_selectionne = Imager.getImageBuffer(theme + "PN_selectionne.png");
         roi = Imager.getImageBuffer(theme + "Roi.png");
-        roi_selectionne = Imager.getImageBuffer(theme + "Roi_selectionne.png");
-        forteresse = Imager.getImageBuffer(theme + "Forteresse.png");
-        konakis = Imager.getImageBuffer(theme + "Konakis2.png");
         point_interrogation = Imager.getImageBuffer(theme + "Capture1.png");
         err = Imager.getImageBuffer(theme + "err.png");
         fleche_bas = Imager.getImageBuffer(theme + "fleche_bas.png");
         fleche_droite = Imager.getImageBuffer(theme + "fleche_droite.png");
         fleche_gauche = Imager.getImageBuffer(theme + "fleche_gauche.png");
         fleche_haut = Imager.getImageBuffer(theme + "fleche_haut.png");
+        croix = Imager.getImageBuffer(theme + "croix.png");
     }
 
     public int hauteurPlateau() {
@@ -119,33 +118,18 @@ public class Theme {
         return blanc_inactif;
     }
 
-    public Image blanc_selectionne() {
-        return blanc_selectionne;
-    }
+
 
     public Image noir_inactif() {
         return noir_inactif;
     }
 
-    public Image noir_selectionne() {
-        return noir_selectionne;
-    }
 
     public Image roi() {
         return roi;
     }
 
-    public Image roi_selectionne() {
-        return roi_selectionne;
-    }
 
-    public Image forteresse() {
-        return forteresse;
-    }
-
-    public Image konakis() {
-        return konakis;
-    }
 
     public Image pointInterrogation() {
         return point_interrogation;
@@ -166,6 +150,8 @@ public class Theme {
     public Image fleche_haut() {
         return fleche_haut;
     }
+
+    public Image croix() {return croix;}
 
 
     public Image err() {

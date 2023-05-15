@@ -42,16 +42,16 @@ public class CPlateau extends JPanel implements Observateur {
 
     @Override
     protected void paintComponent(Graphics g) {
+
         super.paintComponent(g);
         calculerDimensions();
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        verif_debut_partie();
         test_annuler_refaire();
         drawPlateau(g2d);
         drawContenu(g2d);
-        if(controleur.jeu().debutPartie()){
-            setDrawFleche1(false);
-        }
+
         drawMouvIA(g2d);
         if(controleur.jeu().getAideIA() != null){
             Coup aide = controleur.jeu().getAideIA();
@@ -67,6 +67,21 @@ public class CPlateau extends JPanel implements Observateur {
             drawContenu(g2d);
         }
 
+    }
+
+    private void verif_debut_partie() {
+        if(controleur.jeu().debutPartie()) {
+            setPionEnDeplacement(null);
+            setDestinationsPossibles(null);
+            if(controleur.jeu().getCoordooneDepartIA()==null){
+                setDrawFleche1(false);
+            }
+            setPionSelec(null);
+            setSurvole(null);
+            setPointSelec(null);
+            miseAJour();
+
+        }
     }
 
     private void test_annuler_refaire() {
@@ -102,20 +117,13 @@ public class CPlateau extends JPanel implements Observateur {
                         x++;
                     continue;
                 }
-                if (n.estForteresse(l, c)) {
-                    g.drawImage(Theme.instance().forteresse(), x + (largeurCase/2)-30, y + (hauteurCase/2)-30, 60, 60, this);
-                }
-                // - Si c'est la case centrale alors on dessine le konakis, s'il n'y a pas le roi
-                if (n.estKonakis(l, c) && !n.estRoi(l, c)) {
-                    g.drawImage(Theme.instance().konakis(), x + 5, y + 4, largeurCase - 8, hauteurCase - 8, this);
-                }
 
                 if (n.estAttaquant(l, c)) {
-                    g.drawImage(Theme.instance().noir_inactif(), x +(largeurCase/2)-20, y + (hauteurCase/2)-20, 50, 50, this);
+                    g.drawImage(Theme.instance().noir_inactif(), x +(largeurCase/2)-25, y + (hauteurCase/2)-25, 50, 50, this);
                 } else if (n.estRoi(l, c)) {
-                    g.drawImage(Theme.instance().roi(), x +(largeurCase/2)-25, y + (hauteurCase/2)-25, 60, 60, this);
+                    g.drawImage(Theme.instance().roi(), x +(largeurCase/2)-30, y + (hauteurCase/2)-30, 60, 60, this);
                 } else if (n.estDefenseur(l, c)) {
-                    g.drawImage(Theme.instance().blanc_inactif(), x +(largeurCase/2)-20, y + (hauteurCase/2)-20, 50, 50, this);
+                    g.drawImage(Theme.instance().blanc_inactif(), x +(largeurCase/2)-25, y + (hauteurCase/2)-25, 50, 50, this);
                 }
                 x += largeurCase;
                 if (c % 2 == 0)
@@ -136,12 +144,29 @@ public class CPlateau extends JPanel implements Observateur {
             int l = getPionEnDeplacement().x;
             int c = getPionEnDeplacement().y;
 
+            boolean autorise =false;
+            //TODO a commenter si on veut laisser le pion partout sur le plateau
+            for (Coordonne caseSelec : destinationsPossibles) {
+                int l_case_dest = caseSelec.getX();
+                int c_case_dest = caseSelec.getY();
+                if(l == getPionSelec().getX() && c == getPionSelec().getY() ||  l == l_case_dest && c == c_case_dest){
+                    autorise = true;
+                }
+            }
+            //Jusqu'a la
+
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
 
                     if (i == l && c == j) {
                         //TODO mettre image des points
-                        g2d.drawImage(getImage(), x + 4, y + 4, largeurCase - 4, hauteurCase - 4, this);
+                        if(!autorise){
+                            g2d.drawImage(Theme.instance().croix(), x +4, y + 4, largeurCase -5, hauteurCase -5, this);
+                        }
+                        else{
+                            System.out.println("here");
+                            g2d.drawImage(getImage(), x + 4, y + 4, largeurCase - 4, hauteurCase - 4, this);
+                        }
                     }
                     x += largeurCase + 1;
                 }
@@ -183,7 +208,7 @@ public class CPlateau extends JPanel implements Observateur {
         if (controleur.jeu().getJoueur1().estHumain() || controleur.jeu().getJoueur2().estHumain()) {
             drawDestination(g2d);
             drawDeplacement(g2d);
-            drawSurbrillance(g2d);
+            //drawSurbrillance(g2d);
 
             //System.out.println("here");
             if ((controleur.jeu().getCoordooneDepartIA() != null)){//TODO delete
@@ -228,19 +253,6 @@ public class CPlateau extends JPanel implements Observateur {
         }
     }
 
-    public void drawSurbrillance(Graphics2D g) {
-        Jeu J = controleur.jeu();
-        Niveau n = J.getNiveau();
-        if (pionSelec != null) {
-            int x = pionSelec.getX();
-            int y = pionSelec.getY();
-
-            if (n.estRoi(x, y)) {
-                // -- Dessin du roi avec arrière-plan
-                g.drawImage(Theme.instance().roi_selectionne(), (largeurCase + 1) * y + 1, (hauteurCase + 1) * x + 1, largeurCase - 5, hauteurCase - 4, this);
-            }
-        }
-    }
 
     public int calcul_dir(Coordonne depart, Coordonne coordonneArriveIA) {
         int deltaX = coordonneArriveIA.getX() - depart.getX();
@@ -293,7 +305,7 @@ public class CPlateau extends JPanel implements Observateur {
 
     public void setDestinationsPossibles(ArrayList<Coordonne> destinations) {
         this.destinationsPossibles = destinations;
-        repaint();
+        miseAJour();
     }
 
     public Point getPionEnDeplacement() {

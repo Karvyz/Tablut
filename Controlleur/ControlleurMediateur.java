@@ -17,7 +17,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
     public Jeu jeu;
     final int lenteurAttente = 50;
     int decompte;
-    private boolean pionSelec = false;
     public boolean Stop;
 
 
@@ -137,9 +136,9 @@ public class ControlleurMediateur implements CollecteurEvenements{
             jeu.joueurs[1] = data_niveau.defenseur;
             jeu.config = data_niveau.config;
             jeu.setEnCours(data_niveau.enCours);
+            jeu.setDebutPartie(true);
             jeu.joueurs[0].fixeJeuJoueur(jeu);
             jeu.joueurs[1].fixeJeuJoueur(jeu);
-
 
             objectIn.close();
             fileIn.close();
@@ -221,6 +220,9 @@ public class ControlleurMediateur implements CollecteurEvenements{
     public void tictac() {
 
         if (jeu.enCours()) {
+            if(jeu().debutPartie()){
+                jeu.setDebutPartie(false);
+            }
             //System.out.println(jeu);
             if (jeu == null || jeu().partieTerminee()) {
                 return;
