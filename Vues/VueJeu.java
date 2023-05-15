@@ -13,6 +13,7 @@ import java.io.File;
 
 import static java.awt.GridBagConstraints.*;
 
+import Modele.TypeJoueur;
 import Modele.TypePion;
 import Vues.JComposants.*;
 
@@ -432,6 +433,9 @@ class VueJeu extends JPanel {
         } else {
             controls[0].setEnabled(false);
         }
+        if(controleur.jeu().getJoueur1().type() != TypeJoueur.HUMAIN)
+            if(controleur.jeu().getJoueur2().type() != TypeJoueur.HUMAIN)
+                controls[0].setEnabled(false);
     }
 
     void ModifBoutonRedo() {
@@ -440,6 +444,9 @@ class VueJeu extends JPanel {
         } else {
             controls[2].setEnabled(false);
         }
+        if(controleur.jeu().getJoueur1().type() != TypeJoueur.HUMAIN)
+            if(controleur.jeu().getJoueur2().type() != TypeJoueur.HUMAIN)
+                controls[2].setEnabled(false);
     }
 
     private JPanel addUserActions() {
