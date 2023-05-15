@@ -181,16 +181,16 @@ class VueJeu extends JPanel {
             } else {
                 endGamePanel.setBackground(new Color(85, 91, 97));
                 String svainqueur = "";
-                if(vainqueur.nom().equals("Nom de l'attaquant"))
+                if(vainqueur.nom().equals("Attaquant"))
                     svainqueur = "L'attaquant";
-                else if (vainqueur.nom().equals("Nom du défenseur"))
+                else if (vainqueur.nom().equals("Défenseur"))
                     svainqueur = "Le défenseur";
                 else
                     svainqueur = vainqueur.nom();
                 String sperdant = "";
-                if(perdant.nom().equals("Nom de l'attaquant"))
+                if(perdant.nom().equals("Attaquant"))
                     sperdant = "L'attaquant";
-                else if (perdant.nom().equals("Nom du défenseur"))
+                else if (perdant.nom().equals("Défenseur"))
                     sperdant = "Le défenseur";
                 else
                     sperdant = perdant.nom();
@@ -222,14 +222,14 @@ class VueJeu extends JPanel {
                 //endGameDialog.getComponent(0).setBackground(new Color(120, 70, 50));
                 endGameDialog.getComponent(0).setBackground(new Color(85, 91, 97));
                 if (vainqueur.aPionsBlancs()) {
-                    if(vainqueur.nom().equals("Nom du défenseur"))
+                    if(vainqueur.nom().equals("Défenseur"))
                         endGameText.setText("Le défenseur, IA " + typeIA + " a gagné !");
                     else
                     endGameText.setText("Le défenseur, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
                 }
                 else {
                     endGameDialog.getComponent(0).setBackground(new Color(85, 91, 97));
-                    if(vainqueur.nom().equals("Nom de l'attaquant"))
+                    if(vainqueur.nom().equals("Attaquant"))
                         endGameText.setText("L'attaquant, IA " + typeIA + " a gagné !");
                     else
                         endGameText.setText("L'attaquant, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
@@ -453,9 +453,9 @@ class VueJeu extends JPanel {
         System.out.println(j1);
         // Initialisation du niveau
         String s1 = "";
-        if(!controleur.jeu().getJoueurCourant().estHumain()) {
+        if(!controleur.jeu().getJoueur1().estHumain()) {
             s1 = "IA";
-            switch(controleur.jeu().getJoueurCourant().type()) {
+            switch(controleur.jeu().getJoueur1().type()) {
                 case IA_FACILE:
                     s1 += " Facile";
                     break;
@@ -467,18 +467,15 @@ class VueJeu extends JPanel {
                     break;
             }
         } else {
-            if(controleur.jeu().getJoueurCourant().nom().equals("Nom de l'attaquant"))
-                s1 = "Attaquant";
-            else
-                s1 = controleur.jeu().getJoueurCourant().nom();
+            s1 = controleur.jeu().getJoueur1().nom();
         }
         j1.setName(s1);
         j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);
 
         String s2 = "";
-        if(!controleur.jeu().getJoueurSuivant().estHumain()) {
+        if(!controleur.jeu().getJoueur2().estHumain()) {
             s2 = "IA";
-            switch(controleur.jeu().getJoueurSuivant().type()) {
+            switch(controleur.jeu().getJoueur2().type()) {
                 case IA_FACILE:
                     s2 += " Facile";
                     break;
@@ -490,10 +487,7 @@ class VueJeu extends JPanel {
                     break;
             }
         } else {
-            if(controleur.jeu().getJoueurSuivant().nom().equals("Nom du défenseur"))
-                s2 = "Défenseur";
-            else
-                s2 = controleur.jeu().getJoueurCourant().nom();
+            s2 = controleur.jeu().getJoueur2().nom();
         }
         j2.setName(s2);
         j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
@@ -524,10 +518,10 @@ class VueJeu extends JPanel {
         mainPanel.add(vueNiveau, c);
 
         // Initialisation du niveau
-        j1.setName((!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurCourant().nom());
+        j1.setName((!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueur1().nom());
         j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);
 
-        j2.setName((!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurSuivant().nom());
+        j2.setName((!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueur2().nom());
         j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
 
         vueNiveau.miseAJour();
