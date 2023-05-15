@@ -236,19 +236,6 @@ public class CPlateau extends JPanel implements Observateur {
         }
     }
 
-    public void drawSurbrillance(Graphics2D g) {
-        Jeu J = controleur.jeu();
-        Niveau n = J.getNiveau();
-        if (pionSelec != null) {
-            int x = pionSelec.getX();
-            int y = pionSelec.getY();
-
-            if (n.estRoi(x, y)) {
-                // -- Dessin du roi avec arrière-plan
-                g.drawImage(Theme.instance().roi_selectionne(), (largeurCase + 1) * y + 1, (hauteurCase + 1) * x + 1, largeurCase - 5, hauteurCase - 4, this);
-            }
-        }
-    }
 
     public int calcul_dir(Coordonne depart, Coordonne coordonneArriveIA) {
         int deltaX = coordonneArriveIA.getX() - depart.getX();
