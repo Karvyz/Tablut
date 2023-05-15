@@ -21,6 +21,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
 
 
 
+
     public ControlleurMediateur() {
         //on utilise fixeJeu
     }
@@ -44,10 +45,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
     public Jeu jeu() {
         verifierJeu("Impossible de renvoyer un jeu");
         return jeu;
-    }
-
-    public void fin() {
-        Stop = true;
     }
 
     /**
@@ -327,7 +324,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
     public boolean getStop(){
         return Stop;
     }
-
 
 
 }

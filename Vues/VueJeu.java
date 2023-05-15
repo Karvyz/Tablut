@@ -137,6 +137,7 @@ class VueJeu extends JPanel {
         consulter.addActionListener((e) -> {
             endGameDialog.setVisible(false);
             controleur.jeu().setVainqueur(null); //permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
+            //controleur.setConsulter(true);
 
 
         });
@@ -433,8 +434,12 @@ class VueJeu extends JPanel {
         } else {
             controls[0].setEnabled(false);
         }
-        if(controleur.jeu().getJoueur1().type() != TypeJoueur.HUMAIN)
-            if(controleur.jeu().getJoueur2().type() != TypeJoueur.HUMAIN)
+        if (controleur.jeu().partieTerminee())
+        //controleur.getConsulter() == true)
+        {
+            controls[0].setEnabled(true);
+        }
+        else if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
                 controls[0].setEnabled(false);
     }
 
@@ -444,8 +449,10 @@ class VueJeu extends JPanel {
         } else {
             controls[2].setEnabled(false);
         }
-        if(controleur.jeu().getJoueur1().type() != TypeJoueur.HUMAIN)
-            if(controleur.jeu().getJoueur2().type() != TypeJoueur.HUMAIN)
+        if (controleur.jeu().partieTerminee()){
+            controls[0].setEnabled(true);
+        }
+        else if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
                 controls[2].setEnabled(false);
     }
 
