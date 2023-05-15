@@ -32,5 +32,8 @@ public class IA_difficile_MassacrePion extends IA_difficile {
         return attaquants - defenseurs;
     }
 
-
+    @Override
+    public String toString() {
+        return "MP";
+    }
 }

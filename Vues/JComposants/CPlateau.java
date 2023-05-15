@@ -144,15 +144,19 @@ public class CPlateau extends JPanel implements Observateur {
             int l = getPionEnDeplacement().x;
             int c = getPionEnDeplacement().y;
 
-            boolean autorise =false;
+            boolean autorise =true;
             //TODO a commenter si on veut laisser le pion partout sur le plateau
-            for (Coordonne caseSelec : destinationsPossibles) {
-                int l_case_dest = caseSelec.getX();
-                int c_case_dest = caseSelec.getY();
-                if(l == getPionSelec().getX() && c == getPionSelec().getY() ||  l == l_case_dest && c == c_case_dest){
-                    autorise = true;
+            if(destinationsPossibles != null){
+                autorise = false;
+                for (Coordonne caseSelec : destinationsPossibles) {
+                    int l_case_dest = caseSelec.getX();
+                    int c_case_dest = caseSelec.getY();
+                    if(l == getPionSelec().getX() && c == getPionSelec().getY() ||  l == l_case_dest && c == c_case_dest){
+                        autorise = true;
+                    }
                 }
             }
+
             //Jusqu'a la
 
             for (int i = 0; i < 9; i++) {
@@ -164,7 +168,6 @@ public class CPlateau extends JPanel implements Observateur {
                             g2d.drawImage(Theme.instance().croix(), x +4, y + 4, largeurCase -5, hauteurCase -5, this);
                         }
                         else{
-                            System.out.println("here");
                             g2d.drawImage(getImage(), x + 4, y + 4, largeurCase - 4, hauteurCase - 4, this);
                         }
                     }
