@@ -36,11 +36,16 @@ public class Jeu extends Observable implements Serializable {
 
     private boolean debutPartie;
 
+    private GestionnaireDeCoup gestionnaireDeCoup;
+
+
     public Jeu() {
         setEnCours(false);
         joueurs[0] = null; //Pour être sure, peut être inutile
         joueurs[1] = null;
+        gestionnaireDeCoup = new GestionnaireDeCoup();
     }
+
 
     /**
      * Méthode permettant d'initialiser une partie
@@ -168,7 +173,7 @@ public class Jeu extends Observable implements Serializable {
     public boolean peutAnnuler() {
         if(coup_annule.estVide())
             return false;
-        if (!joueurs[0].estHumain() && coup_annule.taille() == 1)
+        if (!joueurs[0].estHumain() && coup_annule.size() == 1)
             return false;
         // Inutile je pense ??
         /*
@@ -181,50 +186,8 @@ public class Jeu extends Observable implements Serializable {
     }
 
     public void annuler() {
-
-
-        //System.out.print("Annuler : " + jeu().joueurActuel().nom() + " ");
-        if (coup_annule.estVide()) {
-            System.out.println("Impossible d'annuler");
-            return;
-        }
-        if (!joueurs[0].estHumain() && coup_annule.taille() == 1) {
-            System.out.println("Impossible d'annuler");
-            return;
-        }
-        coup_a_refaire.empiler(n.clone()); //stock l'état avant d'annuler
-        Niveau restaure = coup_annule.depiler(); //Recupère le niveau précedent
-        n = restaure.clone();
-
-        if ((!joueurs[0].estHumain() || !joueurs[1].estHumain())) { // Tester si on a une IA contre un humaion pour annuler le coup de l'IA et de l'humain, ATTENTION,l'IA jouera un autre coup
-            if (coup_annule.estVide()) {
-                System.out.println("Impossible d'annuler");
-                return;
-            }
-            coup_a_refaire.empiler(n.clone()); //stock l'état avant d'annuler
-            restaure = coup_annule.depiler(); //Recupère le niveau précedent
-            n = restaure.clone();
-
-            if(!pileIA_annule.isEmpty()){
-                Coup a_rempiler = pileIA_annule.pop(); //On supprime le coup joué
-                pileIA_refaire.push(a_rempiler);
-                if(pileIA_annule.size() == 0){
-                    setCoordooneJouerIA(null, null);
-                }
-                else{
-                    Coup sommet = pileIA_annule.peek(); //On récupère le coup a affiche
-                    setCoordooneJouerIA(sommet.depart, sommet.arrivee);
-                }
-            }
-
-            joueurSuivant();
-        }
-
-        joueurSuivant(); //La variable du jeu doit aussi être modifie
-        metAJour();
-        test_annuler_refaire = true;
-        setAideIA(null);
-        System.out.println("Annulation effectué");
+        gestionnaireDeCoup.fixeGestionnaire(this, coup_annule, coup_a_refaire, pileIA_annule, pileIA_refaire);
+        this.gestionnaireDeCoup.annuler();
     }
 
 
@@ -235,42 +198,13 @@ public class Jeu extends Observable implements Serializable {
     }
 
     public void refaire() {
-        if (coup_a_refaire.estVide()) {
-            System.out.println("Aucun coup n'est a refaire");
-            return;
-        }
-        coup_annule.empiler(n.clone());
-        Niveau a_refaire = coup_a_refaire.depiler();
-        n = a_refaire.clone();
-        joueurSuivant();
+        gestionnaireDeCoup.fixeGestionnaire(this, coup_annule, coup_a_refaire, pileIA_annule, pileIA_refaire);
+        this.gestionnaireDeCoup.refaire();
 
-        if (!getJoueurCourant().estHumain()) { // Tester si on a une IA contre un humaion pour annuler le coup de l'IA et de l'humain, ATTENTION,l'IA jouera un autre coup
-            if (coup_a_refaire.estVide()) {
-                System.out.println("Impossible de refaire");
-                return;
-            }
-            coup_annule.empiler(n.clone());
-            a_refaire = coup_a_refaire.depiler();
-            n = a_refaire.clone();
-            Coup sommet = pileIA_refaire.pop();
-            pileIA_annule.push(sommet);
-            setCoordooneJouerIA(sommet.depart, sommet.arrivee);
-            joueurSuivant();
-
-        }
-
-        metAJour();
-        test_annuler_refaire = true;
-        setAideIA(null);
-        System.out.println("Coup refait");
     }
 
-
-
     public void joueurSuivant() {
-        //System.out.println("Avant" +joueurCourant);
         joueurCourant = (joueurCourant + 1) % 2;
-        //System.out.println("Apres"  +joueurCourant);
     }
 
 
