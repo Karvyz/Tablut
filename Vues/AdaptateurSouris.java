@@ -33,8 +33,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
     @Override
     public void mousePressed(MouseEvent e) { //Méthode executé lors d'un clic
-        System.out.println(ctrl.getConsulter());
-        if (ctrl.jeu().partieTerminee() && ctrl.getConsulter() == true){
+        if (ctrl.jeu().partieTerminee()){
             return;
         }
 
@@ -207,7 +206,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if (ctrl.jeu().partieTerminee() && ctrl.getConsulter() == true){
+        if (ctrl.jeu().partieTerminee()){
             return;
         }
 

@@ -129,7 +129,9 @@ public class Jeu extends Observable implements Serializable {
             pileIA_refaire.clear();
         }
         //System.out.println(this);
-        joueurSuivant();
+        if (enCours()){
+            joueurSuivant();
+        }
         //System.out.println(this);
         metAJour();
         return i;

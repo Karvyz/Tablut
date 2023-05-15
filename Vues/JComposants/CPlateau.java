@@ -36,8 +36,6 @@ public class CPlateau extends JPanel implements Observateur {
 
     public CPlateau(CollecteurEvenements c) {
         controleur = c;
-        //AdaptateurSouris2 adaptateurSouris = new AdaptateurSouris2(c, this);
-        //System.out.println("HERE"+controleur.jeu());
         AdaptateurSouris adaptateurSouris = new AdaptateurSouris(c, this);
         addMouseListener(adaptateurSouris);
         addMouseMotionListener(adaptateurSouris);
@@ -52,11 +50,11 @@ public class CPlateau extends JPanel implements Observateur {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         verif_debut_partie();
         test_annuler_refaire();
+        drawCroixRouge(g2d);
         drawPlateau(g2d);
         drawContenu(g2d);
         drawMouvIA(g2d);
         drawAideIA(g2d);
-        drawCroixRouge(g2d);
 
     }
 
@@ -97,13 +95,16 @@ public class CPlateau extends JPanel implements Observateur {
     private void drawContenu(Graphics2D g) {
         Jeu j = controleur.jeu();
         Niveau n = j.getNiveau();
+        if (controleur.jeu().partieTerminee()){
+            System.out.println(n);
+        }
         int x = bordureGauche;
         int y = bordureHaut;
 
         for (int l = 0; l < 9; l++) {
             for (int c = 0; c < 9; c++) {
                 // -- Dessin des pions, forteresses, roi, konakis
-                if (getPionSelec() != null && l == getPionSelec().getX() && c == getPionSelec().getY()) { //Ici on efface le pion selec
+                if (getPionSelec() != null && l == getPionSelec().getX() && c == getPionSelec().getY() && !controleur.jeu().partieTerminee()) { //Ici on efface le pion selec, sauf si partie_fini
                     x += largeurCase;
                     if (c % 2 == 0)
                         x++;

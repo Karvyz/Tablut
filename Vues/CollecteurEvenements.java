@@ -53,8 +53,6 @@ public interface CollecteurEvenements {
 
     boolean getStop();
 
-    boolean getConsulter();
 
-    void setConsulter(boolean b);
 }
 

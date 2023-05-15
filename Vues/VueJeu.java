@@ -133,7 +133,6 @@ class VueJeu extends JPanel {
         consulter.addActionListener((e) -> {
             endGameDialog.setVisible(false);
             controleur.jeu().setVainqueur(null); //permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
-            controleur.setConsulter(true);
 
 
         });
@@ -154,6 +153,7 @@ class VueJeu extends JPanel {
 
         // Fin partie
         if(endGameDialog == null) {
+
             endGameDialog = EndGameDialog();
         }
 

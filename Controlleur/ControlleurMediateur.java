@@ -19,7 +19,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
     int decompte;
     public boolean Stop;
 
-    private boolean consulter;
 
 
     public ControlleurMediateur(Jeu j) {
@@ -64,7 +63,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
         jeu.nouvellePartie();
         vues.nouvellePartie();
         Stop = false;
-        consulter = false;
 
     }
 
@@ -83,7 +81,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
         }
         jeu.nouvellePartie();
         vues.nouvellePartie();
-        consulter = false;
         Stop = false;
     }
 
@@ -93,7 +90,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
         jeu.nouvellePartie();
         vues.nouvellePartie();
         afficherJeu();
-        consulter = false;
         Stop = false;
     }
 
@@ -101,7 +97,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
         vues.restaurePartie();
         jeu.setDebutPartie(true); //Pour éviter l'affichage de la fleche du coup de l'IA si une partie IA vs humain a ete joue
         jeu.setEnCours(true);
-        consulter = false;
         Stop = false;
     }
 
@@ -333,12 +328,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
         return Stop;
     }
 
-    public boolean getConsulter(){
-        return consulter;
-    }
 
-    public void setConsulter(boolean b){
-        consulter = b;
-    }
 
 }
