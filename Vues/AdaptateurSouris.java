@@ -4,6 +4,7 @@ import Modele.Coordonne;
 import Modele.Niveau;
 import Modele.Pion;
 import Vues.JComposants.CPlateau;
+import com.sun.org.apache.bcel.internal.generic.ACONST_NULL;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,6 +33,11 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
     @Override
     public void mousePressed(MouseEvent e) { //Méthode executé lors d'un clic
+        System.out.println(ctrl.getConsulter());
+        if (ctrl.jeu().partieTerminee() && ctrl.getConsulter() == true){
+            return;
+        }
+
         dragStart = e.getPoint(); // On clique et stock le point de départ du dragStart
         int l = calcul_l(e);
         int c = calcul_c(e);
@@ -201,6 +207,10 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        if (ctrl.jeu().partieTerminee() && ctrl.getConsulter() == true){
+            return;
+        }
+
         int l = calcul_l(e);
         int c = calcul_c(e);
         if (!check_ok(l, c)) {

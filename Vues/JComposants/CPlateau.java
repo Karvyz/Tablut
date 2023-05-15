@@ -57,6 +57,7 @@ public class CPlateau extends JPanel implements Observateur {
         drawMouvIA(g2d);
         drawAideIA(g2d);
         drawCroixRouge(g2d);
+
     }
 
 
@@ -72,7 +73,6 @@ public class CPlateau extends JPanel implements Observateur {
             setSurvole(null);
             setPointSelec(null);
             miseAJour();
-
         }
     }
 
@@ -168,6 +168,7 @@ public class CPlateau extends JPanel implements Observateur {
             }
         }
         else if(controleur.jeu().partieTerminee()){
+            System.out.println(controleur.jeu().getNiveau());
             drawContenu(g2d); //bien affiche le dernier coup en clic-clic
         }
     }

@@ -52,5 +52,9 @@ public interface CollecteurEvenements {
     void fin();
 
     boolean getStop();
+
+    boolean getConsulter();
+
+    void setConsulter(boolean b);
 }
 

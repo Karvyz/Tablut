@@ -105,9 +105,11 @@ class VueJeu extends JPanel {
         endButtons.setOpaque(false);
         JButton menu = new CButton("Menu principal");
         JButton retry = new CButton("Rejouer ?").blanc();
+        JButton consulter = new CButton("Consulter");
         endButtons.add(menu);
         endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
         endButtons.add(retry);
+        endButtons.add(consulter);
 
         banner.add(endButtons, gbc2);
         endGamePanel.add(banner, gbc);
@@ -127,6 +129,13 @@ class VueJeu extends JPanel {
             endGameDialog.setVisible(false);
             controleur.jeu().setCoordooneJouerIA(null,null);
             controleur.partieSuivante();
+        });
+        consulter.addActionListener((e) -> {
+            endGameDialog.setVisible(false);
+            controleur.jeu().setVainqueur(null); //permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
+            controleur.setConsulter(true);
+
+
         });
     }
 
@@ -392,7 +401,11 @@ class VueJeu extends JPanel {
         };
 
         controls[0].addActionListener(e -> controleur.jeu().annuler());
-        controls[1].addActionListener(e -> controleur.jeu().solution());
+        controls[1].addActionListener((e) -> {
+            if (!controleur.jeu().partieTerminee()){
+                controleur.jeu().solution();
+                }
+        });
         controls[2].addActionListener(e -> controleur.jeu().refaire());
 
         for (JButton button : controls) {

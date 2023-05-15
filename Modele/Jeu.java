@@ -50,13 +50,8 @@ public class Jeu extends Observable implements Serializable {
             joueurs[0] = JoueursCreation.createJoueur(nom, type, roleJ, this);
         } else if (joueurs[1] == null && roleJ == TypePion.DEFENSEUR) {
             joueurs[1] = JoueursCreation.createJoueur(nom, type, roleJ, this);
-
-        }/*else if(joueurs[0] != null && roleJ == TypePion.ATTAQUANT){
-            joueurs[0] = JoueursCreation.createJoueur(joueurs[0].nom(),joueurs[0].type(),joueurs[0].RoleJoueur(), this);
-        } else if (joueurs[1] != null && roleJ == TypePion.DEFENSEUR) {
-            joueurs[1] = JoueursCreation.createJoueur(joueurs[1].nom(), joueurs[1].type(), joueurs[1].RoleJoueur(), this);
-
-        } */else {
+        }
+        else {
             throw new IllegalStateException("Impossible d'ajouter un nouveau joueur : tous les joueurs ont déjà été ajoutés");
         }
     }
@@ -91,6 +86,10 @@ public class Jeu extends Observable implements Serializable {
         return vainqueur;
     }
 
+    public void setVainqueur(Joueurs vainqueur) {
+        this.vainqueur = vainqueur;
+    }
+
     public boolean partieTerminee() {
         return !enCours();
     }
@@ -112,6 +111,7 @@ public class Jeu extends Observable implements Serializable {
         System.out.println("Déplacement du pion de (" + coup.depart.getX() + "," + coup.depart.getY() + ") en (" + coup.arrivee.getX() + "," + coup.arrivee.getY() + ")");
         if (i > 0) {
             if (i == 1) {
+                metAJour();
                 System.out.println("PARTIE FINI CAR ROI CAPTURE");
                 vainqueur = joueurs[0];
             } else if (i == 2) {
