@@ -52,7 +52,7 @@ public class Vues {
             frame.setSize(DIMENSION_MENU_PARTIES);
         } else {
             frame.setMinimumSize(DIMENSION_DEFAUT);
-            frame.setSize(DIMENSION_DEFAUT);
+            //frame.setSize(DIMENSION_DEFAUT);
         }
         CardLayout layout = (CardLayout) frame.getContentPane().getLayout();
         layout.show(frame.getContentPane(), nom);

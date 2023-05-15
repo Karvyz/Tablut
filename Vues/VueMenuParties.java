@@ -99,6 +99,9 @@ public class VueMenuParties extends JPanel {
         fileList.setForeground(new Color(-16777216));
         fileList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         fileList.setFont(new Font("Arial", Font.PLAIN, 18)); // Changez la taille du texte des fichiers ici
+        fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        //fileList.setVisibleRowCount(10);
+        fileList.setOpaque(false);
         //fileList.setPreferredSize(new Dimension(-1, 200));
         // Ajout de l'écouteur de double-clic ici
         fileList.addMouseListener(new MouseAdapter() {
@@ -125,7 +128,7 @@ public class VueMenuParties extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(fileList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBackground(new Color(-16777216));
-        //scrollPane.setOpaque(false);
+        scrollPane.setOpaque(false);
         add(scrollPane, gbc);
 
         // Espaces horizontal

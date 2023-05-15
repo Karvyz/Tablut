@@ -173,30 +173,38 @@ class VueJeu extends JPanel {
         } else {
             endGameDialog.getComponent(0).setBackground(new Color(201, 67, 67));
             endGamePanel.setBackground(new Color(201, 67, 67));
+            String typeIA = "";
+            switch (vainqueur.type()) {
+                case IA_FACILE:
+                    typeIA = "facile";
+                    break;
+                case IA_MOYEN:
+                    typeIA = "moyenne";
+                    break;
+                case IA_DIFFICILE:
+                    typeIA = "difficile";
+                    break;
+                default:
+                    typeIA = "alien";
+                    break;
+            }
             if (perdant.estHumain()) {
                 endGameDialog.setTitle("Défaite !");
-                endGameText.setText("Dommage! Tu as perdu contre l'IA.. une prochaine fois!");
+                endGameText.setText("Dommage! Tu as perdu contre l'IA " + typeIA + " réessaie une prochaine fois!");
             } else {
                 endGameDialog.getComponent(0).setBackground(new Color(120, 70, 50));
-                String typeIA = "";
-                switch (vainqueur.type()) {
-                    case IA_FACILE:
-                        typeIA = "facile";
-                        break;
-                    case IA_MOYEN:
-                        typeIA = "moyenne";
-                        break;
-                    case IA_DIFFICILE:
-                        typeIA = "difficile";
-                        break;
-                    default:
-                        typeIA = "alien";
-                        break;
-                }
-                if (vainqueur.aPionsBlancs())
+                if (vainqueur.aPionsBlancs()) {
+                    if(vainqueur.nom().equals("Nom du défenseur"))
+                        endGameText.setText("Le défenseur, IA " + typeIA + " a gagné !");
+                    else
                     endGameText.setText("Le défenseur, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
-                else
+                }
+                else {
+                    if(vainqueur.nom().equals("Nom de l'attaquant"))
+                        endGameText.setText("L'attaquant, IA " + typeIA + " a gagné !");
+                    else
                     endGameText.setText("L'attaquant, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
+                }
             }
         }
         addEndGame();
@@ -246,12 +254,14 @@ class VueJeu extends JPanel {
 
             controleur.jeu().reset();
             controleur.nouvellePartie(joueurs[0].nom(), joueurs[0].type(), TypePion.ATTAQUANT, joueurs[1].nom(), joueurs[1].type(), TypePion.DEFENSEUR);
+            controleur.jeu().setCoordooneJouerIA(null,null);
             texteJeu = new TexteJeu(0, 0);
             controleur.afficherJeu();
             controleur.jeu().metAJour();
         });
         menu_items[1].addActionListener((e) -> {
             controleur.jeu().reset();
+            controleur.jeu().setCoordooneJouerIA(null,null);
             controleur.afficherMenuPrincipal();
         });
         menu_items[2].addActionListener(e -> controleur.toClose());
@@ -417,14 +427,17 @@ class VueJeu extends JPanel {
                     s1 += " Facile";
                     break;
                 case IA_MOYEN:
-                    s1 = " Moyen";
+                    s1 += " Moyen";
                     break;
                 case IA_DIFFICILE:
-                    s1 = " Difficile";
+                    s1 += " Difficile";
                     break;
             }
         } else {
-            s1 = controleur.jeu().getJoueurCourant().nom();
+            if(controleur.jeu().getJoueurCourant().nom().equals("Nom de l'attaquant"))
+                s1 = "Attaquant";
+            else
+                s1 = controleur.jeu().getJoueurCourant().nom();
         }
         j1.setName(s1);
         j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);
@@ -437,14 +450,17 @@ class VueJeu extends JPanel {
                     s2 += " Facile";
                     break;
                 case IA_MOYEN:
-                    s2 = " Moyen";
+                    s2 += " Moyen";
                     break;
                 case IA_DIFFICILE:
-                    s2 = " Difficile";
+                    s2 += " Difficile";
                     break;
             }
         } else {
-            s2 = controleur.jeu().getJoueurSuivant().nom();
+            if(controleur.jeu().getJoueurSuivant().nom().equals("Nom du défenseur"))
+                s2 = "Défenseur";
+            else
+                s2 = controleur.jeu().getJoueurCourant().nom();
         }
         j2.setName(s2);
         j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
