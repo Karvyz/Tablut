@@ -119,11 +119,13 @@ class VueJeu extends JPanel {
         menu.addActionListener((e) -> {
             endGameDialog.setVisible(false);
             controleur.jeu().reset();
+            controleur.jeu().setCoordooneJouerIA(null,null);
             //controleur.fin();
             controleur.afficherMenuPrincipal();
         });
         retry.addActionListener((e) -> {
             endGameDialog.setVisible(false);
+            controleur.jeu().setCoordooneJouerIA(null,null);
             controleur.partieSuivante();
         });
     }
