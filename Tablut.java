@@ -16,12 +16,8 @@ public class Tablut{
             InterfaceGraphique.demarrer(control);
         }
         else {
-            ArrayList<IA> ias = new ArrayList<>();
-            ias.add(new IA_facile("", TypePion.ATTAQUANT, new Jeu()));
-            ias.add(new IA_facile("", TypePion.DEFENSEUR, new Jeu()));
-            TournoisControlleur tournoisControlleur = new TournoisControlleur(ias, 1000);
-//            tournoisControlleur.match(ias.get(0), ias.get(1), 0, 0);
-            tournoisControlleur.tournois();
+            Tournois2Controlleur tournois2Controlleur = new Tournois2Controlleur();
+            tournois2Controlleur.tournois2();
         }
     }
 }
