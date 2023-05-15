@@ -461,7 +461,7 @@ class VueJeu extends JPanel {
         } else {
             controls[0].setEnabled(false);
         }
-        if (controleur.jeu().partieTerminee())
+        if (controleur.jeu().partieTerminee() && !controleur.jeu().coup_annule.estVide())
         {
             controls[0].setEnabled(true);
         }
@@ -478,8 +478,8 @@ class VueJeu extends JPanel {
         } else {
             controls[2].setEnabled(false);
         }
-        if (controleur.jeu().partieTerminee()){
-            controls[0].setEnabled(true);
+        if (controleur.jeu().partieTerminee() && !controleur.jeu().coup_a_refaire.estVide()){
+            controls[2].setEnabled(true);
         }
         else if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
                 controls[2].setEnabled(false);
