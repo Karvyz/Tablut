@@ -208,7 +208,7 @@ class VueJeu extends JPanel {
             if (perdant.estHumain()) {
                 endGamePanel.setBackground(new Color(201, 67, 67));
                 endGameDialog.setTitle("Défaite !");
-                endGameText.setText("Dommage! Tu as perdu contre l'IA " + typeIA + ".");
+                endGameText.setText("Dommage ! Tu as perdu contre l'IA " + typeIA + ".");
             } else {
                 //endGameDialog.getComponent(0).setBackground(new Color(120, 70, 50));
                 endGameDialog.getComponent(0).setBackground(new Color(85, 91, 97));
