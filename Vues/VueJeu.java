@@ -447,7 +447,6 @@ class VueJeu extends JPanel {
             controls[0].setEnabled(false);
         }
         if (controleur.jeu().partieTerminee())
-        //controleur.getConsulter() == true)
         {
             controls[0].setEnabled(true);
         }

@@ -38,6 +38,8 @@ public class Jeu extends Observable implements Serializable {
 
     private GestionnaireDeCoup gestionnaireDeCoup;
 
+    private boolean coup_joue;
+
 
     public Jeu() {
         setEnCours(false);
@@ -105,6 +107,7 @@ public class Jeu extends Observable implements Serializable {
      */
     public int jouer(Coup coup) {
         setAideIA(null);
+        setCoupJoue(true);
         this.coup_annule.empiler(this.n.clone());
         int i = n.deplace_pion(coup);
         if (!getJoueurCourant().estHumain()) {
@@ -337,9 +340,12 @@ public class Jeu extends Observable implements Serializable {
         debutPartie = b;
     }
 
-    public Stack<Coup> get_pile_IA() {
-        if (pileIA_annule.isEmpty())
-            return null;
-        return pileIA_annule;
+    public void setCoupJoue(boolean b){
+        coup_joue = b;
     }
+    public boolean getCoupJoue(){
+        return coup_joue;
+    }
+
+
 }
