@@ -57,7 +57,7 @@ class VueMenuPrincipal extends JPanel {
 
         JPanel leftPanel = new JPanel();
         leftPanel.setOpaque(false);
-        leftPanel.add(new JLabel(new ImageIcon(Imager.getScaledImage(logo, 500, 400))));
+        leftPanel.add(new JLabel(new ImageIcon(Imager.getScaledImage(logo, 675, 300))));
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setOpaque(false);
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
@@ -74,8 +74,6 @@ class VueMenuPrincipal extends JPanel {
 
         JPanel centerPanel = new JPanel(new GridBagLayout());
 
-        //        centerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 110));
-        //        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(0, 80, 0, 0));
         centerPanel.setOpaque(false);
 
         GridBagConstraints gbc = new GridBagConstraints();
