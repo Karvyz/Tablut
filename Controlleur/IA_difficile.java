@@ -2,6 +2,7 @@ package Controlleur;
 
 import Modele.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.Random;
@@ -48,7 +49,7 @@ public abstract class IA_difficile extends IA{
     long timeLimitMs;
     int maxDepth;
 
-    class Etat implements Comparable<Etat> {
+    class Etat implements Comparable<Etat>, Serializable {
         Niveau niveau;
         float evaluation;
         Coup coupAJouer;

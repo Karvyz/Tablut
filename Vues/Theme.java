@@ -24,6 +24,8 @@ public class Theme {
 
     private Image roi;
 
+    private Image croix;
+
     private Image fleche_bas, fleche_droite, fleche_gauche, fleche_haut;
 
     private Theme() {
@@ -73,6 +75,7 @@ public class Theme {
         fleche_droite = Imager.getImageBuffer(theme + "fleche_droite.png");
         fleche_gauche = Imager.getImageBuffer(theme + "fleche_gauche.png");
         fleche_haut = Imager.getImageBuffer(theme + "fleche_haut.png");
+        croix = Imager.getImageBuffer(theme + "croix.png");
     }
 
     public int hauteurPlateau() {
@@ -147,6 +150,8 @@ public class Theme {
     public Image fleche_haut() {
         return fleche_haut;
     }
+
+    public Image croix() {return croix;}
 
 
     public Image err() {
