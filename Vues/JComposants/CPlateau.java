@@ -50,11 +50,12 @@ public class CPlateau extends JPanel implements Observateur {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         verif_debut_partie();
         test_annuler_refaire();
-        drawCroixRouge(g2d);
         drawPlateau(g2d);
         drawContenu(g2d);
         drawMouvIA(g2d);
         drawAideIA(g2d);
+        drawCroixRouge(g2d);
+
 
     }
 
