@@ -19,6 +19,8 @@ public class ControlleurMediateur implements CollecteurEvenements{
     int decompte;
     public boolean Stop;
 
+    private boolean horsJeu;
+
 
 
 
@@ -325,5 +327,14 @@ public class ControlleurMediateur implements CollecteurEvenements{
         return Stop;
     }
 
+    @Override
+    public void setHorsJeu(boolean b) {
+        horsJeu = b;
+        jeu.metAJour();
+    }
 
+    @Override
+    public boolean getHorsJeu() {
+        return horsJeu;
+    }
 }

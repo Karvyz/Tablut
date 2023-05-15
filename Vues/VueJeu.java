@@ -9,6 +9,8 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 
 import static java.awt.GridBagConstraints.*;
@@ -55,6 +57,16 @@ class VueJeu extends JPanel {
         addBottom(contenu);
 
         add(contenu);
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int x = e.getX();
+                int y = e.getY();
+                controleur.setHorsJeu(true);//Permet de deselectionner lorsqu'on clique a coté du plateau
+            }
+        });
     }
 
     private JDialog EndGameDialog() {

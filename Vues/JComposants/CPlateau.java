@@ -50,6 +50,7 @@ public class CPlateau extends JPanel implements Observateur {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         verif_debut_partie();
         test_annuler_refaire();
+        test_hors_jeu();
         drawPlateau(g2d);
         drawContenu(g2d);
         drawMouvIA(g2d);
@@ -58,6 +59,15 @@ public class CPlateau extends JPanel implements Observateur {
 
     }
 
+    private void test_hors_jeu() {
+        if (controleur.getHorsJeu()){
+            setPionSelec(null);
+            setPionEnDeplacement(null);
+            setDessineCroix(null);
+            setDestinationsPossibles(null);
+            //setDrawFleche(false);
+        }
+    }
 
 
     private void verif_debut_partie() {
@@ -100,7 +110,13 @@ public class CPlateau extends JPanel implements Observateur {
 
         for (int l = 0; l < 9; l++) {
             for (int c = 0; c < 9; c++) {
+
                 // -- Dessin des pions, forteresses, roi, konakis
+                if(controleur.jeu().partieTerminee()){
+                    setPionSelec(null);
+                    setPionEnDeplacement(null);
+                }
+
                 if (getPionSelec() != null && l == getPionSelec().getX() && c == getPionSelec().getY() && !controleur.jeu().partieTerminee()) { //Ici on efface le pion selec, sauf si partie_fini
                     x += largeurCase;
                     if (c % 2 == 0)
@@ -166,7 +182,6 @@ public class CPlateau extends JPanel implements Observateur {
             }
         }
         else if(controleur.jeu().partieTerminee()){
-            System.out.println(controleur.jeu().getNiveau());
             drawContenu(g2d); //bien affiche le dernier coup en clic-clic
         }
     }

@@ -211,6 +211,8 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             return;
         }
 
+        ctrl.setHorsJeu(false);
+
         // Obtenez les informations de la case survolée
         Pion caseSurvole = ctrl.jeu().n.getPion(l, c);
         plateau.setSurvole(caseSurvole);

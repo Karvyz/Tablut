@@ -52,5 +52,8 @@ public interface CollecteurEvenements {
     boolean getStop();
 
 
+    void setHorsJeu(boolean b);
+
+    boolean getHorsJeu();
 }
 
