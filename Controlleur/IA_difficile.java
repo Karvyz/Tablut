@@ -2,9 +2,9 @@ package Controlleur;
 
 import Modele.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
-import java.util.Random;
 
 import static java.lang.System.exit;
 
@@ -16,7 +16,7 @@ public abstract class IA_difficile extends IA{
     long timeLimitMs;
     int maxDepth;
 
-    class Etat implements Comparable<Etat> {
+    class Etat implements Comparable<Etat>, Serializable {
         Niveau niveau;
         float evaluation;
         Coup coupAJouer;
@@ -69,7 +69,7 @@ public abstract class IA_difficile extends IA{
         }
 
         etats.add(new Etat(jeu.n.clone(), 0, null, 0));
-        while (System.currentTimeMillis() < endtime) {
+        do{
             Etat e = etats.poll();
             Coup overide = coups(e);
             nb_evals++;
@@ -79,7 +79,7 @@ public abstract class IA_difficile extends IA{
                 return jeu.jouer(overide.depart, overide.arrivee);
             }
 
-        }
+        } while (System.currentTimeMillis() < endtime);
         Etat meilleurCoup = etats.poll();
 //        System.out.println("fini");
 //        System.out.println("nb evals : " + nb_evals);
