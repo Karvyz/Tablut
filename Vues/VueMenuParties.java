@@ -59,7 +59,7 @@ public class VueMenuParties extends JPanel {
         gbc.gridy = 1;
         gbc.gridwidth = 3;
         gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.NONE;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
         final JLabel label1 = new JLabel();
         Font label1Font = new Font("Arial", Font.BOLD, 20);
@@ -82,14 +82,14 @@ public class VueMenuParties extends JPanel {
 
         // Espaces horizontal
         Box horizontalSpace1 = Box.createHorizontalBox();
-        horizontalSpace1.add(Box.createHorizontalStrut((this.getWidth() - 300) / 2));
+        horizontalSpace1.add(Box.createHorizontalStrut(20));
         GridBagConstraints gspacer2 = new GridBagConstraints();
         gspacer2.gridx = 0;
         gspacer2.gridy = 3;
         gspacer2.gridwidth = 1;
         gspacer2.gridheight = 1;
         gspacer2.fill = GridBagConstraints.HORIZONTAL;
-        gspacer2.anchor = GridBagConstraints.CENTER;
+        //gspacer2.anchor = GridBagConstraints.CENTER;
         add(horizontalSpace1, gspacer2);
 
 
@@ -97,12 +97,11 @@ public class VueMenuParties extends JPanel {
         fileListModel = new DefaultListModel<>();
         fileList = new JList<>(fileListModel);
         fileList.setForeground(new Color(-16777216));
-        fileList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        //fileList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         fileList.setFont(new Font("Arial", Font.PLAIN, 18)); // Changez la taille du texte des fichiers ici
         fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        //fileList.setVisibleRowCount(10);
-        fileList.setOpaque(false);
-        //fileList.setPreferredSize(new Dimension(-1, 200));
+        fileList.setVisibleRowCount(5);
+        //fileList.setOpaque(false);
         // Ajout de l'écouteur de double-clic ici
         fileList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
@@ -123,7 +122,7 @@ public class VueMenuParties extends JPanel {
         gbc.gridy = 3;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
 
         JScrollPane scrollPane = new JScrollPane(fileList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -133,7 +132,7 @@ public class VueMenuParties extends JPanel {
 
         // Espaces horizontal
         Box horizontalSpace2 = Box.createHorizontalBox();
-        horizontalSpace2.add(Box.createHorizontalStrut((this.getWidth() - 300) / 2));
+        horizontalSpace2.add(Box.createHorizontalStrut(20));
         GridBagConstraints gspacer3 = new GridBagConstraints();
         gspacer3.gridx = 2;
         gspacer3.gridy = 3;
