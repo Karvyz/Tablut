@@ -1,14 +1,11 @@
-package Controlleur;
+package Controlleur.heuristiques;
 
 import Modele.*;
 
-public class IA_difficile_MassacrePion extends IA_difficile {
-    public IA_difficile_MassacrePion(String nom, TypePion roleJ, Jeu j, long timeLimitMs) {
-        super(nom, roleJ, j, timeLimitMs);
-    }
+public class HeuristiqueMassacrePion extends Heuristique {
 
     @Override
-    public float evaluation(Niveau n) {
+    public float evaluation(Niveau n, TypePion typePion) {
         int attaquants = 16;
         int defenseurs = 8;
         for (int i = 0; i < n.getTaille(); i++) {
@@ -26,7 +23,7 @@ public class IA_difficile_MassacrePion extends IA_difficile {
                 }
             }
         }
-        if (jeu.get_num_JoueurCourant() == 0) {
+        if (typePion == TypePion.ATTAQUANT) {
             return defenseurs - attaquants;
         }
         return attaquants - defenseurs;

@@ -1,5 +1,8 @@
 package Modele;
 
+import Controlleur.IA_DifficileTemps;
+import Controlleur.heuristiques.HeuristiqueLeRoiCCiao;
+
 public class JoueursCreation {
 
     public static Joueurs createJoueur(String nom, TypeJoueur type, TypePion roleJ, Jeu jeu) {
@@ -11,7 +14,7 @@ public class JoueursCreation {
             case IA_MOYEN:
                 return new Controlleur.IA_moyen(nom, roleJ, jeu);
             case IA_DIFFICILE:
-                return new Controlleur.IA_difficile_le_roi_c_ciao(nom, roleJ, jeu, 1000);
+                return new IA_DifficileTemps(nom, roleJ, jeu, new HeuristiqueLeRoiCCiao(), 1000);
         }
         return null;
     }

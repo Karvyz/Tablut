@@ -1,15 +1,27 @@
 package Controlleur;
 
+import Controlleur.heuristiques.Heuristique;
 import Modele.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
-import java.util.Random;
 
 import static java.lang.System.exit;
 
-public abstract class IA_difficile extends IA{
+public class IA_DifficileTemps extends IA{
+
+    TypePion monType;
+    TypePion typeAdversaire;
+    Heuristique heuristique;
+    PriorityQueue<Etat> etats;
+    long timeLimitMs;
+    int maxDepth;
+    public IA_DifficileTemps(String nom, TypePion roleJ, Jeu j, Heuristique heuristique, long timeLimitMs) {
+        super(nom, TypeJoueur.IA_DIFFICILE, roleJ, j);
+        this.heuristique = heuristique;
+        this.timeLimitMs = timeLimitMs;
+    }
 
     public Coup meilleurCoup() {
         long endtime = System.currentTimeMillis() + timeLimitMs;
@@ -43,12 +55,6 @@ public abstract class IA_difficile extends IA{
         return meilleurCoup.coupAJouer;
     }
 
-    TypePion monType;
-    TypePion typeAdversaire;
-    PriorityQueue<Etat> etats;
-    long timeLimitMs;
-    int maxDepth;
-
     class Etat implements Comparable<Etat>, Serializable {
         Niveau niveau;
         float evaluation;
@@ -70,17 +76,6 @@ public abstract class IA_difficile extends IA{
                 return 0;
             return -1;
         }
-    }
-
-    public IA_difficile(String nom, TypePion roleJ, Jeu j, long timeLimitMs) {
-        super(nom, TypeJoueur.IA_DIFFICILE, roleJ, j);
-        this.timeLimitMs = timeLimitMs;
-    }
-
-    @Override
-    int joue() {
-        Coup meilleurCoup = meilleurCoup();
-        return jeu.jouer(meilleurCoup);
     }
 
     Coup coups(Etat e) {
@@ -123,7 +118,7 @@ public abstract class IA_difficile extends IA{
                     return;
                 }
                 if (valeur != 3)
-                    eval = evaluation(clone);
+                    eval = heuristique.evaluation(clone, monType);
                 if (eval < reponseMinimale.evaluation) {
                     reponseMinimale = new Etat(clone, eval, coupAJouer, depth);
                 }
@@ -134,6 +129,4 @@ public abstract class IA_difficile extends IA{
         reponseMinimale.evaluation -= depth * 0.1;
         etats.add(reponseMinimale);
     }
-
-    public abstract float evaluation(Niveau n);
 }

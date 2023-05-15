@@ -1,16 +1,12 @@
-package Controlleur;
+package Controlleur.heuristiques;
 
-import Modele.Jeu;
 import Modele.Niveau;
 import Modele.TypePion;
 
-public class IA_difficile_le_roi_c_ciao extends IA_difficile{
-    public IA_difficile_le_roi_c_ciao(String nom, TypePion roleJ, Jeu j, long timeLimitMs) {
-        super(nom, roleJ, j, timeLimitMs);
-    }
+public class HeuristiqueLeRoiCCiao extends Heuristique {
 
     @Override
-    public float evaluation(Niveau n) {
+    public float evaluation(Niveau n, TypePion typePion) {
         int x = 0, y = 0;
         int attaquants = 0;
         int defenseurs = 0;
@@ -64,7 +60,7 @@ public class IA_difficile_le_roi_c_ciao extends IA_difficile{
                 }
             }
         }
-        if (jeu.get_num_JoueurCourant() == 0) { // attaquant
+        if (typePion == TypePion.ATTAQUANT) { // attaquant
             if (peut_tuer_roi(x, y, n)) {
                 return 10000;
             }

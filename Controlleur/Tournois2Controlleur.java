@@ -1,11 +1,10 @@
 package Controlleur;
 
+import Controlleur.heuristiques.*;
 import Modele.Jeu;
 import Modele.TypePion;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Random;
 
 public class Tournois2Controlleur {
@@ -15,14 +14,14 @@ public class Tournois2Controlleur {
         Random random = new Random();
         ArrayList<IA> ias = new ArrayList<>();
         ias.add(new IA_facile("", TypePion.ATTAQUANT, new Jeu()));
-        ias.add(new IA_difficile_le_roi_c_ciao("", TypePion.ATTAQUANT, new Jeu(), 0));
-        ias.add(new IA_difficile_MassacrePion("", TypePion.ATTAQUANT, new Jeu(), 0));
-        ias.add(new IA_difficile_Long_live_the_king("", TypePion.ATTAQUANT, new Jeu(), 0));
-        ias.add(new IA_difficile_AttaqueRoi("", TypePion.ATTAQUANT, new Jeu(), 0));
-        ias.add(new IA_expert("", TypePion.ATTAQUANT, new Jeu(), 0));
-        ias.add(new IA_Fusion("", TypePion.ATTAQUANT, new Jeu(), 0, 1, 1, 1, 1));
+        ias.add(new IA_DifficileTemps("", TypePion.ATTAQUANT, new Jeu(), new HeuristiqueAttaqueRoi(),0));
+        ias.add(new IA_DifficileTemps("", TypePion.ATTAQUANT, new Jeu(), new HeuristiqueAttaqueRoi(), 0));
+        ias.add(new IA_DifficileTemps("", TypePion.ATTAQUANT, new Jeu(), new HeuristiqueAttaqueRoi(), 0));
+        ias.add(new IA_DifficileTemps("", TypePion.ATTAQUANT, new Jeu(), new HeuristiqueAttaqueRoi(), 0));
+        ias.add(new IA_DifficileTemps("", TypePion.ATTAQUANT, new Jeu(), new HeuristiqueAttaqueRoi(), 0));
+        ias.add(new IA_DifficileTemps("", TypePion.ATTAQUANT, new Jeu(), new HeuristiqueFusion( 1, 1, 1, 1), 0));
         for (int i = 0; i < 10; i++) {
-            ias.add(new IA_Fusion("", TypePion.ATTAQUANT, new Jeu(), 0, random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat()));
+            ias.add(new IA_DifficileTemps("", TypePion.ATTAQUANT, new Jeu(), new HeuristiqueFusion( random.nextFloat(), random.nextFloat(), random.nextFloat(), random.nextFloat()), 0));
         }
         ArrayList<Integer> nbVictAttaque = new ArrayList<>();
         ArrayList<Integer> nbVictDefense = new ArrayList<>();
