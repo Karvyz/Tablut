@@ -30,6 +30,9 @@ public class CPlateau extends JPanel implements Observateur {
 
     private Pion survole;
 
+    private Point dessineCroix;
+
+
 
     public CPlateau(CollecteurEvenements c) {
         controleur = c;
@@ -51,23 +54,12 @@ public class CPlateau extends JPanel implements Observateur {
         test_annuler_refaire();
         drawPlateau(g2d);
         drawContenu(g2d);
-
         drawMouvIA(g2d);
-        if(controleur.jeu().getAideIA() != null){
-            Coup aide = controleur.jeu().getAideIA();
-            int l_dep = aide.depart.getX();
-            int c_dep = aide.depart.getY();
-            int l_arr = aide.arrivee.getX();
-            int c_arr = aide.arrivee.getY();
-
-            g2d.setColor(Color.green);
-            g2d.fillRect((largeurCase) * c_dep + 5, (hauteurCase) * l_dep + 5, largeurCase - 6, hauteurCase - 6);
-
-            g2d.fillRect((largeurCase) * c_arr + 5, (hauteurCase) * l_arr + 5, largeurCase - 6, hauteurCase - 6);
-            drawContenu(g2d);
-        }
-
+        drawAideIA(g2d);
+        drawCroixRouge(g2d);
     }
+
+
 
     private void verif_debut_partie() {
         if(controleur.jeu().debutPartie()) {
@@ -155,9 +147,7 @@ public class CPlateau extends JPanel implements Observateur {
                         autorise = true;
                     }
                 }
-            }
-
-            //Jusqu'a la
+            }//Jusqu'a la
 
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
@@ -214,12 +204,6 @@ public class CPlateau extends JPanel implements Observateur {
         if (controleur.jeu().getJoueur1().estHumain() || controleur.jeu().getJoueur2().estHumain()) {
             drawDestination(g2d);
             drawDeplacement(g2d);
-            //drawSurbrillance(g2d);
-
-            //System.out.println("here");
-            if ((controleur.jeu().getCoordooneDepartIA() != null)){//TODO delete
-                //System.out.println(controleur.jeu().getCoordooneDepartIA() +","+ getDrawFleche());
-            }
 
             if ((controleur.jeu().getCoordooneDepartIA() != null && getDrawFleche() == true)) {
                 Coordonne depart = controleur.jeu().getCoordooneDepartIA();
@@ -259,6 +243,44 @@ public class CPlateau extends JPanel implements Observateur {
         }
     }
 
+    private void drawAideIA(Graphics2D g2d) {
+        if(controleur.jeu().getAideIA() != null){
+            Coup aide = controleur.jeu().getAideIA();
+            int l_dep = aide.depart.getX();
+            int c_dep = aide.depart.getY();
+            int l_arr = aide.arrivee.getX();
+            int c_arr = aide.arrivee.getY();
+
+            g2d.setColor(Color.green);
+            g2d.fillRect((largeurCase) * c_dep + 5, (hauteurCase) * l_dep + 5, largeurCase - 6, hauteurCase - 6);
+
+            g2d.fillRect((largeurCase) * c_arr + 5, (hauteurCase) * l_arr + 5, largeurCase - 6, hauteurCase - 6);
+            drawContenu(g2d);
+        }
+    }
+
+    private void drawCroixRouge(Graphics2D g2d) {
+        if(dessineCroix != null){
+            int x = bordureGauche;
+            int y = bordureHaut;
+            int l = dessineCroix.x;
+            int c = dessineCroix.y;
+
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+
+                    if (i == l && c == j) {
+                        g2d.drawImage(Theme.instance().croix(), x +4, y + 4, largeurCase -5, hauteurCase -5, this);
+                        dessineCroix = null;
+                        return;
+                    }
+                    x += largeurCase + 1;
+                }
+                y += hauteurCase;
+                x = bordureGauche;
+            }
+        }
+    }
 
     public int calcul_dir(Coordonne depart, Coordonne coordonneArriveIA) {
         int deltaX = coordonneArriveIA.getX() - depart.getX();
@@ -336,10 +358,6 @@ public class CPlateau extends JPanel implements Observateur {
         return pionSelec;
     }
 
-    public Point getPointSelec() {
-        return pointSelec;
-    }
-
     @Override
     public void miseAJour() {
         repaint();
@@ -362,9 +380,12 @@ public class CPlateau extends JPanel implements Observateur {
 
     public void setSurvole(Pion caseSurvole) {
         survole = caseSurvole;
+        miseAJour();
     }
 
-    public Pion getSurvole(){
-        return survole;
+    public void setDessineCroix(Point point) {
+        dessineCroix = point;
     }
+
+
 }
