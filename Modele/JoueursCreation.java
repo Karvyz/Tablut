@@ -14,7 +14,7 @@ public class JoueursCreation {
             case IA_MOYEN:
                 return new Controlleur.IA_moyen(nom, roleJ, jeu);
             case IA_DIFFICILE:
-                return new IA_DifficileTemps(nom, roleJ, jeu, new HeuristiqueLeRoiCCiao(), 1000);
+                return new Controlleur.IA_monte(nom ,roleJ, jeu);
         }
         return null;
     }
