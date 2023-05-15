@@ -24,7 +24,7 @@ public abstract class IA_difficile extends IA{
         }
 
         etats.add(new Etat(jeu.n.clone(), 0, null, 0));
-        while (System.currentTimeMillis() < endtime) {
+        do {
             Etat e = etats.poll();
             Coup overide = coups(e);
             nb_evals++;
@@ -34,7 +34,7 @@ public abstract class IA_difficile extends IA{
                 return overide;
             }
 
-        }
+        } while (System.currentTimeMillis() < endtime);
         Etat meilleurCoup = etats.poll();
 //        System.out.println("fini");
 //        System.out.println("nb evals : " + nb_evals);
