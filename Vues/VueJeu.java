@@ -109,6 +109,7 @@ class VueJeu extends JPanel {
         endButtons.add(menu);
         endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
         endButtons.add(retry);
+        endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
         endButtons.add(consulter);
 
         banner.add(endButtons, gbc2);
@@ -166,13 +167,13 @@ class VueJeu extends JPanel {
             if (!perdant.estHumain()) {
                 switch (perdant.type()) {
                     case IA_FACILE:
-                        endGameText.setText("Tu as gagné contre l'IA facile ! Essaye l'IA moyenne.");
+                        endGameText.setText("<html>Tu as gagné contre l'IA facile !<br>Essaye l'IA moyenne.</html>");
                         break;
                     case IA_MOYEN:
-                        endGameText.setText("Tu as gagné contre l'IA moyenne ! Essaye l'IA difficile !");
+                        endGameText.setText("<html>Tu as gagné contre l'IA moyenne !<br>Essaye l'IA difficile !</html>");
                         break;
                     case IA_DIFFICILE:
-                        endGameText.setText("Tu as gagné contre l'IA difficile ! Bravo !!");
+                        endGameText.setText("Tu as gagné contre l'IA difficile, bravo !!");
                         break;
                     default:
                         endGameText.setText("Tu as gagné contre... un alien ?");
@@ -401,6 +402,7 @@ class VueJeu extends JPanel {
         };
 
         controls[0].addActionListener(e -> controleur.jeu().annuler());
+
         controls[1].addActionListener((e) -> {
             if (!controleur.jeu().partieTerminee()){
                 controleur.jeu().solution();
@@ -420,6 +422,14 @@ class VueJeu extends JPanel {
         c.weightx = 1;
         c.insets = new Insets(10, 10, 10, 10);
         bottomPanel.add(controlsPanel, c);
+    }
+
+    void ModifBoutonUndo() {
+        if (controleur.jeu().peutAnnuler()) {
+            undo.setEnabled(true);
+        } else {
+            undo.setEnabled(false);
+        }
     }
 
     private JPanel addUserActions() {
