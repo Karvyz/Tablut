@@ -104,7 +104,7 @@ class VueJeu extends JPanel {
         JPanel endButtons = new JPanel();
         endButtons.setOpaque(false);
         JButton menu = new CButton("Menu principal");
-        JButton retry = new CButton("Rejouer?").blanc();
+        JButton retry = new CButton("Rejouer ?").blanc();
         endButtons.add(menu);
         endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
         endButtons.add(retry);
