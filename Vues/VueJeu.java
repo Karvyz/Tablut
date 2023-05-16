@@ -140,7 +140,10 @@ class VueJeu extends JPanel {
             @Override
             public void windowClosing(WindowEvent e) {
                 // Action personnalisée
+                controls[0].setEnabled(false);
+                controls[2].setEnabled(false);
                 controleur.jeu().setVainqueur(null); //permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
+                controleur.setConsulter(true);
                 // Disposer le JDialog
                 endGameDialog.dispose();
             }
