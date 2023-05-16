@@ -34,6 +34,7 @@ public class CPlateau extends JPanel implements Observateur {
 
     private AdaptateurSouris adaptateurSouris;
     int compteur;
+    int compteurPourHorsJeu = 0;
 
 
 
@@ -47,13 +48,13 @@ public class CPlateau extends JPanel implements Observateur {
 
     @Override
     protected void paintComponent(Graphics g) {
+
         super.paintComponent(g);
         calculerDimensions();
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         verif_debut_partie();
         test_annuler_refaire();
-        //test_hors_jeu();
         drawPlateau(g2d);
         drawContenu(g2d);
         drawMouvIA(g2d);
@@ -64,21 +65,10 @@ public class CPlateau extends JPanel implements Observateur {
             removeMouseListener(adaptateurSouris);
             removeMouseMotionListener(adaptateurSouris);
             setPionEnDeplacement(null);
-            compteur +=1;
+            compteur =1;
         }
 
     }
-
-/*    private void test_hors_jeu() {
-        if (controleur.getHorsJeu()){
-            setPionSelec(null);
-            setPionEnDeplacement(null);
-            setDessineCroix(null);
-            setDestinationsPossibles(null);
-            //setDrawFleche(false);
-        }
-    }*/
-
 
     private void verif_debut_partie() {
         if(controleur.jeu().debutPartie()) {
@@ -124,7 +114,7 @@ public class CPlateau extends JPanel implements Observateur {
                 // -- Dessin des pions, forteresses, roi, konakis
                 if(controleur.jeu().partieTerminee()){
                     setPionSelec(null);
-                    setPionEnDeplacement(null);
+                    //setPionEnDeplacement(null);
                 }
 
                 if (getPionSelec() != null && l == getPionSelec().getX() && c == getPionSelec().getY() && !controleur.jeu().partieTerminee()) { //Ici on efface le pion selec, sauf si partie_fini
@@ -365,7 +355,6 @@ public class CPlateau extends JPanel implements Observateur {
     }
 
     public void setPionEnDeplacement(Point pionEnDeplacement) {
-
         this.pionEnDeplacement = pionEnDeplacement;
         miseAJour(); // Ajoutez cette ligne pour actualiser le plateau
     }
