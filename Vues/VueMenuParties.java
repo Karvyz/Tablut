@@ -120,6 +120,7 @@ public class VueMenuParties extends JPanel {
         fileList.setFont(new Font("Arial", Font.PLAIN, 18)); // Changez la taille du texte des fichiers ici
         fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fileList.setVisibleRowCount(5);
+        fileList.setBackground(new Color(0xB3F3F3));
         //fileList.setOpaque(false);
         // Ajout de l'écouteur de double-clic ici
         fileList.addMouseListener(new MouseAdapter() {
