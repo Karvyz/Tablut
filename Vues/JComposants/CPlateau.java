@@ -117,6 +117,12 @@ public class CPlateau extends JPanel implements Observateur {
                     //setPionEnDeplacement(null);
                 }
 
+                if (getPionSelec() != null && l == getPionSelec().getX() && c == getPionSelec().getY() && controleur.jeu().getAideIA()!= null &&
+                        l==controleur.jeu().getAideIA().depart.getX() && c==controleur.jeu().getAideIA().depart.getY()){
+                    g.drawImage(getImage(), x + 4, y + 4, largeurCase - 4, hauteurCase - 4, this); //Permet d'afficher le pion si il est selectionne avant l'aide de l'IA
+                }
+
+
                 if (getPionSelec() != null && l == getPionSelec().getX() && c == getPionSelec().getY() && !controleur.jeu().partieTerminee()) { //Ici on efface le pion selec, sauf si partie_fini
                     x += largeurCase;
                     if (c % 2 == 0)
