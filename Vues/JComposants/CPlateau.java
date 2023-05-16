@@ -47,13 +47,12 @@ public class CPlateau extends JPanel implements Observateur {
 
     @Override
     protected void paintComponent(Graphics g) {
-
-    if (controleur.jeu().partieTerminee() && compteur == 0){
         System.out.println("here");
-        removeMouseListener(adaptateurSouris);
-        removeMouseMotionListener(adaptateurSouris);
-        compteur = 1;
-    }
+        if (controleur.jeu().partieTerminee() && compteur == 0){
+            removeMouseListener(adaptateurSouris);
+            removeMouseMotionListener(adaptateurSouris);
+            compteur = 1;
+        }
 
         super.paintComponent(g);
         calculerDimensions();
