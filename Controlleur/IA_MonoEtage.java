@@ -32,7 +32,6 @@ public class IA_MonoEtage extends IA {
         @Override
         public void run() {
             return_value = heuristique.evaluation(niveau, monType);
-            System.out.println(return_value);
         }
     }
 

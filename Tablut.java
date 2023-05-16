@@ -1,11 +1,13 @@
 
 import Controlleur.*;
+import Controlleur.heuristiques.*;
 import Modele.Jeu;
 import Modele.TypePion;
 import Vues.CollecteurEvenements;
 import Vues.InterfaceGraphique;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class Tablut{
@@ -17,8 +19,17 @@ public class Tablut{
             InterfaceGraphique.demarrer(control);
         }
         else {
-            Tournois2Controlleur tournois2Controlleur = new Tournois2Controlleur();
-            tournois2Controlleur.tournois2();
+            ArrayList<IA> ias = new ArrayList<>();
+            Random random = new Random();
+            for (int i = 0; i < 5; i++) {
+            }
+            ias.add(new IA_DifficileTemps("", TypePion.ATTAQUANT, new Jeu(), new HeuristiqueFusion(0.4668334F, 0.33374965F,0.9967921F, 0.5499482F), 100));
+            ias.add(new IA_DifficileTemps("", TypePion.ATTAQUANT, new Jeu(), new HeuristiqueMassacrePion(), 100));
+            ias.add(new IA_DifficileTemps("", TypePion.ATTAQUANT, new Jeu(), new HeuristiqueLeRoiCCiao(), 100));
+            ias.add(new IA_DifficileTemps("", TypePion.ATTAQUANT, new Jeu(), new HeuristiqueLongLiveTheKing(), 100));
+
+            TournoisControlleur tournoisControlleur = new TournoisControlleur(ias, 100);
+            tournoisControlleur.tournois();
         }
     }
 }

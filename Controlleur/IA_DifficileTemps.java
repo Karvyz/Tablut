@@ -10,6 +10,12 @@ import java.util.PriorityQueue;
 import static java.lang.System.exit;
 
 public class IA_DifficileTemps extends IA{
+    @Override
+    public String toString() {
+        return "IA_DifficileTemps{" +
+                "heuristique=" + heuristique +
+                '}';
+    }
 
     TypePion monType;
     TypePion typeAdversaire;

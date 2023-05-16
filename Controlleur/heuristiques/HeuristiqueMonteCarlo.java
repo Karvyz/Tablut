@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class HeuristiqueMonteCarlo extends Heuristique{
     @Override
     public float evaluation(Niveau n, TypePion typePion) {
-        float nbSimulations = 1000;
+        float nbSimulations = 10;
         int scoreTotal = 0;
         int res = 0;
 
@@ -41,6 +41,11 @@ public class HeuristiqueMonteCarlo extends Heuristique{
         }
 
         return scoreTotal; // Multiplication pour augmenter la précision de l'évaluation
+    }
+
+    @Override
+    public String toString() {
+        return "MonteCarlo";
     }
 
     public Coup jouecoupalea(Niveau niv, TypePion typeCourant) {

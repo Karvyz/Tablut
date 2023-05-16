@@ -22,4 +22,14 @@ public class HeuristiqueFusion extends Heuristique {
                 + MP * new HeuristiqueMassacrePion().evaluation(n, typePion)
                 + AR * new HeuristiqueAttaqueRoi().evaluation(n, typePion);
     }
+
+    @Override
+    public String toString() {
+        return "HeuristiqueFusion{" +
+                "lltk=" + lltk +
+                ", lrcc=" + lrcc +
+                ", MP=" + MP +
+                ", AR=" + AR +
+                '}';
+    }
 }
