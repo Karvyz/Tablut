@@ -55,9 +55,5 @@ public interface CollecteurEvenements {
     void setConsulter(boolean b);
     boolean getConsulter();
 
-    void setHorsJeu(boolean b);
-
-    boolean getHorsJeu();
-
 }
 

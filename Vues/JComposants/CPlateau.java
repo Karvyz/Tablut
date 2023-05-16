@@ -49,17 +49,12 @@ public class CPlateau extends JPanel implements Observateur {
     @Override
     protected void paintComponent(Graphics g) {
 
-        if (compteurPourHorsJeu == 1){ //Permet d'éviter les boucles infinies quand on clique en dehors du plateau
-            compteurPourHorsJeu = 0;
-            return ;
-        }
         super.paintComponent(g);
         calculerDimensions();
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         verif_debut_partie();
         test_annuler_refaire();
-        test_hors_jeu();
         drawPlateau(g2d);
         drawContenu(g2d);
         drawMouvIA(g2d);
@@ -74,20 +69,6 @@ public class CPlateau extends JPanel implements Observateur {
         }
 
     }
-
-   private void test_hors_jeu() {
-        if (controleur.getHorsJeu()){
-            setPionSelec(null);
-            setPionEnDeplacement(null);
-            setDessineCroix(null);
-            setDestinationsPossibles(null);
-            compteurPourHorsJeu = 1;
-        }
-        else{
-            compteurPourHorsJeu =0;
-        }
-    }
-
 
     private void verif_debut_partie() {
         if(controleur.jeu().debutPartie()) {
