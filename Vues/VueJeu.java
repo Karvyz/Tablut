@@ -117,11 +117,11 @@ class VueJeu extends JPanel {
         endButtons.add(consulter);
 
         banner.add(endButtons, gbc2);
-        endGamePanel.add(banner, gbc);
 
         endGamePanel.setSize(1000, 600);
-
         endGamePanel.setAlignmentX(CENTER_ALIGNMENT);
+
+        endGamePanel.add(banner, gbc);
 
         endGameDialog.add(endGamePanel);
 
@@ -189,7 +189,6 @@ class VueJeu extends JPanel {
 
         if (vainqueur.estHumain()) {
             endGamePanel.setBackground(new Color(100, 183, 68));
-            endGameDialog.getComponent(0).setBackground(new Color(100, 183, 68));
             endGameDialog.setTitle("Victoire !");
             if (!perdant.estHumain()) {
                 switch (perdant.type()) {
@@ -247,7 +246,6 @@ class VueJeu extends JPanel {
                 endGameDialog.setTitle("Défaite !");
                 endGameText.setText("Dommage ! Tu as perdu contre l'IA " + typeIA + ".");
             } else {
-                //endGameDialog.getComponent(0).setBackground(new Color(120, 70, 50));
                 endGameDialog.getComponent(0).setBackground(new Color(85, 91, 97));
                 if (vainqueur.aPionsBlancs()) {
                     if(vainqueur.nom().equals("Défenseur"))
