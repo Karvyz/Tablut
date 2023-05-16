@@ -679,6 +679,12 @@ class VueJeu extends JPanel {
                 return;
             }
             fileName = directoryPath + fileName + ".save";
+            File file = new File(fileName);
+
+            while (file.exists()) {
+                handleSaveError("Ce nom de fichier existe déjà. Veuillez en choisir un autre.");
+                return;
+            }
 
             if (controleur.sauvegarderPartie(fileName)) {
                 JOptionPane.showMessageDialog(null, "Sauvegarde réussie", "Sauvegarde", JOptionPane.INFORMATION_MESSAGE);
@@ -689,6 +695,7 @@ class VueJeu extends JPanel {
             handleSaveError("Le nom de fichier ne peut pas être vide");
         }
     }
+
 
     private void handleSaveError(String msg) {
         JButton retryButton = new JButton("Recommencer");

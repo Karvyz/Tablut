@@ -4,10 +4,7 @@ import Vues.JComposants.CButton;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.FilenameFilter;
 
@@ -35,9 +32,11 @@ public class VueMenuParties extends JPanel {
         background = Imager.getImageBuffer("logo.png");
 
         initializeComponents();
+
     }
 
     private void initializeComponents() {
+
         //setLayout(new GridLayout(8, 3, -1, -1));
         setLayout(new GridBagLayout());
 
@@ -101,18 +100,31 @@ public class VueMenuParties extends JPanel {
         fileList.setFont(new Font("Arial", Font.PLAIN, 18)); // Changez la taille du texte des fichiers ici
         fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fileList.setVisibleRowCount(5);
-        //fileList.setOpaque(false);
+
+
         // Ajout de l'écouteur de double-clic ici
         fileList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 JList list = (JList)evt.getSource();
                 if (evt.getClickCount() == 2) {  // Double-clic
-                    // Trouver l'index de l'élément sélectionné
                     int index = list.locationToIndex(evt.getPoint());
                     if (index >= 0) {
                         // Simuler le clic sur le bouton de chargement
                         loadButton.doClick();
                     }
+                }
+            }
+        });
+
+        // Permet de selectionné/supprimé grace au clavier
+        fileList.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_DELETE) {  // Touche Suppr
+                    deleteButton.doClick();
+                } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {  // Touche Entrée
+                    loadButton.doClick();
+                } else if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {  // Touche Échap
+                    menuPrincipalButton.doClick();
                 }
             }
         });
@@ -218,13 +230,18 @@ public class VueMenuParties extends JPanel {
                     if (response == JOptionPane.YES_OPTION) {
                         // Si l'utilisateur clique sur Oui, supprime le fichier
                         File file = new File("Resources/save/" + selectedFile);
-                        if (file.delete()) {
-                            // Le fichier a été supprimé avec succès, rafraîchir la liste
-                            refreshFileList();
+                        if (file.exists() && file.isFile()) {
+                            if (file.delete()) {
+                                // Le fichier a été supprimé avec succès, rafraîchir la liste
+                                refreshFileList();
+                            } else {
+                                // Une erreur s'est produite lors de la suppression du fichier
+                                System.out.println("Une erreur s'est produite lors de la suppression du fichier.");
+                            }
                         } else {
-                            // Une erreur s'est produite lors de la suppression du fichier
-                            System.out.println("Une erreur s'est produite lors de la suppression du fichier.");
+                            System.out.println("Le fichier à supprimer n'existe pas ou n'est pas un fichier.");
                         }
+
                     }
                 }
             }
@@ -270,6 +287,8 @@ public class VueMenuParties extends JPanel {
 
         refreshFileList();
     }
+
+
 
     public void refreshFileList() {
         File saveDir = new File("Resources/save/");
