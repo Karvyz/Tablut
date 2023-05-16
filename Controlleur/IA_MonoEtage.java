@@ -1,71 +1,21 @@
 package Controlleur;
 
 
+import Controlleur.heuristiques.Heuristique;
 import Modele.*;
 
 
 import java.util.ArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 
 
-public class IA_monte extends IA {
+public class IA_MonoEtage extends IA {
     TypePion monType;
     TypePion typeAdversaire;
+    Heuristique heuristique;
 
-
-    public IA_monte(String nom, TypePion roleJ, Jeu j) {
+    public IA_MonoEtage(String nom, TypePion roleJ, Jeu j, Heuristique heuristique) {
         super(nom, TypeJoueur.IA_DIFFICILE, roleJ, j);
-
-    }
-
-
-    public Coup jouecoupalea(Niveau niv, TypePion typeCourant) {
-        ArrayList<Pion> pions = niv.getPions(typeCourant);
-        Pion pion;
-        ArrayList<Coordonne> deplacements;
-        do {
-            pion = pions.get(ThreadLocalRandom.current().nextInt(0, pions.size()));
-            deplacements = pion.getDeplacement(niv.plateau);
-
-
-        } while (deplacements.size() == 0);
-        return new Coup(pion.getCoordonne(), deplacements.get(ThreadLocalRandom.current().nextInt(0, deplacements.size())));
-    }
-
-    public float evaluation(Niveau n) {
-        float nbSimulations = 1000;
-        int scoreTotal = 0;
-        int res = 0;
-
-        for (int i = 0; i < nbSimulations; i++) {
-//            System.out.println("Simulation " + i);
-            // Cloner la matrice actuelle pour la simulation
-            Niveau nSimul = n.clone();
-
-
-            // Simulation d'une partie aléatoire
-            TypePion typeCourant = monType;
-            while (res == 0) {
-                Coup coup = jouecoupalea(nSimul, typeCourant);
-                res = nSimul.deplace_pion(coup);
-                if (typeCourant == TypePion.ATTAQUANT)
-                    typeCourant = TypePion.DEFENSEUR;
-                else
-                    typeCourant = TypePion.ATTAQUANT;
-            }
-
-            // Calculer le score de la partie simulée
-            int scorePartie = 0;
-            if ((res == 1 && monType == TypePion.ATTAQUANT) || (res == 2 && monType == TypePion.DEFENSEUR))
-                scorePartie = 1;
-            else if ((res == 1) || (res == 2)) {
-                scorePartie = -1;
-            }
-            scoreTotal += scorePartie;
-            res = 0;
-        }
-
-        return scoreTotal; // Multiplication pour augmenter la précision de l'évaluation
+        this.heuristique = heuristique;
     }
 
     class Thready implements Runnable {
@@ -81,7 +31,7 @@ public class IA_monte extends IA {
 
         @Override
         public void run() {
-            return_value = evaluation(niveau);
+            return_value = heuristique.evaluation(niveau, monType);
             System.out.println(return_value);
         }
     }
