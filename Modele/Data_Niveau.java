@@ -25,6 +25,7 @@ public class Data_Niveau implements Serializable {
         this.coup_a_refaire = coup_a_refaire;
         this.pileIA_annule = pileIA_annule;
         this.pileIA_refaire = pileIA_refaire;
+        //System.out.println(pileIA_refaire);
         this.config = config;
         this.joueurC = JC;
         this.attaquant = attaque;

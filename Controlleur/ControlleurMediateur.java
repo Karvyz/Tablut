@@ -109,6 +109,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
             FileOutputStream fileOut = new FileOutputStream(fichier);
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
             System.out.println("Sauvegarde du jeu dans le fichier: " + fichier);
+            //System.out.println(jeu.pileIA_refaire);
             Data_Niveau data_niveau = new Data_Niveau(jeu.config, jeu.n, jeu.coup_annule, jeu.coup_a_refaire, jeu.pileIA_annule, jeu.pileIA_refaire, jeu.get_num_JoueurCourant(), jeu.joueurs[0], jeu.joueurs[1], jeu.enCours());
 
             objectOut.writeObject(data_niveau);

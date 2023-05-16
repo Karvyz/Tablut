@@ -300,6 +300,7 @@ class VueJeu extends JPanel {
 
         JMenuItem[] menu_items = {
                 new JMenuItem("Nouvelle Partie"),
+                new JMenuItem("Charger Partie"),
                 new JMenuItem("Menu principal"),
                 new JMenuItem("Quitter"),
         };
@@ -311,18 +312,20 @@ class VueJeu extends JPanel {
 
             controleur.jeu().reset();
             controleur.nouvellePartie(joueurs[0].nom(), joueurs[0].type(), TypePion.ATTAQUANT, joueurs[1].nom(), joueurs[1].type(), TypePion.DEFENSEUR);
-            controleur.jeu().setCoordooneJouerIA(null,null);
             texteJeu = new TexteJeu(0, 0);
             controleur.afficherJeu();
             controls[0].setEnabled(false);
             controls[2].setEnabled(false);
-            //controleur.jeu().metAJour();
         });
         menu_items[1].addActionListener((e) -> {
             controleur.jeu().reset();
+            controleur.afficherMenuChargerPartie();
+        });
+        menu_items[2].addActionListener((e) -> {
+            controleur.jeu().reset();
             controleur.afficherMenuPrincipal();
         });
-        menu_items[2].addActionListener(e -> controleur.toClose());
+        menu_items[3].addActionListener(e -> controleur.toClose());
 
         JCheckBoxMenuItem checkBoxMenuItemMusic = new JCheckBoxMenuItem("Musique");
         checkBoxMenuItemMusic.setSelected(false);
