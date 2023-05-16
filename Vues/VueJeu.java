@@ -50,20 +50,11 @@ class VueJeu extends JPanel {
         contenu.setOpaque(false);
 
         addTop(contenu);
+        //contenu.add(Box.createVerticalGlue());
         addMain(contenu);
         addBottom(contenu);
 
         add(contenu);
-
-        /*this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                int x = e.getX();
-                int y = e.getY();
-                controleur.setHorsJeu(true);//Permet de deselectionner lorsqu'on clique a coté du plateau
-            }
-        });*/
     }
 
     private JDialog EndGameDialog() {
@@ -140,8 +131,6 @@ class VueJeu extends JPanel {
             @Override
             public void windowClosing(WindowEvent e) {
                 // Action personnalisée
-                controls[0].setEnabled(false);
-                controls[2].setEnabled(false);
                 controleur.jeu().setVainqueur(null); //permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
                 controleur.setConsulter(true);
                 // Disposer le JDialog
@@ -166,8 +155,6 @@ class VueJeu extends JPanel {
             controleur.partieSuivante();
         });
         consulter.addActionListener((e) -> {
-            controls[0].setEnabled(false);
-            controls[2].setEnabled(false);
             controleur.jeu().setVainqueur(null); //permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
             controleur.setConsulter(true);
             // Disposer le JDialog
@@ -329,7 +316,6 @@ class VueJeu extends JPanel {
         });
         menu_items[1].addActionListener((e) -> {
             controleur.jeu().reset();
-            controleur.jeu().setCoordooneJouerIA(null,null);
             controleur.afficherMenuPrincipal();
         });
         menu_items[2].addActionListener(e -> controleur.toClose());
@@ -381,10 +367,10 @@ class VueJeu extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
         c.gridy = 0;
-        topPanel.add(pionsPanel, c);
+        //topPanel.add(pionsPanel, c);
     }
 
-    private void addMain(JPanel contenu) {
+    /*private void addMain(JPanel contenu) {
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
@@ -403,7 +389,7 @@ class VueJeu extends JPanel {
         c.fill = GridBagConstraints.NONE;
 
         // - J1
-        c.insets = new Insets(10, 10, 0, 30);
+        c.insets = new Insets(10, 50, 0, 50);
         c.gridx = 0;
         c.gridy = 1;
         c.weightx = 0;
@@ -412,8 +398,45 @@ class VueJeu extends JPanel {
         mainPanel.add(j1, c);
 
         // - J2
-        c.insets = new Insets(10, 30, 0, 10);
+        c.insets = new Insets(10, 50, 0, 50);
         c.anchor = FIRST_LINE_END;
+        mainPanel.add(j2, c);
+    }
+     */
+
+    private void addMain(JPanel contenu) {
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.fill = GridBagConstraints.BOTH;
+
+        c.anchor = GridBagConstraints.CENTER;
+
+        mainPanel = new JPanel();
+        mainPanel.setOpaque(false);
+        mainPanel.setLayout(new GridBagLayout());
+        contenu.add(mainPanel, c);
+        // -----------
+
+        c.fill = VERTICAL;
+
+        // - J1
+        //c.insets = new Insets(10, 50, 0, 50);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 0.2;
+        c.weighty = 1;
+        c.anchor = CENTER;
+        mainPanel.add(j1, c);
+
+        // - J2
+        //c.insets = new Insets(10, 50, 0, 50);
+        c.gridx = 2;
+        c.gridy = 0;
+        c.anchor = CENTER;
         mainPanel.add(j2, c);
     }
 
@@ -475,6 +498,7 @@ class VueJeu extends JPanel {
     }
 
     void ModifBoutonUndo() {
+        controleur.jeu().setAideIA(null);
         if (controleur.jeu().peutAnnuler()) {
             if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
                 controls[0].setEnabled(false);
@@ -492,6 +516,7 @@ class VueJeu extends JPanel {
     }
 
     void ModifBoutonRedo() {
+        controleur.jeu().setAideIA(null);
         if (controleur.jeu().peutRefaire()) {
             if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
                 controls[2].setEnabled(false);
@@ -524,6 +549,7 @@ class VueJeu extends JPanel {
         topFrame.setFocusable(true);
         topFrame.requestFocus();
 
+        /*
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         // MARK: ESPACEMENT PLATEAU GAUCHE ET DROITE
@@ -531,6 +557,18 @@ class VueJeu extends JPanel {
         c.gridx = 0;
         c.gridy = 1;
         c.weightx = 1;
+        c.weighty = 1;
+        c.anchor = GridBagConstraints.CENTER;
+        mainPanel.add(vueNiveau, c);
+
+         */
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        // MARK: ESPACEMENT PLATEAU GAUCHE ET DROITE
+        c.insets = new Insets(5, 28, 5, 28);
+        c.gridx = 1;
+        c.gridy = 0;
+        c.weightx = 0.6;
         c.weighty = 1;
         c.anchor = GridBagConstraints.CENTER;
         mainPanel.add(vueNiveau, c);
@@ -555,7 +593,7 @@ class VueJeu extends JPanel {
             s1 = controleur.jeu().getJoueur1().nom();
         }
         j1.setName(s1);
-        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);
+        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
 
         String s2 = "";
         if(!controleur.jeu().getJoueur2().estHumain()) {
@@ -575,7 +613,7 @@ class VueJeu extends JPanel {
             s2 = controleur.jeu().getJoueur2().nom();
         }
         j2.setName(s2);
-        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
+        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);
 
         vueNiveau.miseAJour();
     }
@@ -594,19 +632,19 @@ class VueJeu extends JPanel {
         c.fill = GridBagConstraints.BOTH;
         // MARK: ESPACEMENT PLATEAU GAUCHE ET DROITE
         c.insets = new Insets(5, 28, 5, 28);
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 1;
+        c.gridx = 1;
+        c.gridy = 0;
+        c.weightx = 0.6;
         c.weighty = 1;
         c.anchor = GridBagConstraints.CENTER;
         mainPanel.add(vueNiveau, c);
 
         // Initialisation du niveau
         j1.setName((!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueur1().nom());
-        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);
+        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
 
         j2.setName((!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueur2().nom());
-        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
+        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);
 
         vueNiveau.miseAJour();
     }

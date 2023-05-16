@@ -27,6 +27,7 @@ class VueMenuPrincipal extends JPanel {
         JButton chargerPartie = new CButton("Charger Partie");
         chargerPartie.addActionListener((e) -> {
             c.afficherMenuChargerPartie();
+
         });
 
         JButton QuickPlay = new CButton("Partie Rapide");

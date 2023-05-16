@@ -19,9 +19,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
     int decompte;
     public boolean Stop;
 
-    private boolean horsJeu;
-
-
 
     private boolean consulter;
 
@@ -343,4 +340,5 @@ public class ControlleurMediateur implements CollecteurEvenements{
     public void setConsulter(boolean consulter) {
         this.consulter = consulter;
     }
+
 }

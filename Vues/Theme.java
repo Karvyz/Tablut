@@ -69,7 +69,8 @@ public class Theme {
 
         noir_inactif = Imager.getImageBuffer(theme + "PN.png");
         roi = Imager.getImageBuffer(theme + "Roi.png");
-        point_interrogation = Imager.getImageBuffer(theme + "Capture1.png");
+        //point_interrogation = Imager.getImageBuffer(theme + "Capture1.png");
+        point_interrogation = Imager.getImageBuffer(theme + "Point.png");
         err = Imager.getImageBuffer(theme + "err.png");
         fleche_bas = Imager.getImageBuffer(theme + "fleche_bas.png");
         fleche_droite = Imager.getImageBuffer(theme + "fleche_droite.png");

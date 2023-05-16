@@ -3,7 +3,6 @@ package Vues.JComposants;
 import Modele.*;
 import Patterns.Observateur;
 import Vues.AdaptateurSouris;
-import Vues.AdaptateurSouris2;
 import Vues.CollecteurEvenements;
 import Vues.Theme;
 
@@ -34,6 +33,7 @@ public class CPlateau extends JPanel implements Observateur {
 
     private AdaptateurSouris adaptateurSouris;
     int compteur;
+    int compteurPourHorsJeu = 0;
 
 
 
@@ -48,38 +48,26 @@ public class CPlateau extends JPanel implements Observateur {
     @Override
     protected void paintComponent(Graphics g) {
 
-    if (controleur.jeu().partieTerminee() && compteur == 0){
-        System.out.println("here");
-        removeMouseListener(adaptateurSouris);
-        removeMouseMotionListener(adaptateurSouris);
-        compteur = 1;
-    }
-
         super.paintComponent(g);
         calculerDimensions();
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         verif_debut_partie();
         test_annuler_refaire();
-        //test_hors_jeu();
         drawPlateau(g2d);
         drawContenu(g2d);
         drawMouvIA(g2d);
         drawAideIA(g2d);
         drawCroixRouge(g2d);
 
-    }
-
-/*    private void test_hors_jeu() {
-        if (controleur.getHorsJeu()){
-            setPionSelec(null);
+        if (controleur.jeu().partieTerminee() && compteur == 0){
+            removeMouseListener(adaptateurSouris);
+            removeMouseMotionListener(adaptateurSouris);
             setPionEnDeplacement(null);
-            setDessineCroix(null);
-            setDestinationsPossibles(null);
-            //setDrawFleche(false);
+            compteur =1;
         }
-    }*/
 
+    }
 
     private void verif_debut_partie() {
         if(controleur.jeu().debutPartie()) {
@@ -125,7 +113,7 @@ public class CPlateau extends JPanel implements Observateur {
                 // -- Dessin des pions, forteresses, roi, konakis
                 if(controleur.jeu().partieTerminee()){
                     setPionSelec(null);
-                    setPionEnDeplacement(null);
+                    //setPionEnDeplacement(null);
                 }
 
                 if (getPionSelec() != null && l == getPionSelec().getX() && c == getPionSelec().getY() && !controleur.jeu().partieTerminee()) { //Ici on efface le pion selec, sauf si partie_fini
@@ -136,11 +124,17 @@ public class CPlateau extends JPanel implements Observateur {
                 }
 
                 if (n.estAttaquant(l, c)) {
-                    g.drawImage(Theme.instance().noir_inactif(), x +(largeurCase/2)-25, y + (hauteurCase/2)-25, 50, 50, this);
+                    int tal = (largeurCase / 4) * 3;
+                    int tah = (hauteurCase / 4) * 3;
+                    g.drawImage(Theme.instance().noir_inactif(), x + (largeurCase / 2) - (tal / 2), y + (hauteurCase / 2) - (tah / 2), tal, tah, this);
                 } else if (n.estRoi(l, c)) {
-                    g.drawImage(Theme.instance().roi(), x +(largeurCase/2)-30, y + (hauteurCase/2)-30, 60, 60, this);
+                    int trl = (largeurCase / 4) * 3;
+                    int trh = (hauteurCase / 4) * 3;
+                    g.drawImage(Theme.instance().roi(), x + (largeurCase / 2) - (trl / 2), y + (hauteurCase / 2) - (trh / 2), trl, trh, this);
                 } else if (n.estDefenseur(l, c)) {
-                    g.drawImage(Theme.instance().blanc_inactif(), x +(largeurCase/2)-25, y + (hauteurCase/2)-25, 50, 50, this);
+                    int tdl = (largeurCase / 4) * 3;
+                    int tdh = (hauteurCase / 4) * 3;
+                    g.drawImage(Theme.instance().blanc_inactif(), x + (largeurCase / 2) - (tdl / 2), y + (hauteurCase / 2) - (tdh / 2), tdl, tdh, this);
                 }
                 x += largeurCase;
                 if (c % 2 == 0)
@@ -237,23 +231,25 @@ public class CPlateau extends JPanel implements Observateur {
                 int c = depart.getY();
                 if (controleur.jeu().n.estKonakis(l,c)){
                     //on ne dessine pas la fleche sur le konaki. on comprend que le roi est parti de son trone
-                }else{
+                }else {
+                    int tfl = largeurCase / 2;
+                    int tfh = hauteurCase / 2;
                     switch (calcul_dir(depart, controleur.jeu().getCoordooneArriveIA())) {
                         case 0:
                             // Déplacement vers le bas
-                            g2d.drawImage(Theme.instance().fleche_bas(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
+                            g2d.drawImage(Theme.instance().fleche_bas(), c * hauteurCase + (hauteurCase / 4), l * largeurCase + (largeurCase / 2), tfl, tfh, this);
                             break;
                         case 1:
                             //vers le haut
-                            g2d.drawImage(Theme.instance().fleche_haut(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
+                            g2d.drawImage(Theme.instance().fleche_haut(), c * hauteurCase + (hauteurCase / 4), (l * largeurCase), tfl, tfh, this);
                             break;
                         case 2:
                             // Déplacement vers la droite
-                            g2d.drawImage(Theme.instance().fleche_droite(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
+                            g2d.drawImage(Theme.instance().fleche_droite(), (c * hauteurCase) + (hauteurCase / 2), l * largeurCase + (largeurCase / 4), tfl, tfh, this);
                             break;
                         case 3:
                             //vers la gauche
-                            g2d.drawImage(Theme.instance().fleche_gauche(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
+                            g2d.drawImage(Theme.instance().fleche_gauche(), (c * hauteurCase), l * largeurCase + (largeurCase / 4), tfl, tfh, this);
                             break;
                     }
 
@@ -366,7 +362,6 @@ public class CPlateau extends JPanel implements Observateur {
     }
 
     public void setPionEnDeplacement(Point pionEnDeplacement) {
-
         this.pionEnDeplacement = pionEnDeplacement;
         miseAJour(); // Ajoutez cette ligne pour actualiser le plateau
     }

@@ -73,8 +73,8 @@ class VueNiveau extends JPanel implements Observateur {
         }
 
 
-        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);
-        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
+        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
+        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);
         texteJeu.set(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
 
         //texteJeu.setOpaque(true);
