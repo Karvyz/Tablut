@@ -67,12 +67,11 @@ class VueNiveau extends JPanel implements Observateur {
             controleur.jeu().setCoupJoue(false);
         }
 
-        if (controleur.jeu().partieTerminee()) {
-            //controleur.jeu().metAJour();
+        if (controleur.jeu().partieTerminee() && controleur.getConsulter() == false) {
             parent.showEnd();
-            //controleur.jeu().reset();
             return;
         }
+
 
         j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);
         j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);

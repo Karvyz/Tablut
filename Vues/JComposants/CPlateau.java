@@ -32,17 +32,28 @@ public class CPlateau extends JPanel implements Observateur {
 
     private Point dessineCroix;
 
+    private AdaptateurSouris adaptateurSouris;
+    int compteur;
+
 
 
     public CPlateau(CollecteurEvenements c) {
         controleur = c;
-        AdaptateurSouris adaptateurSouris = new AdaptateurSouris(c, this);
+        adaptateurSouris = new AdaptateurSouris(c, this);
         addMouseListener(adaptateurSouris);
         addMouseMotionListener(adaptateurSouris);
+        compteur = 0;
     }
 
     @Override
     protected void paintComponent(Graphics g) {
+
+    if (controleur.jeu().partieTerminee() && compteur == 0){
+        System.out.println("here");
+        removeMouseListener(adaptateurSouris);
+        removeMouseMotionListener(adaptateurSouris);
+        compteur = 1;
+    }
 
         super.paintComponent(g);
         calculerDimensions();
@@ -50,7 +61,7 @@ public class CPlateau extends JPanel implements Observateur {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         verif_debut_partie();
         test_annuler_refaire();
-        test_hors_jeu();
+        //test_hors_jeu();
         drawPlateau(g2d);
         drawContenu(g2d);
         drawMouvIA(g2d);
@@ -59,7 +70,7 @@ public class CPlateau extends JPanel implements Observateur {
 
     }
 
-    private void test_hors_jeu() {
+/*    private void test_hors_jeu() {
         if (controleur.getHorsJeu()){
             setPionSelec(null);
             setPionEnDeplacement(null);
@@ -67,7 +78,7 @@ public class CPlateau extends JPanel implements Observateur {
             setDestinationsPossibles(null);
             //setDrawFleche(false);
         }
-    }
+    }*/
 
 
     private void verif_debut_partie() {

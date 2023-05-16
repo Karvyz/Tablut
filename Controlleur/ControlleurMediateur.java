@@ -23,6 +23,10 @@ public class ControlleurMediateur implements CollecteurEvenements{
 
 
 
+    private boolean consulter;
+
+
+
 
     public ControlleurMediateur() {
         //on utilise fixeJeu
@@ -62,6 +66,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
         jeu.nouvellePartie();
         vues.nouvellePartie();
         Stop = false;
+        setConsulter(false);
 
     }
 
@@ -81,6 +86,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
         jeu.nouvellePartie();
         vues.nouvellePartie();
         Stop = false;
+        setConsulter(false);
     }
 
     @Override
@@ -90,6 +96,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
         vues.nouvellePartie();
         afficherJeu();
         Stop = false;
+        setConsulter(false);
     }
 
     public void restaurePartie() {
@@ -97,6 +104,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
         jeu.setEnCours(true);
         vues.restaurePartie();
         Stop = false;
+        setConsulter(false);
     }
 
     public boolean sauvegarderPartie(String fichier) {
@@ -327,14 +335,12 @@ public class ControlleurMediateur implements CollecteurEvenements{
         return Stop;
     }
 
-    @Override
-    public void setHorsJeu(boolean b) {
-        horsJeu = b;
-        jeu.metAJour();
+
+    public boolean getConsulter() {
+        return consulter;
     }
 
-    @Override
-    public boolean getHorsJeu() {
-        return horsJeu;
+    public void setConsulter(boolean consulter) {
+        this.consulter = consulter;
     }
 }
