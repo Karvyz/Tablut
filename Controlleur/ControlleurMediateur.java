@@ -19,25 +19,10 @@ public class ControlleurMediateur implements CollecteurEvenements{
     int decompte;
     public boolean Stop;
 
-
     private boolean consulter;
-
-
-
 
     public ControlleurMediateur() {
         //on utilise fixeJeu
-    }
-
-    public String toString() {
-        if(jeu == null)
-            return "";
-        return "Jeu {" +
-                "niveau: " + jeu.n +
-                "}\njoueur 1 = " + jeu.getJoueur1() +
-                "\njoueur 2 = " + jeu.getJoueur2() +
-                "\n jeu().enCours() +\n";
-
     }
 
     public void fixeJeu(Jeu j) {
@@ -102,6 +87,11 @@ public class ControlleurMediateur implements CollecteurEvenements{
         vues.restaurePartie();
         Stop = false;
         setConsulter(false);
+        if(!jeu.pileIA_annule.isEmpty()){
+            Coup a_remettre = jeu.pileIA_annule.peek();
+            jeu.setCoordooneJouerIA(a_remettre.depart, a_remettre.arrivee);
+        }
+
     }
 
     public boolean sauvegarderPartie(String fichier) {
@@ -228,7 +218,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
             if(jeu().debutPartie()){
                 jeu.setDebutPartie(false);
             }
-            //System.out.println(jeu);
             if (jeu == null || jeu().partieTerminee()) {
                 return;
             }
@@ -285,13 +274,11 @@ public class ControlleurMediateur implements CollecteurEvenements{
             throw new IllegalStateException(message + " : médiateur de vues non fixé");
         }
     }
-
     private void verifierJeu(String message) {
         if (jeu == null) {
             throw new IllegalStateException(message + " : aucune partie commencée");
         }
     }
-
     @Override
     public void afficherDemarrage() {
         verifierMediateurVues("Impossible d'afficher le démarrage");
@@ -333,12 +320,19 @@ public class ControlleurMediateur implements CollecteurEvenements{
     }
 
 
-    public boolean getConsulter() {
-        return consulter;
-    }
+    public boolean getConsulter() {return consulter;}
 
-    public void setConsulter(boolean consulter) {
-        this.consulter = consulter;
+    public void setConsulter(boolean consulter) {this.consulter = consulter;}
+
+    public String toString() {
+        if(jeu == null)
+            return "";
+        return "Jeu {" +
+                "niveau: " + jeu.n +
+                "}\njoueur 1 = " + jeu.getJoueur1() +
+                "\njoueur 2 = " + jeu.getJoueur2() +
+                "\n jeu().enCours() +\n";
+
     }
 
 }
