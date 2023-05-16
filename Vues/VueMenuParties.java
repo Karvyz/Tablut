@@ -67,6 +67,7 @@ public class VueMenuParties extends JPanel {
         gspacer0.anchor = GridBagConstraints.CENTER;
         add(verticalSpace0, gspacer0);
 
+        /*
         // Texte "Choisir une partie à charger ou à supprimer :" (label1)
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -94,14 +95,17 @@ public class VueMenuParties extends JPanel {
         gspacer1.anchor = GridBagConstraints.CENTER;
         add(verticalSpace1, gspacer1);
 
+         */
+
         // Espaces horizontal
         Box horizontalSpace1 = Box.createHorizontalBox();
-        horizontalSpace1.add(Box.createHorizontalStrut(20));
+        horizontalSpace1.add(Box.createHorizontalStrut(this.getWidth()/4));
         GridBagConstraints gspacer2 = new GridBagConstraints();
         gspacer2.gridx = 0;
-        gspacer2.gridy = 3;
+        gspacer2.gridy = 1;
         gspacer2.gridwidth = 1;
         gspacer2.gridheight = 1;
+        gspacer2.weightx = 0.25;
         gspacer2.fill = GridBagConstraints.HORIZONTAL;
         //gspacer2.anchor = GridBagConstraints.CENTER;
         add(horizontalSpace1, gspacer2);
@@ -144,12 +148,13 @@ public class VueMenuParties extends JPanel {
             }
         });
 
-        gbc = new GridBagConstraints();
+        GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 1;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 0.5;
+        gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
 
         JScrollPane scrollPane = new JScrollPane(fileList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -158,17 +163,19 @@ public class VueMenuParties extends JPanel {
         ;
         // Custom JScrollBar
         scrollPane.setVerticalScrollBar(new CJScrollBar());
-        scrollPane.setPreferredSize(new Dimension(200, 100));
+        scrollPane.setPreferredSize(new Dimension(400, 100));
+        scrollPane.setMaximumSize(new Dimension(400, -1));
         add(scrollPane, gbc);
 
         // Espaces horizontal
         Box horizontalSpace2 = Box.createHorizontalBox();
-        horizontalSpace2.add(Box.createHorizontalStrut(20));
+        horizontalSpace2.add(Box.createHorizontalStrut(this.getWidth()/4));
         GridBagConstraints gspacer3 = new GridBagConstraints();
         gspacer3.gridx = 2;
-        gspacer3.gridy = 3;
+        gspacer3.gridy = 1;
         gspacer3.gridwidth = 1;
         gspacer3.gridheight = 1;
+        gspacer3.weightx = 0.25;
         gspacer3.fill = GridBagConstraints.HORIZONTAL;
         gspacer3.anchor = GridBagConstraints.CENTER;
         add(horizontalSpace2, gspacer3);
@@ -178,7 +185,7 @@ public class VueMenuParties extends JPanel {
         verticalSpace2.add(Box.createVerticalStrut(100));
         GridBagConstraints gspacer4 = new GridBagConstraints();
         gspacer4.gridx = 1;
-        gspacer4.gridy = 4;
+        gspacer4.gridy = 2;
         gspacer4.gridwidth = 3;
         gspacer4.gridheight = 1;
         gspacer4.fill = GridBagConstraints.VERTICAL;
@@ -192,7 +199,7 @@ public class VueMenuParties extends JPanel {
 
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 5;
+        gbc.gridy = 3;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
         gbc.fill = GridBagConstraints.NONE;
@@ -279,7 +286,7 @@ public class VueMenuParties extends JPanel {
         verticalSpace3.add(Box.createVerticalStrut(100));
         GridBagConstraints gspacer5 = new GridBagConstraints();
         gspacer5.gridx = 1;
-        gspacer5.gridy = 6;
+        gspacer5.gridy = 4;
         gspacer5.gridwidth = 3;
         gspacer5.gridheight = 1;
         gspacer5.fill = GridBagConstraints.VERTICAL;
@@ -288,7 +295,7 @@ public class VueMenuParties extends JPanel {
 
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 7;
+        gbc.gridy = 5;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
         gbc.fill = GridBagConstraints.NONE;
