@@ -377,7 +377,7 @@ class VueJeu extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
         c.gridy = 0;
-        topPanel.add(pionsPanel, c);
+        //topPanel.add(pionsPanel, c);
     }
 
     private void addMain(JPanel contenu) {
@@ -551,7 +551,7 @@ class VueJeu extends JPanel {
             s1 = controleur.jeu().getJoueur1().nom();
         }
         j1.setName(s1);
-        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);
+        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
 
         String s2 = "";
         if(!controleur.jeu().getJoueur2().estHumain()) {
@@ -571,7 +571,7 @@ class VueJeu extends JPanel {
             s2 = controleur.jeu().getJoueur2().nom();
         }
         j2.setName(s2);
-        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
+        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);
 
         vueNiveau.miseAJour();
     }
@@ -599,10 +599,10 @@ class VueJeu extends JPanel {
 
         // Initialisation du niveau
         j1.setName((!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueur1().nom());
-        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);
+        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
 
         j2.setName((!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueur2().nom());
-        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
+        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);
 
         vueNiveau.miseAJour();
     }

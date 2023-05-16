@@ -49,16 +49,16 @@ public class InfoJoueur extends JPanel {
         n.setText(nom);
     }
 
-    public void setPions(int nb1) {
+    public void setPions(int nb1, int nb2) {
         setBackgroundJoueur(Color.GRAY);
         // Affichage des pions captures
         //ImageIcon fois = new ImageIcon(Imager.getScaledImage("fois.png", 50, 60));
         //System.out.println("setPions : " + nb);
         pawn = new ImageIcon(Imager.getScaledImage(reverse ? "PN.png" : "PB.png", 60, 60));
         p.removeAll();
-        //p.setLayout(new GridLayout(1, 2, 0, 0));
+        p.setLayout(new GridLayout(2, 2, 20, 20));
 
-        p.setLayout(new FlowLayout(FlowLayout.CENTER, hgap, 0));
+        //p.setLayout(new FlowLayout(FlowLayout.CENTER, hgap, 0));
 
         p.add(new JLabel(pawn));
 
@@ -67,6 +67,17 @@ public class InfoJoueur extends JPanel {
         l.setFont(new Font("Arial", Font.BOLD, 26));
 
         p.add(l);
+
+        // Pions mangés
+        pawn = new ImageIcon(Imager.getScaledImage(!reverse ? "PN_barre.png" : "PB_barre.png", 60, 60));
+        p.add(new JLabel(pawn));
+
+        String nb3 = String.valueOf(nb2);
+        JLabel l3 = new JLabel(nb3);
+        l3.setFont(new Font("Arial", Font.BOLD, 26));
+        p.add(l3);
+
+
         p.revalidate(); // Actualiser le contenu du JPanel p
     }
 

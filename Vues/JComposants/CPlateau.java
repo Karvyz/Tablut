@@ -288,7 +288,7 @@ public class CPlateau extends JPanel implements Observateur {
             g2d.fillRect((largeurCase) * c_dep + 5, (hauteurCase) * l_dep + 5, largeurCase - 6, hauteurCase - 6);
 
             g2d.fillRect((largeurCase) * c_arr + 5, (hauteurCase) * l_arr + 5, largeurCase - 6, hauteurCase - 6);
-            drawContenu(g2d); //todo a check
+            drawContenu(g2d);
         }
     }
 
@@ -374,9 +374,7 @@ public class CPlateau extends JPanel implements Observateur {
     }
 
     public void setPionEnDeplacement(Point pionEnDeplacement) {
-        //todo appele en boucle ici
         this.pionEnDeplacement = pionEnDeplacement;
-        System.out.println("bug");
         miseAJour(); // Ajoutez cette ligne pour actualiser le plateau
     }
 
@@ -420,5 +418,6 @@ public class CPlateau extends JPanel implements Observateur {
     public void setDessineCroix(Point point) {
         dessineCroix = point;
     }
+
 
 }
