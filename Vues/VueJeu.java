@@ -7,10 +7,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 
 import static java.awt.GridBagConstraints.*;
@@ -72,8 +69,9 @@ class VueJeu extends JPanel {
     private JDialog EndGameDialog() {
         JDialog dialog = new JDialog(JOptionPane.getRootFrame(), "Fin de partie", true);
         dialog.setResizable(false);
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        dialog.setSize(800, 200);
+        //dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setMinimumSize(new Dimension(1000, -1));
+        dialog.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
         dialog.setLocationRelativeTo(null);
         endGameText = new JLabel("");
         return dialog;
@@ -132,7 +130,21 @@ class VueJeu extends JPanel {
 
         endGamePanel.setSize(1000, 600);
 
+        endGamePanel.setAlignmentX(CENTER_ALIGNMENT);
+
         endGameDialog.add(endGamePanel);
+
+        endGameDialog.pack();
+
+        endGameDialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Action personnalisée
+                controleur.jeu().setVainqueur(null); //permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
+                // Disposer le JDialog
+                endGameDialog.dispose();
+            }
+        });
 
         menu.addActionListener((e) -> {
             endGameDialog.setVisible(false);
@@ -151,14 +163,12 @@ class VueJeu extends JPanel {
             controleur.partieSuivante();
         });
         consulter.addActionListener((e) -> {
-            endGameDialog.setVisible(false);
             controls[0].setEnabled(false);
             controls[2].setEnabled(false);
             controleur.jeu().setVainqueur(null); //permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
             controleur.setConsulter(true);
-            //controleur.setConsulter(true);
-
-
+            // Disposer le JDialog
+            endGameDialog.dispose();
         });
     }
 
@@ -503,9 +513,6 @@ class VueJeu extends JPanel {
     void nouvellePartie() {
         vueNiveau = new VueNiveau(controleur, this, j1, j2, texteJeu);
         controleur.jeu().ajouteObservateur(vueNiveau);
-
-        controls[0].setEnabled(false);
-        controls[2].setEnabled(false);
 
         topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         System.out.println(topFrame);
