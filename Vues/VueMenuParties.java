@@ -1,13 +1,16 @@
 package Vues;
 
 import Vues.JComposants.CButton;
+import Vues.JComposants.CJScrollBar;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.RoundRectangle2D;
 import java.io.File;
 import java.io.FilenameFilter;
 
@@ -35,6 +38,21 @@ public class VueMenuParties extends JPanel {
         background = Imager.getImageBuffer("logo.png");
 
         initializeComponents();
+    }
+
+    static class CustomListCellRenderer extends DefaultListCellRenderer {
+        private static final int TEXT_PADDING = 10;
+
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            Component renderer = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+            if (renderer instanceof JLabel) {
+                ((JLabel) renderer).setBorder(new EmptyBorder(0, TEXT_PADDING, 0, 0));
+            }
+
+            return renderer;
+        }
     }
 
     private void initializeComponents() {
@@ -96,6 +114,7 @@ public class VueMenuParties extends JPanel {
         // Liste des parties sauvegardées (fileList)
         fileListModel = new DefaultListModel<>();
         fileList = new JList<>(fileListModel);
+        fileList.setCellRenderer(new CustomListCellRenderer());
         fileList.setForeground(new Color(-16777216));
         //fileList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         fileList.setFont(new Font("Arial", Font.PLAIN, 18)); // Changez la taille du texte des fichiers ici
@@ -125,9 +144,13 @@ public class VueMenuParties extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        JScrollPane scrollPane = new JScrollPane(fileList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setBackground(new Color(-16777216));
+        JScrollPane scrollPane = new JScrollPane(fileList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setOpaque(false);
+        scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));;
+        // Custom JScrollBar
+        scrollPane.setVerticalScrollBar(new CJScrollBar());
+
+        scrollPane.setPreferredSize(new Dimension(200, 100));
         add(scrollPane, gbc);
 
         // Espaces horizontal
