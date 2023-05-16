@@ -121,14 +121,15 @@ public class GestionnaireDeCoup implements Serializable {
             annule_coups(2);
         }
 
-        if(pileIA_annule.size() == 0){
+        if(pileIA_annule.size() <= 1){
+            System.out.println("L'IA a joué que un coup, on ne peut pas l'annuler");
             jeu.setCoordooneJouerIA(null, null);
         }
-        else if(coup_annule.size() == 1){
+        else {
+            Coup a_rempiler = pileIA_annule.pop(); //On supprime le coup joué
+            pileIA_refaire.push(a_rempiler);
             Coup sommet = pileIA_annule.peek(); //On récupère le coup a affiche
             jeu.setCoordooneJouerIA(sommet.depart, sommet.arrivee);
-            System.out.println("L'IA a joué que un coup, on ne peut pas l'annuler");
-            return;
         }
 
 
