@@ -58,7 +58,7 @@ class VueJeu extends JPanel {
 
         add(contenu);
 
-        this.addMouseListener(new MouseAdapter() {
+        /*this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -66,7 +66,7 @@ class VueJeu extends JPanel {
                 int y = e.getY();
                 controleur.setHorsJeu(true);//Permet de deselectionner lorsqu'on clique a coté du plateau
             }
-        });
+        });*/
     }
 
     private JDialog EndGameDialog() {
@@ -136,6 +136,8 @@ class VueJeu extends JPanel {
 
         menu.addActionListener((e) -> {
             endGameDialog.setVisible(false);
+            controls[0].setEnabled(false);
+            controls[2].setEnabled(false);
             controleur.jeu().reset();
             controleur.jeu().setCoordooneJouerIA(null,null);
             //controleur.fin();
@@ -143,12 +145,17 @@ class VueJeu extends JPanel {
         });
         retry.addActionListener((e) -> {
             endGameDialog.setVisible(false);
+            controls[0].setEnabled(false);
+            controls[2].setEnabled(false);
             controleur.jeu().setCoordooneJouerIA(null,null);
             controleur.partieSuivante();
         });
         consulter.addActionListener((e) -> {
             endGameDialog.setVisible(false);
+            controls[0].setEnabled(false);
+            controls[2].setEnabled(false);
             controleur.jeu().setVainqueur(null); //permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
+            controleur.setConsulter(true);
             //controleur.setConsulter(true);
 
 
@@ -303,7 +310,9 @@ class VueJeu extends JPanel {
             controleur.jeu().setCoordooneJouerIA(null,null);
             texteJeu = new TexteJeu(0, 0);
             controleur.afficherJeu();
-            controleur.jeu().metAJour();
+            controls[0].setEnabled(false);
+            controls[2].setEnabled(false);
+            //controleur.jeu().metAJour();
         });
         menu_items[1].addActionListener((e) -> {
             controleur.jeu().reset();
@@ -494,6 +503,9 @@ class VueJeu extends JPanel {
     void nouvellePartie() {
         vueNiveau = new VueNiveau(controleur, this, j1, j2, texteJeu);
         controleur.jeu().ajouteObservateur(vueNiveau);
+
+        controls[0].setEnabled(false);
+        controls[2].setEnabled(false);
 
         topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         System.out.println(topFrame);

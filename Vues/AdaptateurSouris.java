@@ -202,6 +202,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
     @Override
     public void mouseMoved(MouseEvent e) {
         if (ctrl.jeu().partieTerminee()) {
+            //System.out.println("here");
             return;
         }
 
@@ -211,7 +212,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             return;
         }
 
-        ctrl.setHorsJeu(false);
+        //ctrl.setHorsJeu(false);
 
         // Obtenez les informations de la case survolée
         Pion caseSurvole = ctrl.jeu().n.getPion(l, c);

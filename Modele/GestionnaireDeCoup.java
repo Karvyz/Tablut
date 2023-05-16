@@ -2,9 +2,10 @@ package Modele;
 
 import Structures.Pile;
 
+import java.io.Serializable;
 import java.util.Stack;
 
-public class GestionnaireDeCoup {
+public class GestionnaireDeCoup implements Serializable {
     private Pile coup_annule;
     private Pile coup_a_refaire;
     private Stack<Coup> pileIA_annule;
@@ -156,9 +157,12 @@ public class GestionnaireDeCoup {
         else{
             refaire_coups(2);
         }
-        Coup sommet = pileIA_refaire.pop();
-        pileIA_annule.push(sommet);
-        jeu.setCoordooneJouerIA(sommet.depart, sommet.arrivee);
+        if (!pileIA_refaire.isEmpty()){
+            Coup sommet = pileIA_refaire.pop();
+            pileIA_annule.push(sommet);
+            jeu.setCoordooneJouerIA(sommet.depart, sommet.arrivee);
+        }
+
         //inutile de changer de joueur
     }
 
