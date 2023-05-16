@@ -69,14 +69,13 @@ public class InfoJoueur extends JPanel {
         p.add(l);
 
         // Pions mangés
-        pawn = new ImageIcon(Imager.getScaledImage(!reverse ? "PN_barre.png" : "PB_barre.png", 60, 60));
+        pawn = new ImageIcon(Imager.getScaledImage(!reverse ? "PN_barre.png" : "PB_barre.png", 40, 40));
         p.add(new JLabel(pawn));
 
         String nb3 = String.valueOf(nb2);
         JLabel l3 = new JLabel(nb3);
-        l3.setFont(new Font("Arial", Font.BOLD, 26));
+        l3.setFont(new Font("Arial", Font.BOLD, 24));
         p.add(l3);
-
 
         p.revalidate(); // Actualiser le contenu du JPanel p
     }
