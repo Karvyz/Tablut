@@ -48,13 +48,6 @@ public class CPlateau extends JPanel implements Observateur {
     @Override
     protected void paintComponent(Graphics g) {
 
-    if (controleur.jeu().partieTerminee() && compteur == 0){
-        System.out.println("here");
-        removeMouseListener(adaptateurSouris);
-        removeMouseMotionListener(adaptateurSouris);
-        compteur = 1;
-    }
-
         super.paintComponent(g);
         calculerDimensions();
         Graphics2D g2d = (Graphics2D) g;
@@ -67,6 +60,13 @@ public class CPlateau extends JPanel implements Observateur {
         drawMouvIA(g2d);
         drawAideIA(g2d);
         drawCroixRouge(g2d);
+
+        if (controleur.jeu().partieTerminee() && compteur == 0){
+            removeMouseListener(adaptateurSouris);
+            removeMouseMotionListener(adaptateurSouris);
+            setPionEnDeplacement(null);
+            compteur +=1;
+        }
 
     }
 
@@ -125,7 +125,7 @@ public class CPlateau extends JPanel implements Observateur {
                 // -- Dessin des pions, forteresses, roi, konakis
                 if(controleur.jeu().partieTerminee()){
                     setPionSelec(null);
-                    setPionEnDeplacement(null);
+                    //setPionEnDeplacement(null);
                 }
 
                 if (getPionSelec() != null && l == getPionSelec().getX() && c == getPionSelec().getY() && !controleur.jeu().partieTerminee()) { //Ici on efface le pion selec, sauf si partie_fini
@@ -280,7 +280,7 @@ public class CPlateau extends JPanel implements Observateur {
             g2d.fillRect((largeurCase) * c_dep + 5, (hauteurCase) * l_dep + 5, largeurCase - 6, hauteurCase - 6);
 
             g2d.fillRect((largeurCase) * c_arr + 5, (hauteurCase) * l_arr + 5, largeurCase - 6, hauteurCase - 6);
-            drawContenu(g2d);
+            drawContenu(g2d); //todo a check
         }
     }
 
@@ -366,7 +366,8 @@ public class CPlateau extends JPanel implements Observateur {
     }
 
     public void setPionEnDeplacement(Point pionEnDeplacement) {
-
+        //todo appele en boucle ici
+        System.out.println("bug");
         this.pionEnDeplacement = pionEnDeplacement;
         miseAJour(); // Ajoutez cette ligne pour actualiser le plateau
     }

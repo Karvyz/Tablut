@@ -30,9 +30,6 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
     @Override
     public void mousePressed(MouseEvent e) { //Méthode executé lors d'un clic
-        if (ctrl.jeu().partieTerminee()) {
-            return;
-        }
 
         dragStart = e.getPoint(); // On clique et stock le point de départ du dragStart
         int l = calcul_l(e);
@@ -201,10 +198,6 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        if (ctrl.jeu().partieTerminee()) {
-            //System.out.println("here");
-            return;
-        }
 
         int l = calcul_l(e);
         int c = calcul_c(e);

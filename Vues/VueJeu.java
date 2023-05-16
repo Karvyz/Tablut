@@ -166,8 +166,6 @@ class VueJeu extends JPanel {
             controleur.partieSuivante();
         });
         consulter.addActionListener((e) -> {
-            controls[0].setEnabled(false);
-            controls[2].setEnabled(false);
             controleur.jeu().setVainqueur(null); //permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
             controleur.setConsulter(true);
             // Disposer le JDialog
