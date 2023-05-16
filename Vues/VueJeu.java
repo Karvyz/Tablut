@@ -73,7 +73,8 @@ class VueJeu extends JPanel {
         JDialog dialog = new JDialog(JOptionPane.getRootFrame(), "Fin de partie", true);
         dialog.setResizable(false);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        dialog.setSize(800, 200);
+        dialog.setMinimumSize(new Dimension(1000, -1));
+        dialog.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
         dialog.setLocationRelativeTo(null);
         endGameText = new JLabel("");
         return dialog;
@@ -132,7 +133,11 @@ class VueJeu extends JPanel {
 
         endGamePanel.setSize(1000, 600);
 
+        endGamePanel.setAlignmentX(CENTER_ALIGNMENT);
+
         endGameDialog.add(endGamePanel);
+
+        endGameDialog.pack();
 
         menu.addActionListener((e) -> {
             endGameDialog.setVisible(false);
