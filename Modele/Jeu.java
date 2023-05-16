@@ -295,6 +295,10 @@ public class Jeu extends Observable implements Serializable {
         this.joueurs[1] = null;
         this.vainqueur = null;
         this.enCours = false;
+        setAideIA(null);
+        setCoordooneJouerIA(null,null);
+
+
         /*this.joueurs[0].fixeJeuJoueur(this);
         this.joueurs[1].fixeJeuJoueur(this);*/
     }

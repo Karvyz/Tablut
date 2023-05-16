@@ -315,7 +315,6 @@ class VueJeu extends JPanel {
         });
         menu_items[1].addActionListener((e) -> {
             controleur.jeu().reset();
-            controleur.jeu().setCoordooneJouerIA(null,null);
             controleur.afficherMenuPrincipal();
         });
         menu_items[2].addActionListener(e -> controleur.toClose());
@@ -461,6 +460,7 @@ class VueJeu extends JPanel {
     }
 
     void ModifBoutonUndo() {
+        controleur.jeu().setAideIA(null);
         if (controleur.jeu().peutAnnuler()) {
             if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
                 controls[0].setEnabled(false);
@@ -478,6 +478,7 @@ class VueJeu extends JPanel {
     }
 
     void ModifBoutonRedo() {
+        controleur.jeu().setAideIA(null);
         if (controleur.jeu().peutRefaire()) {
             if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
                 controls[2].setEnabled(false);
