@@ -149,26 +149,25 @@ public class Jeu extends Observable implements Serializable {
             return;
         }
 
-        /*if(check_joueur_bloque()){
-            System.out.println("PION defenseur bloque");
+        if(check_joueur_bloque()){
+            System.out.println("PION "+getJoueurSuivant().RoleJoueur()+ " bloque");
             vainqueur = getJoueurCourant();
             setEnCours(false);
-        }*/
+        }
 
 
     }
 
     private boolean check_joueur_bloque() {
-        System.out.println(getJoueurSuivant());
-        for (int j = 0; j < 9; j++) {
-            for (int k = 0; k < 9; k++) {
-                if (n.getPion(j,k) != null){
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (n.getPion(i,j) != null){
                     if(getJoueurSuivant().aPionsNoirs()){
-                        if(n.estAttaquant(k,j) && !n.getPion(k,j).getDeplacement(n.plateau).isEmpty())
+                        if(n.estAttaquant(i,j) && !n.getPion(i,j).getDeplacement(n.plateau).isEmpty())
                             return false; //ici il n'est pas bloqué
                     }
                     else{
-                        if((n.estDefenseur(k,j) || n.estRoi(k,j)) && !n.getPion(k,j).getDeplacement(n.plateau).isEmpty()){
+                        if((n.estDefenseur(i,j) || n.estRoi(i,j)) && !n.getPion(i,j).getDeplacement(n.plateau).isEmpty()){
                             return false;
                         }
                     }

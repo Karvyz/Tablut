@@ -6,11 +6,7 @@ import Vues.JComposants.CJScrollBar;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.geom.RoundRectangle2D;
+import java.awt.event.*;
 import java.io.File;
 import java.io.FilenameFilter;
 
@@ -124,14 +120,26 @@ public class VueMenuParties extends JPanel {
         // Ajout de l'écouteur de double-clic ici
         fileList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
-                JList list = (JList)evt.getSource();
+                JList list = (JList) evt.getSource();
                 if (evt.getClickCount() == 2) {  // Double-clic
-                    // Trouver l'index de l'élément sélectionné
                     int index = list.locationToIndex(evt.getPoint());
                     if (index >= 0) {
                         // Simuler le clic sur le bouton de chargement
                         loadButton.doClick();
                     }
+                }
+            }
+        });
+
+        // Permet de selectionné/supprimé grace au clavier
+        fileList.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_DELETE) {  // Touche Suppr
+                    deleteButton.doClick();
+                } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {  // Touche Entrée
+                    loadButton.doClick();
+                } else if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {  // Touche Échap
+                    menuPrincipalButton.doClick();
                 }
             }
         });
@@ -146,10 +154,10 @@ public class VueMenuParties extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(fileList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setOpaque(false);
-        scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));;
+        scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+        ;
         // Custom JScrollBar
         scrollPane.setVerticalScrollBar(new CJScrollBar());
-
         scrollPane.setPreferredSize(new Dimension(200, 100));
         add(scrollPane, gbc);
 
@@ -203,7 +211,7 @@ public class VueMenuParties extends JPanel {
                 String selectedFile = fileList.getSelectedValue();
                 if (selectedFile != null) {
                     //System.out.println(controleur);
-                    if (controleur.chargerPartie("Resources/save/" + selectedFile) == false){
+                    if (controleur.chargerPartie("Resources/save/" + selectedFile) == false) {
                         System.out.println("Ligne 177 de VueMenuParties ");
                     }
                     controleur.fixeJeu(controleur.jeu().getJeu());
@@ -234,19 +242,23 @@ public class VueMenuParties extends JPanel {
                 if (selectedFile != null) {
                     // Affiche une boîte de dialogue de confirmation
                     int response = JOptionPane.showConfirmDialog(null,
-                            "Êtes-vous sûr de vouloir supprimer "+selectedFile+" ?",
+                            "Êtes-vous sûr de vouloir supprimer " + selectedFile + " ?",
                             "Confirmer la suppression",
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE);
                     if (response == JOptionPane.YES_OPTION) {
                         // Si l'utilisateur clique sur Oui, supprime le fichier
                         File file = new File("Resources/save/" + selectedFile);
-                        if (file.delete()) {
-                            // Le fichier a été supprimé avec succès, rafraîchir la liste
-                            refreshFileList();
+                        if (file.exists() && file.isFile()) {
+                            if (file.delete()) {
+                                // Le fichier a été supprimé avec succès, rafraîchir la liste
+                                refreshFileList();
+                            } else {
+                                // Une erreur s'est produite lors de la suppression du fichier
+                                System.out.println("Une erreur s'est produite lors de la suppression du fichier.");
+                            }
                         } else {
-                            // Une erreur s'est produite lors de la suppression du fichier
-                            System.out.println("Une erreur s'est produite lors de la suppression du fichier.");
+                            System.out.println("Le fichier à supprimer n'existe pas ou n'est pas un fichier.");
                         }
                     }
                 }

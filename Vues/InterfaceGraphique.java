@@ -2,6 +2,8 @@ package Vues;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class InterfaceGraphique implements Runnable {
     //Jeu j;
