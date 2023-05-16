@@ -19,9 +19,8 @@ public class IA_monte extends IA {
     }
 
 
-    public Coordonne[] jouecoupalea(Niveau niv) {
-        Coordonne[] coordcoup = new Coordonne[2];
-        ArrayList<Pion> pions = niv.getPions(monType);
+    public Coup jouecoupalea(Niveau niv, TypePion typeCourant) {
+        ArrayList<Pion> pions = niv.getPions(typeCourant);
         Pion pion;
         ArrayList<Coordonne> deplacements;
         do {
@@ -30,17 +29,13 @@ public class IA_monte extends IA {
 
 
         } while (deplacements.size() == 0);
-        coordcoup[0] = pion.getCoordonne();
-        coordcoup[1] = deplacements.get(ThreadLocalRandom.current().nextInt(0, deplacements.size()));
-        return coordcoup;
+        return new Coup(pion.getCoordonne(), deplacements.get(ThreadLocalRandom.current().nextInt(0, deplacements.size())));
     }
 
     public float evaluation(Niveau n) {
-        float nbSimulations = 100;
+        float nbSimulations = 1000;
         int scoreTotal = 0;
-        Coordonne[] coordcoup;
         int res = 0;
-
 
         for (int i = 0; i < nbSimulations; i++) {
 //            System.out.println("Simulation " + i);
@@ -49,12 +44,15 @@ public class IA_monte extends IA {
 
 
             // Simulation d'une partie aléatoire
-            while (!(res > 0)) {
-                coordcoup = jouecoupalea(nSimul);
-                Coup coup = new Coup(coordcoup[0], coordcoup[1]);
+            TypePion typeCourant = monType;
+            while (res == 0) {
+                Coup coup = jouecoupalea(nSimul, typeCourant);
                 res = nSimul.deplace_pion(coup);
+                if (typeCourant == TypePion.ATTAQUANT)
+                    typeCourant = TypePion.DEFENSEUR;
+                else
+                    typeCourant = TypePion.ATTAQUANT;
             }
-
 
             // Calculer le score de la partie simulée
             int scorePartie = 0;
@@ -62,7 +60,6 @@ public class IA_monte extends IA {
                 scorePartie = 1;
             else if ((res == 1) || (res == 2)) {
                 scorePartie = -1;
-                System.out.println("perdu");
             }
             scoreTotal += scorePartie;
             res = 0;
