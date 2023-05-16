@@ -174,6 +174,10 @@ class VueJeu extends JPanel {
             perdant = controleur.jeu().getJoueur1();
         }
 
+        if (controleur.jeu().partieTerminee()){
+            controls[1].setEnabled(false);
+        }
+
         // Fin partie
         if(endGameDialog == null) {
 
@@ -435,9 +439,7 @@ class VueJeu extends JPanel {
         });
 
         controls[1].addActionListener((e) -> {
-            if (!controleur.jeu().partieTerminee()){
                 controleur.jeu().solution();
-                }
         });
         controls[2].addActionListener((e) -> {
             controleur.jeu().refaire();
@@ -522,7 +524,6 @@ class VueJeu extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
         mainPanel.add(vueNiveau, c);
 
-        System.out.println(j1);
         // Initialisation du niveau
         String s1 = "";
         if(!controleur.jeu().getJoueur1().estHumain()) {
