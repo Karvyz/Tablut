@@ -54,16 +54,6 @@ class VueJeu extends JPanel {
         addBottom(contenu);
 
         add(contenu);
-
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                int x = e.getX();
-                int y = e.getY();
-                controleur.setHorsJeu(true);//Permet de deselectionner lorsqu'on clique a coté du plateau
-            }
-        });
     }
 
     private JDialog EndGameDialog() {
@@ -325,7 +315,6 @@ class VueJeu extends JPanel {
         });
         menu_items[1].addActionListener((e) -> {
             controleur.jeu().reset();
-            controleur.jeu().setCoordooneJouerIA(null,null);
             controleur.afficherMenuPrincipal();
         });
         menu_items[2].addActionListener(e -> controleur.toClose());
@@ -399,7 +388,7 @@ class VueJeu extends JPanel {
         c.fill = GridBagConstraints.NONE;
 
         // - J1
-        c.insets = new Insets(10, 10, 0, 30);
+        c.insets = new Insets(10, 50, 0, 50);
         c.gridx = 0;
         c.gridy = 1;
         c.weightx = 0;
@@ -408,7 +397,7 @@ class VueJeu extends JPanel {
         mainPanel.add(j1, c);
 
         // - J2
-        c.insets = new Insets(10, 30, 0, 10);
+        c.insets = new Insets(10, 50, 0, 50);
         c.anchor = FIRST_LINE_END;
         mainPanel.add(j2, c);
     }
@@ -471,6 +460,7 @@ class VueJeu extends JPanel {
     }
 
     void ModifBoutonUndo() {
+        controleur.jeu().setAideIA(null);
         if (controleur.jeu().peutAnnuler()) {
             if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
                 controls[0].setEnabled(false);
@@ -488,6 +478,7 @@ class VueJeu extends JPanel {
     }
 
     void ModifBoutonRedo() {
+        controleur.jeu().setAideIA(null);
         if (controleur.jeu().peutRefaire()) {
             if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
                 controls[2].setEnabled(false);
