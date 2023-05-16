@@ -55,7 +55,7 @@ class VueJeu extends JPanel {
 
         add(contenu);
 
-        /*this.addMouseListener(new MouseAdapter() {
+        this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
@@ -63,7 +63,7 @@ class VueJeu extends JPanel {
                 int y = e.getY();
                 controleur.setHorsJeu(true);//Permet de deselectionner lorsqu'on clique a coté du plateau
             }
-        });*/
+        });
     }
 
     private JDialog EndGameDialog() {

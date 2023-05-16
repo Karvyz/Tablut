@@ -34,6 +34,7 @@ public class CPlateau extends JPanel implements Observateur {
 
     private AdaptateurSouris adaptateurSouris;
     int compteur;
+    int compteurPourHorsJeu = 0;
 
 
 
@@ -48,13 +49,17 @@ public class CPlateau extends JPanel implements Observateur {
     @Override
     protected void paintComponent(Graphics g) {
 
+        if (compteurPourHorsJeu == 1){ //Permet d'éviter les boucles infinies quand on clique en dehors du plateau
+            compteurPourHorsJeu = 0;
+            return ;
+        }
         super.paintComponent(g);
         calculerDimensions();
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         verif_debut_partie();
         test_annuler_refaire();
-        //test_hors_jeu();
+        test_hors_jeu();
         drawPlateau(g2d);
         drawContenu(g2d);
         drawMouvIA(g2d);
@@ -65,20 +70,23 @@ public class CPlateau extends JPanel implements Observateur {
             removeMouseListener(adaptateurSouris);
             removeMouseMotionListener(adaptateurSouris);
             setPionEnDeplacement(null);
-            compteur +=1;
+            compteur =1;
         }
 
     }
 
-/*    private void test_hors_jeu() {
+   private void test_hors_jeu() {
         if (controleur.getHorsJeu()){
             setPionSelec(null);
             setPionEnDeplacement(null);
             setDessineCroix(null);
             setDestinationsPossibles(null);
-            //setDrawFleche(false);
+            compteurPourHorsJeu = 1;
         }
-    }*/
+        else{
+            compteurPourHorsJeu =0;
+        }
+    }
 
 
     private void verif_debut_partie() {
@@ -367,8 +375,8 @@ public class CPlateau extends JPanel implements Observateur {
 
     public void setPionEnDeplacement(Point pionEnDeplacement) {
         //todo appele en boucle ici
-        System.out.println("bug");
         this.pionEnDeplacement = pionEnDeplacement;
+        System.out.println("bug");
         miseAJour(); // Ajoutez cette ligne pour actualiser le plateau
     }
 
@@ -412,6 +420,5 @@ public class CPlateau extends JPanel implements Observateur {
     public void setDessineCroix(Point point) {
         dessineCroix = point;
     }
-
 
 }
