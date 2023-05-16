@@ -45,8 +45,6 @@ public class IA_MonoEtage extends IA {
             typeAdversaire = TypePion.ATTAQUANT;
         }
         double res_eval = Double.NEGATIVE_INFINITY;
-        double res_eval_temp;
-        int res_fin;
         Coup temp, max = null;
         ArrayList<Pion> pions = jeu.n.getPions(monType);
         ArrayList<Thread> threads = new ArrayList<>();
@@ -59,10 +57,6 @@ public class IA_MonoEtage extends IA {
                 int valeur_deplacement = clone.deplace_pion(temp);
                 if (valeur_deplacement == 1 || valeur_deplacement == 2)
                     return temp;
-//                if (valeur_deplacement == 3)
-//                    if (evaluation(jeu.n) < 200) {
-//                        return temp;
-//                    }
                 Thready thready = new Thready(clone, temp);
                 threadies.add(thready);
                 Thread thread = new Thread(thready);
