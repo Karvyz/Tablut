@@ -1,12 +1,6 @@
 package Modele;
 
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -613,14 +607,18 @@ public class Niveau implements Serializable, Cloneable {
     }
 
     //On regarde si il y a un regicide contre le trone
-    public boolean regicideKonakis(int x, int y, int pos) {
-        if (estContreTrone(x, y) == 1 && estAttaquant(x, y - 1) && estAttaquant(x - 1, y) && estAttaquant(x, y - 1)) {
+    public boolean regicideKonakis(int x, int y) {
+        if (estContreTrone(x, y) == 1 && estAttaquant(x, y - 1) && estAttaquant(x - 1, y) && estAttaquant(x, y + 1)) {
+            System.out.println("1");
             return true;
         } else if (estContreTrone(x, y) == 2 && estAttaquant(x, y - 1) && estAttaquant(x + 1, y) && estAttaquant(x, y + 1)) {
+            System.out.println("2");
             return true;
         } else if (estContreTrone(x, y) == 3 && estAttaquant(x, y - 1) && estAttaquant(x - 1, y) && estAttaquant(x + 1, y)) {
+            System.out.println("3");
             return true;
         } else if (estContreTrone(x, y) == 4 && estAttaquant(x, y + 1) && estAttaquant(x + 1, y) && estAttaquant(x - 1, y)) {
+            System.out.println("4");
             return true;
         }
         return false;
@@ -653,19 +651,19 @@ public class Niveau implements Serializable, Cloneable {
     public boolean AMangerRoi(Coordonne dplc) {
         int pos = estContreRoi(dplc.x, dplc.y);
         if (pos == 1) {
-            if ((regicideForteresse(dplc.x + 1, dplc.y) && config.isRF()) || (regicideKonakis(dplc.x + 1, dplc.y, pos) && config.isRT()) || (regicideMur(dplc.x + 1, dplc.y) && config.isRM()) || regicidePion(dplc.x + 1, dplc.y)) {
+            if ((regicideForteresse(dplc.x + 1, dplc.y) && config.isRF()) || (regicideKonakis(dplc.x + 1, dplc.y) && config.isRT()) || (regicideMur(dplc.x + 1, dplc.y) && config.isRM()) || regicidePion(dplc.x + 1, dplc.y)) {
                 return true;
             }
         } else if (pos == 2) {
-            if ((regicideForteresse(dplc.x - 1, dplc.y) && config.isRF()) || (regicideKonakis(dplc.x - 1, dplc.y, pos) && config.isRT()) || (regicideMur(dplc.x - 1, dplc.y) && config.isRM()) || regicidePion(dplc.x - 1, dplc.y)) {
+            if ((regicideForteresse(dplc.x - 1, dplc.y) && config.isRF()) || (regicideKonakis(dplc.x - 1, dplc.y) && config.isRT()) || (regicideMur(dplc.x - 1, dplc.y) && config.isRM()) || regicidePion(dplc.x - 1, dplc.y)) {
                 return true;
             }
         } else if (pos == 3) {
-            if ((regicideForteresse(dplc.x, dplc.y + 1) && config.isRF()) || (regicideKonakis(dplc.x, dplc.y + 1, pos) && config.isRT()) || (regicideMur(dplc.x, dplc.y + 1) && config.isRM()) || regicidePion(dplc.x, dplc.y + 1)) {
+            if ((regicideForteresse(dplc.x, dplc.y + 1) && config.isRF()) || (regicideKonakis(dplc.x, dplc.y + 1) && config.isRT()) || (regicideMur(dplc.x, dplc.y + 1) && config.isRM()) || regicidePion(dplc.x, dplc.y + 1)) {
                 return true;
             }
         } else if (pos == 4) {
-            if ((regicideForteresse(dplc.x, dplc.y - 1) && config.isRF()) || (regicideKonakis(dplc.x, dplc.y - 1, pos) && config.isRT()) || (regicideMur(dplc.x, dplc.y - 1) && config.isRM()) || regicidePion(dplc.x, dplc.y - 1)) {
+            if ((regicideForteresse(dplc.x, dplc.y - 1) && config.isRF()) || (regicideKonakis(dplc.x, dplc.y - 1) && config.isRT()) || (regicideMur(dplc.x, dplc.y - 1) && config.isRM()) || regicidePion(dplc.x, dplc.y - 1)) {
                 return true;
             }
         }

@@ -87,4 +87,9 @@ public class HeuristiqueExpert extends Heuristique {
             return attaquants - defenseurs;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Expert";
+    }
 }

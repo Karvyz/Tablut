@@ -105,12 +105,12 @@ public class IA_DifficileProfondeur extends IA {
         float valeur_retour = Integer.MIN_VALUE;
         ArrayList<Coordonne> departs = new ArrayList<>();
         ArrayList<Coordonne> arrivees = new ArrayList<>();
+
+        ArrayList<Thread> threads = new ArrayList<>();
+        ArrayList<MyRunable> myRunables = new ArrayList<>();
         int nb_branches = 0;
         for (Pion pion : pions) {
             ArrayList<Coordonne> deplacements = pion.getDeplacement(jeu.n.plateau);
-
-            ArrayList<Thread> threads = new ArrayList<>();
-            ArrayList<MyRunable> myRunables = new ArrayList<>();
             for (int i = 0; i < deplacements.size(); i++) {
                 nb_branches++;
                 MyRunable myRunable = new MyRunable(jeu, pion, deplacements.get(i));
@@ -119,25 +119,25 @@ public class IA_DifficileProfondeur extends IA {
                 thread.start();
                 threads.add(thread);
             }
-            for (int i = 0; i < threads.size(); i++) {
-                try {
-                    threads.get(i).join();
-                    float tmp = myRunables.get(i).return_value;
-                    if (myRunables.get(i).game_status != 0)
-                        tmp = Integer.MAX_VALUE;
-                    if (tmp >= valeur_retour) {
-                        if (tmp > valeur_retour) {
-                            departs.clear();
-                            arrivees.clear();
-                            valeur_retour = tmp;
-                            System.out.println("changement valeur retour : " + valeur_retour);
-                        }
-                        departs.add(pion.getCoordonne());
-                        arrivees.add(deplacements.get(i));
+        }
+        for (int i = 0; i < threads.size(); i++) {
+            try {
+                threads.get(i).join();
+                float tmp = myRunables.get(i).return_value;
+                if (myRunables.get(i).game_status != 0)
+                    tmp = Integer.MAX_VALUE;
+                if (tmp >= valeur_retour) {
+                    if (tmp > valeur_retour) {
+                        departs.clear();
+                        arrivees.clear();
+                        valeur_retour = tmp;
+                        System.out.println("changement valeur retour : " + valeur_retour);
                     }
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    departs.add(myRunables.get(i).pion.getCoordonne());
+                    arrivees.add(myRunables.get(i).deplacement);
                 }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
         int index = new Random().nextInt(departs.size());

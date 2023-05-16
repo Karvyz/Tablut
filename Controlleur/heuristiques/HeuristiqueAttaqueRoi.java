@@ -65,4 +65,9 @@ public class HeuristiqueAttaqueRoi extends Heuristique {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "Attaque Roi";
+    }
 }
