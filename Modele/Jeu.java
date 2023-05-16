@@ -117,20 +117,10 @@ public class Jeu extends Observable implements Serializable {
             setCoordooneJouerIA(null, null);
         }
         System.out.println("Déplacement du pion de (" + coup.depart.getX() + "," + coup.depart.getY() + ") en (" + coup.arrivee.getX() + "," + coup.arrivee.getY() + ")");
-        if (i > 0) {
-            if (i == 1) {
-                System.out.println("PARTIE FINI CAR ROI CAPTURE");
-                vainqueur = joueurs[0];
-            } else if (i == 2) {
-                System.out.println("PARTIE FINI CAR ROI EVADE");
-                vainqueur = joueurs[1];
-            } else //TODO plus tard
-                System.out.println("EGALITE");
-            setEnCours(false);
-        }
+        checkvictoire(i);
 
         //Si l'IA joue, on ne dépile pas a refaire
-        if (!getJoueurCourant().estHumain()) {
+        if (getJoueurCourant().estHumain()) {
             this.coup_a_refaire.clear();
             pileIA_refaire.clear();
         }
@@ -141,6 +131,51 @@ public class Jeu extends Observable implements Serializable {
         //System.out.println(this);
         metAJour();
         return i;
+    }
+
+    private void checkvictoire(int i) {
+        if (i > 0) {
+            if (i == 1) {
+                System.out.println("PARTIE FINI CAR ROI CAPTURE");
+                vainqueur = joueurs[0];
+            } else if (i == 2) {
+                System.out.println("PARTIE FINI CAR ROI EVADE");
+                vainqueur = joueurs[1];
+            } else { //TODO plus tard
+                System.out.println("EGALITE");
+                vainqueur = getAttaquant();
+            }
+            setEnCours(false);
+            return;
+        }
+
+        /*if(check_joueur_bloque()){
+            System.out.println("PION defenseur bloque");
+            vainqueur = getJoueurCourant();
+            setEnCours(false);
+        }*/
+
+
+    }
+
+    private boolean check_joueur_bloque() {
+        System.out.println(getJoueurSuivant());
+        for (int j = 0; j < 9; j++) {
+            for (int k = 0; k < 9; k++) {
+                if (n.getPion(j,k) != null){
+                    if(getJoueurSuivant().aPionsNoirs()){
+                        if(n.estAttaquant(k,j) && !n.getPion(k,j).getDeplacement(n.plateau).isEmpty())
+                            return false; //ici il n'est pas bloqué
+                    }
+                    else{
+                        if((n.estDefenseur(k,j) || n.estRoi(k,j)) && !n.getPion(k,j).getDeplacement(n.plateau).isEmpty()){
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     public Coup getAideIA() {

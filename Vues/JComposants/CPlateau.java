@@ -18,23 +18,16 @@ public class CPlateau extends JPanel implements Observateur {
 
     private Pion pionSelec;
     int bordureHaut, bordureGauche, hauteurCase, largeurCase;
-    private int brillanceX = -1;
-    private int brillanceY = -1;
 
     private ArrayList<Coordonne> destinationsPossibles = new ArrayList<>();
-    private Point pointSelec;
     private Image image;
 
     private boolean drawFleche = true;
-    private boolean remettreFleche = false;
-
-    private Pion survole;
 
     private Point dessineCroix;
 
     private AdaptateurSouris adaptateurSouris;
     int compteur;
-    int compteurPourHorsJeu = 0;
 
 
 
@@ -326,8 +319,6 @@ public class CPlateau extends JPanel implements Observateur {
 
 
     public void updateBrillanceSelection(int l, int c) {
-        this.brillanceX = l;
-        this.brillanceY = c;
         repaint();
     }
 
@@ -366,7 +357,6 @@ public class CPlateau extends JPanel implements Observateur {
     }
 
     public void setPointSelec(Point point) {
-        this.pointSelec = point;
     }
 
     public void setPionSelec(Pion pion) {
@@ -398,7 +388,6 @@ public class CPlateau extends JPanel implements Observateur {
     }
 
     public void setSurvole(Pion caseSurvole) {
-        survole = caseSurvole;
         miseAJour();
     }
 

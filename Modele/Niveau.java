@@ -64,14 +64,14 @@ public class Niveau implements Serializable, Cloneable {
                 "    A    ",
                 "   AAA   "};
 
-        /*String[] tab = {" RA      ",
-                        "A A      ",
+        /*String[] tab = {"  R      ",
                         " A       ",
+                        " D       ",
                         "         ",
                         "         ",
                         "         ",
                         "         ",
-                        "A        ",
+                        "         ",
                         "         "};*/
 
         for (int i = 0; i < taille; i++) {
