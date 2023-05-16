@@ -389,7 +389,7 @@ class VueJeu extends JPanel {
         c.fill = GridBagConstraints.NONE;
 
         // - J1
-        c.insets = new Insets(10, 10, 0, 30);
+        c.insets = new Insets(10, 50, 0, 50);
         c.gridx = 0;
         c.gridy = 1;
         c.weightx = 0;
@@ -398,7 +398,7 @@ class VueJeu extends JPanel {
         mainPanel.add(j1, c);
 
         // - J2
-        c.insets = new Insets(10, 30, 0, 10);
+        c.insets = new Insets(10, 50, 0, 50);
         c.anchor = FIRST_LINE_END;
         mainPanel.add(j2, c);
     }

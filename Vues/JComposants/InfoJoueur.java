@@ -26,6 +26,9 @@ public class InfoJoueur extends JPanel {
 
         setBorder(new EmptyBorder(5, !reverse ? 20 : 10, 5, !reverse ? 10 : 20));
 
+        setMinimumSize(new Dimension(100, -1));
+        setMaximumSize(new Dimension(200, -1));
+
         n = new JLabel();
         n.setForeground(Color.WHITE);
         n.setFont(new Font("Arial", Font.BOLD, 18));
@@ -36,12 +39,12 @@ public class InfoJoueur extends JPanel {
         // --
         p = new CPions(reverse);
         //p.setMaximumSize(new Dimension(100, -1));
-        //p.setPreferredSize(new Dimension(100, -1));
+        //p.setMinimumSize(new Dimension(200, -1));
 
         add(n, BorderLayout.CENTER);
         add(Box.createRigidArea(new Dimension(0, 10)));
         add(Box.createVerticalGlue());
-        add(p);
+        add(p, BorderLayout.CENTER);
         add(Box.createVerticalGlue());
     }
 
