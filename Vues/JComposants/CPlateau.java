@@ -47,13 +47,6 @@ public class CPlateau extends JPanel implements Observateur {
 
     @Override
     protected void paintComponent(Graphics g) {
-        System.out.println("here");
-        if (controleur.jeu().partieTerminee() && compteur == 0){
-            removeMouseListener(adaptateurSouris);
-            removeMouseMotionListener(adaptateurSouris);
-            compteur = 1;
-        }
-
         super.paintComponent(g);
         calculerDimensions();
         Graphics2D g2d = (Graphics2D) g;
@@ -66,6 +59,13 @@ public class CPlateau extends JPanel implements Observateur {
         drawMouvIA(g2d);
         drawAideIA(g2d);
         drawCroixRouge(g2d);
+
+        if (controleur.jeu().partieTerminee() && compteur == 0){
+            removeMouseListener(adaptateurSouris);
+            removeMouseMotionListener(adaptateurSouris);
+            setPionEnDeplacement(null);
+            compteur +=1;
+        }
 
     }
 
