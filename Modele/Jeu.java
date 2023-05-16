@@ -119,7 +119,6 @@ public class Jeu extends Observable implements Serializable {
         System.out.println("Déplacement du pion de (" + coup.depart.getX() + "," + coup.depart.getY() + ") en (" + coup.arrivee.getX() + "," + coup.arrivee.getY() + ")");
         if (i > 0) {
             if (i == 1) {
-                metAJour();
                 System.out.println("PARTIE FINI CAR ROI CAPTURE");
                 vainqueur = joueurs[0];
             } else if (i == 2) {
@@ -127,7 +126,6 @@ public class Jeu extends Observable implements Serializable {
                 vainqueur = joueurs[1];
             } else //TODO plus tard
                 System.out.println("EGALITE");
-            //System.out.println(n); //Affichez le jeu en fin de partie
             setEnCours(false);
         }
 

@@ -115,14 +115,22 @@ public class GestionnaireDeCoup implements Serializable {
     }
 
     public void annuler_IAvH(){
-        if(coup_annule.size() == 1){
+        if(coup_annule.size() == 1){ //Lorsque on gagne on joue que 1 coup, si on consulte, il peut rester que 1 coups
+            System.out.println("On ne peux pas annuler le seul coup de l'IA");
+        }else {
+            annule_coups(2);
+        }
+
+        if(pileIA_annule.size() == 0){
+            jeu.setCoordooneJouerIA(null, null);
+        }
+        else if(coup_annule.size() == 1){
             Coup sommet = pileIA_annule.peek(); //On récupère le coup a affiche
             jeu.setCoordooneJouerIA(sommet.depart, sommet.arrivee);
             System.out.println("L'IA a joué que un coup, on ne peut pas l'annuler");
             return;
         }
 
-        annuler_HvIA(); //On en revient a ce cas là
 
     }
 
