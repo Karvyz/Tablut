@@ -19,7 +19,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
     int decompte;
     public boolean Stop;
 
-    private boolean consulter;
+
 
     public ControlleurMediateur() {
         //on utilise fixeJeu
@@ -48,7 +48,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
         jeu.nouvellePartie();
         vues.nouvellePartie();
         Stop = false;
-        setConsulter(false);
+        jeu.setConsulter(false);
 
     }
 
@@ -68,7 +68,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
         jeu.nouvellePartie();
         vues.nouvellePartie();
         Stop = false;
-        setConsulter(false);
+        jeu.setConsulter(false);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
         vues.nouvellePartie();
         afficherJeu();
         Stop = false;
-        setConsulter(false);
+        jeu.setConsulter(false);
     }
 
     public void restaurePartie() {
@@ -86,7 +86,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
         jeu.setEnCours(true);
         vues.restaurePartie();
         Stop = false;
-        setConsulter(false);
+        jeu.setConsulter(false);
         if(!jeu.pileIA_annule.isEmpty()){
             Coup a_remettre = jeu.pileIA_annule.peek();
             jeu.setCoordooneJouerIA(a_remettre.depart, a_remettre.arrivee);
@@ -320,9 +320,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
     }
 
 
-    public boolean getConsulter() {return consulter;}
-
-    public void setConsulter(boolean consulter) {this.consulter = consulter;}
 
     public String toString() {
         if(jeu == null)
