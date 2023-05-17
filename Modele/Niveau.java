@@ -282,22 +282,22 @@ public class Niveau implements Serializable, Cloneable {
 
         if (estAttaquant(p)) {
             if (AMangerRoi(coup.arrivee)) {
-                System.out.println("ROI CAPTURE");
+                //System.out.println("ROI CAPTURE");
                 return 1;
             }
         }
         if (estRoi(p)) {
             if (estForteresse(coup.arrivee.x, coup.arrivee.y) || (estContreBord(coup.arrivee.x, coup.arrivee.y) && config.isWinTousCote())) {
-                System.out.println("ROI EVADE");
+                //System.out.println("ROI EVADE");
                 return 2;
             }
         }
         if (a_boucle()) {
-            System.out.println("EGALITE par répétition de coup");
+            //System.out.println("EGALITE par répétition de coup");
             return 3;
         }
         if (nb_pion_nr() == 0){
-            System.out.println("PLUS DE PION NOIR");
+            //System.out.println("PLUS DE PION NOIR");
             return 2;
         }
         return check_joueur_bloque(p);
@@ -319,10 +319,10 @@ public class Niveau implements Serializable, Cloneable {
             }
         }
         if(p.getType() == TypePion.ATTAQUANT){
-            System.out.println("Pion defenseur tous bloque");
+            //System.out.println("Pion defenseur tous bloque");
             return 1;
         }else {
-            System.out.println("Pions attaquants tous bloque");
+            //System.out.println("Pions attaquants tous bloque");
             return 2; //ici il est bloqué
         }
     }
@@ -613,19 +613,16 @@ public class Niveau implements Serializable, Cloneable {
     //On regarde si il y a un regicide contre le trone
     public boolean regicideKonakis(int x, int y) {
         if (estContreTrone(x, y) == 1 && estAttaquant(x, y - 1) && estAttaquant(x - 1, y) && estAttaquant(x, y + 1)) {
-            System.out.println("1");
+            //System.out.println("1");
             return true;
         } else if (estContreTrone(x, y) == 2 && estAttaquant(x, y - 1) && estAttaquant(x + 1, y) && estAttaquant(x, y + 1)) {
-            System.out.println("2");
+            //System.out.println("2");
             return true;
-        } else if (estContreTrone(x, y) == 3 && estAttaquant(x, y - 1) && estAttaquant(x - 1, y) && estAttaquant(x + 1, y)) {
-            System.out.println("3");
+        } else //System.out.println("4");
+            if (estContreTrone(x, y) == 3 && estAttaquant(x, y - 1) && estAttaquant(x - 1, y) && estAttaquant(x + 1, y)) {
+            //System.out.println("3");
             return true;
-        } else if (estContreTrone(x, y) == 4 && estAttaquant(x, y + 1) && estAttaquant(x + 1, y) && estAttaquant(x - 1, y)) {
-            System.out.println("4");
-            return true;
-        }
-        return false;
+        } else return estContreTrone(x, y) == 4 && estAttaquant(x, y + 1) && estAttaquant(x + 1, y) && estAttaquant(x - 1, y);
     }
 
     //On regarde si il y a un regicide contre un mur

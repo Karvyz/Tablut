@@ -118,7 +118,7 @@ public class Jeu extends Observable implements Serializable {
         } else {
             setCoordooneJouerIA(null, null);
         }
-        System.out.println("Déplacement du pion de (" + coup.depart.getX() + "," + coup.depart.getY() + ") en (" + coup.arrivee.getX() + "," + coup.arrivee.getY() + ")");
+        //System.out.println("Déplacement du pion de (" + coup.depart.getX() + "," + coup.depart.getY() + ") en (" + coup.arrivee.getX() + "," + coup.arrivee.getY() + ")");
         checkvictoire(i);
 
         //Si l'IA joue, on ne dépile pas a refaire
@@ -139,10 +139,13 @@ public class Jeu extends Observable implements Serializable {
         if (i > 0) {
             if (i == 1) {
                 vainqueur = joueurs[0];
+                System.out.println("Victoire des Attaquants");
             } else if (i == 2) {
                 vainqueur = joueurs[1];
+                System.out.println("Victoire des Défenseurs");
             } else {
-                vainqueur = getAttaquant();
+                vainqueur = getAttaquant(); // pourquoi ???
+                System.out.println("Bah normalement il y a égalité");
             }
             setEnCours(false);
         }
