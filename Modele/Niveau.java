@@ -152,10 +152,7 @@ public class Niveau implements Serializable, Cloneable {
 
     //On regarde si la case est vide
     public boolean estVide(Pion p) {
-        if (plateau[p.getX()][p.getY()] == null) {
-            return true;
-        }
-        return false;
+        return plateau[p.getX()][p.getY()] == null;
     }
 
     public int nb_pion_blc() {
@@ -284,51 +281,66 @@ public class Niveau implements Serializable, Cloneable {
         }
 
         if (estAttaquant(p)) {
-            if (AMangerRoi(coup.arrivee))
+            if (AMangerRoi(coup.arrivee)) {
+                System.out.println("ROI CAPTURE");
                 return 1;
+            }
         }
         if (estRoi(p)) {
-            if (estForteresse(coup.arrivee.x, coup.arrivee.y) || (estContreBord(coup.arrivee.x, coup.arrivee.y) && config.isWinTousCote()))
+            if (estForteresse(coup.arrivee.x, coup.arrivee.y) || (estContreBord(coup.arrivee.x, coup.arrivee.y) && config.isWinTousCote())) {
+                System.out.println("ROI EVADE");
                 return 2;
+            }
         }
         if (a_boucle()) {
+            System.out.println("EGALITE par répétition de coup");
             return 3;
         }
         if (nb_pion_nr() == 0){
+            System.out.println("PLUS DE PION NOIR");
             return 2;
         }
-        return 0;
+        return check_joueur_bloque(p);
 
+    }
+
+    private int check_joueur_bloque(Pion p) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (getPion(i,j) != null){
+                    if(p.getType() == TypePion.ATTAQUANT){
+                        if((estDefenseur(i,j) || estRoi(i,j)) && !getPion(i,j).getDeplacement(plateau).isEmpty())
+                            return 0; //ici il n'est pas bloqué non plus
+                    }else{
+                        if(estAttaquant(i,j) && !getPion(i,j).getDeplacement(plateau).isEmpty())
+                            return 0; //ici il n'est pas bloqué
+                    }
+                }
+            }
+        }
+        if(p.getType() == TypePion.ATTAQUANT){
+            System.out.println("Pion defenseur tous bloque");
+            return 1;
+        }else {
+            System.out.println("Pions attaquants tous bloque");
+            return 2; //ici il est bloqué
+        }
     }
 
     public boolean defenseurSuicideF(int x, int y) {
-        if ((estAttaquant(x + 1, y) && estForteresse(x - 1, y) && config.isPF()) || (estAttaquant(x - 1, y) && estForteresse(x + 1, y) && config.isPF()) || (estAttaquant(x, y - 1) && estForteresse(x, y + 1) && config.isPF()) || (estAttaquant(x, y + 1) && estForteresse(x, y - 1) && config.isPF())) {
-            return true;
-        }
-        return false;
+        return (estAttaquant(x + 1, y) && estForteresse(x - 1, y) && config.isPF()) || (estAttaquant(x - 1, y) && estForteresse(x + 1, y) && config.isPF()) || (estAttaquant(x, y - 1) && estForteresse(x, y + 1) && config.isPF()) || (estAttaquant(x, y + 1) && estForteresse(x, y - 1) && config.isPF());
     }
 
     public boolean defenseurSuicide(int x, int y) {
-        if ((estAttaquant(x + 1, y) && estAttaquant(x - 1, y)) || (estAttaquant(x, y + 1) && estAttaquant(x, y - 1))) {
-            return true;
-        }
-        return false;
+        return (estAttaquant(x + 1, y) && estAttaquant(x - 1, y)) || (estAttaquant(x, y + 1) && estAttaquant(x, y - 1));
     }
 
     public boolean attaquantSuicide(int x, int y) {
-        if ((estDefenseur(x + 1, y) && estDefenseur(x - 1, y)) || (estDefenseur(x, y + 1) && estDefenseur(x, y - 1))) {
-
-            return true;
-        }
-        return false;
+        return (estDefenseur(x + 1, y) && estDefenseur(x - 1, y)) || (estDefenseur(x, y + 1) && estDefenseur(x, y - 1));
     }
 
     public boolean attaquantSuicideF(int x, int y) {
-
-        if ((estDefenseur(x + 1, y) && estForteresse(x - 1, y) && config.isPF()) || (estDefenseur(x - 1, y) && estForteresse(x + 1, y) && config.isPF()) || (estDefenseur(x, y + 1) && estForteresse(x, y - 1) && config.isPF()) || (estDefenseur(x, y - 1) && estForteresse(x, y + 1) && config.isPF())) {
-            return true;
-        }
-        return false;
+        return (estDefenseur(x + 1, y) && estForteresse(x - 1, y) && config.isPF()) || (estDefenseur(x - 1, y) && estForteresse(x + 1, y) && config.isPF()) || (estDefenseur(x, y + 1) && estForteresse(x, y - 1) && config.isPF()) || (estDefenseur(x, y - 1) && estForteresse(x, y + 1) && config.isPF());
     }
 
     //On regarde si le pion se suicide
@@ -354,18 +366,12 @@ public class Niveau implements Serializable, Cloneable {
 
     //On verifie que le pion est contre un attaquant
     public boolean estContreAttaquant(int x, int y) {
-        if (estAttaquant(x + 1, y) || estAttaquant(x - 1, y) || estAttaquant(x, y + 1) || estAttaquant(x, y - 1)) {
-            return true;
-        }
-        return false;
+        return estAttaquant(x + 1, y) || estAttaquant(x - 1, y) || estAttaquant(x, y + 1) || estAttaquant(x, y - 1);
     }
 
     //On verifie que le pion est contre un defenseur
     public boolean estContreDefenseur(int x, int y) {
-        if (estDefenseur(x + 1, y) || estDefenseur(x - 1, y) || estDefenseur(x, y + 1) || estDefenseur(x, y - 1)) {
-            return true;
-        }
-        return false;
+        return estDefenseur(x + 1, y) || estDefenseur(x - 1, y) || estDefenseur(x, y + 1) || estDefenseur(x, y - 1);
     }
 
     //On regarde si le pion a manger un defenseurs contre une forteresse
@@ -597,9 +603,7 @@ public class Niveau implements Serializable, Cloneable {
                     return true;
                 } else if (estAttaquant(x - 1, y) && estAttaquant(x, y + 1)) {
                     return true;
-                } else if (estAttaquant(x - 1, y) && estAttaquant(x, y - 1)) {
-                    return true;
-                }
+                } else return estAttaquant(x - 1, y) && estAttaquant(x, y - 1);
             }
 
         }
@@ -633,39 +637,26 @@ public class Niveau implements Serializable, Cloneable {
                 return true;
             } else if (estAttaquant(x, y - 1) && estAttaquant(x - 1, y) && estAttaquant(x + 1, y)) {
                 return true;
-            } else if (estAttaquant(x, y + 1) && estAttaquant(x, y - 1) && estAttaquant(x - 1, y)) {
-                return true;
-            }
+            } else return estAttaquant(x, y + 1) && estAttaquant(x, y - 1) && estAttaquant(x - 1, y);
         }
         return false;
     }
 
     //On regarde si il y a un regicide contre un pion
     public boolean regicidePion(int x, int y) {
-        if (estAttaquant(x + 1, y) && estAttaquant(x - 1, y) && estAttaquant(x, y + 1) && estAttaquant(x, y - 1)) {
-            return true;
-        }
-        return false;
+        return estAttaquant(x + 1, y) && estAttaquant(x - 1, y) && estAttaquant(x, y + 1) && estAttaquant(x, y - 1);
     }
 
     public boolean AMangerRoi(Coordonne dplc) {
         int pos = estContreRoi(dplc.x, dplc.y);
         if (pos == 1) {
-            if ((regicideForteresse(dplc.x + 1, dplc.y) && config.isRF()) || (regicideKonakis(dplc.x + 1, dplc.y) && config.isRT()) || (regicideMur(dplc.x + 1, dplc.y) && config.isRM()) || regicidePion(dplc.x + 1, dplc.y)) {
-                return true;
-            }
+            return (regicideForteresse(dplc.x + 1, dplc.y) && config.isRF()) || (regicideKonakis(dplc.x + 1, dplc.y) && config.isRT()) || (regicideMur(dplc.x + 1, dplc.y) && config.isRM()) || regicidePion(dplc.x + 1, dplc.y);
         } else if (pos == 2) {
-            if ((regicideForteresse(dplc.x - 1, dplc.y) && config.isRF()) || (regicideKonakis(dplc.x - 1, dplc.y) && config.isRT()) || (regicideMur(dplc.x - 1, dplc.y) && config.isRM()) || regicidePion(dplc.x - 1, dplc.y)) {
-                return true;
-            }
+            return (regicideForteresse(dplc.x - 1, dplc.y) && config.isRF()) || (regicideKonakis(dplc.x - 1, dplc.y) && config.isRT()) || (regicideMur(dplc.x - 1, dplc.y) && config.isRM()) || regicidePion(dplc.x - 1, dplc.y);
         } else if (pos == 3) {
-            if ((regicideForteresse(dplc.x, dplc.y + 1) && config.isRF()) || (regicideKonakis(dplc.x, dplc.y + 1) && config.isRT()) || (regicideMur(dplc.x, dplc.y + 1) && config.isRM()) || regicidePion(dplc.x, dplc.y + 1)) {
-                return true;
-            }
+            return (regicideForteresse(dplc.x, dplc.y + 1) && config.isRF()) || (regicideKonakis(dplc.x, dplc.y + 1) && config.isRT()) || (regicideMur(dplc.x, dplc.y + 1) && config.isRM()) || regicidePion(dplc.x, dplc.y + 1);
         } else if (pos == 4) {
-            if ((regicideForteresse(dplc.x, dplc.y - 1) && config.isRF()) || (regicideKonakis(dplc.x, dplc.y - 1) && config.isRT()) || (regicideMur(dplc.x, dplc.y - 1) && config.isRM()) || regicidePion(dplc.x, dplc.y - 1)) {
-                return true;
-            }
+            return (regicideForteresse(dplc.x, dplc.y - 1) && config.isRF()) || (regicideKonakis(dplc.x, dplc.y - 1) && config.isRT()) || (regicideMur(dplc.x, dplc.y - 1) && config.isRM()) || regicidePion(dplc.x, dplc.y - 1);
         }
         return false;
     }
