@@ -30,8 +30,6 @@ class VueNiveau extends JPanel implements Observateur {
         c.jeu().ajouteObservateur(plateau);
 
         setBackground(new Color(255, 255, 255));
-//        setBorder(BorderFactory.createEmptyBorder(140, 100, 140, 100));
-//        setBorder(BorderFactory.createEmptyBorder(0, 100, 0, 100));
         setOpaque(false);
         setLayout(new GridLayout(1, 3, 10, 0));
 
@@ -51,9 +49,6 @@ class VueNiveau extends JPanel implements Observateur {
                 plateauPanel.revalidate();
             }
         });
-
-        // -- Add Listener
-        //plateau.addMouseListener(new AdaptateurSouris2(c, plateau)); //TODO a voir si c'est possible
 
         top = BorderFactory.createMatteBorder(10, 0, 0, 0, Color.WHITE);
         bottom = BorderFactory.createMatteBorder(0, 0, 10, 0, Color.BLACK);
