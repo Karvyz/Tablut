@@ -220,7 +220,7 @@ public class VueMenuSaisies extends JPanel {
             frame.setVisible(true);*/
         });
 
-        BoutonsQuitter.add(quitter);
+        //BoutonsQuitter.add(quitter);
         BoutonsQuitter.setMaximumSize(new Dimension(441, 30));
 
 
