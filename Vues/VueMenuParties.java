@@ -55,6 +55,7 @@ public class VueMenuParties extends JPanel {
         //setLayout(new GridLayout(8, 3, -1, -1));
         setLayout(new GridBagLayout());
 
+        /*
         // Espace vertical
         Box verticalSpace0 = Box.createVerticalBox();
         verticalSpace0.add(Box.createVerticalStrut(2));
@@ -66,6 +67,8 @@ public class VueMenuParties extends JPanel {
         gspacer0.fill = GridBagConstraints.HORIZONTAL;
         gspacer0.anchor = GridBagConstraints.CENTER;
         add(verticalSpace0, gspacer0);
+
+         */
 
         /*
         // Texte "Choisir une partie à charger ou à supprimer :" (label1)
@@ -102,7 +105,7 @@ public class VueMenuParties extends JPanel {
         horizontalSpace1.add(Box.createHorizontalStrut(this.getWidth()/4));
         GridBagConstraints gspacer2 = new GridBagConstraints();
         gspacer2.gridx = 0;
-        gspacer2.gridy = 1;
+        gspacer2.gridy = 0;
         gspacer2.gridwidth = 1;
         gspacer2.gridheight = 1;
         gspacer2.weightx = 0.25;
@@ -119,7 +122,8 @@ public class VueMenuParties extends JPanel {
         fileList.setFont(new Font("Arial", Font.PLAIN, 18)); // Changez la taille du texte des fichiers ici
         fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fileList.setVisibleRowCount(5);
-        fileList.setBackground(new Color(0x80000000, true));
+        //fileList.setBackground(new Color(0x80000000, true));
+        fileList.setBackground(new Color(0xFF000000));
         fileList.setForeground(new Color(0xFFFFFF));
         //fileList.setOpaque(false);
         // Ajout de l'écouteur de double-clic ici
@@ -151,7 +155,7 @@ public class VueMenuParties extends JPanel {
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 1;
+        gbc.gridy = 0;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
         gbc.weightx = 0.5;
@@ -161,7 +165,6 @@ public class VueMenuParties extends JPanel {
         JScrollPane scrollPane = new JScrollPane(fileList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setOpaque(false);
         scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-        ;
         // Custom JScrollBar
         scrollPane.setVerticalScrollBar(new CJScrollBar());
         scrollPane.setPreferredSize(new Dimension(400, 100));
@@ -173,7 +176,7 @@ public class VueMenuParties extends JPanel {
         horizontalSpace2.add(Box.createHorizontalStrut(this.getWidth()/4));
         GridBagConstraints gspacer3 = new GridBagConstraints();
         gspacer3.gridx = 2;
-        gspacer3.gridy = 1;
+        gspacer3.gridy = 0;
         gspacer3.gridwidth = 1;
         gspacer3.gridheight = 1;
         gspacer3.weightx = 0.25;
@@ -186,7 +189,7 @@ public class VueMenuParties extends JPanel {
         verticalSpace2.add(Box.createVerticalStrut(100));
         GridBagConstraints gspacer4 = new GridBagConstraints();
         gspacer4.gridx = 1;
-        gspacer4.gridy = 2;
+        gspacer4.gridy = 1;
         gspacer4.gridwidth = 3;
         gspacer4.gridheight = 1;
         gspacer4.fill = GridBagConstraints.VERTICAL;
@@ -200,7 +203,7 @@ public class VueMenuParties extends JPanel {
 
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 2;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
         gbc.fill = GridBagConstraints.NONE;
@@ -287,7 +290,7 @@ public class VueMenuParties extends JPanel {
         verticalSpace3.add(Box.createVerticalStrut(100));
         GridBagConstraints gspacer5 = new GridBagConstraints();
         gspacer5.gridx = 1;
-        gspacer5.gridy = 4;
+        gspacer5.gridy = 3;
         gspacer5.gridwidth = 3;
         gspacer5.gridheight = 1;
         gspacer5.fill = GridBagConstraints.VERTICAL;
@@ -296,7 +299,7 @@ public class VueMenuParties extends JPanel {
 
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 5;
+        gbc.gridy = 4;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
         gbc.fill = GridBagConstraints.NONE;
