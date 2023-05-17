@@ -19,7 +19,7 @@ public class Vues {
     final static String MENU_SAISIES = "Nouvelle Partie";
     final static String MENU_PARTIES = "Charger Partie";
     final static String JEU = "Jeu";
-    final static Dimension DIMENSION_DEFAUT = new Dimension(1200, 675);
+    final static Dimension DIMENSION_DEFAUT = new Dimension(1511, 850);
     final static Dimension DIMENSION_MENU_PARTIES = new Dimension(800, 600);
 
     Vues(JFrame f) {

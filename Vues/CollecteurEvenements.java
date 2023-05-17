@@ -51,9 +51,6 @@ public interface CollecteurEvenements {
 
     boolean getStop();
 
-
-    void setConsulter(boolean b);
-    boolean getConsulter();
-
+    void saveGame();
 }
 

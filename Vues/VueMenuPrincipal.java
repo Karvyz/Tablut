@@ -83,7 +83,7 @@ class VueMenuPrincipal extends JPanel {
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.NONE;
-        gbc.insets = new Insets(0, 0, 100, 0);
+        gbc.insets = new Insets(0, 0, 80, 0);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0;
@@ -100,10 +100,11 @@ class VueMenuPrincipal extends JPanel {
         gbc.anchor = GridBagConstraints.CENTER;
         centerPanel.add(leftPanel, gbc);
         // TODO : Le mettre au bon endroit suivant la taille de la fenêtre
-        gbc.insets = new Insets(0, 80, 80, 40);
+        //gbc.insets = new Insets(0, 80, 80, 40);
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.LINE_END;
+        buttonsPanel.setBounds(buttonsPanel.getX() - 300, buttonsPanel.getY(), buttonsPanel.getWidth(), buttonsPanel.getHeight());
         centerPanel.add(buttonsPanel, gbc);
         centerPanel.setBounds(centerPanel.getX() - 150, centerPanel.getY(), centerPanel.getWidth(), centerPanel.getHeight());
 

@@ -5,6 +5,7 @@ import Modele.*;
 import Vues.*;
 import Vues.CollecteurEvenements;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.Random;
 
@@ -19,7 +20,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
     int decompte;
     public boolean Stop;
 
-    private boolean consulter;
+
 
     public ControlleurMediateur() {
         //on utilise fixeJeu
@@ -48,7 +49,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
         jeu.nouvellePartie();
         vues.nouvellePartie();
         Stop = false;
-        setConsulter(false);
+        jeu.setConsulter(false);
 
     }
 
@@ -68,7 +69,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
         jeu.nouvellePartie();
         vues.nouvellePartie();
         Stop = false;
-        setConsulter(false);
+        jeu.setConsulter(false);
     }
 
     @Override
@@ -78,7 +79,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
         vues.nouvellePartie();
         afficherJeu();
         Stop = false;
-        setConsulter(false);
+        jeu.setConsulter(false);
     }
 
     public void restaurePartie() {
@@ -86,12 +87,73 @@ public class ControlleurMediateur implements CollecteurEvenements{
         jeu.setEnCours(true);
         vues.restaurePartie();
         Stop = false;
-        setConsulter(false);
+        jeu.setConsulter(false);
         if(!jeu.pileIA_annule.isEmpty()){
             Coup a_remettre = jeu.pileIA_annule.peek();
             jeu.setCoordooneJouerIA(a_remettre.depart, a_remettre.arrivee);
         }
 
+    }
+
+    public void saveGame() {
+        String fileName = JOptionPane.showInputDialog(null, "Entrez le nom du fichier de sauvegarde:", "Sauvegarde", JOptionPane.PLAIN_MESSAGE);
+
+        if (fileName != null && !fileName.trim().isEmpty()) { //Verifie le nom
+            String directoryPath = "Resources/save/";
+            File directory = new File(directoryPath);
+            if (!directory.exists()) { //Verifie si le dossier existe ou le crée
+                if (!directory.mkdirs()) {
+                    handleSaveError("Échec de la création du dossier de sauvegarde");
+                    return;
+                }
+            } else if (!directory.isDirectory() || !directory.canWrite()) {
+                handleSaveError("Impossible d'écrire dans le dossier de sauvegarde");
+                return;
+            }
+            fileName = directoryPath + fileName + ".save";
+            File file = new File(fileName);
+
+            while (file.exists()) {
+                handleSaveError("Ce nom de fichier existe déjà. Veuillez en choisir un autre.");
+                return;
+            }
+
+            if (sauvegarderPartie(fileName)) {
+                JOptionPane.showMessageDialog(null, "Sauvegarde réussie", "Sauvegarde", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                handleSaveError("Échec de la sauvegarde");
+            }
+        } else if (fileName != null) {
+            handleSaveError("Le nom de fichier ne peut pas être vide");
+        }
+    }
+
+    private void handleSaveError(String msg) {
+        JButton retryButton = new JButton("Recommencer");
+        JButton cancelButton = new JButton("Annuler");
+
+
+        retryButton.addActionListener(e -> {
+            JOptionPane.getRootFrame().dispose(); // Ferme la boîte de dialogue d'erreur
+            saveGame();
+        });
+
+        cancelButton.addActionListener(e -> {
+            JOptionPane.getRootFrame().dispose(); // Ferme la boîte de dialogue d'erreur
+        });
+
+        int option = JOptionPane.showOptionDialog(null,
+                msg,
+                "Erreur",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.ERROR_MESSAGE,
+                null,
+                new Object[]{retryButton, cancelButton},
+                retryButton);
+
+        if (option == JOptionPane.YES_OPTION) {
+            saveGame();
+        }
     }
 
     public boolean sauvegarderPartie(String fichier) {
@@ -320,9 +382,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
     }
 
 
-    public boolean getConsulter() {return consulter;}
-
-    public void setConsulter(boolean consulter) {this.consulter = consulter;}
 
     public String toString() {
         if(jeu == null)

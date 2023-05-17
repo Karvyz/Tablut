@@ -40,6 +40,8 @@ public class Jeu extends Observable implements Serializable {
 
     private boolean coup_joue;
 
+    private boolean consulter;
+
 
     public Jeu() {
         setEnCours(false);
@@ -289,6 +291,8 @@ public class Jeu extends Observable implements Serializable {
         this.coup_a_refaire = new Pile();
         this.pileIA_annule =  new Stack<>();
         this.pileIA_refaire =  new Stack<>();
+        //this.coup_joue = new Stack<>();
+        //this.coup_joue_refaire = new Stack<>();
         this.joueurCourant = 0;
         this.joueurs[0] = null;//TODO a revoir, on doit pas tout le temps mettre a null
         this.joueurs[1] = null;
@@ -347,6 +351,10 @@ public class Jeu extends Observable implements Serializable {
     public boolean getCoupJoue(){
         return coup_joue;
     }
+
+    public boolean getConsulter() {return consulter;}
+
+    public void setConsulter(boolean consulter) {this.consulter = consulter;}
 
 
 }

@@ -34,6 +34,9 @@ class VueJeu extends JPanel {
 
     JButton[] controls = new JButton[3];
 
+    JButton sauvegarder = new CButton(new ImageIcon(Imager.getScaledImage("assets/Disquette.png", 20, 20))).blanc();
+    ;
+
     VueJeu(CollecteurEvenements c) {
         controleur = c;
 
@@ -55,6 +58,19 @@ class VueJeu extends JPanel {
         addBottom(contenu);
 
         add(contenu);
+
+        Action saveAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Traitement à effectuer lorsque Ctrl + S est enfoncé
+                ActionBoutonSauvegarder();
+            }
+        };
+
+        // Liaison de l'action à l'InputMap et au KeyStroke correspondant
+        InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), "saveAction");
+        getActionMap().put("saveAction", saveAction);
     }
 
     private JDialog EndGameDialog() {
@@ -132,7 +148,7 @@ class VueJeu extends JPanel {
             public void windowClosing(WindowEvent e) {
                 // Action personnalisée
                 controleur.jeu().setVainqueur(null); //permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
-                controleur.setConsulter(true);
+                controleur.jeu().setConsulter(true);
                 // Disposer le JDialog
                 endGameDialog.dispose();
             }
@@ -142,6 +158,7 @@ class VueJeu extends JPanel {
             endGameDialog.setVisible(false);
             controls[0].setEnabled(false);
             controls[2].setEnabled(false);
+            //sauvegarder.setEnabled(true);
             controleur.jeu().reset();
             controleur.jeu().setCoordooneJouerIA(null,null);
             //controleur.fin();
@@ -151,12 +168,14 @@ class VueJeu extends JPanel {
             endGameDialog.setVisible(false);
             controls[0].setEnabled(false);
             controls[2].setEnabled(false);
+            //sauvegarder.setEnabled(true);
             controleur.jeu().setCoordooneJouerIA(null,null);
             controleur.partieSuivante();
         });
         consulter.addActionListener((e) -> {
             controleur.jeu().setVainqueur(null); //permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
-            controleur.setConsulter(true);
+            controleur.jeu().setConsulter(true);
+            sauvegarder.setEnabled(false);
             // Disposer le JDialog
             endGameDialog.dispose();
         });
@@ -314,12 +333,15 @@ class VueJeu extends JPanel {
             controleur.afficherJeu();
             controls[0].setEnabled(false);
             controls[2].setEnabled(false);
+            sauvegarder.setEnabled(true);
         });
         menu_items[1].addActionListener((e) -> {
+            sauvegarder.setEnabled(true);
             controleur.jeu().reset();
             controleur.afficherMenuChargerPartie();
         });
         menu_items[2].addActionListener((e) -> {
+            sauvegarder.setEnabled(true);
             controleur.jeu().reset();
             controleur.afficherMenuPrincipal();
         });
@@ -340,8 +362,7 @@ class VueJeu extends JPanel {
         checkBoxMenuItemMusic.setBorderPainted(false);
         menu.add(checkBoxMenuItemMusic);
 
-        JButton sauvegarder = new CButton(new ImageIcon(Imager.getScaledImage("assets/Disquette.png", 20, 20))).blanc();
-        sauvegarder.addActionListener(e -> ActionBoutonSauvegarder(e));
+        sauvegarder.addActionListener(e -> ActionBoutonSauvegarder());
 
         JButton regles = new CButton("? Règles").blanc();
         regles.addActionListener(e -> controleur.afficherRegles());
@@ -655,72 +676,10 @@ class VueJeu extends JPanel {
     }
 
 
-    private void ActionBoutonSauvegarder(ActionEvent e) {
+    private void ActionBoutonSauvegarder() {
         controleur.jeu().setEnCours(false);
-        saveGame();
+        controleur.saveGame();
         controleur.jeu().setEnCours(true);
-    }
-
-    private void saveGame() {
-        String fileName = JOptionPane.showInputDialog(null, "Entrez le nom du fichier de sauvegarde:", "Sauvegarde", JOptionPane.PLAIN_MESSAGE);
-
-        if (fileName != null && !fileName.trim().isEmpty()) { //Verifie le nom
-            String directoryPath = "Resources/save/";
-            File directory = new File(directoryPath);
-            if (!directory.exists()) { //Verifie si le dossier existe ou le crée
-                if (!directory.mkdirs()) {
-                    handleSaveError("Échec de la création du dossier de sauvegarde");
-                    return;
-                }
-            } else if (!directory.isDirectory() || !directory.canWrite()) {
-                handleSaveError("Impossible d'écrire dans le dossier de sauvegarde");
-                return;
-            }
-            fileName = directoryPath + fileName + ".save";
-            File file = new File(fileName);
-
-            while (file.exists()) {
-                handleSaveError("Ce nom de fichier existe déjà. Veuillez en choisir un autre.");
-                return;
-            }
-
-            if (controleur.sauvegarderPartie(fileName)) {
-                JOptionPane.showMessageDialog(null, "Sauvegarde réussie", "Sauvegarde", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                handleSaveError("Échec de la sauvegarde");
-            }
-        } else if (fileName != null) {
-            handleSaveError("Le nom de fichier ne peut pas être vide");
-        }
-    }
-
-
-    private void handleSaveError(String msg) {
-        JButton retryButton = new JButton("Recommencer");
-        JButton cancelButton = new JButton("Annuler");
-
-
-        retryButton.addActionListener(e -> {
-            JOptionPane.getRootFrame().dispose(); // Ferme la boîte de dialogue d'erreur
-            saveGame();
-        });
-
-        cancelButton.addActionListener(e -> {
-            JOptionPane.getRootFrame().dispose(); // Ferme la boîte de dialogue d'erreur
-        });
-
-        int option = JOptionPane.showOptionDialog(null,
-                msg,
-                "Erreur",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.ERROR_MESSAGE,
-                null,
-                new Object[]{retryButton, cancelButton},
-                retryButton);
-
-        if (option == JOptionPane.YES_OPTION) {
-            saveGame();
-        }
     }
 
     @Override
