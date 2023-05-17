@@ -19,19 +19,21 @@ public class IA_MonoEtage extends IA {
     }
 
     class Thready implements Runnable {
-
+        int valeur_deplacement;
         float return_value;
-        Niveau niveau;
         Coup coup;
 
-        Thready(Niveau niveau, Coup coup) {
-            this.niveau = niveau;
+        Thready(Coup coup) {
             this.coup = coup;
+            return_value = 0;
         }
 
         @Override
         public void run() {
-            return_value = heuristique.evaluation(niveau, monType);
+            Niveau clone = jeu.n.clone();
+            valeur_deplacement = clone.deplace_pion(coup);
+            if (valeur_deplacement == 0)
+                return_value = heuristique.evaluation(clone, monType);
         }
     }
 
@@ -52,11 +54,7 @@ public class IA_MonoEtage extends IA {
             ArrayList<Coordonne> deplacements = pion.getDeplacement(jeu.n.plateau);
             for (int i = 0; i < deplacements.size(); i++) {
                 temp = new Coup(pion.getCoordonne(), deplacements.get(i));
-                Niveau clone = jeu.n.clone();
-                int valeur_deplacement = clone.deplace_pion(temp);
-                if (valeur_deplacement == 1 || valeur_deplacement == 2)
-                    return temp;
-                Thready thready = new Thready(clone, temp);
+                Thready thready = new Thready(temp);
                 threadies.add(thready);
                 Thread thread = new Thread(thready);
                 thread.start();
@@ -67,16 +65,24 @@ public class IA_MonoEtage extends IA {
         for (int i = 0; i < threads.size(); i++) {
             try {
                 threads.get(i).join();
-                float tmp = threadies.get(i).return_value;
-                if (tmp > res_eval) {
+                int valeur_deplacement = threadies.get(i).valeur_deplacement;
+                if (valeur_deplacement == 1 || valeur_deplacement == 2) {
+                    res_eval = Integer.MAX_VALUE;
                     max = threadies.get(i).coup;
-                    res_eval = tmp;
+                }
+                else {
+                    float return_value = threadies.get(i).return_value;
+                    if (return_value > res_eval) {
+                        max = threadies.get(i).coup;
+                        res_eval = return_value;
 
+                    }
                 }
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
+        System.out.println("max : " + res_eval);
         return max;
     }
 }

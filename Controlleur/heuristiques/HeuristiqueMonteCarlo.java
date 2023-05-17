@@ -6,9 +6,12 @@ import java.util.ArrayList;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class HeuristiqueMonteCarlo extends Heuristique{
+    int nbSimulations;
+    public HeuristiqueMonteCarlo(int nbSimulations) {
+        this.nbSimulations = nbSimulations;
+    }
     @Override
     public float evaluation(Niveau n, TypePion typePion) {
-        float nbSimulations = 10;
         int scoreTotal = 0;
         int res = 0;
 
