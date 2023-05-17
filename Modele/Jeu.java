@@ -136,45 +136,14 @@ public class Jeu extends Observable implements Serializable {
     private void checkvictoire(int i) {
         if (i > 0) {
             if (i == 1) {
-                System.out.println("PARTIE FINI CAR ROI CAPTURE");
                 vainqueur = joueurs[0];
             } else if (i == 2) {
-                System.out.println("PARTIE FINI CAR ROI EVADE");
                 vainqueur = joueurs[1];
-            } else { //TODO plus tard
-                System.out.println("EGALITE");
+            } else {
                 vainqueur = getAttaquant();
             }
             setEnCours(false);
-            return;
         }
-
-        if(check_joueur_bloque()){
-            System.out.println("PION "+getJoueurSuivant().RoleJoueur()+ " bloque");
-            vainqueur = getJoueurCourant();
-            setEnCours(false);
-        }
-
-
-    }
-
-    private boolean check_joueur_bloque() {
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                if (n.getPion(i,j) != null){
-                    if(getJoueurSuivant().aPionsNoirs()){
-                        if(n.estAttaquant(i,j) && !n.getPion(i,j).getDeplacement(n.plateau).isEmpty())
-                            return false; //ici il n'est pas bloqué
-                    }
-                    else{
-                        if((n.estDefenseur(i,j) || n.estRoi(i,j)) && !n.getPion(i,j).getDeplacement(n.plateau).isEmpty()){
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-        return true;
     }
 
     public Coup getAideIA() {
@@ -208,8 +177,7 @@ public class Jeu extends Observable implements Serializable {
     public boolean peutAnnuler() {
         if(coup_annule.estVide())
             return false;
-        if (!joueurs[0].estHumain() && coup_annule.size() == 1)
-            return false;
+        return joueurs[0].estHumain() || coup_annule.size() != 1;
         // Inutile je pense ??
         /*
         if ((!joueurs[0].estHumain() || !joueurs[1].estHumain())) { // Tester si on a une IA contre un humaion pour annuler le coup de l'IA et de l'humain, ATTENTION,l'IA jouera un autre coup
@@ -217,7 +185,6 @@ public class Jeu extends Observable implements Serializable {
                 return false;
         }
          */
-        return true;
     }
 
     public void annuler() {
@@ -227,9 +194,7 @@ public class Jeu extends Observable implements Serializable {
 
 
     public boolean peutRefaire() {
-        if (coup_a_refaire.estVide())
-            return false;
-        return true;
+        return !coup_a_refaire.estVide();
     }
 
     public void refaire() {
