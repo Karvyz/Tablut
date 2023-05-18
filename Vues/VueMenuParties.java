@@ -2,6 +2,7 @@ package Vues;
 
 import Vues.JComposants.CButton;
 import Vues.JComposants.CJScrollBar;
+import Vues.JComposants.CListCellRenderer;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -34,21 +35,6 @@ public class VueMenuParties extends JPanel {
         background = Imager.getImageBuffer("logo.png");
 
         initializeComponents();
-    }
-
-    static class CustomListCellRenderer extends DefaultListCellRenderer {
-        private static final int TEXT_PADDING = 10;
-
-        @Override
-        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            Component renderer = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
-            if (renderer instanceof JLabel) {
-                ((JLabel) renderer).setBorder(new EmptyBorder(0, TEXT_PADDING, 0, 0));
-            }
-
-            return renderer;
-        }
     }
 
     private void initializeComponents() {
@@ -117,15 +103,13 @@ public class VueMenuParties extends JPanel {
         // Liste des parties sauvegardées (fileList)
         fileListModel = new DefaultListModel<>();
         fileList = new JList<>(fileListModel);
-        fileList.setCellRenderer(new CustomListCellRenderer());
+        fileList.setCellRenderer(new CListCellRenderer());
         //fileList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        fileList.setFont(new Font("Arial", Font.PLAIN, 18)); // Changez la taille du texte des fichiers ici
+        fileList.setFont(new Font("Poppins", Font.PLAIN, 16)); // Changez la taille du texte des fichiers ici
         fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fileList.setVisibleRowCount(5);
-        //fileList.setBackground(new Color(0x80000000, true));
-        fileList.setBackground(new Color(0xFF000000));
-        fileList.setForeground(new Color(0xFFFFFF));
-        //fileList.setOpaque(false);
+        fileList.setBackground(new Color(0x99000000, true));
+        fileList.setOpaque(false);
         // Ajout de l'écouteur de double-clic ici
         fileList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
@@ -164,11 +148,13 @@ public class VueMenuParties extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(fileList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
         // Custom JScrollBar
         scrollPane.setVerticalScrollBar(new CJScrollBar());
         scrollPane.setPreferredSize(new Dimension(400, 100));
         scrollPane.setMaximumSize(new Dimension(400, -1));
+        //scrollPane.setBackground(new Color(0x80000000, true));
         add(scrollPane, gbc);
 
         // Espaces horizontal
