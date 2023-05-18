@@ -1,9 +1,6 @@
 package Controlleur;
 
-import Modele.Jeu;
-import Modele.Joueurs;
-import Modele.TypeJoueur;
-import Modele.TypePion;
+import Modele.*;
 
 import java.io.Serializable;
 
@@ -27,6 +24,10 @@ public abstract class IA extends Joueurs implements Serializable {
 		return true;
 	}
 
-	abstract int joue();
+    public int joue() {
+        return jeu.jouer(meilleurCoup());
+    }
+
+    public abstract Coup meilleurCoup();
     
 }

@@ -19,7 +19,7 @@ public class Data_Niveau implements Serializable {
 
     public boolean enCours;
 
-    public Data_Niveau(ConfigurationJeu config, Niveau niveau, Pile coup_annule, Pile coup_a_refaire, Stack<Coup> pileIA_refaire, Stack<Coup> pileIA_annule, int JC, Joueurs attaque, Joueurs defense, boolean enCours) {
+    public Data_Niveau(ConfigurationJeu config, Niveau niveau, Pile coup_annule, Pile coup_a_refaire, Stack<Coup> pileIA_annule, Stack<Coup> pileIA_refaire, int JC, Joueurs attaque, Joueurs defense, boolean enCours) {
         this.niveau = niveau;
         this.coup_annule = coup_annule;
         this.coup_a_refaire = coup_a_refaire;

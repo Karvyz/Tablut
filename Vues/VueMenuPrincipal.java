@@ -27,6 +27,7 @@ class VueMenuPrincipal extends JPanel {
         JButton chargerPartie = new CButton("Charger Partie");
         chargerPartie.addActionListener((e) -> {
             c.afficherMenuChargerPartie();
+
         });
 
         JButton QuickPlay = new CButton("Partie Rapide");
@@ -55,9 +56,13 @@ class VueMenuPrincipal extends JPanel {
                 quitter
         };
 
+        for(Component component : components) {
+            component.setFont(new Font("Arial", Font.BOLD, 16));
+        }
+
         JPanel leftPanel = new JPanel();
         leftPanel.setOpaque(false);
-        leftPanel.add(new JLabel(new ImageIcon(Imager.getScaledImage(logo, 500, 400))));
+        leftPanel.add(new JLabel(new ImageIcon(Imager.getScaledImage(logo, 675, 300))));
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setOpaque(false);
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
@@ -74,13 +79,11 @@ class VueMenuPrincipal extends JPanel {
 
         JPanel centerPanel = new JPanel(new GridBagLayout());
 
-        //        centerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 110));
-        //        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(0, 80, 0, 0));
         centerPanel.setOpaque(false);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.NONE;
-        // MARK: ESPACEMENT PLATEAU GAUCHE ET DROITE
+        gbc.insets = new Insets(0, 0, 80, 0);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0;
@@ -89,17 +92,19 @@ class VueMenuPrincipal extends JPanel {
         add(centerPanel, gbc);
 
         gbc.fill = GridBagConstraints.NONE;
-        gbc.insets = new Insets(0, 0, 0, 110);
+        gbc.insets = new Insets(0, 0, 100, 0);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
         gbc.weighty = 1;
-        gbc.anchor = GridBagConstraints.LINE_START;
+        gbc.anchor = GridBagConstraints.CENTER;
         centerPanel.add(leftPanel, gbc);
-        gbc.insets = new Insets(0, 80, 0, 80);
-        gbc.gridx = 1;
-        gbc.gridy = 0;
+        // TODO : Le mettre au bon endroit suivant la taille de la fenêtre
+        //gbc.insets = new Insets(0, 80, 80, 40);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.LINE_END;
+        buttonsPanel.setBounds(buttonsPanel.getX() - 300, buttonsPanel.getY(), buttonsPanel.getWidth(), buttonsPanel.getHeight());
         centerPanel.add(buttonsPanel, gbc);
         centerPanel.setBounds(centerPanel.getX() - 150, centerPanel.getY(), centerPanel.getWidth(), centerPanel.getHeight());
 

@@ -318,9 +318,10 @@ public class VueMenuSaisies extends JPanel {
             default:
                 break;
         }
-        c.nouvellePartie(nomJ1.getText(), types[0], TypePion.ATTAQUANT, nomJ2.getText(), types[1], TypePion.DEFENSEUR);
+        String nom1 = this.nomJ1.getText().equals("Nom de l'attaquant") ? "Attaquant" : this.nomJ1.getText();
+        String nom2 = this.nomJ2.getText().equals("Nom du défenseur") ? "Défenseur" : this.nomJ2.getText();
+        c.nouvellePartie(nom1, types[0], TypePion.ATTAQUANT, nom2, types[1], TypePion.DEFENSEUR);
         c.afficherJeu();
-
     }
 
     @Override

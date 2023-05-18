@@ -22,8 +22,6 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
     boolean premier_clic = false;
 
-    //boolean drawFleche;
-
 
     public AdaptateurSouris(CollecteurEvenements c, CPlateau plateau) {
         ctrl = c;
@@ -32,10 +30,14 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
     @Override
     public void mousePressed(MouseEvent e) { //Méthode executé lors d'un clic
+
         dragStart = e.getPoint(); // On clique et stock le point de départ du dragStart
         int l = calcul_l(e);
         int c = calcul_c(e);
-        if (!check_ok(l, c)) {
+        if (!check_ok(l, c)) { //TODO le probleme c'est qu'on a pas le droit de cliquer a cote du plateau, mais il faudrait
+            plateau.setPionSelec(null);
+            plateau.setPionEnDeplacement(null);
+            plateau.setDestinationsPossibles(null);
             return;
         }
 
@@ -70,7 +72,8 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
                 plateau.setPionSelec(null);
                 clicSelection = false;
                 clicInutile = false; //Changez ici si on veut garder les destinations affichés lors d'un clic sur pion pas a nous
-                if (caseClique == null){
+                plateau.setDessineCroix(new Point(l, c));
+                if (caseClique == null) {
                     plateau.setDrawFleche(false);
                     return;
                 }
@@ -93,7 +96,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         if (!check_pion(caseClique)) {
             return;
         }
-            //Le pion nous appartient, on affiche ses dispos
+        //Le pion nous appartient, on affiche ses dispos
         else if (ctrl.jeu().n.check_clic_selection_pion(caseClique, ctrl.jeu().get_num_JoueurCourant())) {
             plateau.setPionSelec(caseClique); //au laché, on affiche les dispos
             plateau.setPionEnDeplacement(new Point(l, c));//Initialise point de départ du moovement pour le drag
@@ -128,6 +131,9 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             int l = calcul_l(e);
             int c = calcul_c(e);
             if (!check_ok(l, c)) {
+                plateau.setPionSelec(null);
+                plateau.setPionEnDeplacement(null);
+                plateau.setDestinationsPossibles(null);
                 return;
             }
 
@@ -183,7 +189,6 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             if (!check_ok(l, c)) {
                 return;
             }
-            ;
             pionEnDeplacement.setLocation(l, c); //modifie les coordonne du Point pionEnDeplacement
             plateau.setPionEnDeplacement(pionEnDeplacement);
         } else {
@@ -193,12 +198,13 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
     @Override
     public void mouseMoved(MouseEvent e) {
+
         int l = calcul_l(e);
         int c = calcul_c(e);
         if (!check_ok(l, c)) {
             return;
         }
-        ;
+
 
         // Obtenez les informations de la case survolée
         Pion caseSurvole = ctrl.jeu().n.getPion(l, c);
@@ -221,7 +227,9 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
                 affiche_destination(null); //affiche aucune destination
             }
         } else {
-            //on ne fais rien dans le survol si on a choose un pions
+           /*if(caseSurvole == null){
+               plateau.setDessineCroix(caseSurvole);
+           }*/
         }
 
     }

@@ -1,5 +1,9 @@
 package Modele;
 
+import Controlleur.IA_MonoEtage;
+import Controlleur.heuristiques.HeuristiqueLongLiveTheKing;
+import Controlleur.heuristiques.HeuristiqueMonteCarlo;
+
 public class JoueursCreation {
 
     public static Joueurs createJoueur(String nom, TypeJoueur type, TypePion roleJ, Jeu jeu) {
@@ -9,9 +13,9 @@ public class JoueursCreation {
             case IA_FACILE:
                 return new Controlleur.IA_facile(nom, roleJ, jeu);
             case IA_MOYEN:
-                return new Controlleur.IA_moyen(nom, roleJ, jeu);
+                return new IA_MonoEtage(nom, roleJ, jeu, new HeuristiqueMonteCarlo(100));
             case IA_DIFFICILE:
-                return new Controlleur.IA_difficile_le_roi_c_ciao(nom, roleJ, jeu, 1000);
+                return new Controlleur.IA_DifficileProfondeur(nom ,roleJ, jeu, new HeuristiqueLongLiveTheKing(), 4);
         }
         return null;
     }

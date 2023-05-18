@@ -7,12 +7,12 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.File;
 
 import static java.awt.GridBagConstraints.*;
 
+import Modele.TypeJoueur;
 import Modele.TypePion;
 import Vues.JComposants.*;
 
@@ -32,6 +32,11 @@ class VueJeu extends JPanel {
     private JDialog endGameDialog;
     Image background;
 
+    JButton[] controls = new JButton[3];
+
+    JButton sauvegarder = new CButton(new ImageIcon(Imager.getScaledImage("assets/Disquette.png", 20, 20))).blanc();
+    ;
+
     VueJeu(CollecteurEvenements c) {
         controleur = c;
 
@@ -48,17 +53,32 @@ class VueJeu extends JPanel {
         contenu.setOpaque(false);
 
         addTop(contenu);
+        //contenu.add(Box.createVerticalGlue());
         addMain(contenu);
         addBottom(contenu);
 
         add(contenu);
+
+        Action saveAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Traitement à effectuer lorsque Ctrl + S est enfoncé
+                ActionBoutonSauvegarder();
+            }
+        };
+
+        // Liaison de l'action à l'InputMap et au KeyStroke correspondant
+        InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), "saveAction");
+        getActionMap().put("saveAction", saveAction);
     }
 
     private JDialog EndGameDialog() {
         JDialog dialog = new JDialog(JOptionPane.getRootFrame(), "Fin de partie", true);
         dialog.setResizable(false);
-        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        dialog.setSize(800, 200);
+        //dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setMinimumSize(new Dimension(1000, -1));
+        dialog.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
         dialog.setLocationRelativeTo(null);
         endGameText = new JLabel("");
         return dialog;
@@ -105,19 +125,40 @@ class VueJeu extends JPanel {
         endButtons.setOpaque(false);
         JButton menu = new CButton("Menu principal");
         JButton retry = new CButton("Rejouer ?").blanc();
+        JButton consulter = new CButton("Consulter");
         endButtons.add(menu);
         endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
         endButtons.add(retry);
+        endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
+        endButtons.add(consulter);
 
         banner.add(endButtons, gbc2);
-        endGamePanel.add(banner, gbc);
 
         endGamePanel.setSize(1000, 600);
+        endGamePanel.setAlignmentX(CENTER_ALIGNMENT);
+
+        endGamePanel.add(banner, gbc);
 
         endGameDialog.add(endGamePanel);
 
+        endGameDialog.pack();
+
+        endGameDialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Action personnalisée
+                controleur.jeu().setVainqueur(null); //permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
+                controleur.jeu().setConsulter(true);
+                // Disposer le JDialog
+                endGameDialog.dispose();
+            }
+        });
+
         menu.addActionListener((e) -> {
             endGameDialog.setVisible(false);
+            controls[0].setEnabled(false);
+            controls[2].setEnabled(false);
+            //sauvegarder.setEnabled(true);
             controleur.jeu().reset();
             controleur.jeu().setCoordooneJouerIA(null,null);
             //controleur.fin();
@@ -125,8 +166,18 @@ class VueJeu extends JPanel {
         });
         retry.addActionListener((e) -> {
             endGameDialog.setVisible(false);
+            controls[0].setEnabled(false);
+            controls[2].setEnabled(false);
+            //sauvegarder.setEnabled(true);
             controleur.jeu().setCoordooneJouerIA(null,null);
             controleur.partieSuivante();
+        });
+        consulter.addActionListener((e) -> {
+            controleur.jeu().setVainqueur(null); //permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
+            controleur.jeu().setConsulter(true);
+            sauvegarder.setEnabled(false);
+            // Disposer le JDialog
+            endGameDialog.dispose();
         });
     }
 
@@ -143,8 +194,13 @@ class VueJeu extends JPanel {
             perdant = controleur.jeu().getJoueur1();
         }
 
+        if (controleur.jeu().partieTerminee()){
+            controls[1].setEnabled(false);
+        }
+
         // Fin partie
         if(endGameDialog == null) {
+
             endGameDialog = EndGameDialog();
         }
 
@@ -152,18 +208,17 @@ class VueJeu extends JPanel {
 
         if (vainqueur.estHumain()) {
             endGamePanel.setBackground(new Color(100, 183, 68));
-            endGameDialog.getComponent(0).setBackground(new Color(100, 183, 68));
             endGameDialog.setTitle("Victoire !");
             if (!perdant.estHumain()) {
                 switch (perdant.type()) {
                     case IA_FACILE:
-                        endGameText.setText("Tu as gagné contre l'IA facile ! Essaye l'IA moyenne.");
+                        endGameText.setText("<html>Tu as gagné contre l'IA facile !<br>Essaye l'IA moyenne.</html>");
                         break;
                     case IA_MOYEN:
-                        endGameText.setText("Tu as gagné contre l'IA moyenne ! Essaye l'IA difficile !");
+                        endGameText.setText("<html>Tu as gagné contre l'IA moyenne !<br>Essaye l'IA difficile !</html>");
                         break;
                     case IA_DIFFICILE:
-                        endGameText.setText("Tu as gagné contre l'IA difficile ! Bravo !!");
+                        endGameText.setText("Tu as gagné contre l'IA difficile, bravo !!");
                         break;
                     default:
                         endGameText.setText("Tu as gagné contre... un alien ?");
@@ -172,16 +227,16 @@ class VueJeu extends JPanel {
             } else {
                 endGamePanel.setBackground(new Color(85, 91, 97));
                 String svainqueur = "";
-                if(vainqueur.nom().equals("Nom de l'attaquant"))
+                if(vainqueur.nom().equals("Attaquant"))
                     svainqueur = "L'attaquant";
-                else if (vainqueur.nom().equals("Nom du défenseur"))
+                else if (vainqueur.nom().equals("Défenseur"))
                     svainqueur = "Le défenseur";
                 else
                     svainqueur = vainqueur.nom();
                 String sperdant = "";
-                if(perdant.nom().equals("Nom de l'attaquant"))
+                if(perdant.nom().equals("Attaquant"))
                     sperdant = "L'attaquant";
-                else if (perdant.nom().equals("Nom du défenseur"))
+                else if (perdant.nom().equals("Défenseur"))
                     sperdant = "Le défenseur";
                 else
                     sperdant = perdant.nom();
@@ -210,17 +265,16 @@ class VueJeu extends JPanel {
                 endGameDialog.setTitle("Défaite !");
                 endGameText.setText("Dommage ! Tu as perdu contre l'IA " + typeIA + ".");
             } else {
-                //endGameDialog.getComponent(0).setBackground(new Color(120, 70, 50));
                 endGameDialog.getComponent(0).setBackground(new Color(85, 91, 97));
                 if (vainqueur.aPionsBlancs()) {
-                    if(vainqueur.nom().equals("Nom du défenseur"))
+                    if(vainqueur.nom().equals("Défenseur"))
                         endGameText.setText("Le défenseur, IA " + typeIA + " a gagné !");
                     else
                     endGameText.setText("Le défenseur, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
                 }
                 else {
                     endGameDialog.getComponent(0).setBackground(new Color(85, 91, 97));
-                    if(vainqueur.nom().equals("Nom de l'attaquant"))
+                    if(vainqueur.nom().equals("Attaquant"))
                         endGameText.setText("L'attaquant, IA " + typeIA + " a gagné !");
                     else
                         endGameText.setText("L'attaquant, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
@@ -263,6 +317,7 @@ class VueJeu extends JPanel {
 
         JMenuItem[] menu_items = {
                 new JMenuItem("Nouvelle Partie"),
+                new JMenuItem("Charger Partie"),
                 new JMenuItem("Menu principal"),
                 new JMenuItem("Quitter"),
         };
@@ -274,17 +329,23 @@ class VueJeu extends JPanel {
 
             controleur.jeu().reset();
             controleur.nouvellePartie(joueurs[0].nom(), joueurs[0].type(), TypePion.ATTAQUANT, joueurs[1].nom(), joueurs[1].type(), TypePion.DEFENSEUR);
-            controleur.jeu().setCoordooneJouerIA(null,null);
             texteJeu = new TexteJeu(0, 0);
             controleur.afficherJeu();
-            controleur.jeu().metAJour();
+            controls[0].setEnabled(false);
+            controls[2].setEnabled(false);
+            sauvegarder.setEnabled(true);
         });
         menu_items[1].addActionListener((e) -> {
+            sauvegarder.setEnabled(true);
             controleur.jeu().reset();
-            controleur.jeu().setCoordooneJouerIA(null,null);
+            controleur.afficherMenuChargerPartie();
+        });
+        menu_items[2].addActionListener((e) -> {
+            sauvegarder.setEnabled(true);
+            controleur.jeu().reset();
             controleur.afficherMenuPrincipal();
         });
-        menu_items[2].addActionListener(e -> controleur.toClose());
+        menu_items[3].addActionListener(e -> controleur.toClose());
 
         JCheckBoxMenuItem checkBoxMenuItemMusic = new JCheckBoxMenuItem("Musique");
         checkBoxMenuItemMusic.setSelected(false);
@@ -301,8 +362,7 @@ class VueJeu extends JPanel {
         checkBoxMenuItemMusic.setBorderPainted(false);
         menu.add(checkBoxMenuItemMusic);
 
-        JButton sauvegarder = new CButton(new ImageIcon(Imager.getScaledImage("assets/Disquette.png", 20, 20))).blanc();
-        sauvegarder.addActionListener(e -> ActionBoutonSauvegarder(e));
+        sauvegarder.addActionListener(e -> ActionBoutonSauvegarder());
 
         JButton regles = new CButton("? Règles").blanc();
         regles.addActionListener(e -> controleur.afficherRegles());
@@ -333,10 +393,10 @@ class VueJeu extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
         c.gridy = 0;
-        topPanel.add(pionsPanel, c);
+        //topPanel.add(pionsPanel, c);
     }
 
-    private void addMain(JPanel contenu) {
+    /*private void addMain(JPanel contenu) {
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
@@ -355,7 +415,7 @@ class VueJeu extends JPanel {
         c.fill = GridBagConstraints.NONE;
 
         // - J1
-        c.insets = new Insets(10, 10, 0, 30);
+        c.insets = new Insets(10, 50, 0, 50);
         c.gridx = 0;
         c.gridy = 1;
         c.weightx = 0;
@@ -364,8 +424,45 @@ class VueJeu extends JPanel {
         mainPanel.add(j1, c);
 
         // - J2
-        c.insets = new Insets(10, 30, 0, 10);
+        c.insets = new Insets(10, 50, 0, 50);
         c.anchor = FIRST_LINE_END;
+        mainPanel.add(j2, c);
+    }
+     */
+
+    private void addMain(JPanel contenu) {
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weightx = 1;
+        c.weighty = 1;
+        c.fill = GridBagConstraints.BOTH;
+
+        c.anchor = GridBagConstraints.CENTER;
+
+        mainPanel = new JPanel();
+        mainPanel.setOpaque(false);
+        mainPanel.setLayout(new GridBagLayout());
+        contenu.add(mainPanel, c);
+        // -----------
+
+        c.fill = VERTICAL;
+
+        // - J1
+        //c.insets = new Insets(10, 50, 0, 50);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 0.2;
+        c.weighty = 1;
+        c.anchor = CENTER;
+        mainPanel.add(j1, c);
+
+        // - J2
+        //c.insets = new Insets(10, 50, 0, 50);
+        c.gridx = 2;
+        c.gridy = 0;
+        c.anchor = CENTER;
         mainPanel.add(j2, c);
     }
 
@@ -385,15 +482,32 @@ class VueJeu extends JPanel {
         JPanel controlsPanel = new JPanel();
         controlsPanel.setOpaque(false);
 
-        JButton[] controls = {
+        controls = new JButton[]{
                 new CButton(new ImageIcon(Imager.getScaledImage("assets/undo.png", 18, 18))).blanc(),
                 new CButton(new ImageIcon(Imager.getScaledImage("assets/solution.png", 40, 40))).solution(),
                 new CButton(new ImageIcon(Imager.getScaledImage("assets/redo.png", 18, 18))).blanc(),
         };
 
-        controls[0].addActionListener(e -> controleur.jeu().annuler());
-        controls[1].addActionListener(e -> controleur.jeu().solution());
-        controls[2].addActionListener(e -> controleur.jeu().refaire());
+        controls[0].setEnabled(false);
+        controls[2].setEnabled(false);
+
+        controls[0].addActionListener((e) -> {
+            controleur.jeu().annuler();
+            ModifBoutonUndo();
+            ModifBoutonRedo();
+
+        });
+
+        controls[1].addActionListener((e) -> {
+            if (!controleur.jeu().partieTerminee()){
+                controleur.jeu().solution();
+                }
+        });
+        controls[2].addActionListener((e) -> {
+            controleur.jeu().refaire();
+            ModifBoutonUndo();
+            ModifBoutonRedo();
+        });
 
         for (JButton button : controls) {
             button.setFocusable(false);
@@ -407,6 +521,41 @@ class VueJeu extends JPanel {
         c.weightx = 1;
         c.insets = new Insets(10, 10, 10, 10);
         bottomPanel.add(controlsPanel, c);
+    }
+
+    void ModifBoutonUndo() {
+        controleur.jeu().setAideIA(null);
+        if (controleur.jeu().peutAnnuler()) {
+            if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
+                controls[0].setEnabled(false);
+            else
+                controls[0].setEnabled(true);
+        } else {
+            controls[0].setEnabled(false);
+        }
+        if (controleur.jeu().partieTerminee() && !controleur.jeu().coup_annule.estVide())
+        {
+            controls[0].setEnabled(true);
+        }
+        else if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
+                controls[0].setEnabled(false);
+    }
+
+    void ModifBoutonRedo() {
+        controleur.jeu().setAideIA(null);
+        if (controleur.jeu().peutRefaire()) {
+            if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
+                controls[2].setEnabled(false);
+            else
+                controls[2].setEnabled(true);
+        } else {
+            controls[2].setEnabled(false);
+        }
+        if (controleur.jeu().partieTerminee() && !controleur.jeu().coup_a_refaire.estVide()){
+            controls[2].setEnabled(true);
+        }
+        else if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
+                controls[2].setEnabled(false);
     }
 
     private JPanel addUserActions() {
@@ -426,6 +575,7 @@ class VueJeu extends JPanel {
         topFrame.setFocusable(true);
         topFrame.requestFocus();
 
+        /*
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         // MARK: ESPACEMENT PLATEAU GAUCHE ET DROITE
@@ -437,12 +587,24 @@ class VueJeu extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
         mainPanel.add(vueNiveau, c);
 
+         */
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        // MARK: ESPACEMENT PLATEAU GAUCHE ET DROITE
+        c.insets = new Insets(5, 28, 5, 28);
+        c.gridx = 1;
+        c.gridy = 0;
+        c.weightx = 0.6;
+        c.weighty = 1;
+        c.anchor = GridBagConstraints.CENTER;
+        mainPanel.add(vueNiveau, c);
+
         System.out.println(j1);
         // Initialisation du niveau
         String s1 = "";
-        if(!controleur.jeu().getJoueurCourant().estHumain()) {
+        if(!controleur.jeu().getJoueur1().estHumain()) {
             s1 = "IA";
-            switch(controleur.jeu().getJoueurCourant().type()) {
+            switch(controleur.jeu().getJoueur1().type()) {
                 case IA_FACILE:
                     s1 += " Facile";
                     break;
@@ -454,18 +616,15 @@ class VueJeu extends JPanel {
                     break;
             }
         } else {
-            if(controleur.jeu().getJoueurCourant().nom().equals("Nom de l'attaquant"))
-                s1 = "Attaquant";
-            else
-                s1 = controleur.jeu().getJoueurCourant().nom();
+            s1 = controleur.jeu().getJoueur1().nom();
         }
         j1.setName(s1);
-        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);
+        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
 
         String s2 = "";
-        if(!controleur.jeu().getJoueurSuivant().estHumain()) {
+        if(!controleur.jeu().getJoueur2().estHumain()) {
             s2 = "IA";
-            switch(controleur.jeu().getJoueurSuivant().type()) {
+            switch(controleur.jeu().getJoueur2().type()) {
                 case IA_FACILE:
                     s2 += " Facile";
                     break;
@@ -477,13 +636,10 @@ class VueJeu extends JPanel {
                     break;
             }
         } else {
-            if(controleur.jeu().getJoueurSuivant().nom().equals("Nom du défenseur"))
-                s2 = "Défenseur";
-            else
-                s2 = controleur.jeu().getJoueurCourant().nom();
+            s2 = controleur.jeu().getJoueur2().nom();
         }
         j2.setName(s2);
-        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
+        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);
 
         vueNiveau.miseAJour();
     }
@@ -493,7 +649,6 @@ class VueJeu extends JPanel {
         controleur.jeu().ajouteObservateur(vueNiveau);
 
         topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        System.out.println(topFrame);
 
         topFrame.addKeyListener(new AdaptateurClavier(controleur));
         topFrame.setFocusable(true);
@@ -503,83 +658,28 @@ class VueJeu extends JPanel {
         c.fill = GridBagConstraints.BOTH;
         // MARK: ESPACEMENT PLATEAU GAUCHE ET DROITE
         c.insets = new Insets(5, 28, 5, 28);
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 1;
+        c.gridx = 1;
+        c.gridy = 0;
+        c.weightx = 0.6;
         c.weighty = 1;
         c.anchor = GridBagConstraints.CENTER;
         mainPanel.add(vueNiveau, c);
 
         // Initialisation du niveau
-        j1.setName((!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurCourant().nom());
-        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);
+        j1.setName((!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueur1().nom());
+        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
 
-        j2.setName((!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueurSuivant().nom());
-        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
+        j2.setName((!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueur2().nom());
+        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);
 
         vueNiveau.miseAJour();
     }
 
 
-    private void ActionBoutonSauvegarder(ActionEvent e) {
+    private void ActionBoutonSauvegarder() {
         controleur.jeu().setEnCours(false);
-        saveGame();
+        controleur.saveGame();
         controleur.jeu().setEnCours(true);
-    }
-
-    private void saveGame() {
-        String fileName = JOptionPane.showInputDialog(null, "Entrez le nom du fichier de sauvegarde:", "Sauvegarde", JOptionPane.PLAIN_MESSAGE);
-
-        if (fileName != null && !fileName.trim().isEmpty()) { //Verifie le nom
-            String directoryPath = "Resources/save/";
-            File directory = new File(directoryPath);
-            if (!directory.exists()) { //Verifie si le dossier existe ou le crée
-                if (!directory.mkdirs()) {
-                    handleSaveError("Échec de la création du dossier de sauvegarde");
-                    return;
-                }
-            } else if (!directory.isDirectory() || !directory.canWrite()) {
-                handleSaveError("Impossible d'écrire dans le dossier de sauvegarde");
-                return;
-            }
-            fileName = directoryPath + fileName + ".save";
-
-            if (controleur.sauvegarderPartie(fileName)) {
-                JOptionPane.showMessageDialog(null, "Sauvegarde réussie", "Sauvegarde", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                handleSaveError("Échec de la sauvegarde");
-            }
-        } else if (fileName != null) {
-            handleSaveError("Le nom de fichier ne peut pas être vide");
-        }
-    }
-
-    private void handleSaveError(String msg) {
-        JButton retryButton = new JButton("Recommencer");
-        JButton cancelButton = new JButton("Annuler");
-
-
-        retryButton.addActionListener(e -> {
-            JOptionPane.getRootFrame().dispose(); // Ferme la boîte de dialogue d'erreur
-            saveGame();
-        });
-
-        cancelButton.addActionListener(e -> {
-            JOptionPane.getRootFrame().dispose(); // Ferme la boîte de dialogue d'erreur
-        });
-
-        int option = JOptionPane.showOptionDialog(null,
-                msg,
-                "Erreur",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.ERROR_MESSAGE,
-                null,
-                new Object[]{retryButton, cancelButton},
-                retryButton);
-
-        if (option == JOptionPane.YES_OPTION) {
-            saveGame();
-        }
     }
 
     @Override

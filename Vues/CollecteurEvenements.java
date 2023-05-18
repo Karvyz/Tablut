@@ -49,8 +49,8 @@ public interface CollecteurEvenements {
 
     boolean sauvegarderPartie(String fileName);
 
-    void fin();
-
     boolean getStop();
+
+    void saveGame();
 }
 

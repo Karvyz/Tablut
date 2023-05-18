@@ -1,13 +1,12 @@
 package Vues;
 
 import Vues.JComposants.CButton;
+import Vues.JComposants.CJScrollBar;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.FilenameFilter;
 
@@ -37,6 +36,21 @@ public class VueMenuParties extends JPanel {
         initializeComponents();
     }
 
+    static class CustomListCellRenderer extends DefaultListCellRenderer {
+        private static final int TEXT_PADDING = 10;
+
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            Component renderer = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+            if (renderer instanceof JLabel) {
+                ((JLabel) renderer).setBorder(new EmptyBorder(0, TEXT_PADDING, 0, 0));
+            }
+
+            return renderer;
+        }
+    }
+
     private void initializeComponents() {
         //setLayout(new GridLayout(8, 3, -1, -1));
         setLayout(new GridBagLayout());
@@ -53,13 +67,14 @@ public class VueMenuParties extends JPanel {
         gspacer0.anchor = GridBagConstraints.CENTER;
         add(verticalSpace0, gspacer0);
 
+        /*
         // Texte "Choisir une partie à charger ou à supprimer :" (label1)
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.gridwidth = 3;
         gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.NONE;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.CENTER;
         final JLabel label1 = new JLabel();
         Font label1Font = new Font("Arial", Font.BOLD, 20);
@@ -80,35 +95,38 @@ public class VueMenuParties extends JPanel {
         gspacer1.anchor = GridBagConstraints.CENTER;
         add(verticalSpace1, gspacer1);
 
+         */
+
         // Espaces horizontal
         Box horizontalSpace1 = Box.createHorizontalBox();
-        horizontalSpace1.add(Box.createHorizontalStrut((this.getWidth() - 300) / 2));
+        horizontalSpace1.add(Box.createHorizontalStrut(this.getWidth()/4));
         GridBagConstraints gspacer2 = new GridBagConstraints();
         gspacer2.gridx = 0;
-        gspacer2.gridy = 3;
+        gspacer2.gridy = 1;
         gspacer2.gridwidth = 1;
         gspacer2.gridheight = 1;
+        gspacer2.weightx = 0.25;
         gspacer2.fill = GridBagConstraints.HORIZONTAL;
-        gspacer2.anchor = GridBagConstraints.CENTER;
+        //gspacer2.anchor = GridBagConstraints.CENTER;
         add(horizontalSpace1, gspacer2);
 
 
         // Liste des parties sauvegardées (fileList)
         fileListModel = new DefaultListModel<>();
         fileList = new JList<>(fileListModel);
-        fileList.setForeground(new Color(-16777216));
-        fileList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+        fileList.setCellRenderer(new CustomListCellRenderer());
+        //fileList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         fileList.setFont(new Font("Arial", Font.PLAIN, 18)); // Changez la taille du texte des fichiers ici
         fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        //fileList.setVisibleRowCount(10);
-        fileList.setOpaque(false);
-        //fileList.setPreferredSize(new Dimension(-1, 200));
+        fileList.setVisibleRowCount(5);
+        fileList.setBackground(new Color(0x80000000, true));
+        fileList.setForeground(new Color(0xFFFFFF));
+        //fileList.setOpaque(false);
         // Ajout de l'écouteur de double-clic ici
         fileList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
-                JList list = (JList)evt.getSource();
+                JList list = (JList) evt.getSource();
                 if (evt.getClickCount() == 2) {  // Double-clic
-                    // Trouver l'index de l'élément sélectionné
                     int index = list.locationToIndex(evt.getPoint());
                     if (index >= 0) {
                         // Simuler le clic sur le bouton de chargement
@@ -118,27 +136,47 @@ public class VueMenuParties extends JPanel {
             }
         });
 
-        gbc = new GridBagConstraints();
+        // Permet de selectionné/supprimé grace au clavier
+        fileList.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
+                if (evt.getKeyCode() == KeyEvent.VK_DELETE) {  // Touche Suppr
+                    deleteButton.doClick();
+                } else if (evt.getKeyCode() == KeyEvent.VK_ENTER) {  // Touche Entrée
+                    loadButton.doClick();
+                } else if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {  // Touche Échap
+                    menuPrincipalButton.doClick();
+                }
+            }
+        });
+
+        GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 1;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 0.5;
+        gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
 
-        JScrollPane scrollPane = new JScrollPane(fileList, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setBackground(new Color(-16777216));
+        JScrollPane scrollPane = new JScrollPane(fileList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setOpaque(false);
+        scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+        ;
+        // Custom JScrollBar
+        scrollPane.setVerticalScrollBar(new CJScrollBar());
+        scrollPane.setPreferredSize(new Dimension(400, 100));
+        scrollPane.setMaximumSize(new Dimension(400, -1));
         add(scrollPane, gbc);
 
         // Espaces horizontal
         Box horizontalSpace2 = Box.createHorizontalBox();
-        horizontalSpace2.add(Box.createHorizontalStrut((this.getWidth() - 300) / 2));
+        horizontalSpace2.add(Box.createHorizontalStrut(this.getWidth()/4));
         GridBagConstraints gspacer3 = new GridBagConstraints();
         gspacer3.gridx = 2;
-        gspacer3.gridy = 3;
+        gspacer3.gridy = 1;
         gspacer3.gridwidth = 1;
         gspacer3.gridheight = 1;
+        gspacer3.weightx = 0.25;
         gspacer3.fill = GridBagConstraints.HORIZONTAL;
         gspacer3.anchor = GridBagConstraints.CENTER;
         add(horizontalSpace2, gspacer3);
@@ -148,7 +186,7 @@ public class VueMenuParties extends JPanel {
         verticalSpace2.add(Box.createVerticalStrut(100));
         GridBagConstraints gspacer4 = new GridBagConstraints();
         gspacer4.gridx = 1;
-        gspacer4.gridy = 4;
+        gspacer4.gridy = 2;
         gspacer4.gridwidth = 3;
         gspacer4.gridheight = 1;
         gspacer4.fill = GridBagConstraints.VERTICAL;
@@ -162,7 +200,7 @@ public class VueMenuParties extends JPanel {
 
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 5;
+        gbc.gridy = 3;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
         gbc.fill = GridBagConstraints.NONE;
@@ -181,7 +219,7 @@ public class VueMenuParties extends JPanel {
                 String selectedFile = fileList.getSelectedValue();
                 if (selectedFile != null) {
                     //System.out.println(controleur);
-                    if (controleur.chargerPartie("Resources/save/" + selectedFile) == false){
+                    if (controleur.chargerPartie("Resources/save/" + selectedFile) == false) {
                         System.out.println("Ligne 177 de VueMenuParties ");
                     }
                     controleur.fixeJeu(controleur.jeu().getJeu());
@@ -212,19 +250,23 @@ public class VueMenuParties extends JPanel {
                 if (selectedFile != null) {
                     // Affiche une boîte de dialogue de confirmation
                     int response = JOptionPane.showConfirmDialog(null,
-                            "Êtes-vous sûr de vouloir supprimer "+selectedFile+" ?",
+                            "Êtes-vous sûr de vouloir supprimer " + selectedFile + " ?",
                             "Confirmer la suppression",
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE);
                     if (response == JOptionPane.YES_OPTION) {
                         // Si l'utilisateur clique sur Oui, supprime le fichier
                         File file = new File("Resources/save/" + selectedFile);
-                        if (file.delete()) {
-                            // Le fichier a été supprimé avec succès, rafraîchir la liste
-                            refreshFileList();
+                        if (file.exists() && file.isFile()) {
+                            if (file.delete()) {
+                                // Le fichier a été supprimé avec succès, rafraîchir la liste
+                                refreshFileList();
+                            } else {
+                                // Une erreur s'est produite lors de la suppression du fichier
+                                System.out.println("Une erreur s'est produite lors de la suppression du fichier.");
+                            }
                         } else {
-                            // Une erreur s'est produite lors de la suppression du fichier
-                            System.out.println("Une erreur s'est produite lors de la suppression du fichier.");
+                            System.out.println("Le fichier à supprimer n'existe pas ou n'est pas un fichier.");
                         }
                     }
                 }
@@ -245,7 +287,7 @@ public class VueMenuParties extends JPanel {
         verticalSpace3.add(Box.createVerticalStrut(100));
         GridBagConstraints gspacer5 = new GridBagConstraints();
         gspacer5.gridx = 1;
-        gspacer5.gridy = 6;
+        gspacer5.gridy = 4;
         gspacer5.gridwidth = 3;
         gspacer5.gridheight = 1;
         gspacer5.fill = GridBagConstraints.VERTICAL;
@@ -254,7 +296,7 @@ public class VueMenuParties extends JPanel {
 
         gbc = new GridBagConstraints();
         gbc.gridx = 1;
-        gbc.gridy = 7;
+        gbc.gridy = 5;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
         gbc.fill = GridBagConstraints.NONE;

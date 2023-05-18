@@ -51,7 +51,7 @@ public class Pile implements Serializable {
         sommet = -1;
     }
 
-    public int taille() {
+    public int size() {
         return sommet + 1;
     }
 
@@ -59,4 +59,12 @@ public class Pile implements Serializable {
         int newSize = elements.length * 2;
         elements = Arrays.copyOf(elements, newSize);
     }
+
+    @Override
+    public String toString() {
+        return "Pile{" +
+                 Arrays.toString(elements) +
+                '}';
+    }
+
 }

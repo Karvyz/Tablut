@@ -13,7 +13,7 @@ public class IA_facile extends IA {
     }
 
     @Override
-    public int joue() {
+    public Coup meilleurCoup() {
         TypePion current_type = ((jeu.get_num_JoueurCourant()) % 2 ) == 0 ? TypePion.ATTAQUANT : TypePion.DEFENSEUR;
         ArrayList<Pion> pions = jeu.n.getPions(current_type);
         Pion pion;
@@ -23,6 +23,6 @@ public class IA_facile extends IA {
             deplacements = pion.getDeplacement(jeu.n.plateau);
 
         }while (deplacements.size() == 0);
-        return jeu.jouer(new Coup(pion.getCoordonne(), deplacements.get(ThreadLocalRandom.current().nextInt(0, deplacements.size()))));
+        return new Coup(pion.getCoordonne(), deplacements.get(ThreadLocalRandom.current().nextInt(0, deplacements.size())));
     }
 }

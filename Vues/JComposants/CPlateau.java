@@ -3,7 +3,6 @@ package Vues.JComposants;
 import Modele.*;
 import Patterns.Observateur;
 import Vues.AdaptateurSouris;
-import Vues.AdaptateurSouris2;
 import Vues.CollecteurEvenements;
 import Vues.Theme;
 
@@ -18,26 +17,25 @@ public class CPlateau extends JPanel implements Observateur {
 
     private Pion pionSelec;
     int bordureHaut, bordureGauche, hauteurCase, largeurCase;
-    private int brillanceX = -1;
-    private int brillanceY = -1;
 
     private ArrayList<Coordonne> destinationsPossibles = new ArrayList<>();
-    private Point pointSelec;
     private Image image;
 
     private boolean drawFleche = true;
-    private boolean remettreFleche = false;
 
-    private Pion survole;
+    private Point dessineCroix;
+
+    private AdaptateurSouris adaptateurSouris;
+    int compteur;
+
 
 
     public CPlateau(CollecteurEvenements c) {
         controleur = c;
-        //AdaptateurSouris2 adaptateurSouris = new AdaptateurSouris2(c, this);
-        //System.out.println("HERE"+controleur.jeu());
-        AdaptateurSouris adaptateurSouris = new AdaptateurSouris(c, this);
+        adaptateurSouris = new AdaptateurSouris(c, this);
         addMouseListener(adaptateurSouris);
         addMouseMotionListener(adaptateurSouris);
+        compteur = 0;
     }
 
     @Override
@@ -51,20 +49,15 @@ public class CPlateau extends JPanel implements Observateur {
         test_annuler_refaire();
         drawPlateau(g2d);
         drawContenu(g2d);
-
         drawMouvIA(g2d);
-        if(controleur.jeu().getAideIA() != null){
-            Coup aide = controleur.jeu().getAideIA();
-            int l_dep = aide.depart.getX();
-            int c_dep = aide.depart.getY();
-            int l_arr = aide.arrivee.getX();
-            int c_arr = aide.arrivee.getY();
+        drawAideIA(g2d);
+        drawCroixRouge(g2d);
 
-            g2d.setColor(Color.green);
-            g2d.fillRect((largeurCase) * c_dep + 5, (hauteurCase) * l_dep + 5, largeurCase - 6, hauteurCase - 6);
-
-            g2d.fillRect((largeurCase) * c_arr + 5, (hauteurCase) * l_arr + 5, largeurCase - 6, hauteurCase - 6);
-            drawContenu(g2d);
+        if (controleur.jeu().partieTerminee() && compteur == 0){
+            removeMouseListener(adaptateurSouris);
+            removeMouseMotionListener(adaptateurSouris);
+            setPionEnDeplacement(null);
+            compteur =1;
         }
 
     }
@@ -80,7 +73,6 @@ public class CPlateau extends JPanel implements Observateur {
             setSurvole(null);
             setPointSelec(null);
             miseAJour();
-
         }
     }
 
@@ -110,8 +102,20 @@ public class CPlateau extends JPanel implements Observateur {
 
         for (int l = 0; l < 9; l++) {
             for (int c = 0; c < 9; c++) {
+
                 // -- Dessin des pions, forteresses, roi, konakis
-                if (getPionSelec() != null && l == getPionSelec().getX() && c == getPionSelec().getY()) { //Ici on efface le pion selec
+                if(controleur.jeu().partieTerminee()){
+                    setPionSelec(null);
+                    //setPionEnDeplacement(null);
+                }
+
+                if (getPionSelec() != null && l == getPionSelec().getX() && c == getPionSelec().getY() && controleur.jeu().getAideIA()!= null &&
+                        l==controleur.jeu().getAideIA().depart.getX() && c==controleur.jeu().getAideIA().depart.getY()){
+                    g.drawImage(getImage(), x + 4, y + 4, largeurCase - 4, hauteurCase - 4, this); //Permet d'afficher le pion si il est selectionne avant l'aide de l'IA
+                }
+
+
+                if (getPionSelec() != null && l == getPionSelec().getX() && c == getPionSelec().getY() && !controleur.jeu().partieTerminee()) { //Ici on efface le pion selec, sauf si partie_fini
                     x += largeurCase;
                     if (c % 2 == 0)
                         x++;
@@ -119,11 +123,17 @@ public class CPlateau extends JPanel implements Observateur {
                 }
 
                 if (n.estAttaquant(l, c)) {
-                    g.drawImage(Theme.instance().noir_inactif(), x +(largeurCase/2)-25, y + (hauteurCase/2)-25, 50, 50, this);
+                    int tal = (largeurCase / 4) * 3;
+                    int tah = (hauteurCase / 4) * 3;
+                    g.drawImage(Theme.instance().noir_inactif(), x + (largeurCase / 2) - (tal / 2), y + (hauteurCase / 2) - (tah / 2), tal, tah, this);
                 } else if (n.estRoi(l, c)) {
-                    g.drawImage(Theme.instance().roi(), x +(largeurCase/2)-30, y + (hauteurCase/2)-30, 60, 60, this);
+                    int trl = (largeurCase / 4) * 3;
+                    int trh = (hauteurCase / 4) * 3;
+                    g.drawImage(Theme.instance().roi(), x + (largeurCase / 2) - (trl / 2), y + (hauteurCase / 2) - (trh / 2), trl, trh, this);
                 } else if (n.estDefenseur(l, c)) {
-                    g.drawImage(Theme.instance().blanc_inactif(), x +(largeurCase/2)-25, y + (hauteurCase/2)-25, 50, 50, this);
+                    int tdl = (largeurCase / 4) * 3;
+                    int tdh = (hauteurCase / 4) * 3;
+                    g.drawImage(Theme.instance().blanc_inactif(), x + (largeurCase / 2) - (tdl / 2), y + (hauteurCase / 2) - (tdh / 2), tdl, tdh, this);
                 }
                 x += largeurCase;
                 if (c % 2 == 0)
@@ -155,9 +165,7 @@ public class CPlateau extends JPanel implements Observateur {
                         autorise = true;
                     }
                 }
-            }
-
-            //Jusqu'a la
+            }//Jusqu'a la
 
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
@@ -176,6 +184,9 @@ public class CPlateau extends JPanel implements Observateur {
                 y += hauteurCase;
                 x = bordureGauche;
             }
+        }
+        else if(controleur.jeu().partieTerminee()){
+            drawContenu(g2d); //bien affiche le dernier coup en clic-clic
         }
     }
 
@@ -211,12 +222,6 @@ public class CPlateau extends JPanel implements Observateur {
         if (controleur.jeu().getJoueur1().estHumain() || controleur.jeu().getJoueur2().estHumain()) {
             drawDestination(g2d);
             drawDeplacement(g2d);
-            //drawSurbrillance(g2d);
-
-            //System.out.println("here");
-            if ((controleur.jeu().getCoordooneDepartIA() != null)){//TODO delete
-                //System.out.println(controleur.jeu().getCoordooneDepartIA() +","+ getDrawFleche());
-            }
 
             if ((controleur.jeu().getCoordooneDepartIA() != null && getDrawFleche() == true)) {
                 Coordonne depart = controleur.jeu().getCoordooneDepartIA();
@@ -225,23 +230,25 @@ public class CPlateau extends JPanel implements Observateur {
                 int c = depart.getY();
                 if (controleur.jeu().n.estKonakis(l,c)){
                     //on ne dessine pas la fleche sur le konaki. on comprend que le roi est parti de son trone
-                }else{
+                }else {
+                    int tfl = largeurCase / 2;
+                    int tfh = hauteurCase / 2;
                     switch (calcul_dir(depart, controleur.jeu().getCoordooneArriveIA())) {
                         case 0:
                             // Déplacement vers le bas
-                            g2d.drawImage(Theme.instance().fleche_bas(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
+                            g2d.drawImage(Theme.instance().fleche_bas(), c * hauteurCase + (hauteurCase / 4), l * largeurCase + (largeurCase / 2), tfl, tfh, this);
                             break;
                         case 1:
                             //vers le haut
-                            g2d.drawImage(Theme.instance().fleche_haut(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
+                            g2d.drawImage(Theme.instance().fleche_haut(), c * hauteurCase + (hauteurCase / 4), (l * largeurCase), tfl, tfh, this);
                             break;
                         case 2:
                             // Déplacement vers la droite
-                            g2d.drawImage(Theme.instance().fleche_droite(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
+                            g2d.drawImage(Theme.instance().fleche_droite(), (c * hauteurCase) + (hauteurCase / 2), l * largeurCase + (largeurCase / 4), tfl, tfh, this);
                             break;
                         case 3:
                             //vers la gauche
-                            g2d.drawImage(Theme.instance().fleche_gauche(), c * hauteurCase, l * largeurCase, largeurCase - 5, hauteurCase - 5, this);
+                            g2d.drawImage(Theme.instance().fleche_gauche(), (c * hauteurCase), l * largeurCase + (largeurCase / 4), tfl, tfh, this);
                             break;
                     }
 
@@ -256,6 +263,44 @@ public class CPlateau extends JPanel implements Observateur {
         }
     }
 
+    private void drawAideIA(Graphics2D g2d) {
+        if(controleur.jeu().getAideIA() != null){
+            Coup aide = controleur.jeu().getAideIA();
+            int l_dep = aide.depart.getX();
+            int c_dep = aide.depart.getY();
+            int l_arr = aide.arrivee.getX();
+            int c_arr = aide.arrivee.getY();
+
+            g2d.setColor(Color.green);
+            g2d.fillRect((largeurCase) * c_dep + 5, (hauteurCase) * l_dep + 5, largeurCase - 6, hauteurCase - 6);
+
+            g2d.fillRect((largeurCase) * c_arr + 5, (hauteurCase) * l_arr + 5, largeurCase - 6, hauteurCase - 6);
+            drawContenu(g2d);
+        }
+    }
+
+    private void drawCroixRouge(Graphics2D g2d) {
+        if(dessineCroix != null){
+            int x = bordureGauche;
+            int y = bordureHaut;
+            int l = dessineCroix.x;
+            int c = dessineCroix.y;
+
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+
+                    if (i == l && c == j) {
+                        g2d.drawImage(Theme.instance().croix(), x +4, y + 4, largeurCase -5, hauteurCase -5, this);
+                        dessineCroix = null;
+                        return;
+                    }
+                    x += largeurCase + 1;
+                }
+                y += hauteurCase;
+                x = bordureGauche;
+            }
+        }
+    }
 
     public int calcul_dir(Coordonne depart, Coordonne coordonneArriveIA) {
         int deltaX = coordonneArriveIA.getX() - depart.getX();
@@ -281,8 +326,6 @@ public class CPlateau extends JPanel implements Observateur {
 
 
     public void updateBrillanceSelection(int l, int c) {
-        this.brillanceX = l;
-        this.brillanceY = c;
         repaint();
     }
 
@@ -316,13 +359,11 @@ public class CPlateau extends JPanel implements Observateur {
     }
 
     public void setPionEnDeplacement(Point pionEnDeplacement) {
-
         this.pionEnDeplacement = pionEnDeplacement;
         miseAJour(); // Ajoutez cette ligne pour actualiser le plateau
     }
 
     public void setPointSelec(Point point) {
-        this.pointSelec = point;
     }
 
     public void setPionSelec(Pion pion) {
@@ -331,10 +372,6 @@ public class CPlateau extends JPanel implements Observateur {
 
     public Pion getPionSelec() {
         return pionSelec;
-    }
-
-    public Point getPointSelec() {
-        return pointSelec;
     }
 
     @Override
@@ -358,10 +395,12 @@ public class CPlateau extends JPanel implements Observateur {
     }
 
     public void setSurvole(Pion caseSurvole) {
-        survole = caseSurvole;
+        miseAJour();
     }
 
-    public Pion getSurvole(){
-        return survole;
+    public void setDessineCroix(Point point) {
+        dessineCroix = point;
     }
+
+
 }

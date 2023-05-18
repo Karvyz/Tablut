@@ -30,8 +30,6 @@ class VueNiveau extends JPanel implements Observateur {
         c.jeu().ajouteObservateur(plateau);
 
         setBackground(new Color(255, 255, 255));
-//        setBorder(BorderFactory.createEmptyBorder(140, 100, 140, 100));
-//        setBorder(BorderFactory.createEmptyBorder(0, 100, 0, 100));
         setOpaque(false);
         setLayout(new GridLayout(1, 3, 10, 0));
 
@@ -52,47 +50,47 @@ class VueNiveau extends JPanel implements Observateur {
             }
         });
 
-        // -- Add Listener
-        //plateau.addMouseListener(new AdaptateurSouris2(c, plateau)); //TODO a voir si c'est possible
-
         top = BorderFactory.createMatteBorder(10, 0, 0, 0, Color.WHITE);
         bottom = BorderFactory.createMatteBorder(0, 0, 10, 0, Color.BLACK);
     }
 
     @Override
     public void miseAJour() {
-        if (controleur.jeu().partieTerminee()) {
-            //plateau.miseAJour();
-            //controleur.jeu().metAJour();
+        if (controleur.jeu().getCoupJoue()){
+            parent.ModifBoutonUndo();
+            parent.ModifBoutonRedo();
+            controleur.jeu().setCoupJoue(false);
+        }
+
+        if (controleur.jeu().partieTerminee() && controleur.jeu().getConsulter() == false) {
             parent.showEnd();
-            //controleur.jeu().reset();
             return;
         }
 
-        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0]);
-        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0]);
+
+        j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
+        j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);
         texteJeu.set(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
 
-        //texteJeu.setOpaque(true);
 
-        Border border = BorderFactory.createLineBorder(Color.GREEN, 8);
-        //new Color(9, 106, 9)
+        Color color = new Color(0xE5E21A);
+
+        Border border = BorderFactory.createLineBorder(color, 8);
 
         Border border2 = BorderFactory.createLineBorder(Color.WHITE, 8);
-        // Modif couleur arrière plan du joueur courant
+        // Modif couleur du joueur courant
         if (controleur.jeu().getJoueurCourant() == controleur.jeu().getJoueur1()) {
-            // Créez une instance de bordure avec un style spécifique
             j2.p.setBorder(null);
             j2.p.setBorder(border2);
             j2.n.setForeground(Color.WHITE);
             j1.p.setBorder(border);
-            j1.n.setForeground(Color.GREEN);
+            j1.n.setForeground(color);
         } else {
             j1.p.setBorder(null);
             j1.p.setBorder(border2);
             j1.n.setForeground(Color.WHITE);
             j2.p.setBorder(border);
-            j2.n.setForeground(Color.GREEN);
+            j2.n.setForeground(color);
         }
     }
 }

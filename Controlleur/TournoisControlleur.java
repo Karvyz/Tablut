@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class TournoisControlleur {
     ArrayList<IA> ias;
     int nbManches;
+    static int limite_coups = 200;
     ArrayList<ArrayList<Integer>> victoires;
     ArrayList<ArrayList<Integer>> defaites;
     public TournoisControlleur(ArrayList<IA> ias, int nbManches) {
@@ -25,11 +26,12 @@ public class TournoisControlleur {
                 match(ias.get(i), ias.get(j), i, j);
             }
         }
-        System.out.println("Victoires");
+        ias.forEach(System.out::println);
+        System.out.println("Victoires En attaque");
         for (ArrayList<Integer> victoire : victoires) {
             System.out.println(victoire);
         }
-        System.out.println("Defaites");
+        System.out.println("Victoires en defense");
         for (ArrayList<Integer> defaite : defaites) {
             System.out.println(defaite);
         }
@@ -62,10 +64,15 @@ public class TournoisControlleur {
 
         private int play(){
             int valeur_fin = 0;
+            int nb_coups = 0;
             while ((valeur_fin = ((IA)jeu.getJoueurCourant()).joue()) == 0) {
                 if (jeu.n.PlusdePion(jeu.get_num_JoueurCourant())) {
                     jeu.setEnCours(false);
                     System.out.println("Le joueur blanc a gagné car l'attaquant n'a plus de pion");
+                }
+                nb_coups++;
+                if (nb_coups > limite_coups) {
+                    return 3;
                 }
             }
             return valeur_fin;
