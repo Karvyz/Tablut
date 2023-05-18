@@ -46,7 +46,7 @@ class VueJeu extends JPanel {
         setLayout(new OverlayLayout(this));
 
         // Chargement des assets
-        background = Imager.getImageBuffer("assets/Mur.png");
+        background = Imager.getImageBuffer("assets/logo.png");
         // --
 
         JPanel contenu = new JPanel(new GridBagLayout());
