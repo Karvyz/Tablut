@@ -13,7 +13,7 @@ public class JoueursCreation {
             case IA_FACILE:
                 return new Controlleur.IA_facile(nom, roleJ, jeu);
             case IA_MOYEN:
-                return new IA_MonoEtage(nom, roleJ, jeu, new HeuristiqueMonteCarlo());
+                return new IA_MonoEtage(nom, roleJ, jeu, new HeuristiqueMonteCarlo(100));
             case IA_DIFFICILE:
                 return new Controlleur.IA_DifficileProfondeur(nom ,roleJ, jeu, new HeuristiqueLongLiveTheKing(), 4);
         }
