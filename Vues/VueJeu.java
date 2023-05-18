@@ -46,7 +46,7 @@ class VueJeu extends JPanel {
         setLayout(new OverlayLayout(this));
 
         // Chargement des assets
-        background = Imager.getImageBuffer("assets/Mur.png");
+        background = Imager.getImageBuffer("assets/logo.png");
         // --
 
         JPanel contenu = new JPanel(new GridBagLayout());
@@ -157,6 +157,7 @@ class VueJeu extends JPanel {
         menu.addActionListener((e) -> {
             endGameDialog.setVisible(false);
             controls[0].setEnabled(false);
+            controls[1].setEnabled(true);
             controls[2].setEnabled(false);
             //sauvegarder.setEnabled(true);
             controleur.jeu().reset();
@@ -167,6 +168,7 @@ class VueJeu extends JPanel {
         retry.addActionListener((e) -> {
             endGameDialog.setVisible(false);
             controls[0].setEnabled(false);
+            controls[1].setEnabled(true);
             controls[2].setEnabled(false);
             //sauvegarder.setEnabled(true);
             controleur.jeu().setCoordooneJouerIA(null,null);
@@ -332,6 +334,7 @@ class VueJeu extends JPanel {
             texteJeu = new TexteJeu(0, 0);
             controleur.afficherJeu();
             controls[0].setEnabled(false);
+            controls[1].setEnabled(true);
             controls[2].setEnabled(false);
             sauvegarder.setEnabled(true);
         });
