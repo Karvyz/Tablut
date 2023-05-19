@@ -30,7 +30,7 @@ public class VueMenuParties extends JPanel {
     public VueMenuParties(CollecteurEvenements controleur) {
         this.controleur = controleur;
 
-        menuPrincipalButton = new CButton();
+        menuPrincipalButton = new CButton().blanc();
         loadButton = new CButton().vert();
         deleteButton = new CButton().rouge();
 
