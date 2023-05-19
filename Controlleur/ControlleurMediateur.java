@@ -111,7 +111,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
             }
 
             if (fileName.length() > 18) {
-                handleSaveError("Le nom de fichier ne peut pas dépasser 19 caractères");
+                handleSaveError("Le nom de fichier ne peut pas dépasser 18 caractères");
                 continue;
             }
 
