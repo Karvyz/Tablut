@@ -125,7 +125,7 @@ public class CButton extends JButton {
     public CButton big() {
         radius = 45;
 
-        setFont(new Font("Arial", Font.BOLD, 24));
+        setFont(new Font("Arial", Font.BOLD, 28));
         setBorder(new EmptyBorder(10, 35, 10, 35));
 
         return this;

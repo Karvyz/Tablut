@@ -1,20 +1,21 @@
 package Vues;
 
+import Modele.Data_Niveau;
 import Vues.JComposants.CButton;
 import Vues.JComposants.CJScrollBar;
+import Vues.JComposants.CLabel;
 import Vues.JComposants.CListCellRenderer;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.io.FilenameFilter;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.SimpleFormatter;
 
-public class VueMenuParties extends JPanel {
+public class VueMenuParties2 extends JPanel {
     private JList<String> fileList;
     private DefaultListModel<String> fileListModel;
     private JButton menuPrincipalButton;
@@ -23,14 +24,19 @@ public class VueMenuParties extends JPanel {
     private JButton deleteButton;
     private CollecteurEvenements controleur;
 
+    JPanel infoPanel;
+    CLabel label1, label2, label3, label4;
+    String attaquant, defenseur;
+
     Image background;
 
     Vues vues;
 
-    public VueMenuParties(CollecteurEvenements controleur) {
+    public VueMenuParties2(CollecteurEvenements controleur) {
         this.controleur = controleur;
 
         menuPrincipalButton = new CButton().blanc();
+        menuPrincipalButton.setBackground(new Color(0xD9D9D9));
         loadButton = new CButton().vert();
         deleteButton = new CButton().rouge();
 
@@ -41,67 +47,19 @@ public class VueMenuParties extends JPanel {
     }
 
     private void initializeComponents() {
-        //setLayout(new GridLayout(8, 3, -1, -1));
         setLayout(new GridBagLayout());
 
-        /*
         // Espace vertical
         Box verticalSpace0 = Box.createVerticalBox();
-        verticalSpace0.add(Box.createVerticalStrut(2));
+        verticalSpace0.add(Box.createVerticalStrut(200));
         GridBagConstraints gspacer0 = new GridBagConstraints();
-        gspacer0.gridx = 1;
+        gspacer0.gridx = 0;
         gspacer0.gridy = 0;
-        gspacer0.gridwidth = 3;
+        gspacer0.gridwidth = 4;
         gspacer0.gridheight = 1;
-        gspacer0.fill = GridBagConstraints.HORIZONTAL;
+        gspacer0.fill = GridBagConstraints.VERTICAL;
         gspacer0.anchor = GridBagConstraints.CENTER;
         add(verticalSpace0, gspacer0);
-
-         */
-
-        /*
-        // Texte "Choisir une partie à charger ou à supprimer :" (label1)
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.gridwidth = 3;
-        gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.anchor = GridBagConstraints.CENTER;
-        final JLabel label1 = new JLabel();
-        Font label1Font = new Font("Arial", Font.BOLD, 20);
-        if (label1Font != null) label1.setFont(label1Font);
-        label1.setForeground(new Color(0x000000));
-        label1.setText("Choisir une partie à charger ou à supprimer :");
-        add(label1, gbc);
-
-        // Espaces vertical
-        Box verticalSpace1 = Box.createVerticalBox();
-        verticalSpace1.add(Box.createVerticalStrut(100));
-        GridBagConstraints gspacer1 = new GridBagConstraints();
-        gspacer1.gridx = 1;
-        gspacer1.gridy = 2;
-        gspacer1.gridwidth = 3;
-        gspacer1.gridheight = 1;
-        gspacer1.fill = GridBagConstraints.VERTICAL;
-        gspacer1.anchor = GridBagConstraints.CENTER;
-        add(verticalSpace1, gspacer1);
-
-         */
-
-        // Espaces horizontal
-        Box horizontalSpace1 = Box.createHorizontalBox();
-        horizontalSpace1.add(Box.createHorizontalStrut(this.getWidth()/4));
-        GridBagConstraints gspacer2 = new GridBagConstraints();
-        gspacer2.gridx = 0;
-        gspacer2.gridy = 0;
-        gspacer2.gridwidth = 1;
-        gspacer2.gridheight = 1;
-        gspacer2.weightx = 0.25;
-        gspacer2.fill = GridBagConstraints.HORIZONTAL;
-        //gspacer2.anchor = GridBagConstraints.CENTER;
-        add(horizontalSpace1, gspacer2);
-
 
         // Liste des parties sauvegardées (fileList)
         fileListModel = new DefaultListModel<>();
@@ -116,6 +74,7 @@ public class VueMenuParties extends JPanel {
         // Ajout de l'écouteur de double-clic ici
         fileList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
+                refresh();
                 JList list = (JList) evt.getSource();
                 if (evt.getClickCount() == 2) {  // Double-clic
                     int index = list.locationToIndex(evt.getPoint());
@@ -141,12 +100,12 @@ public class VueMenuParties extends JPanel {
         });
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 2;
+        gbc.gridheight = 7;
         gbc.weightx = 0.5;
-        gbc.fill = GridBagConstraints.NONE;
+        gbc.fill = GridBagConstraints.VERTICAL;
         gbc.anchor = GridBagConstraints.CENTER;
 
         JScrollPane scrollPane = new JScrollPane(fileList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -157,53 +116,105 @@ public class VueMenuParties extends JPanel {
         scrollPane.setVerticalScrollBar(new CJScrollBar());
         scrollPane.setPreferredSize(new Dimension(400, 100));
         scrollPane.setMaximumSize(new Dimension(400, -1));
-        //scrollPane.setBackground(new Color(0x80000000, true));
         add(scrollPane, gbc);
 
-        // Espaces horizontal
-        Box horizontalSpace2 = Box.createHorizontalBox();
-        horizontalSpace2.add(Box.createHorizontalStrut(this.getWidth()/4));
-        GridBagConstraints gspacer3 = new GridBagConstraints();
-        gspacer3.gridx = 2;
-        gspacer3.gridy = 0;
-        gspacer3.gridwidth = 1;
-        gspacer3.gridheight = 1;
-        gspacer3.weightx = 0.25;
-        gspacer3.fill = GridBagConstraints.HORIZONTAL;
-        gspacer3.anchor = GridBagConstraints.CENTER;
-        add(horizontalSpace2, gspacer3);
+        // Colonne vide
+        Box verticalSpace1 = Box.createVerticalBox();
+        verticalSpace1.add(Box.createVerticalStrut(10));
+        GridBagConstraints gspacer1 = new GridBagConstraints();
+        gspacer1.gridx = 2;
+        gspacer1.gridy = 1;
+        gspacer1.gridwidth = 1;
+        gspacer1.gridheight = 7;
+        gspacer1.weighty = 0.25;
+        gspacer1.fill = GridBagConstraints.VERTICAL;
+        gspacer1.anchor = GridBagConstraints.CENTER;
+        add(verticalSpace1, gspacer1);
 
-        // Espaces vertical
-        Box verticalSpace2 = Box.createVerticalBox();
-        verticalSpace2.add(Box.createVerticalStrut(100));
-        GridBagConstraints gspacer4 = new GridBagConstraints();
-        gspacer4.gridx = 1;
-        gspacer4.gridy = 1;
-        gspacer4.gridwidth = 3;
-        gspacer4.gridheight = 1;
-        gspacer4.fill = GridBagConstraints.VERTICAL;
-        gspacer4.anchor = GridBagConstraints.CENTER;
-        add(verticalSpace2, gspacer4);
+        // JPanel contenant les infos de la partie selectionnée
+        infoPanel = new JPanel();
+        infoPanel.setLayout(new GridBagLayout());
+        infoPanel.setMinimumSize(new Dimension(300, 100));
+        infoPanel.setPreferredSize(new Dimension(300, 100));
+        infoPanel.setMaximumSize(new Dimension(300, 100));
+        infoPanel.setBackground(new Color(0x99000000, true));
+        infoPanel.setVisible(true);
+        infoPanel.setOpaque(false);
 
-        // Panel pour les boutons "Charger la partie" et "Supprimer la partie"
-        JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridLayout(1, 2, -1, -1));
-        panel1.setOpaque(false);
+        // Nom de la partie (label1)
+        GridBagConstraints gbc1 = new GridBagConstraints();
+        gbc1.gridx = 0;
+        gbc1.gridy = 0;
+        gbc1.gridwidth = 1;
+        gbc1.gridheight = 1;
+        gbc1.fill = GridBagConstraints.HORIZONTAL;
+        gbc1.anchor = GridBagConstraints.WEST;
+        label1 = new CLabel("");
+        infoPanel.add(label1, gbc1);
 
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.CENTER;
-        add(panel1, gbc);
+        // Date de la partie
+        GridBagConstraints gbc2 = new GridBagConstraints();
+        gbc2.gridx = 0;
+        gbc2.gridy = 1;
+        gbc2.gridwidth = 1;
+        gbc2.gridheight = 1;
+        gbc2.fill = GridBagConstraints.HORIZONTAL;
+        gbc2.anchor = GridBagConstraints.WEST;
+        label2 = new CLabel("");
+        infoPanel.add(label2, gbc2);
+
+        // Nom de l'attaquant
+        GridBagConstraints gbc3 = new GridBagConstraints();
+        gbc3.gridx = 0;
+        gbc3.gridy = 2;
+        gbc3.gridwidth = 1;
+        gbc3.gridheight = 1;
+        gbc3.fill = GridBagConstraints.HORIZONTAL;
+        gbc3.anchor = GridBagConstraints.WEST;
+        label3 = new CLabel("");
+        attaquant = "";
+        label3.setText(attaquant);
+        infoPanel.add(label3, gbc3);
+
+        // Nom du défenseur
+        GridBagConstraints gbc4 = new GridBagConstraints();
+        gbc4.gridx = 0;
+        gbc4.gridy = 3;
+        gbc4.gridwidth = 1;
+        gbc4.gridheight = 1;
+        gbc4.fill = GridBagConstraints.HORIZONTAL;
+        gbc4.anchor = GridBagConstraints.WEST;
+        label4 = new CLabel("");
+        defenseur = "";
+        label4.setText(defenseur);
+        infoPanel.add(label4, gbc4);
+
+        // Ajout du JPanel infoPanel
+        GridBagConstraints gbc5 = new GridBagConstraints();
+        gbc5.gridx = 3;
+        gbc5.gridy = 1;
+        gbc5.gridwidth = 1;
+        gbc5.gridheight = 2;
+        gbc5.weightx = 0.25;
+        gbc5.fill = GridBagConstraints.NONE;
+        gbc5.anchor = GridBagConstraints.CENTER;
+        add(infoPanel, gbc5);
+
+
+        // Bouton "Charger"
+        GridBagConstraints gbc6 = new GridBagConstraints();
+        gbc6.gridx = 3;
+        gbc6.gridy = 3;
+        gbc6.gridwidth = 1;
+        gbc6.gridheight = 1;
+        gbc6.fill = GridBagConstraints.NONE;
+        gbc6.anchor = GridBagConstraints.CENTER;
+        gbc6.insets = new Insets(5, 0, 5, 0);
 
         loadButton.setFocusable(true);
         loadButton.setHideActionText(false);
         loadButton.setHorizontalTextPosition(SwingConstants.LEFT);
         loadButton.setText("Charger Partie");
-        //loadButton.setPreferredSize(new Dimension(100, 50));
 
         loadButton.addActionListener(new ActionListener() {
             @Override
@@ -222,15 +233,17 @@ public class VueMenuParties extends JPanel {
             }
         });
 
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.CENTER;
-        panel1.add(loadButton, gbc);
-        //add(loadButton, gbc);
+        add(loadButton, gbc6);
+
+        // Bouton "Supprimer"
+        GridBagConstraints gbc7 = new GridBagConstraints();
+        gbc7.gridx = 3;
+        gbc7.gridy = 4;
+        gbc7.gridwidth = 1;
+        gbc7.gridheight = 1;
+        gbc7.fill = GridBagConstraints.NONE;
+        gbc7.anchor = GridBagConstraints.CENTER;
+        gbc7.insets = new Insets(5, 0, 5, 0);
 
         deleteButton.setHideActionText(false);
         deleteButton.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -267,35 +280,29 @@ public class VueMenuParties extends JPanel {
             }
         });
 
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.CENTER;
-        panel1.add(deleteButton, gbc);
+        add(deleteButton, gbc7);
 
-        // Espace vertical
-        Box verticalSpace3 = Box.createVerticalBox();
-        verticalSpace3.add(Box.createVerticalStrut(100));
-        GridBagConstraints gspacer5 = new GridBagConstraints();
-        gspacer5.gridx = 1;
-        gspacer5.gridy = 3;
-        gspacer5.gridwidth = 3;
-        gspacer5.gridheight = 1;
-        gspacer5.fill = GridBagConstraints.VERTICAL;
-        gspacer5.anchor = GridBagConstraints.CENTER;
-        add(verticalSpace3, gspacer5);
+        // Espaces vertical
+        Box verticalSpace2 = Box.createVerticalBox();
+        GridBagConstraints gbc8 = new GridBagConstraints();
+        gbc8.gridx = 3;
+        gbc8.gridy = 5;
+        gbc8.gridwidth = 1;
+        gbc8.gridheight = 2;
+        gbc8.fill = GridBagConstraints.BOTH;
+        gbc8.anchor = GridBagConstraints.CENTER;
+        gbc8.weighty = 1.0;
+        add(verticalSpace2, gbc8);
 
-        gbc = new GridBagConstraints();
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.insets = new Insets(0, 0, 10, 0);
+        // Bouton "Menu Principal"
+        GridBagConstraints gbc9 = new GridBagConstraints();
+        gbc9.gridx = 3;
+        gbc9.gridy = 7;
+        gbc9.gridwidth = 1;
+        gbc9.gridheight = 1;
+        gbc9.fill = GridBagConstraints.NONE;
+        gbc9.anchor = GridBagConstraints.CENTER;
+        gbc9.insets = new Insets(0, 0, 10, 0);
         menuPrincipalButton.setText("Menu Principal");
         menuPrincipalButton.addActionListener(new ActionListener() {
             @Override
@@ -303,7 +310,19 @@ public class VueMenuParties extends JPanel {
                 controleur.afficherMenuPrincipal();
             }
         });
-        add(menuPrincipalButton, gbc);
+        add(menuPrincipalButton, gbc9);
+
+        // Espaces vertical
+        Box verticalSpace3 = Box.createVerticalBox();
+        verticalSpace3.add(Box.createVerticalStrut(100));
+        GridBagConstraints gbc10 = new GridBagConstraints();
+        gbc10.gridx = 0;
+        gbc10.gridy = 8;
+        gbc10.gridwidth = 4;
+        gbc10.gridheight = 1;
+        gbc10.fill = GridBagConstraints.BOTH;
+        gbc10.anchor = GridBagConstraints.CENTER;
+        add(verticalSpace3, gbc10);
 
         refreshFileList();
     }
@@ -326,6 +345,55 @@ public class VueMenuParties extends JPanel {
                 }
             }
         }
+    }
+
+    public void refresh() {
+        if (fileList.getSelectedValue() == null) {
+            infoPanel.setVisible(false);
+            loadButton.setEnabled(false);
+        } else {
+            infoPanel.setVisible(true);
+            loadButton.setEnabled(true);
+            // Récupération partie selectionnée
+            String selectedText = fileList.getSelectedValue();
+            String name = selectedText.substring(0, selectedText.lastIndexOf("-") - 1);
+            label1.setText(name);
+
+            // Récupération date partie selectionnée
+            String date = selectedText.substring(selectedText.lastIndexOf("-") + 2);
+            label2.setText(date);
+
+            Data_Niveau data_niveau;
+
+            try {
+                FileInputStream fileIn = new FileInputStream("Resources/save/" + name);
+                ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+
+                data_niveau = (Data_Niveau) objectIn.readObject();
+                attaquant = data_niveau.attaquant.nom();
+                defenseur = data_niveau.defenseur.nom();
+
+                objectIn.close();
+                fileIn.close();
+
+            } catch (FileNotFoundException e) {
+                System.err.println("Fichier non trouvé : " + name);
+                return;
+            } catch (EOFException | InvalidClassException e) {
+                System.err.println("Erreur lors de la lecture du fichier : " + name);
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            } catch (ClassNotFoundException e) {
+                System.err.println("Classe Data_Niveau introuvable");
+                return;
+            }
+
+            label3.setText("Attaquant : " + attaquant);
+            label4.setText("Défenseur : " + defenseur);
+        }
+
     }
 
     @Override
