@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.io.*;
 import java.util.Random;
 
-public class ControlleurMediateur implements CollecteurEvenements{
+public class ControlleurMediateur implements CollecteurEvenements {
 
     Vues vues;
 
@@ -19,7 +19,6 @@ public class ControlleurMediateur implements CollecteurEvenements{
     final int lenteurAttente = 50;
     int decompte;
     public boolean Stop;
-
 
 
     public ControlleurMediateur() {
@@ -88,7 +87,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
         vues.restaurePartie();
         Stop = false;
         jeu.setConsulter(false);
-        if(!jeu.pileIA_annule.isEmpty()){
+        if (!jeu.pileIA_annule.isEmpty()) {
             Coup a_remettre = jeu.pileIA_annule.peek();
             jeu.setCoordooneJouerIA(a_remettre.depart, a_remettre.arrivee);
         }
@@ -96,35 +95,52 @@ public class ControlleurMediateur implements CollecteurEvenements{
     }
 
     public void saveGame() {
-        String fileName = JOptionPane.showInputDialog(null, "Entrez le nom du fichier de sauvegarde:", "Sauvegarde", JOptionPane.PLAIN_MESSAGE);
+        String fileName = null;
+        while (true) {
+            fileName = JOptionPane.showInputDialog(null, "Entrez le nom du fichier de sauvegarde (max 18 caractères) :", "Sauvegarde", JOptionPane.PLAIN_MESSAGE);
 
-        if (fileName != null && !fileName.trim().isEmpty()) { //Verifie le nom
-            String directoryPath = "Resources/save/";
-            File directory = new File(directoryPath);
-            if (!directory.exists()) { //Verifie si le dossier existe ou le crée
-                if (!directory.mkdirs()) {
-                    handleSaveError("Échec de la création du dossier de sauvegarde");
-                    return;
-                }
-            } else if (!directory.isDirectory() || !directory.canWrite()) {
-                handleSaveError("Impossible d'écrire dans le dossier de sauvegarde");
-                return;
-            }
-            fileName = directoryPath + fileName + ".save";
-            File file = new File(fileName);
-
-            while (file.exists()) {
-                handleSaveError("Ce nom de fichier existe déjà. Veuillez en choisir un autre.");
+            if (fileName == null) {
+                // L'utilisateur a appuyé sur Annuler, sortir de la méthode
                 return;
             }
 
-            if (sauvegarderPartie(fileName)) {
-                JOptionPane.showMessageDialog(null, "Sauvegarde réussie", "Sauvegarde", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                handleSaveError("Échec de la sauvegarde");
+            fileName = fileName.trim();
+            if (fileName.isEmpty()) {
+                handleSaveError("Le nom de fichier ne peut pas être vide");
+                continue;
             }
-        } else if (fileName != null) {
-            handleSaveError("Le nom de fichier ne peut pas être vide");
+
+            if (fileName.length() > 18) {
+                handleSaveError("Le nom de fichier ne peut pas dépasser 19 caractères");
+                continue;
+            }
+
+            break;
+        }
+
+        String directoryPath = "Resources/save/";
+        File directory = new File(directoryPath);
+        if (!directory.exists()) { //Verifie si le dossier existe ou le crée
+            if (!directory.mkdirs()) {
+                handleSaveError("Échec de la création du dossier de sauvegarde");
+                return;
+            }
+        } else if (!directory.isDirectory() || !directory.canWrite()) {
+            handleSaveError("Impossible d'écrire dans le dossier de sauvegarde");
+            return;
+        }
+        fileName = directoryPath + fileName + ".save";
+        File file = new File(fileName);
+
+        while (file.exists()) {
+            handleSaveError("Ce nom de fichier existe déjà. Veuillez en choisir un autre.");
+            return;
+        }
+
+        if (sauvegarderPartie(fileName)) {
+            JOptionPane.showMessageDialog(null, "Sauvegarde réussie", "Sauvegarde", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            handleSaveError("Échec de la sauvegarde");
         }
     }
 
@@ -262,7 +278,7 @@ public class ControlleurMediateur implements CollecteurEvenements{
         }
     }
 
-    public void tictac2(){
+    public void tictac2() {
         if (animDemarrage == null) {
             int lenteurAnimation = Integer.parseInt(Configuration.instance().lirePropriete("LenteurAnimationDemarrage"));
             animDemarrage = new AnimationDemarrage(lenteurAnimation, this);
@@ -271,13 +287,14 @@ public class ControlleurMediateur implements CollecteurEvenements{
             animDemarrage.temps();
         }
     }
+
     /**
      * Méthode permettant la permutation des joueurs
      */
     public void tictac() {
 
         if (jeu.enCours()) {
-            if(jeu().debutPartie()){
+            if (jeu().debutPartie()) {
                 jeu.setDebutPartie(false);
             }
             if (jeu == null || jeu().partieTerminee()) {
@@ -290,12 +307,11 @@ public class ControlleurMediateur implements CollecteurEvenements{
             }
             //TODO ici l'IA joue instanténément donc problème pour annuler coup en IA vs Humain
             else if (jeu.joueurs[jeu.get_num_JoueurCourant()].tempsEcoule()) { //Un humain renvoi tjr false, une IA renvoi vrai lorsquelle a joué(jeu effectué dans tempsEcoule())
-                if(Stop == true){
+                if (Stop == true) {
                     return;
                 }
                 changeJoueur();
-            }
-            else if (decompte == 0) {
+            } else if (decompte == 0) {
                 if (jeu.joueurs[jeu.get_num_JoueurCourant()].estHumain() && jeu.joueurs[jeu.get_num_JoueurCourant()].aPionsNoirs())
                     System.out.println("C'est a vous de jouer : L'ATTAQUANT ");
                 else
@@ -336,11 +352,13 @@ public class ControlleurMediateur implements CollecteurEvenements{
             throw new IllegalStateException(message + " : médiateur de vues non fixé");
         }
     }
+
     private void verifierJeu(String message) {
         if (jeu == null) {
             throw new IllegalStateException(message + " : aucune partie commencée");
         }
     }
+
     @Override
     public void afficherDemarrage() {
         verifierMediateurVues("Impossible d'afficher le démarrage");
@@ -377,14 +395,13 @@ public class ControlleurMediateur implements CollecteurEvenements{
         vues.afficherJeu();
     }
 
-    public boolean getStop(){
+    public boolean getStop() {
         return Stop;
     }
 
 
-
     public String toString() {
-        if(jeu == null)
+        if (jeu == null)
             return "";
         return "Jeu {" +
                 "niveau: " + jeu.n +

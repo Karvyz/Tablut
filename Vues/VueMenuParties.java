@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.SimpleFormatter;
 
 public class VueMenuParties extends JPanel {
     private JList<String> fileList;
@@ -105,7 +108,7 @@ public class VueMenuParties extends JPanel {
         fileList = new JList<>(fileListModel);
         fileList.setCellRenderer(new CListCellRenderer());
         //fileList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-        fileList.setFont(new Font("Poppins", Font.PLAIN, 16)); // Changez la taille du texte des fichiers ici
+        fileList.setFont(new Font("Courier", Font.PLAIN, 15)); // Changez la taille du texte des fichiers ici
         fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fileList.setVisibleRowCount(5);
         fileList.setBackground(new Color(0x99000000, true));
@@ -206,6 +209,7 @@ public class VueMenuParties extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedFile = fileList.getSelectedValue();
+                selectedFile = selectedFile.substring(0, selectedFile.lastIndexOf("e") + 1);
                 if (selectedFile != null) {
                     //System.out.println(controleur);
                     if (controleur.chargerPartie("Resources/save/" + selectedFile) == false) {
@@ -236,6 +240,7 @@ public class VueMenuParties extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedFile = fileList.getSelectedValue();
+                selectedFile = selectedFile.substring(0, selectedFile.lastIndexOf("e") + 1);
                 if (selectedFile != null) {
                     // Affiche une boîte de dialogue de confirmation
                     int response = JOptionPane.showConfirmDialog(null,
@@ -316,7 +321,8 @@ public class VueMenuParties extends JPanel {
             fileListModel.clear();
             if (saveFiles != null) {
                 for (File saveFile : saveFiles) {
-                    fileListModel.addElement(saveFile.getName());
+                    String date = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date(saveFile.lastModified()));
+                    fileListModel.addElement(saveFile.getName() + " - " + date);
                 }
             }
         }

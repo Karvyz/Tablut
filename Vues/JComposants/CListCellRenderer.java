@@ -13,6 +13,14 @@ public class CListCellRenderer extends DefaultListCellRenderer {
 
         if (renderer instanceof JLabel) {
             ((JLabel) renderer).setBorder(new EmptyBorder(2, TEXT_PADDING, 2, 0));
+            String text = ((JLabel) renderer).getText();
+            String name = text.substring(0, text.lastIndexOf("-") - 1);
+            System.out.println(name);
+            String date = text.substring(text.lastIndexOf("-") + 2);
+            System.out.println(date);
+            int nameWidth = name.length();
+            System.out.println(nameWidth);
+            ((JLabel) renderer).setText(String.format("%s%s", name, padRight(date, 25 - nameWidth)));
         }
 
         //renderer.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -26,5 +34,9 @@ public class CListCellRenderer extends DefaultListCellRenderer {
         }
 
         return renderer;
+    }
+
+    private String padRight(String s, int n) {
+        return String.format("%" + n + "s", "") + s;
     }
 }
