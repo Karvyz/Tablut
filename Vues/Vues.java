@@ -12,7 +12,7 @@ public class Vues {
     JFrame frame;
     VueJeu vueJeu;
 
-    VueMenuParties vueMenuParties;
+    VueMenuParties2 vueMenuParties;
 
     final static String DEMARRAGE = "Démarrage";
     final static String MENU_PRINCIPAL = "Menu Principal";
@@ -30,7 +30,7 @@ public class Vues {
         vueJeu = vue;
     }
 
-    void fixerVueMenuParties(VueMenuParties vue) {
+    void fixerVueMenuParties(VueMenuParties2 vue) {
         vueMenuParties = vue;
     }
 
