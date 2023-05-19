@@ -571,6 +571,8 @@ class VueJeu extends JPanel {
         vueNiveau = new VueNiveau(controleur, this, j1, j2, texteJeu);
         controleur.jeu().ajouteObservateur(vueNiveau);
 
+        controls[1].setEnabled(true);
+
         topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         System.out.println(topFrame);
 
