@@ -139,7 +139,7 @@ public class VueMenuParties2 extends JPanel {
         infoPanel.setMaximumSize(new Dimension(300, 100));
         infoPanel.setBackground(new Color(0x99000000, true));
         infoPanel.setVisible(true);
-        infoPanel.setOpaque(false);
+        //infoPanel.setOpaque(false);
 
         // Nom de la partie (label1)
         GridBagConstraints gbc1 = new GridBagConstraints();
@@ -148,7 +148,7 @@ public class VueMenuParties2 extends JPanel {
         gbc1.gridwidth = 1;
         gbc1.gridheight = 1;
         gbc1.fill = GridBagConstraints.HORIZONTAL;
-        gbc1.anchor = GridBagConstraints.CENTER;
+        gbc1.anchor = GridBagConstraints.WEST;
         label1 = new CLabel("");
         infoPanel.add(label1, gbc1);
 
@@ -159,7 +159,7 @@ public class VueMenuParties2 extends JPanel {
         gbc2.gridwidth = 1;
         gbc2.gridheight = 1;
         gbc2.fill = GridBagConstraints.HORIZONTAL;
-        gbc2.anchor = GridBagConstraints.CENTER;
+        gbc2.anchor = GridBagConstraints.WEST;
         label2 = new CLabel("");
         infoPanel.add(label2, gbc2);
 
@@ -170,7 +170,7 @@ public class VueMenuParties2 extends JPanel {
         gbc3.gridwidth = 1;
         gbc3.gridheight = 1;
         gbc3.fill = GridBagConstraints.HORIZONTAL;
-        gbc3.anchor = GridBagConstraints.CENTER;
+        gbc3.anchor = GridBagConstraints.WEST;
         label3 = new CLabel("");
         attaquant = "";
         label3.setText(attaquant);
@@ -183,7 +183,7 @@ public class VueMenuParties2 extends JPanel {
         gbc4.gridwidth = 1;
         gbc4.gridheight = 1;
         gbc4.fill = GridBagConstraints.HORIZONTAL;
-        gbc4.anchor = GridBagConstraints.CENTER;
+        gbc4.anchor = GridBagConstraints.WEST;
         label4 = new CLabel("");
         defenseur = "";
         label4.setText(defenseur);
