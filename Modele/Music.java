@@ -4,6 +4,7 @@ import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -15,8 +16,8 @@ public class Music implements ActionListener {
     public Music() {
         try {
             // Charger le fichier audio
-            //AudioInputStream audioStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/Resources/Celtic-Ritual.wav"));
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/Resources/Narnia.wav"));
+            BufferedInputStream myStream = new BufferedInputStream(getClass().getResourceAsStream("/Resources/Narnia.wav"));
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(myStream);
 
             // Créer un Clip à partir du flux audio
             clip = AudioSystem.getClip();
