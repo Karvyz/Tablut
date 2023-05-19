@@ -139,7 +139,7 @@ public class VueMenuParties2 extends JPanel {
         infoPanel.setMaximumSize(new Dimension(300, 100));
         infoPanel.setBackground(new Color(0x99000000, true));
         infoPanel.setVisible(true);
-        //infoPanel.setOpaque(false);
+        infoPanel.setOpaque(false);
 
         // Nom de la partie (label1)
         GridBagConstraints gbc1 = new GridBagConstraints();
