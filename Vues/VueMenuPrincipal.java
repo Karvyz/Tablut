@@ -19,30 +19,30 @@ class VueMenuPrincipal extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
 
-        JButton nouvellePartie = new CButton("Nouvelle Partie");
+        JButton nouvellePartie = new CButton("Nouvelle Partie").big();
         nouvellePartie.addActionListener((e) -> {
             c.afficherMenuNouvellePartie();
         });
 
-        JButton chargerPartie = new CButton("Charger Partie");
+        JButton chargerPartie = new CButton("Charger Partie").big();
         chargerPartie.addActionListener((e) -> {
             c.afficherMenuChargerPartie();
 
         });
 
-        JButton QuickPlay = new CButton("Partie Rapide");
+        JButton QuickPlay = new CButton("Partie Rapide").big();
         QuickPlay.addActionListener((e) -> {
             c.nouvelleQuickPartie();
             c.afficherQuickPartie();
         });
 
-        JButton regles = new CButton("Règles");
+        JButton regles = new CButton("Règles").big();
         regles.addActionListener((e) -> {
             c.afficherRegles();
         });
         //JButton didacticiel = new CButton("Didacticiel");
 
-        JButton quitter = new CButton("Quitter");
+        JButton quitter = new CButton("Quitter").big();
         quitter.addActionListener((e) -> {
             c.toClose();
         });
