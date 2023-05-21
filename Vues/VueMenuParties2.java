@@ -7,6 +7,7 @@ import Vues.JComposants.CLabel;
 import Vues.JComposants.CListCellRenderer;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
@@ -69,7 +70,6 @@ public class VueMenuParties2 extends JPanel {
         fileList.setFont(new Font("Courier", Font.PLAIN, 15)); // Changez la taille du texte des fichiers ici
         fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fileList.setVisibleRowCount(5);
-        fileList.setBackground(new Color(0x99000000, true));
         fileList.setOpaque(false);
         // Ajout de l'écouteur de double-clic ici
         fileList.addMouseListener(new MouseAdapter() {
@@ -100,13 +100,30 @@ public class VueMenuParties2 extends JPanel {
         });
 
         JScrollPane scrollPane = new JScrollPane(fileList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setOpaque(false);
+        scrollPane.setOpaque(true);
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
         // Custom JScrollBar
         scrollPane.setVerticalScrollBar(new CJScrollBar());
         scrollPane.setPreferredSize(new Dimension(400, 100));
         scrollPane.setMaximumSize(new Dimension(400, -1));
+
+        // Définition de l'espacement entre les lignes
+        int lineSpace = 10;
+
+        // Création d'un EmptyBorder pour l'espacement entre les lignes
+        Border lineBorder = new EmptyBorder(lineSpace, 0, 0, 0);
+
+        // Création d'un MatteBorder pour le bord supérieur distinct
+        Color borderColor = Color.WHITE; // Couleur du bord supérieur
+        int topBorderThickness = 1; // Épaisseur du bord supérieur en pixels
+        Border topBorder = BorderFactory.createMatteBorder(topBorderThickness, 0, 0, 0, borderColor);
+
+        // Combinaison des bordures
+        Border compoundBorder = BorderFactory.createCompoundBorder(topBorder, lineBorder);
+
+        // Définition du Border pour le JScrollPane
+        scrollPane.setBorder(compoundBorder);
 
         // Ajouter le scrollPane dans un JPanel transparent avec le titre
         JPanel scrollPanePanel = new JPanel();
@@ -123,7 +140,10 @@ public class VueMenuParties2 extends JPanel {
         gbc.weighty = 0.2;
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
-        scrollPanePanel.add(new CLabel("Parties sauvegardées"), gbc);
+        CLabel title = new CLabel("Parties sauvegardées");
+        title.setFont(new Font("Poppins", Font.BOLD, 20));
+        title.setForeground(new Color(0xFFFFFF));
+        scrollPanePanel.add(title, gbc);
 
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -169,7 +189,7 @@ public class VueMenuParties2 extends JPanel {
         infoPanel.setMaximumSize(new Dimension(400, 100));
         infoPanel.setBackground(new Color(0x99000000, true));
         infoPanel.setVisible(true);
-        infoPanel.setOpaque(false);
+        //infoPanel.setOpaque(false);
 
         // Nom de la partie (label1)
         GridBagConstraints gbc1 = new GridBagConstraints();
@@ -179,8 +199,8 @@ public class VueMenuParties2 extends JPanel {
         gbc1.gridheight = 1;
         gbc1.fill = GridBagConstraints.NONE;
         gbc1.anchor = GridBagConstraints.CENTER;
-        label1 = new CLabel("").jaune();
-        label1.setText("Aucune partie selectionnée");
+        label1 = new CLabel("Aucune partie selectionnée").jaune();
+        label1.setOpaque(false);
         infoPanel.add(label1, gbc1);
 
         // Date de la partie
@@ -192,6 +212,7 @@ public class VueMenuParties2 extends JPanel {
         gbc2.fill = GridBagConstraints.NONE;
         gbc2.anchor = GridBagConstraints.CENTER;
         label2 = new CLabel("").jaune();
+        label2.setOpaque(false);
         infoPanel.add(label2, gbc2);
 
         // Nom de l'attaquant
@@ -205,6 +226,7 @@ public class VueMenuParties2 extends JPanel {
         label3 = new CLabel("").jaune();
         attaquant = "";
         label3.setText(attaquant);
+        label3.setOpaque(false);
         infoPanel.add(label3, gbc3);
 
         // Nom du défenseur
@@ -218,6 +240,7 @@ public class VueMenuParties2 extends JPanel {
         label4 = new CLabel("").jaune();
         defenseur = "";
         label4.setText(defenseur);
+        label4.setOpaque(false);
         infoPanel.add(label4, gbc4);
 
         // Ajout du JPanel infoPanel
@@ -240,7 +263,7 @@ public class VueMenuParties2 extends JPanel {
         gbc6.gridheight = 1;
         gbc6.fill = GridBagConstraints.NONE;
         gbc6.anchor = GridBagConstraints.CENTER;
-        gbc6.insets = new Insets(5, 0, 5, 0);
+        gbc6.insets = new Insets(10, 0, 5, 0);
 
         loadButton.setFocusable(true);
         loadButton.setHideActionText(false);
@@ -380,28 +403,22 @@ public class VueMenuParties2 extends JPanel {
 
     public void refresh() {
         if (fileList.getSelectedValue() == null) {
-            //infoPanel.setVisible(false);
             loadButton.setEnabled(false);
             label1.setText("Aucune partie selectionnée");
             label2.setText("");
             label3.setText("");
             label4.setText("");
         } else {
-            //infoPanel.setVisible(true);
             infoPanel.setBackground(new Color(0x99000000, true));
             loadButton.setEnabled(true);
             // Récupération partie selectionnée
             String selectedText = fileList.getSelectedValue();
             String name = selectedText.substring(0, selectedText.lastIndexOf("-") - 1);
-            label1.repaint();
             label1.setText(name);
-            label1.repaint();
 
             // Récupération date partie selectionnée
             String date = selectedText.substring(selectedText.lastIndexOf("-") + 2);
-            label2.repaint();
             label2.setText(date);
-            label2.repaint();
 
             Data_Niveau data_niveau;
 
@@ -430,16 +447,14 @@ public class VueMenuParties2 extends JPanel {
                 return;
             }
 
-            label3.repaint();
             label3.setText(attaquant);
-            label3.repaint();
-            label4.repaint();
             label4.setText(defenseur);
-            label4.repaint();
         }
 
-        //infoPanel.revalidate();
-        //infoPanel.repaint();
+        infoPanel.revalidate();
+        infoPanel.repaint();
+
+        repaint();
 
     }
 

@@ -6,13 +6,16 @@ import java.awt.*;
 
 public class CListCellRenderer extends DefaultListCellRenderer {
     private static final int TEXT_PADDING = 10;
+    private static final int VERTICAL_PADDING = 5; // Espacement vertical entre les éléments
+
 
     @Override
     public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Component renderer = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
         if (renderer instanceof JLabel) {
-            ((JLabel) renderer).setBorder(new EmptyBorder(2, TEXT_PADDING, 2, 0));
+            ((JLabel) renderer).setBorder(new EmptyBorder(VERTICAL_PADDING, TEXT_PADDING, VERTICAL_PADDING, 0));
+            renderer.setBackground(new Color(0, 0, 0, 0));
             String text = ((JLabel) renderer).getText();
             String name = text.substring(0, text.lastIndexOf("-") - 1);
             System.out.println(name);
@@ -30,6 +33,7 @@ public class CListCellRenderer extends DefaultListCellRenderer {
             renderer.setBackground(new Color(205, 190, 53, 192));
             renderer.setForeground(Color.BLACK);
         } else {
+            renderer.setBackground(new Color(0, 0, 0, 0));
             renderer.setForeground(Color.WHITE);
         }
 
