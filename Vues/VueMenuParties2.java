@@ -105,8 +105,8 @@ public class VueMenuParties2 extends JPanel {
         scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
         // Custom JScrollBar
         scrollPane.setVerticalScrollBar(new CJScrollBar());
-        scrollPane.setPreferredSize(new Dimension(400, 100));
-        scrollPane.setMaximumSize(new Dimension(400, -1));
+        scrollPane.setPreferredSize(new Dimension(430, 100));
+        scrollPane.setMaximumSize(new Dimension(450, -1));
 
         // Définition de l'espacement entre les lignes
         int lineSpace = 10;
@@ -128,8 +128,8 @@ public class VueMenuParties2 extends JPanel {
         // Ajouter le scrollPane dans un JPanel transparent avec le titre
         JPanel scrollPanePanel = new JPanel();
         scrollPanePanel.setLayout(new GridBagLayout());
-        scrollPanePanel.setPreferredSize(new Dimension(400, 80));
-        scrollPanePanel.setMaximumSize(new Dimension(400, 1000));
+        scrollPanePanel.setPreferredSize(new Dimension(430, 80));
+        scrollPanePanel.setMaximumSize(new Dimension(450, 1000));
         scrollPanePanel.setBackground(new Color(0x99000000, true));
         //scrollPanePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
@@ -184,9 +184,9 @@ public class VueMenuParties2 extends JPanel {
         // JPanel contenant les infos de la partie selectionnée
         infoPanel = new JPanel();
         infoPanel.setLayout(new GridBagLayout());
-        infoPanel.setMinimumSize(new Dimension(400, 100));
-        infoPanel.setPreferredSize(new Dimension(400, 100));
-        infoPanel.setMaximumSize(new Dimension(400, 100));
+        infoPanel.setMinimumSize(new Dimension(350, 100));
+        infoPanel.setPreferredSize(new Dimension(350, 100));
+        infoPanel.setMaximumSize(new Dimension(350, 100));
         infoPanel.setBackground(new Color(0x99000000, true));
         infoPanel.setVisible(true);
         //infoPanel.setOpaque(false);
@@ -269,6 +269,9 @@ public class VueMenuParties2 extends JPanel {
         loadButton.setHideActionText(false);
         loadButton.setHorizontalTextPosition(SwingConstants.LEFT);
         loadButton.setText("Charger Partie");
+        loadButton.setMinimumSize(new Dimension(250, 37));
+        loadButton.setPreferredSize(new Dimension(250, 37));
+        loadButton.setMaximumSize(new Dimension(250, 37));
 
         loadButton.addActionListener(new ActionListener() {
             @Override
@@ -302,6 +305,9 @@ public class VueMenuParties2 extends JPanel {
         deleteButton.setHideActionText(false);
         deleteButton.setHorizontalTextPosition(SwingConstants.LEFT);
         deleteButton.setText("Supprimer Partie");
+        deleteButton.setPreferredSize(new Dimension(250, 37));
+        deleteButton.setMinimumSize(new Dimension(250, 37));
+        deleteButton.setMaximumSize(new Dimension(250, 37));
 
         deleteButton.addActionListener(new ActionListener() {
             @Override
@@ -358,6 +364,10 @@ public class VueMenuParties2 extends JPanel {
         gbc9.anchor = GridBagConstraints.CENTER;
         gbc9.insets = new Insets(0, 0, 10, 0);
         menuPrincipalButton.setText("Menu Principal");
+        menuPrincipalButton.setPreferredSize(new Dimension(250, 37));
+        menuPrincipalButton.setMinimumSize(new Dimension(250, 37));
+        menuPrincipalButton.setMaximumSize(new Dimension(250, 37));
+
         menuPrincipalButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
