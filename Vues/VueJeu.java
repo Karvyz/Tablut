@@ -25,7 +25,6 @@ class VueJeu extends JPanel {
 
     private JLabel endGameText;
     private TexteJeu texteJeu;
-    //private final JPanel backgroundTop, backgroundBottom;
     private JFrame topFrame;
 
     private JPanel mainPanel, topPanel, endGamePanel;
@@ -53,7 +52,6 @@ class VueJeu extends JPanel {
         contenu.setOpaque(false);
 
         addTop(contenu);
-        //contenu.add(Box.createVerticalGlue());
         addMain(contenu);
         addBottom(contenu);
 
@@ -76,7 +74,6 @@ class VueJeu extends JPanel {
     private JDialog EndGameDialog() {
         JDialog dialog = new JDialog(JOptionPane.getRootFrame(), "Fin de partie", true);
         dialog.setResizable(false);
-        //dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setMinimumSize(new Dimension(1000, -1));
         dialog.setLayout(new BoxLayout(dialog.getContentPane(), BoxLayout.Y_AXIS));
         dialog.setLocationRelativeTo(null);
@@ -159,10 +156,8 @@ class VueJeu extends JPanel {
             controls[0].setEnabled(false);
             controls[1].setEnabled(true);
             controls[2].setEnabled(false);
-            //sauvegarder.setEnabled(true);
             controleur.jeu().reset();
-            controleur.jeu().setCoordooneJouerIA(null,null);
-            //controleur.fin();
+            controleur.jeu().setCoordooneJouerIA(null, null);
             controleur.afficherMenuPrincipal();
         });
         retry.addActionListener((e) -> {
@@ -170,8 +165,7 @@ class VueJeu extends JPanel {
             controls[0].setEnabled(false);
             controls[1].setEnabled(true);
             controls[2].setEnabled(false);
-            //sauvegarder.setEnabled(true);
-            controleur.jeu().setCoordooneJouerIA(null,null);
+            controleur.jeu().setCoordooneJouerIA(null, null);
             controleur.partieSuivante();
         });
         consulter.addActionListener((e) -> {
@@ -196,12 +190,12 @@ class VueJeu extends JPanel {
             perdant = controleur.jeu().getJoueur1();
         }
 
-        if (controleur.jeu().partieTerminee()){
+        if (controleur.jeu().partieTerminee()) {
             controls[1].setEnabled(false);
         }
 
         // Fin partie
-        if(endGameDialog == null) {
+        if (endGameDialog == null) {
 
             endGameDialog = EndGameDialog();
         }
@@ -229,14 +223,14 @@ class VueJeu extends JPanel {
             } else {
                 endGamePanel.setBackground(new Color(85, 91, 97));
                 String svainqueur = "";
-                if(vainqueur.nom().equals("Attaquant"))
+                if (vainqueur.nom().equals("Attaquant"))
                     svainqueur = "L'attaquant";
                 else if (vainqueur.nom().equals("Défenseur"))
                     svainqueur = "Le défenseur";
                 else
                     svainqueur = vainqueur.nom();
                 String sperdant = "";
-                if(perdant.nom().equals("Attaquant"))
+                if (perdant.nom().equals("Attaquant"))
                     sperdant = "L'attaquant";
                 else if (perdant.nom().equals("Défenseur"))
                     sperdant = "Le défenseur";
@@ -269,14 +263,13 @@ class VueJeu extends JPanel {
             } else {
                 endGameDialog.getComponent(0).setBackground(new Color(85, 91, 97));
                 if (vainqueur.aPionsBlancs()) {
-                    if(vainqueur.nom().equals("Défenseur"))
+                    if (vainqueur.nom().equals("Défenseur"))
                         endGameText.setText("Le défenseur, IA " + typeIA + " a gagné !");
                     else
-                    endGameText.setText("Le défenseur, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
-                }
-                else {
+                        endGameText.setText("Le défenseur, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
+                } else {
                     endGameDialog.getComponent(0).setBackground(new Color(85, 91, 97));
-                    if(vainqueur.nom().equals("Attaquant"))
+                    if (vainqueur.nom().equals("Attaquant"))
                         endGameText.setText("L'attaquant, IA " + typeIA + " a gagné !");
                     else
                         endGameText.setText("L'attaquant, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
@@ -396,42 +389,7 @@ class VueJeu extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
         c.gridy = 0;
-        //topPanel.add(pionsPanel, c);
     }
-
-    /*private void addMain(JPanel contenu) {
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 1;
-        c.weighty = 1;
-
-        c.anchor = GridBagConstraints.CENTER;
-
-        mainPanel = new JPanel();
-        mainPanel.setOpaque(false);
-        mainPanel.setLayout(new GridBagLayout());
-        contenu.add(mainPanel, c);
-        // -----------
-
-        c.fill = GridBagConstraints.NONE;
-
-        // - J1
-        c.insets = new Insets(10, 50, 0, 50);
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 0;
-        c.weighty = 1;
-        c.anchor = FIRST_LINE_START;
-        mainPanel.add(j1, c);
-
-        // - J2
-        c.insets = new Insets(10, 50, 0, 50);
-        c.anchor = FIRST_LINE_END;
-        mainPanel.add(j2, c);
-    }
-     */
 
     private void addMain(JPanel contenu) {
         GridBagConstraints c = new GridBagConstraints();
@@ -502,9 +460,9 @@ class VueJeu extends JPanel {
         });
 
         controls[1].addActionListener((e) -> {
-            if (!controleur.jeu().partieTerminee()){
+            if (!controleur.jeu().partieTerminee()) {
                 controleur.jeu().solution();
-                }
+            }
         });
         controls[2].addActionListener((e) -> {
             controleur.jeu().refaire();
@@ -529,36 +487,33 @@ class VueJeu extends JPanel {
     void ModifBoutonUndo() {
         controleur.jeu().setAideIA(null);
         if (controleur.jeu().peutAnnuler()) {
-            if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
+            if (!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
                 controls[0].setEnabled(false);
             else
                 controls[0].setEnabled(true);
         } else {
             controls[0].setEnabled(false);
         }
-        if (controleur.jeu().partieTerminee() && !controleur.jeu().coup_annule.estVide())
-        {
+        if (controleur.jeu().partieTerminee() && !controleur.jeu().coup_annule.estVide()) {
             controls[0].setEnabled(true);
-        }
-        else if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
-                controls[0].setEnabled(false);
+        } else if (!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
+            controls[0].setEnabled(false);
     }
 
     void ModifBoutonRedo() {
         controleur.jeu().setAideIA(null);
         if (controleur.jeu().peutRefaire()) {
-            if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
+            if (!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
                 controls[2].setEnabled(false);
             else
                 controls[2].setEnabled(true);
         } else {
             controls[2].setEnabled(false);
         }
-        if (controleur.jeu().partieTerminee() && !controleur.jeu().coup_a_refaire.estVide()){
+        if (controleur.jeu().partieTerminee() && !controleur.jeu().coup_a_refaire.estVide()) {
             controls[2].setEnabled(true);
-        }
-        else if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
-                controls[2].setEnabled(false);
+        } else if (!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
+            controls[2].setEnabled(false);
     }
 
     private JPanel addUserActions() {
@@ -580,19 +535,6 @@ class VueJeu extends JPanel {
         topFrame.setFocusable(true);
         topFrame.requestFocus();
 
-        /*
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        // MARK: ESPACEMENT PLATEAU GAUCHE ET DROITE
-        c.insets = new Insets(5, 28, 5, 28);
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weightx = 1;
-        c.weighty = 1;
-        c.anchor = GridBagConstraints.CENTER;
-        mainPanel.add(vueNiveau, c);
-
-         */
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         // MARK: ESPACEMENT PLATEAU GAUCHE ET DROITE
@@ -607,9 +549,9 @@ class VueJeu extends JPanel {
         System.out.println(j1);
         // Initialisation du niveau
         String s1 = "";
-        if(!controleur.jeu().getJoueur1().estHumain()) {
+        if (!controleur.jeu().getJoueur1().estHumain()) {
             s1 = "IA";
-            switch(controleur.jeu().getJoueur1().type()) {
+            switch (controleur.jeu().getJoueur1().type()) {
                 case IA_FACILE:
                     s1 += " Facile";
                     break;
@@ -627,9 +569,9 @@ class VueJeu extends JPanel {
         j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
 
         String s2 = "";
-        if(!controleur.jeu().getJoueur2().estHumain()) {
+        if (!controleur.jeu().getJoueur2().estHumain()) {
             s2 = "IA";
-            switch(controleur.jeu().getJoueur2().type()) {
+            switch (controleur.jeu().getJoueur2().type()) {
                 case IA_FACILE:
                     s2 += " Facile";
                     break;
