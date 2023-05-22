@@ -32,12 +32,12 @@ public class CTextField extends JTextField {
         setCaretColor(Color.WHITE);
 
         ((AbstractDocument) getDocument()).setDocumentFilter(new DocumentFilter() {
-            private int maxLength = 20; // Nombre maximum de caractères
+            private int maxLength = 13; // Nombre maximum de caractères
 
             @Override
             public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
                 // Vérifie si la longueur du texte après remplacement dépasse la limite
-                if ((fb.getDocument().getLength() + text.length() - length) <= maxLength) {
+                if ((fb.getDocument().getLength() + text.length() - length) <= maxLength || text.equals("Nom de l'attaquant") || text.equals("Nom du défenseur")) {
                     super.replace(fb, offset, length, text, attrs);
                 }
                 // Sinon, ignore le remplacement du texte
