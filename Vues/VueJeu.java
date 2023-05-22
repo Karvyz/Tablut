@@ -123,17 +123,17 @@ class VueJeu extends JPanel {
         JButton menu = new CButton("Menu principal");
         JButton retry = new CButton("Rejouer ?").blanc();
         JButton consulter = new CButton("Consulter");
-        JButton suivant = new CButton("IA Suivante");
+        JButton suivant = new CButton("IA Suivante").blanc();
         endButtons.add(menu);
         endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
         endButtons.add(retry);
-        endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
-        endButtons.add(consulter);
         // Si IA facile ou moyenne on affiche le bouton suivant
         if ((controleur.jeu().getJoueur2().type() != TypeJoueur.HUMAIN && controleur.jeu().getJoueur2().type() != TypeJoueur.IA_DIFFICILE) || (controleur.jeu().getJoueur1().type() != TypeJoueur.HUMAIN && controleur.jeu().getJoueur1().type() != TypeJoueur.IA_DIFFICILE) && (controleur.jeu().getJoueur2().type() == TypeJoueur.HUMAIN || controleur.jeu().getJoueur1().type() == TypeJoueur.HUMAIN)) {
             endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
             endButtons.add(suivant);
         }
+        endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
+        endButtons.add(consulter);
 
         banner.add(endButtons, gbc2);
 
