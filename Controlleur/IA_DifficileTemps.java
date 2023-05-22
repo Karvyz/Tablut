@@ -48,16 +48,13 @@ public class IA_DifficileTemps extends IA{
             Coup overide = coups(e);
             nb_evals++;
             if (overide != null) {
-//                System.out.println("fini en avance");
-//                System.out.println("nb evals : " + nb_evals);
+
                 return overide;
             }
 
         } while (System.currentTimeMillis() < endtime);
         Etat meilleurCoup = etats.poll();
-//        System.out.println("fini");
-//        System.out.println("nb evals : " + nb_evals);
-//        System.out.println("max_depth : " + meilleurCoup.depth);
+
         return meilleurCoup.coupAJouer;
     }
 

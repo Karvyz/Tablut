@@ -106,7 +106,6 @@ public class CPlateau extends JPanel implements Observateur {
                 // -- Dessin des pions, forteresses, roi, konakis
                 if(controleur.jeu().partieTerminee()){
                     setPionSelec(null);
-                    //setPionEnDeplacement(null);
                 }
 
                 if (getPionSelec() != null && l == getPionSelec().getX() && c == getPionSelec().getY() && controleur.jeu().getAideIA()!= null &&
@@ -155,7 +154,6 @@ public class CPlateau extends JPanel implements Observateur {
             int c = getPionEnDeplacement().y;
 
             boolean autorise =true;
-            //TODO a commenter si on veut laisser le pion partout sur le plateau
             if(destinationsPossibles != null){
                 autorise = false;
                 for (Coordonne caseSelec : destinationsPossibles) {
@@ -165,15 +163,14 @@ public class CPlateau extends JPanel implements Observateur {
                         autorise = true;
                     }
                 }
-            }//Jusqu'a la
+            }
 
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
 
                     if (i == l && c == j) {
-                        //TODO mettre image des points
                         if(!autorise){
-                            g2d.drawImage(Theme.instance().croix(), x +4, y + 4, largeurCase -5, hauteurCase -5, this);
+                            g2d.drawImage(Theme.instance().croix(), x +2, y + 6 ,largeurCase -5, hauteurCase -5, this);
                         }
                         else{
                             g2d.drawImage(getImage(), x + 4, y + 4, largeurCase - 4, hauteurCase - 4, this);
@@ -203,10 +200,10 @@ public class CPlateau extends JPanel implements Observateur {
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
                     if (controleur.jeu().getCoordooneDepartIA() != null && controleur.jeu().getCoordooneDepartIA().equals(new Coordonne(l, c))) {
-                        setDrawFleche1(false); //pour pas remettre tout a jour
+                        setDrawFleche1(false);
                     }
                     if (i == l && c == j) {
-                        //TODO mettre image des points
+
                         g.drawImage(Theme.instance().pointInterrogation(), x +(largeurCase/2), y + (hauteurCase/2), 10, 10, this);
                     }
                     x += largeurCase;

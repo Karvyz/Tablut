@@ -50,6 +50,7 @@ public class Configuration {
         return valeur;
     }
 
+    //Delete
     public void ecrirePropriete(String nomPropriete, String valeurPropriete) {
         p.setProperty(nomPropriete, valeurPropriete);
     }

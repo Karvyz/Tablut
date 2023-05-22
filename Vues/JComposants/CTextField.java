@@ -24,7 +24,6 @@ public class CTextField extends JTextField {
         // On réinitialise tous les paramètres par défaut
         setOpaque(false);
         // Customise le style du bouton
-        //setForeground(Color.white);
         setForeground(new Color(173, 216, 230));
         setFont(new Font("Arial", Font.PLAIN, 20));
         setBorder(new EmptyBorder(5, 5, 5, 5));

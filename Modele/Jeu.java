@@ -91,7 +91,6 @@ public class Jeu extends Observable implements Serializable {
         if (!partieTerminee()) {
             return null;
         }
-        // TODO : retourner le joueur gagnant
         return vainqueur;
     }
 
@@ -118,19 +117,16 @@ public class Jeu extends Observable implements Serializable {
         } else {
             setCoordooneJouerIA(null, null);
         }
-        //System.out.println("Déplacement du pion de (" + coup.depart.getX() + "," + coup.depart.getY() + ") en (" + coup.arrivee.getX() + "," + coup.arrivee.getY() + ")");
-        checkvictoire(i);
+                checkvictoire(i);
 
         //Si l'IA joue, on ne dépile pas a refaire
         if (getJoueurCourant().estHumain()) {
             this.coup_a_refaire.clear();
             pileIA_refaire.clear();
         }
-        //System.out.println(this);
         if (enCours()){
             joueurSuivant();
         }
-        //System.out.println(this);
         metAJour();
         return i;
     }
@@ -183,13 +179,6 @@ public class Jeu extends Observable implements Serializable {
         if(coup_annule.estVide())
             return false;
         return joueurs[0].estHumain() || coup_annule.size() != 1;
-        // Inutile je pense ??
-        /*
-        if ((!joueurs[0].estHumain() || !joueurs[1].estHumain())) { // Tester si on a une IA contre un humaion pour annuler le coup de l'IA et de l'humain, ATTENTION,l'IA jouera un autre coup
-            if (coup_annule.estVide())
-                return false;
-        }
-         */
     }
 
     public void annuler() {
@@ -294,8 +283,6 @@ public class Jeu extends Observable implements Serializable {
         this.coup_a_refaire = new Pile();
         this.pileIA_annule =  new Stack<>();
         this.pileIA_refaire =  new Stack<>();
-        //this.coup_joue = new Stack<>();
-        //this.coup_joue_refaire = new Stack<>();
         this.joueurCourant = 0;
         this.joueurs[0] = null;//TODO a revoir, on doit pas tout le temps mettre a null
         this.joueurs[1] = null;
@@ -303,10 +290,6 @@ public class Jeu extends Observable implements Serializable {
         this.enCours = false;
         setAideIA(null);
         setCoordooneJouerIA(null,null);
-
-
-        /*this.joueurs[0].fixeJeuJoueur(this);
-        this.joueurs[1].fixeJeuJoueur(this);*/
     }
 
     public String toString() {

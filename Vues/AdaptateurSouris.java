@@ -226,10 +226,6 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
                 }
                 affiche_destination(null); //affiche aucune destination
             }
-        } else {
-           /*if(caseSurvole == null){
-               plateau.setDessineCroix(caseSurvole);
-           }*/
         }
 
     }

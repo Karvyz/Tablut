@@ -210,6 +210,8 @@ public class VueMenuSaisies extends JPanel {
         quitter = new CButton("Quitter");
         quitter.addActionListener((e) -> {
             controleur.toClose();
+            // Créer une nouvelle fenêtre pour tester le texte d'un jlabel
+
         });
 
         //BoutonsQuitter.add(quitter);
@@ -389,13 +391,4 @@ public class VueMenuSaisies extends JPanel {
             called = 1;
         }
     }
-
-    // Méthode pour réinitialiser les champs de texte
-    /*
-    public void resetTexte() {
-        nomJ1.setText("Joueur 1");
-        nomJ2.setText("Joueur 2");
-    }
-
-     */
 }
