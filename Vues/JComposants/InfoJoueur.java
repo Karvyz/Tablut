@@ -26,8 +26,9 @@ public class InfoJoueur extends JPanel {
 
         setBorder(new EmptyBorder(5, !reverse ? 20 : 10, 5, !reverse ? 10 : 20));
 
-        setMinimumSize(new Dimension(200, -1));
-        //setMaximumSize(new Dimension(200, -1));
+        setMinimumSize(new Dimension(250, -1));
+        setPreferredSize(new Dimension(250, -1));
+        setMaximumSize(new Dimension(250, -1));
 
         n = new JLabel();
         n.setForeground(Color.WHITE);
