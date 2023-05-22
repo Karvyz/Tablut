@@ -581,7 +581,12 @@ class VueJeu extends JPanel {
         // Initialisation du niveau
         String s1 = "";
         if (!controleur.jeu().getJoueur1().estHumain()) {
-            s1 = "IA";
+            if(!controleur.jeu().getJoueur1().nom().equals("Attaquant")){
+                s1 = controleur.jeu().getJoueur1().nom() +": IA";
+            }
+            else{
+                s1 = "IA";
+            }
             switch (controleur.jeu().getJoueur1().type()) {
                 case IA_FACILE:
                     s1 += " Facile";
@@ -601,7 +606,12 @@ class VueJeu extends JPanel {
 
         String s2 = "";
         if (!controleur.jeu().getJoueur2().estHumain()) {
-            s2 = "IA";
+            if(!controleur.jeu().getJoueur2().nom().equals("Défenseur")){
+                s2 = controleur.jeu().getJoueur2().nom() +": IA";
+            }
+            else{
+                s2 = "IA";
+            }
             switch (controleur.jeu().getJoueur2().type()) {
                 case IA_FACILE:
                     s2 += " Facile";
