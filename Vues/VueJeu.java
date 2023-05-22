@@ -391,7 +391,7 @@ class VueJeu extends JPanel {
 
         sauvegarder.addActionListener(e -> ActionBoutonSauvegarder());
 
-        JButton regles = new CButton("? Règles").blanc();
+        JButton regles = new CButton("Règles").blanc();
         regles.addActionListener(e -> controleur.afficherRegles());
 
         menuBar.add(Box.createRigidArea(new Dimension(10, 0)));
