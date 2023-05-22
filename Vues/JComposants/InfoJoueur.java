@@ -26,9 +26,9 @@ public class InfoJoueur extends JPanel {
 
         setBorder(new EmptyBorder(5, !reverse ? 20 : 10, 5, !reverse ? 10 : 20));
 
-        setMinimumSize(new Dimension(250, -1));
-        setPreferredSize(new Dimension(250, -1));
-        setMaximumSize(new Dimension(250, -1));
+        setMinimumSize(new Dimension(450, -1));
+        setPreferredSize(new Dimension(450, -1));
+        setMaximumSize(new Dimension(450, -1));
 
         n = new JLabel();
         n.setForeground(Color.WHITE);
@@ -38,10 +38,14 @@ public class InfoJoueur extends JPanel {
         pawn = new ImageIcon(Imager.getScaledImage(reverse ? "PN.png" : "PB.png", 60, 60));
         p = new CPions(reverse);
 
+        p.setMinimumSize(new Dimension(250, 400));
+        p.setPreferredSize(new Dimension(250, 400));
+        p.setMaximumSize(new Dimension(250, 400));
 
-        add(n, BorderLayout.CENTER);
+
+        add(n, reverse ? BorderLayout.EAST : BorderLayout.WEST);
         add(Box.createRigidArea(new Dimension(0, 50)));
-        add(p, BorderLayout.CENTER);
+        add(p, reverse ? BorderLayout.EAST : BorderLayout.WEST);
         add(Box.createVerticalGlue());
     }
 
