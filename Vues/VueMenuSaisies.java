@@ -156,10 +156,20 @@ public class VueMenuSaisies extends JPanel {
 
         add(Joueur1, constraints);
 
-        add(Box.createVerticalStrut(5)); // Espace vertical
+        // Ajout d'un bouton inverser
+        constraints.gridy = 1;
+        constraints.anchor = GridBagConstraints.CENTER;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+
+        JButton inverser = new CButton(new ImageIcon(Imager.getScaledImage("inversion.png", 25, 25))).blanc();
+
+        add(inverser, constraints);
 
         // Joueur 2
-        constraints.gridy = 1;
+        constraints = new GridBagConstraints();
+        constraints.insets = new Insets(0, 30, 0, 30); // Espacement des composants
+        constraints.gridx = 0;
+        constraints.gridy = 2;
 
         nomJ2.setDropMode(DropMode.USE_SELECTION);
         nomJ2.setFocusCycleRoot(false);
