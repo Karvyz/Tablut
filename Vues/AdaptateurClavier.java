@@ -11,7 +11,7 @@ class AdaptateurClavier extends KeyAdapter {
     }
 
     @Override
-    public void keyPressed(KeyEvent event) {
+    public void keyReleased(KeyEvent event) {
         switch (event.getKeyCode()) {
             case KeyEvent.VK_LEFT:
                 controleur.toucheClavier("Annuler");
