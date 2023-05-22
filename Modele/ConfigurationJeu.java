@@ -3,7 +3,7 @@ package Modele;
 import java.io.Serializable;
 
 public class ConfigurationJeu implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L; //déclare une constante de sérialisation
     private boolean RegicideTrone;
     private boolean RegicideForteresse;
     private boolean RegicideMur;

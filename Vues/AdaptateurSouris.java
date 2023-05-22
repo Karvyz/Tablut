@@ -1,11 +1,8 @@
 package Vues;
 
 import Modele.Coordonne;
-import Modele.Niveau;
 import Modele.Pion;
 import Vues.JComposants.CPlateau;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -19,9 +16,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
     int bordureGauche, bordureHaut, bordureDroite, bordureBas;
     boolean clicInutile = false;
     boolean clicSelection = false;
-
     boolean premier_clic = false;
-
 
     public AdaptateurSouris(CollecteurEvenements c, CPlateau plateau) {
         ctrl = c;
@@ -34,7 +29,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         dragStart = e.getPoint(); // On clique et stock le point de départ du dragStart
         int l = calcul_l(e);
         int c = calcul_c(e);
-        if (!check_ok(l, c)) { //TODO le probleme c'est qu'on a pas le droit de cliquer a cote du plateau, mais il faudrait
+        if (check_ok(l, c)) {
             plateau.setPionSelec(null);
             plateau.setPionEnDeplacement(null);
             plateau.setDestinationsPossibles(null);
@@ -50,7 +45,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         //Test le déplacement
         if (plateau.getPionSelec() != null) {
             plateau.setPionEnDeplacement(null);//On ne peut pas drag
-            if (ctrl.clicSouris(plateau.getPionSelec(), l, c) == true) { //Si on clique après avoir selectionne un pion on check si le coup est juste
+            if (ctrl.clicSouris(plateau.getPionSelec(), l, c)) { //Si on clique après avoir selectionne un pion on check si le coup est juste
                 plateau.setPionSelec(null); //On déselectionne après avoir joué un coup
                 plateau.setPionEnDeplacement(null);
                 dragStart = null;
@@ -115,22 +110,13 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
     }
 
-    private void setImage(Pion p) {
-        if (ctrl.jeu().n.estAttaquant(p)) {
-            plateau.setImage(0);
-        } else if (ctrl.jeu().n.estDefenseur(p)) {
-            plateau.setImage(1);
-        } else {
-            plateau.setImage(2);
-        }
-    }
 
     @Override
     public void mouseReleased(MouseEvent e) {
         if (dragStart != null && plateau.getPionSelec() != null) {
             int l = calcul_l(e);
             int c = calcul_c(e);
-            if (!check_ok(l, c)) {
+            if (check_ok(l, c)) {
                 plateau.setPionSelec(null);
                 plateau.setPionEnDeplacement(null);
                 plateau.setDestinationsPossibles(null);
@@ -155,7 +141,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
             //Ici on gère le drag&drop
             if (startX != l || startY != c) {
-                if (ctrl.dragANDdrop(new Coordonne(startX, startY), new Coordonne(l, c)) == true) { //On teste le déplacement
+                if (ctrl.dragANDdrop(new Coordonne(startX, startY), new Coordonne(l, c))) { //On teste le déplacement
                     affiche_destination(null);
                     plateau.setDrawFleche(true);
                     premier_clic = false;
@@ -168,7 +154,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         }
         //Ici on gère le cas ou on clique sur un de nos pions, puis sur un pion adverse ou case vide, en enlève l'affichage des déplacements dispos
         if (plateau.getPionEnDeplacement() == null) {
-            if (clicInutile == true || clicSelection == true) {
+            if (clicInutile || clicSelection ) {
                 if (plateau.getPionSelec() != null) {
                     affiche_destination(plateau.getPionSelec());
                     clicInutile = false;
@@ -186,7 +172,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         if (pionEnDeplacement != null) {
             int l = calcul_l(e);
             int c = calcul_c(e);
-            if (!check_ok(l, c)) {
+            if (check_ok(l, c)) {
                 return;
             }
             pionEnDeplacement.setLocation(l, c); //modifie les coordonne du Point pionEnDeplacement
@@ -201,11 +187,9 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
 
         int l = calcul_l(e);
         int c = calcul_c(e);
-        if (!check_ok(l, c)) {
+        if (check_ok(l, c)) {
             return;
         }
-
-
         // Obtenez les informations de la case survolée
         Pion caseSurvole = ctrl.jeu().n.getPion(l, c);
         plateau.setSurvole(caseSurvole);
@@ -214,20 +198,30 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             //Permet d'afficher lorsqu'on survole
             if (ctrl.jeu().n.check_clic_selection_pion(caseSurvole, ctrl.jeu().get_num_JoueurCourant())) {
                 affiche_destination(caseSurvole); //affiche les destinations du pion survole
-                if (premier_clic == true) {
+                if (premier_clic) {
                     plateau.setDrawFleche(false);
                 }
             } else if (caseSurvole != null && !ctrl.jeu().n.check_clic_selection_pion(caseSurvole, ctrl.jeu().get_num_JoueurCourant())) {
                 plateau.setDrawFleche(true);
                 affiche_destination(null); //affiche aucune destination
             } else {
-                if (premier_clic == true) {
+                if (premier_clic) {
                     plateau.setDrawFleche(false);
                 }
                 affiche_destination(null); //affiche aucune destination
             }
         }
+    }
 
+
+    private void setImage(Pion p) {
+        if (ctrl.jeu().n.estAttaquant(p)) {
+            plateau.setImage(0);
+        } else if (ctrl.jeu().n.estDefenseur(p)) {
+            plateau.setImage(1);
+        } else {
+            plateau.setImage(2);
+        }
     }
 
     private void affiche_destination(Pion pionSelec) {//Permet l'affichage des destinations données pour un Pion donné
@@ -250,10 +244,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
     }
 
     private boolean check_ok(int l, int c) {
-        if (l == -1 || c == -1) {
-            return false;
-        }
-        return true;
+        return l == -1 || c == -1;
     }
 
     private boolean check_pion(Pion p) {

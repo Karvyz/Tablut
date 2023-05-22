@@ -7,7 +7,7 @@ import java.util.EmptyStackException;
 import Modele.Niveau;
 
 public class Pile implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L; //déclare une constante de sérialisation
     private static final int CAPACITE_DEPART = 16;
     private Niveau[] elements;
     private int sommet;
