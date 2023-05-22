@@ -5,7 +5,7 @@ import java.util.Stack;
 import Structures.Pile;
 
 public class Data_Niveau implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;//déclare une constante de sérialisation
     public Niveau niveau;
     public Pile coup_annule;
     public Pile coup_a_refaire;

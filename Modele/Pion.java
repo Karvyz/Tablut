@@ -5,10 +5,9 @@ import java.util.ArrayList;
 
 
 public class Pion implements Cloneable, Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L; //déclare une constante de sérialisation
     private Coordonne coordonne;
     private TypePion type; //0 pion Noir, 1 pion Blanc, 
-
 
     public Pion(int x, int y, TypePion type) {
         coordonne = new Coordonne(x, y);
@@ -19,19 +18,6 @@ public class Pion implements Cloneable, Serializable {
         this.coordonne = coordonne;
         this.type = type;
     }
-
-    @Override
-    public Pion clone() {
-        try {
-            Pion copie = (Pion) super.clone();
-            copie.coordonne = new Coordonne(this.coordonne.getX(), this.coordonne.getY());
-            copie.type = this.type; // Pas besoin de cloner si TypePion est une enum ou un type immuable
-            return copie;
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError("La classe Pion doit être cloneable", e);
-        }
-    }
-
 
     public TypePion getType() {
         return type;
@@ -57,14 +43,8 @@ public class Pion implements Cloneable, Serializable {
         this.coordonne.y = y;
     }
 
-
     public void setCoordonne(Coordonne c) {
         this.coordonne = c;
-    }
-
-    @Override
-    public String toString() {
-        return "Pion selectionne (" + this.coordonne.x + ", " + this.coordonne.y + ", type=" + this.getType() + ")";
     }
 
     private boolean emplacementValide(int x, int y) {
@@ -119,18 +99,11 @@ public class Pion implements Cloneable, Serializable {
         getDeplacementHorizontaleList(plateau, deplacement);
         return deplacement;
     }
-/*
-    public void affiche_liste_deplacement(ArrayList<Coordonne> liste) {
-        if (liste.isEmpty())
-            System.out.println("Aucun déplacement possible pour ce pion");
-        else {
-            System.out.print("Déplacements possibles { ");
-            for (Coordonne c : liste) {
-                System.out.print("(" + c.getX() + "," + c.getY() + ") ");
-            }
-            System.out.println("}");
-        }
-    }*/
+
+    @Override
+    public String toString() {
+        return "Pion selectionne (" + this.coordonne.x + ", " + this.coordonne.y + ", type=" + this.getType() + ")";
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -141,5 +114,15 @@ public class Pion implements Cloneable, Serializable {
         return this.coordonne.equals(other.coordonne) && this.type == other.type;
     }
 
-
+    @Override
+    public Pion clone() {
+        try {
+            Pion copie = (Pion) super.clone();
+            copie.coordonne = new Coordonne(this.coordonne.getX(), this.coordonne.getY());
+            copie.type = this.type; // Pas besoin de cloner si TypePion est une enum ou un type immuable
+            return copie;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError("La classe Pion doit être cloneable", e);
+        }
+    }
 }

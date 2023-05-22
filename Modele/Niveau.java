@@ -6,7 +6,7 @@ import java.util.Hashtable;
 
 
 public class Niveau implements Serializable, Cloneable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L; //déclare une constante de sérialisation
     private int taille = 9;
 
 
