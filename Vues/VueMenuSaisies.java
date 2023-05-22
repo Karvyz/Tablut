@@ -7,6 +7,7 @@ import Vues.JComposants.CComboxBox;
 import Vues.JComposants.CTextField;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -161,7 +162,8 @@ public class VueMenuSaisies extends JPanel {
         constraints.anchor = GridBagConstraints.CENTER;
         constraints.fill = GridBagConstraints.HORIZONTAL;
 
-        JButton inverser = new CButton(new ImageIcon(Imager.getScaledImage("inversion.png", 25, 25))).blanc();
+        JButton inverser = new CButton(new ImageIcon(Imager.getScaledImage("inversion.png", 35, 35))).blanc();
+        inverser.setBorder(new EmptyBorder(5, 10, 5, 10));
         inverser.addActionListener((e) -> actionBoutonInverser());
 
         add(inverser, constraints);
