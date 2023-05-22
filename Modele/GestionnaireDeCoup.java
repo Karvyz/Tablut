@@ -122,7 +122,6 @@ public class GestionnaireDeCoup implements Serializable {
             jeu.setCoordooneJouerIA(sommet.depart, sommet.arrivee);
         }
 
-        //Inutile de changer de joueur;
 
     }
 
@@ -149,7 +148,6 @@ public class GestionnaireDeCoup implements Serializable {
 
     public void annuler_IAvIA(){
         annule_coups(2);
-        //Inutile de changer de joueur;
     }
 
     private void refaire_coups(int nb_coups){
@@ -184,7 +182,6 @@ public class GestionnaireDeCoup implements Serializable {
             jeu.setCoordooneJouerIA(sommet.depart, sommet.arrivee);
         }
 
-        //inutile de changer de joueur
     }
 
     public void refaire_IAvH(){

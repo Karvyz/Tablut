@@ -31,9 +31,7 @@ public class TexteJeu extends JPanel {
 
         setBorder(new EmptyBorder(7, 25, 7, 25));
         setOpaque(false);
-        //setBackground(new Color(0, 0, 0, 0));
-        //setBackground(Color.GRAY);
-        //setBackground(new Color(200, 200, 200));
+
         backgroundimage = getImageIcon("fond_pierre.png");
 
         // - Chargements des images

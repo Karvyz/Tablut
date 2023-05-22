@@ -113,7 +113,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
      */
     @Override//Deplacement en Drag&Drop
     public boolean dragANDdrop(Coordonne src, Coordonne dst) {
-        if (jeu.joueurs[jeu().get_num_JoueurCourant()].jeu(src, dst)) {// MODIF de jeu.n ici
+        if (jeu.joueurs[jeu().get_num_JoueurCourant()].jeu(src, dst)) {
             changeJoueur();
             return true;
         }
@@ -177,7 +177,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
                 jeu().setEnCours(false);
                 System.out.println("Le joueur blanc a gagné car l'attaquant n'a plus de pion");
             }
-            //TODO ici l'IA joue instanténément donc problème pour annuler coup en IA vs Humain
             else if (jeu.joueurs[jeu.get_num_JoueurCourant()].tempsEcoule()) { //Un humain renvoi tjr false, une IA renvoi vrai lorsquelle a joué(jeu effectué dans tempsEcoule())
                 if (Stop == true) {
                     return;
@@ -224,12 +223,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
         if (jeu == null) {
             throw new IllegalStateException(message + " : aucune partie commencée");
         }
-    }
-
-    @Override
-    public void afficherDemarrage() {
-        verifierMediateurVues("Impossible d'afficher le démarrage");
-        vues.afficherDemarrage();
     }
 
     @Override

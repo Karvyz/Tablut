@@ -162,6 +162,7 @@ public class VueMenuSaisies extends JPanel {
         constraints.fill = GridBagConstraints.HORIZONTAL;
 
         JButton inverser = new CButton(new ImageIcon(Imager.getScaledImage("inversion.png", 25, 25))).blanc();
+        inverser.addActionListener((e) -> actionBoutonInverser());
 
         add(inverser, constraints);
 
@@ -209,6 +210,8 @@ public class VueMenuSaisies extends JPanel {
         quitter = new CButton("Quitter");
         quitter.addActionListener((e) -> {
             controleur.toClose();
+            // Créer une nouvelle fenêtre pour tester le texte d'un jlabel
+
         });
 
         //BoutonsQuitter.add(quitter);
@@ -274,8 +277,8 @@ public class VueMenuSaisies extends JPanel {
         return panel;
     }
 
-    private void actionBoutonJouer(CollecteurEvenements c) {
-        /*String nom1 = this.nomJ1.getText().equals("Nom de l'attaquant") ? "Nom du défenseur" : this.nomJ1.getText();
+    private void actionBoutonInverser(){
+        String nom1 = this.nomJ1.getText().equals("Nom de l'attaquant") ? "Nom du défenseur" : this.nomJ1.getText();
         String nom2 = this.nomJ2.getText().equals("Nom du défenseur") ? "Nom de l'attaquant" : this.nomJ2.getText();
         nomJ1.setText(nom2);
         nomJ2.setText(nom1);
@@ -292,7 +295,6 @@ public class VueMenuSaisies extends JPanel {
         defaultComboBoxModel3.addElement("IA Difficile");
 
         int index2 = typeJ2.getSelectedIndex();
-        System.out.println(index2);
 
         switch (typeJ1.getSelectedIndex()) {
             case 0:
@@ -328,8 +330,9 @@ public class VueMenuSaisies extends JPanel {
                 break;
         }
         typeJ1.setModel(defaultComboBoxModel);
-        typeJ2.setModel(defaultComboBoxModel3);*/
-
+        typeJ2.setModel(defaultComboBoxModel3);
+    }
+    private void actionBoutonJouer(CollecteurEvenements c) {
         TypeJoueur[] types = new TypeJoueur[2];
         switch (typeJ1.getSelectedIndex()) {
             case 0:
@@ -388,13 +391,4 @@ public class VueMenuSaisies extends JPanel {
             called = 1;
         }
     }
-
-    // Méthode pour réinitialiser les champs de texte
-    /*
-    public void resetTexte() {
-        nomJ1.setText("Joueur 1");
-        nomJ2.setText("Joueur 2");
-    }
-
-     */
 }

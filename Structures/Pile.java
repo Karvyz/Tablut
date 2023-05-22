@@ -33,12 +33,6 @@ public class Pile implements Serializable {
         return niveau;
     }
 
-    public Niveau voir_sommet() {
-        if (estVide()) {
-            throw new EmptyStackException();
-        }
-        return elements[sommet];
-    }
 
     public boolean estVide() {
         return sommet == -1;

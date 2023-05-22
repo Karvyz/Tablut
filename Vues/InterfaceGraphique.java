@@ -6,7 +6,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 public class InterfaceGraphique implements Runnable {
-    //Jeu j;
+
     CollecteurEvenements control;
     Vues vues;
     JFrame frame;
@@ -63,16 +63,6 @@ public class InterfaceGraphique implements Runnable {
         frame.setLocationRelativeTo(null);
 
         frame.setVisible(true);
-    }
-
-    public void toggleFullscreen() {
-        if (maximized) {
-            device.setFullScreenWindow(null);
-            maximized = false;
-        } else {
-            device.setFullScreenWindow(frame);
-            maximized = true;
-        }
     }
 
     void ajouterVue(String nom) {

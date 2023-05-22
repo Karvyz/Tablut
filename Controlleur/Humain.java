@@ -21,8 +21,6 @@ public class Humain extends Joueurs {
             } else
                 System.out.println("Déplacement impossible");
         }
-        //else
-        //System.out.println("le pion choisit est invalide"); //on affiche deja un message quand on clique
         return false;
     }
 

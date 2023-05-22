@@ -67,10 +67,6 @@ public class Pion implements Cloneable, Serializable {
         return "Pion selectionne (" + this.coordonne.x + ", " + this.coordonne.y + ", type=" + this.getType() + ")";
     }
 
-    // public boolean estCorrect() { //Normalment inutile car gérer par l'IHM
-    //     return (getX()>=0 && getX()<9 && getY()>=0 && getY()<9);
-    // }
-
     private boolean emplacementValide(int x, int y) {
         if (x == 0 && (y == 0 || y == 8))
             return false;
@@ -123,7 +119,7 @@ public class Pion implements Cloneable, Serializable {
         getDeplacementHorizontaleList(plateau, deplacement);
         return deplacement;
     }
-
+/*
     public void affiche_liste_deplacement(ArrayList<Coordonne> liste) {
         if (liste.isEmpty())
             System.out.println("Aucun déplacement possible pour ce pion");
@@ -134,7 +130,7 @@ public class Pion implements Cloneable, Serializable {
             }
             System.out.println("}");
         }
-    }
+    }*/
 
     @Override
     public boolean equals(Object obj) {

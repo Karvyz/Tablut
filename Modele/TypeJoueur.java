@@ -19,11 +19,12 @@ public enum TypeJoueur implements Serializable {
         this.nom = nom;
         this.indice = indice;
     }
-
+/*
     int indice() {
         return indice;
     }
-
+*/
+    /*
     static TypeJoueur depuisIndice(int indice) {
         switch (indice) {
             case 0:
@@ -37,7 +38,7 @@ public enum TypeJoueur implements Serializable {
             default:
                 throw new IllegalArgumentException("Aucun type de joueur correspondant à l'indice " + indice);
         }
-    }
+    }*/
 
     @Override
     public String toString() {

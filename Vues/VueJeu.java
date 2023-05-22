@@ -209,7 +209,6 @@ class VueJeu extends JPanel {
     }
 
     void showEnd() {
-        // TODO : Ajout du point du vainqueur
         Joueurs vainqueur = controleur.jeu().vainqueur();
         if (vainqueur == null) {
             return;
@@ -437,12 +436,11 @@ class VueJeu extends JPanel {
         mainPanel.setOpaque(false);
         mainPanel.setLayout(new GridBagLayout());
         contenu.add(mainPanel, c);
-        // -----------
+
 
         c.fill = VERTICAL;
 
-        // - J1
-        //c.insets = new Insets(10, 50, 0, 50);
+
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 0.2;
@@ -450,8 +448,7 @@ class VueJeu extends JPanel {
         c.anchor = CENTER;
         mainPanel.add(j1, c);
 
-        // - J2
-        //c.insets = new Insets(10, 50, 0, 50);
+
         c.gridx = 2;
         c.gridy = 0;
         c.anchor = CENTER;
@@ -469,7 +466,7 @@ class VueJeu extends JPanel {
         bottomPanel.setOpaque(false);
         bottomPanel.setLayout(new GridBagLayout());
         contenu.add(bottomPanel, c);
-        // -----------
+
 
         JPanel controlsPanel = new JPanel();
         controlsPanel.setOpaque(false);
@@ -581,7 +578,12 @@ class VueJeu extends JPanel {
         // Initialisation du niveau
         String s1 = "";
         if (!controleur.jeu().getJoueur1().estHumain()) {
-            s1 = "IA";
+            if(!controleur.jeu().getJoueur1().nom().equals("Attaquant")){
+                s1 = controleur.jeu().getJoueur1().nom() +": IA";
+            }
+            else{
+                s1 = "IA";
+            }
             switch (controleur.jeu().getJoueur1().type()) {
                 case IA_FACILE:
                     s1 += " Facile";
@@ -601,7 +603,12 @@ class VueJeu extends JPanel {
 
         String s2 = "";
         if (!controleur.jeu().getJoueur2().estHumain()) {
-            s2 = "IA";
+            if(!controleur.jeu().getJoueur2().nom().equals("Défenseur")){
+                s2 = controleur.jeu().getJoueur2().nom() +": IA";
+            }
+            else{
+                s2 = "IA";
+            }
             switch (controleur.jeu().getJoueur2().type()) {
                 case IA_FACILE:
                     s2 += " Facile";
