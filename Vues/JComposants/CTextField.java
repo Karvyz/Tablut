@@ -29,6 +29,8 @@ public class CTextField extends JTextField {
         setBorder(new EmptyBorder(5, 5, 5, 5));
         setCursor(new Cursor(Cursor.TEXT_CURSOR));
 
+        setCaretColor(Color.WHITE);
+
         ((AbstractDocument) getDocument()).setDocumentFilter(new DocumentFilter() {
             private int maxLength = 20; // Nombre maximum de caractères
 
