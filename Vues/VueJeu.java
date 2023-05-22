@@ -578,8 +578,10 @@ class VueJeu extends JPanel {
         // Initialisation du niveau
         String s1 = "";
         if (!controleur.jeu().getJoueur1().estHumain()) {
+            boolean nom1 = false;
             if(!controleur.jeu().getJoueur1().nom().equals("Attaquant") && !controleur.jeu().getJoueur1().nom().equals("")){
-                s1 = controleur.jeu().getJoueur1().nom() +": IA";
+                nom1 = true;
+                s1 = "<html>" + controleur.jeu().getJoueur1().nom() + "<br>(IA";
             }
             else{
                 s1 = "IA";
@@ -587,12 +589,18 @@ class VueJeu extends JPanel {
             switch (controleur.jeu().getJoueur1().type()) {
                 case IA_FACILE:
                     s1 += " Facile";
+                    if(nom1)
+                        s1 +=  ")</html>";
                     break;
                 case IA_MOYEN:
                     s1 += " Moyen";
+                    if(nom1)
+                        s1 +=  ")</html>";
                     break;
                 case IA_DIFFICILE:
                     s1 += " Difficile";
+                    if(nom1)
+                        s1 +=  ")</html>";
                     break;
             }
         } else {
@@ -603,8 +611,10 @@ class VueJeu extends JPanel {
 
         String s2 = "";
         if (!controleur.jeu().getJoueur2().estHumain()) {
+            boolean nom2 = false;
             if(!controleur.jeu().getJoueur2().nom().equals("Défenseur") && !controleur.jeu().getJoueur2().nom().equals("")){
-                s2 = controleur.jeu().getJoueur2().nom() +": IA";
+                s2 = "<html>" + controleur.jeu().getJoueur2().nom() + "<br>(IA";
+                nom2 = true;
             }
             else{
                 s2 = "IA";
@@ -612,12 +622,18 @@ class VueJeu extends JPanel {
             switch (controleur.jeu().getJoueur2().type()) {
                 case IA_FACILE:
                     s2 += " Facile";
+                    if(nom2)
+                        s2 += ")</html>";
                     break;
                 case IA_MOYEN:
                     s2 += " Moyen";
+                    if(nom2)
+                        s2 += ")</html>";
                     break;
                 case IA_DIFFICILE:
-                    s2 += " Difficile";
+                    s2 += " Difficile)</html>";
+                    if(nom2)
+                        s2 += ")</html>";
                     break;
             }
         } else {
