@@ -26,7 +26,7 @@ public class Jeu extends Observable implements Serializable {
     public Stack<Coup> pileIA_annule ;
     public Stack<Coup> pileIA_refaire ;
 
-    public ConfigurationJeu config;
+
 
     public boolean test_annuler_refaire = false;
     private Coordonne DepartIA;
@@ -69,8 +69,7 @@ public class Jeu extends Observable implements Serializable {
         if (joueurs[0] == null || joueurs[1] == null)
             throw new IllegalStateException("Impossible de créer une nouvelle partie : tous les joueurs n'ont pas été ajoutés");
 
-        this.config = new ConfigurationJeu();
-        this.n = new Niveau(config);
+        this.n = new Niveau();
         if (joueurs[0].aPionsNoirs())
             this.joueurCourant = 0; //Le joueur qui commence est l'attaquant
         else {
