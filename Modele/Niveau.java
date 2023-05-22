@@ -8,14 +8,13 @@ import java.util.Hashtable;
 public class Niveau implements Serializable, Cloneable {
     private static final long serialVersionUID = 1L;
     private int taille = 9;
-    private ConfigurationJeu config;
+
 
     public Pion[][] plateau = new Pion[taille][taille];
     public Hashtable<String, Integer> data = new Hashtable<>();
 
     //On creer le plateau de jeu
-    public Niveau(ConfigurationJeu config) {
-        this.config = config;
+    public Niveau() {
         init_Niveau();
         data.put(this.toString(), 0);
     }
@@ -265,9 +264,7 @@ public class Niveau implements Serializable, Cloneable {
         plateau[coup.arrivee.x][coup.arrivee.y] = p;
 
         p.setCoordonne(coup.arrivee);
-        if (!PionSeSuicide(p)) {
-            AMangerPion(p);
-        }
+        AMangerPion(p);
 
         if (estAttaquant(p)) {
             if (AMangerRoi(coup.arrivee)) {
@@ -275,7 +272,7 @@ public class Niveau implements Serializable, Cloneable {
             }
         }
         if (estRoi(p)) {
-            if (estForteresse(coup.arrivee.x, coup.arrivee.y) || (estContreBord(coup.arrivee.x, coup.arrivee.y) && config.isWinTousCote())) {
+            if (estForteresse(coup.arrivee.x, coup.arrivee.y) ) {
                 return 2;
             }
         }
@@ -310,42 +307,6 @@ public class Niveau implements Serializable, Cloneable {
         }
     }
 
-    public boolean defenseurSuicideF(int x, int y) {
-        return (estAttaquant(x + 1, y) && estForteresse(x - 1, y) && config.isPF()) || (estAttaquant(x - 1, y) && estForteresse(x + 1, y) && config.isPF()) || (estAttaquant(x, y - 1) && estForteresse(x, y + 1) && config.isPF()) || (estAttaquant(x, y + 1) && estForteresse(x, y - 1) && config.isPF());
-    }
-
-    public boolean defenseurSuicide(int x, int y) {
-        return (estAttaquant(x + 1, y) && estAttaquant(x - 1, y)) || (estAttaquant(x, y + 1) && estAttaquant(x, y - 1));
-    }
-
-    public boolean attaquantSuicide(int x, int y) {
-        return (estDefenseur(x + 1, y) && estDefenseur(x - 1, y)) || (estDefenseur(x, y + 1) && estDefenseur(x, y - 1));
-    }
-
-    public boolean attaquantSuicideF(int x, int y) {
-        return (estDefenseur(x + 1, y) && estForteresse(x - 1, y) && config.isPF()) || (estDefenseur(x - 1, y) && estForteresse(x + 1, y) && config.isPF()) || (estDefenseur(x, y + 1) && estForteresse(x, y - 1) && config.isPF()) || (estDefenseur(x, y - 1) && estForteresse(x, y + 1) && config.isPF());
-    }
-
-    //On regarde si le pion se suicide
-    public boolean PionSeSuicide(Pion p) {
-        if (config.isSA()) {
-            if (estAttaquant(p)) {
-                if (estContreDefenseur(p.getX(), p.getY())) {
-                    if (attaquantSuicide(p.getX(), p.getY()) || attaquantSuicideF(p.getX(), p.getY()))
-                        setVide(p.getX(), p.getY());
-                    return true;
-                }
-            }
-            if (estDefenseur(p)) {
-                if (estContreAttaquant(p.getX(), p.getY())) {
-                    if (defenseurSuicide(p.getX(), p.getY()) || defenseurSuicideF(p.getX(), p.getY()))
-                        setVide(p.getX(), p.getY());
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     //On verifie que le pion est contre un attaquant
     public boolean estContreAttaquant(int x, int y) {
@@ -360,22 +321,22 @@ public class Niveau implements Serializable, Cloneable {
     //On regarde si le pion a manger un defenseurs contre une forteresse
     public void attaquantForteresse(int x, int y) {
         if (estAttaquant(x + 1, y)) {
-            if (estForteresse(x + 2, y) && config.isPF()) {
+            if (estForteresse(x + 2, y)) {
                 setVide(x + 1, y);
             }
         }
         if (estAttaquant(x - 1, y)) {
-            if (estForteresse(x - 2, y) && config.isPF()) {
+            if (estForteresse(x - 2, y)) {
                 setVide(x - 1, y);
             }
         }
         if (estAttaquant(x, y + 1)) {
-            if (estForteresse(x, y + 2) && config.isPF()) {
+            if (estForteresse(x, y + 2)) {
                 setVide(x, y + 1);
             }
         }
         if (estAttaquant(x, y - 1)) {
-            if (estForteresse(x, y - 2) && config.isPF()) {
+            if (estForteresse(x, y - 2)) {
                 setVide(x, y - 1);
             }
         }
@@ -408,22 +369,22 @@ public class Niveau implements Serializable, Cloneable {
     //On regarde si le pion a manger un attaquant contre une forteresse
     public void defenseurForteresse(int x, int y) {
         if (estDefenseur(x + 1, y)) {
-            if (estForteresse(x + 2, y) && config.isPF()) {
+            if (estForteresse(x + 2, y)) {
                 setVide(x + 1, y);
             }
         }
         if (estDefenseur(x - 1, y)) {
-            if (estForteresse(x - 2, y) && config.isPF()) {
+            if (estForteresse(x - 2, y)) {
                 setVide(x - 1, y);
             }
         }
         if (estDefenseur(x, y + 1)) {
-            if (estForteresse(x, y + 2) && config.isPF()) {
+            if (estForteresse(x, y + 2) ) {
                 setVide(x, y + 1);
             }
         }
         if (estDefenseur(x, y - 1)) {
-            if (estForteresse(x, y - 2) && config.isPF()) {
+            if (estForteresse(x, y - 2) ) {
                 setVide(x, y - 1);
             }
         }
@@ -493,7 +454,7 @@ public class Niveau implements Serializable, Cloneable {
             ArrayList<Pion> pions_dispo = getPionsDispo(JC);
             return pions_dispo.contains(p);
         }
-        //}
+
         return false;
     }
 
@@ -627,13 +588,13 @@ public class Niveau implements Serializable, Cloneable {
     public boolean AMangerRoi(Coordonne dplc) {
         int pos = estContreRoi(dplc.x, dplc.y);
         if (pos == 1) {
-            return (regicideForteresse(dplc.x + 1, dplc.y) && config.isRF()) || (regicideKonakis(dplc.x + 1, dplc.y) && config.isRT()) || (regicideMur(dplc.x + 1, dplc.y) && config.isRM()) || regicidePion(dplc.x + 1, dplc.y);
+            return (regicideForteresse(dplc.x + 1, dplc.y)|| regicideKonakis(dplc.x + 1, dplc.y)  || regicideMur(dplc.x + 1, dplc.y)  || regicidePion(dplc.x + 1, dplc.y));
         } else if (pos == 2) {
-            return (regicideForteresse(dplc.x - 1, dplc.y) && config.isRF()) || (regicideKonakis(dplc.x - 1, dplc.y) && config.isRT()) || (regicideMur(dplc.x - 1, dplc.y) && config.isRM()) || regicidePion(dplc.x - 1, dplc.y);
+            return (regicideForteresse(dplc.x - 1, dplc.y)  || regicideKonakis(dplc.x - 1, dplc.y)  || regicideMur(dplc.x - 1, dplc.y) || regicidePion(dplc.x - 1, dplc.y));
         } else if (pos == 3) {
-            return (regicideForteresse(dplc.x, dplc.y + 1) && config.isRF()) || (regicideKonakis(dplc.x, dplc.y + 1) && config.isRT()) || (regicideMur(dplc.x, dplc.y + 1) && config.isRM()) || regicidePion(dplc.x, dplc.y + 1);
+            return (regicideForteresse(dplc.x, dplc.y + 1) || regicideKonakis(dplc.x, dplc.y + 1) || regicideMur(dplc.x, dplc.y + 1)  || regicidePion(dplc.x, dplc.y + 1));
         } else if (pos == 4) {
-            return (regicideForteresse(dplc.x, dplc.y - 1) && config.isRF()) || (regicideKonakis(dplc.x, dplc.y - 1) && config.isRT()) || (regicideMur(dplc.x, dplc.y - 1) && config.isRM()) || regicidePion(dplc.x, dplc.y - 1);
+            return (regicideForteresse(dplc.x, dplc.y - 1)  || regicideKonakis(dplc.x, dplc.y - 1) || regicideMur(dplc.x, dplc.y - 1) || regicidePion(dplc.x, dplc.y - 1));
         }
         return false;
     }
