@@ -336,6 +336,7 @@ public class VueMenuParties2 extends JPanel {
                             System.out.println("Le fichier à supprimer n'existe pas ou n'est pas un fichier.");
                         }
                     }
+                    refresh();
                 }
             }
         });
