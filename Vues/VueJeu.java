@@ -475,9 +475,9 @@ class VueJeu extends JPanel {
         controlsPanel.setOpaque(false);
 
         controls = new JButton[]{
-                new CButton(new ImageIcon(Imager.getScaledImage("assets/undo.png", 18, 18))).blanc(),
-                new CButton(new ImageIcon(Imager.getScaledImage("assets/solution.png", 40, 40))).solution(),
-                new CButton(new ImageIcon(Imager.getScaledImage("assets/redo.png", 18, 18))).blanc(),
+                new CButton(new ImageIcon(Imager.getScaledImage("assets/undo.png", 25, 25))).blanc(),
+                new CButton(new ImageIcon(Imager.getScaledImage("assets/solution.png", 50, 50))).solution(),
+                new CButton(new ImageIcon(Imager.getScaledImage("assets/redo.png", 25, 25))).blanc(),
         };
 
         controls[0].setEnabled(false);
