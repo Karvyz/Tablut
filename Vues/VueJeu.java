@@ -1,7 +1,8 @@
 package Vues;
 
-import Modele.Joueurs;
-import Modele.Music;
+import Controlleur.IA_facile;
+import Controlleur.IA_moyen;
+import Modele.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -10,10 +11,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 
+import static Modele.TypeJoueur.*;
 import static java.awt.GridBagConstraints.*;
 
-import Modele.TypeJoueur;
-import Modele.TypePion;
 import Vues.JComposants.*;
 
 class VueJeu extends JPanel {
@@ -123,11 +123,17 @@ class VueJeu extends JPanel {
         JButton menu = new CButton("Menu principal");
         JButton retry = new CButton("Rejouer ?").blanc();
         JButton consulter = new CButton("Consulter");
+        JButton suivant = new CButton("IA Suivante");
         endButtons.add(menu);
         endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
         endButtons.add(retry);
         endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
         endButtons.add(consulter);
+        // Si IA facile ou moyenne on affiche le bouton suivant
+        if ((controleur.jeu().getJoueur2().type() != TypeJoueur.HUMAIN && controleur.jeu().getJoueur2().type() != TypeJoueur.IA_DIFFICILE) || (controleur.jeu().getJoueur1().type() != TypeJoueur.HUMAIN && controleur.jeu().getJoueur1().type() != TypeJoueur.IA_DIFFICILE) && (controleur.jeu().getJoueur2().type() == TypeJoueur.HUMAIN || controleur.jeu().getJoueur1().type() == TypeJoueur.HUMAIN)) {
+            endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
+            endButtons.add(suivant);
+        }
 
         banner.add(endButtons, gbc2);
 
@@ -173,6 +179,31 @@ class VueJeu extends JPanel {
             controleur.jeu().setConsulter(true);
             sauvegarder.setEnabled(false);
             // Disposer le JDialog
+            endGameDialog.dispose();
+        });
+        suivant.addActionListener((e) -> {
+            Joueurs[] joueurs = new Joueurs[2];
+            joueurs[0] = controleur.jeu().getJoueur1();
+            joueurs[1] = controleur.jeu().getJoueur2();
+
+            controleur.jeu().reset();
+            // Calcul de l'IA suivante :
+            if(joueurs[0].type() == IA_FACILE) {
+                joueurs[0] = JoueursCreation.createJoueur(joueurs[0].nom(), IA_MOYEN, joueurs[0].typePions(), controleur.jeu());
+            } else if(joueurs[0].type() == IA_MOYEN) {
+                joueurs[0] = JoueursCreation.createJoueur(joueurs[0].nom(), IA_DIFFICILE, joueurs[0].typePions(), controleur.jeu());
+            } else if(joueurs[1].type() == IA_FACILE) {
+                joueurs[1] = JoueursCreation.createJoueur(joueurs[1].nom(), IA_MOYEN, joueurs[1].typePions(), controleur.jeu());
+            } else if(joueurs[1].type() == IA_MOYEN) {
+                joueurs[1] = JoueursCreation.createJoueur(joueurs[1].nom(), IA_DIFFICILE, joueurs[1].typePions(), controleur.jeu());
+            }
+            controleur.nouvellePartie(joueurs[0].nom(), joueurs[0].type(), TypePion.ATTAQUANT, joueurs[1].nom(), joueurs[1].type(), TypePion.DEFENSEUR);
+            texteJeu = new TexteJeu(0, 0);
+            controleur.afficherJeu();
+            controls[0].setEnabled(false);
+            controls[1].setEnabled(true);
+            controls[2].setEnabled(false);
+            sauvegarder.setEnabled(true);
             endGameDialog.dispose();
         });
     }
