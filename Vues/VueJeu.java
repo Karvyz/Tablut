@@ -362,15 +362,16 @@ class VueJeu extends JPanel {
             controls[2].setEnabled(false);
             sauvegarder.setEnabled(true);
         });
-        menu_items[1].addActionListener((e) -> {
+        menu_items[1].addActionListener((e) -> {//On clique sur Charger partie
             sauvegarder.setEnabled(true);
             controleur.jeu().reset();
             controleur.afficherMenuChargerPartie();
         });
-        menu_items[2].addActionListener((e) -> {
+        menu_items[2].addActionListener((e) -> { //On clique sur menu principal
             sauvegarder.setEnabled(true);
             controleur.jeu().reset();
             controleur.afficherMenuPrincipal();
+
         });
 
         JCheckBoxMenuItem checkBoxMenuItemMusic = new JCheckBoxMenuItem("Musique");
