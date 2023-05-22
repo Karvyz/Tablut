@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class TournoisControlleur {
     ArrayList<IA> ias;
     int nbManches;
-    static int limite_coups = 200;
+    static int limite_coups = 10000;
     ArrayList<ArrayList<Integer>> victoires;
     ArrayList<ArrayList<Integer>> defaites;
     public TournoisControlleur(ArrayList<IA> ias, int nbManches) {

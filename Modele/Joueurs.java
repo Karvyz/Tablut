@@ -5,14 +5,13 @@ import java.io.Serializable;
 import static java.util.Objects.requireNonNull;
 
 public class Joueurs implements Serializable, Cloneable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;//déclare une constante de sérialisation
     private final String nom;
     private final TypeJoueur type;
     private final TypePion roleJ;
 
     private TypePion pions;
     private int nombrePionsManges;
-    private int nombreVictoires;
     static int HANDICAP_MAX = 3;
 
     public Jeu jeu;
@@ -79,7 +78,6 @@ public class Joueurs implements Serializable, Cloneable {
                 ", type=" + type +
                 ", pions=" + pions +
                 ", nombrePionsManges=" + nombrePionsManges +
-                ", nombreVictoires=" + nombreVictoires +
                 "}";
     }
 

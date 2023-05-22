@@ -3,42 +3,17 @@ package Modele;
 import java.io.Serializable;
 
 public enum TypeJoueur implements Serializable {
-    HUMAIN("Humain", 0),
-    IA_FACILE("IA Facile", 1),
-    IA_MOYEN("IA Moyen", 2),
-    IA_DIFFICILE("IA Difficile", 3);
-
-    private static final long serialVersionUID = 1L;
-
-    public static final int NOMBRE = values().length;
+    HUMAIN("Humain"),
+    IA_FACILE("IA Facile"),
+    IA_MOYEN("IA Moyen"),
+    IA_DIFFICILE("IA Difficile");
+    private static final long serialVersionUID = 1L; //déclare une constante de sérialisation
 
     private final String nom;
-    private final int indice;
 
-    TypeJoueur(String nom, int indice) {
+    TypeJoueur(String nom) {
         this.nom = nom;
-        this.indice = indice;
     }
-/*
-    int indice() {
-        return indice;
-    }
-*/
-    /*
-    static TypeJoueur depuisIndice(int indice) {
-        switch (indice) {
-            case 0:
-                return HUMAIN;
-            case 1:
-                return IA_FACILE;
-            case 2:
-                return IA_MOYEN;
-            case 3:
-                return IA_DIFFICILE;
-            default:
-                throw new IllegalArgumentException("Aucun type de joueur correspondant à l'indice " + indice);
-        }
-    }*/
 
     @Override
     public String toString() {

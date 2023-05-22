@@ -7,11 +7,6 @@ public class Roi extends Pion {
     public Roi(int x, int y) {
         super(x, y, TypePion.ROI);
     }
-/*
-    public Roi(Coordonne coordonne) {
-        super(coordonne, TypePion.ROI);
-        //TODO Auto-generated constructor stub
-    }*/
 
     private ArrayList<Coordonne> getDeplacementVerticaList(Pion[][] plateau, ArrayList<Coordonne> deplacement) {
         int x = getX();
@@ -51,7 +46,7 @@ public class Roi extends Pion {
 
     @Override
     public ArrayList<Coordonne> getDeplacement(Pion[][] plateau) {
-        ArrayList<Coordonne> deplacement = new ArrayList<Coordonne>();
+        ArrayList<Coordonne> deplacement = new ArrayList<>();
         getDeplacementVerticaList(plateau, deplacement);
         getDeplacementHorizontaleList(plateau, deplacement);
         return deplacement;
