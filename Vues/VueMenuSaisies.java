@@ -284,6 +284,61 @@ public class VueMenuSaisies extends JPanel {
     }
 
     private void actionBoutonJouer(CollecteurEvenements c) {
+        /*String nom1 = this.nomJ1.getText().equals("Nom de l'attaquant") ? "Nom du défenseur" : this.nomJ1.getText();
+        String nom2 = this.nomJ2.getText().equals("Nom du défenseur") ? "Nom de l'attaquant" : this.nomJ2.getText();
+        nomJ1.setText(nom2);
+        nomJ2.setText(nom1);
+
+        DefaultComboBoxModel<String> defaultComboBoxModel = new DefaultComboBoxModel<>();
+        defaultComboBoxModel.addElement("Humain");
+        defaultComboBoxModel.addElement("IA Facile");
+        defaultComboBoxModel.addElement("IA Moyenne");
+        defaultComboBoxModel.addElement("IA Difficile");
+        DefaultComboBoxModel<String> defaultComboBoxModel3 = new DefaultComboBoxModel<>();
+        defaultComboBoxModel3.addElement("Humain");
+        defaultComboBoxModel3.addElement("IA Facile");
+        defaultComboBoxModel3.addElement("IA Moyenne");
+        defaultComboBoxModel3.addElement("IA Difficile");
+
+        int index2 = typeJ2.getSelectedIndex();
+        System.out.println(index2);
+
+        switch (typeJ1.getSelectedIndex()) {
+            case 0:
+                defaultComboBoxModel3.setSelectedItem("Humain");// Sélectionner "IA Facile" comme valeur par défaut
+                break;
+            case 1:
+                defaultComboBoxModel3.setSelectedItem("IA Facile");// Sélectionner "IA Facile" comme valeur par défaut
+                break;
+            case 2:
+                defaultComboBoxModel3.setSelectedItem("IA Moyenne");// Sélectionner "IA Facile" comme valeur par défaut
+                break;
+            case 3:
+                defaultComboBoxModel3.setSelectedItem("IA Difficile");// Sélectionner "IA Facile" comme valeur par défaut
+                break;
+            default:
+                //Par défault on fera jouer HUMAIN contre IA mais gérer dans le controleurMédiateur
+                break;
+        }
+        switch (index2) {
+            case 0:
+                defaultComboBoxModel.setSelectedItem("Humain");// Sélectionner "IA Facile" comme valeur par défaut
+                break;
+            case 1:
+                defaultComboBoxModel.setSelectedItem("IA Facile");// Sélectionner "IA Facile" comme valeur par défaut
+                break;
+            case 2:
+                defaultComboBoxModel.setSelectedItem("IA Moyenne");// Sélectionner "IA Facile" comme valeur par défaut
+                break;
+            case 3:
+                defaultComboBoxModel.setSelectedItem("IA Difficile");// Sélectionner "IA Facile" comme valeur par défaut
+                break;
+            default:
+                break;
+        }
+        typeJ1.setModel(defaultComboBoxModel);
+        typeJ2.setModel(defaultComboBoxModel3);*/
+
         TypeJoueur[] types = new TypeJoueur[2];
         switch (typeJ1.getSelectedIndex()) {
             case 0:
