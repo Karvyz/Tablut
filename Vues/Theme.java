@@ -154,8 +154,4 @@ public class Theme {
 
     public Image croix() {return croix;}
 
-
-    public Image err() {
-        return err;
-    }
 }

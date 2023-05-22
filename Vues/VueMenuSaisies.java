@@ -200,24 +200,7 @@ public class VueMenuSaisies extends JPanel {
         quitter.addActionListener((e) -> {
             controleur.toClose();
             // Créer une nouvelle fenêtre pour tester le texte d'un jlabel
-            /*JFrame frame = new JFrame("JLabel");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(300, 300);
-            // Ajout d'un jpanel avec deux jlabel
-            JPanel panel = new JPanel();
-            // GridLayout
-            panel.setLayout(new GridLayout(2, 1));
-            panel.setOpaque(false);
-            // Ajout des deux jlabel
-            JLabel label = new JLabel("Hello World");
-            label.setFont(new Font("Serif", Font.BOLD, 48));
-            JLabel label22 = new JLabel("Goodbye World !");
-            label22.setFont(new Font("Serif", Font.BOLD, 48));
-            panel.add(label);
-            panel.add(label22);
-            // Ajout du jpanel à la fenêtre
-            frame.getContentPane().add(panel);
-            frame.setVisible(true);*/
+
         });
 
         //BoutonsQuitter.add(quitter);
@@ -342,13 +325,4 @@ public class VueMenuSaisies extends JPanel {
             called = 1;
         }
     }
-
-    // Méthode pour réinitialiser les champs de texte
-    /*
-    public void resetTexte() {
-        nomJ1.setText("Joueur 1");
-        nomJ2.setText("Joueur 2");
-    }
-
-     */
 }

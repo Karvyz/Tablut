@@ -49,20 +49,15 @@ public class Vues {
         if (nom.equals(MENU_PARTIES) && vueMenuParties != null) {
             vueMenuParties.refreshFileList();
             vueMenuParties.refresh();
-            //frame.setMinimumSize(DIMENSION_MENU_PARTIES);
-            //frame.setSize(DIMENSION_MENU_PARTIES);
+
             frame.setMinimumSize(DIMENSION_DEFAUT);
         } else {
             frame.setMinimumSize(DIMENSION_DEFAUT);
-            //frame.setSize(DIMENSION_DEFAUT);
         }
         CardLayout layout = (CardLayout) frame.getContentPane().getLayout();
         layout.show(frame.getContentPane(), nom);
     }
 
-    public void afficherDemarrage() {
-        afficher(DEMARRAGE);
-    }
 
     public void afficherMenuPrincipal() {
         afficher(MENU_PRINCIPAL);

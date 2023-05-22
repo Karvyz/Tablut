@@ -59,7 +59,6 @@ public class Joueurs implements Serializable, Cloneable {
         return type;
     }
 
-    public TypePion RoleJoueur() { return roleJ;}
 
     public void fixeJeuJoueur(Jeu j){
         this.jeu = j;
@@ -95,43 +94,8 @@ public class Joueurs implements Serializable, Cloneable {
         }
     }
 
-    public boolean estIaFacile() {
-        return type == TypeJoueur.IA_FACILE;
-    }
-
-    public boolean estIaMoyen() {
-        return type == TypeJoueur.IA_MOYEN;
-    }
-
-    public boolean estIaDifficile() {
-        return type == TypeJoueur.IA_DIFFICILE;
-    }
-
     public TypePion typePions() {
         return pions;
-    }
-
-    public int nombrePionsManges() {
-        return nombrePionsManges;
-    }
-
-    void ajouterPionManges() {
-        nombrePionsManges++;
-    }
-
-    public int nombreVictoires() {
-        return nombreVictoires;
-    }
-
-    void ajouterVictoire() {
-        nombreVictoires++;
-    }
-
-    void enleverVictoire() {
-        if (nombreVictoires == 0) {
-            throw new IllegalStateException("Impossible d'enlever une victoire au joueur : aucune victoire");
-        }
-        nombreVictoires--;
     }
 
 }

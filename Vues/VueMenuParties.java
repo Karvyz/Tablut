@@ -211,7 +211,6 @@ public class VueMenuParties extends JPanel {
                 String selectedFile = fileList.getSelectedValue();
                 selectedFile = selectedFile.substring(0, selectedFile.lastIndexOf("e") + 1);
                 if (selectedFile != null) {
-                    //System.out.println(controleur);
                     if (controleur.chargerPartie("Resources/save/" + selectedFile) == false) {
                         System.out.println("Ligne 177 de VueMenuParties ");
                     }

@@ -33,13 +33,10 @@ public class InfoJoueur extends JPanel {
         n.setForeground(Color.WHITE);
         n.setFont(new Font("Arial", Font.BOLD, 18));
 
-        // --
-        //System.out.println("InfoJoueur : " + reverse);
+
         pawn = new ImageIcon(Imager.getScaledImage(reverse ? "PN.png" : "PB.png", 60, 60));
-        // --
         p = new CPions(reverse);
-        //p.setMaximumSize(new Dimension(100, -1));
-        //p.setMinimumSize(new Dimension(200, -1));
+
 
         add(n, BorderLayout.CENTER);
         add(Box.createRigidArea(new Dimension(0, 50)));
@@ -54,13 +51,10 @@ public class InfoJoueur extends JPanel {
     public void setPions(int nb1, int nb2) {
         setBackgroundJoueur(Color.GRAY);
         // Affichage des pions captures
-        //ImageIcon fois = new ImageIcon(Imager.getScaledImage("fois.png", 50, 60));
-        //System.out.println("setPions : " + nb);
         pawn = new ImageIcon(Imager.getScaledImage(reverse ? "PN.png" : "PB.png", 60, 60));
         p.removeAll();
         p.setLayout(new GridLayout(2, 2, 20, 20));
 
-        //p.setLayout(new FlowLayout(FlowLayout.CENTER, hgap, 0));
 
         p.add(new JLabel(pawn));
 

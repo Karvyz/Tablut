@@ -18,15 +18,10 @@ public class CListCellRenderer extends DefaultListCellRenderer {
             renderer.setBackground(new Color(0, 0, 0, 0));
             String text = ((JLabel) renderer).getText();
             String name = text.substring(0, text.lastIndexOf("-") - 1);
-            System.out.println(name);
             String date = text.substring(text.lastIndexOf("-") + 2);
-            System.out.println(date);
             int nameWidth = name.length();
-            System.out.println(nameWidth);
             ((JLabel) renderer).setText(String.format("%s%s", name, padRight(date, 25 - nameWidth)));
         }
-
-        //renderer.setFont(new Font("Arial", Font.PLAIN, 18));
 
         // Modif couleur de sélection
         if (isSelected) {

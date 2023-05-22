@@ -48,9 +48,6 @@ public class Observable {
 		observateurs.add(o);
 	}
 
-	public void supprimeObservateur(Observateur o) {
-		observateurs.remove(o);
-	}
 
 	public void supprimeTousObservateurs() {
 		observateurs.clear();
