@@ -631,7 +631,7 @@ class VueJeu extends JPanel {
                         s2 += ")</html>";
                     break;
                 case IA_DIFFICILE:
-                    s2 += " Difficile)</html>";
+                    s2 += " Difficile";
                     if(nom2)
                         s2 += ")</html>";
                     break;
