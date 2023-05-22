@@ -7,6 +7,7 @@ import Modele.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -379,14 +380,58 @@ class VueJeu extends JPanel {
         checkBoxMenuItemMusic.addActionListener(new Music());
 
         for (JMenuItem menu_item : menu_items) {
-            menu_item.setFont(new Font("Arial", Font.PLAIN, 16));
+            menu_item.setFont(new Font("Arial", Font.BOLD, 16));
             menu_item.setBorderPainted(false);
             menu_item.setUI(new CMenuItemUI(true));
+            menu_item.setBackground(new Color(85, 91, 97, 119));
+            menu_item.setForeground(new Color(32, 74, 82));
             menu.add(menu_item);
+            //menu.add(createCustomSeparator(Color.LIGHT_GRAY));
+            menu.add(createCustomSeparator(new Color(85, 91, 97, 119)));
         }
 
-        checkBoxMenuItemMusic.setFont(new Font("Arial", Font.PLAIN, 16));
+        checkBoxMenuItemMusic.setFont(new Font("Arial", Font.BOLD, 16));
         checkBoxMenuItemMusic.setBorderPainted(false);
+        checkBoxMenuItemMusic.setBackground(new Color(85, 91, 97, 119));
+        checkBoxMenuItemMusic.setForeground(new Color(32, 74, 82));
+
+        /*
+        // Personnaliser le rendu du JCheckBoxMenuItem
+        checkBoxMenuItemMusic.setUI(new BasicCheckBoxMenuItemUI() {
+            @Override
+            protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon,
+                                         Color background, Color foreground, int defaultTextIconGap) {
+                ButtonModel model = ((JMenuItem) c).getModel();
+                Color bgColor;
+                Color fgColor;
+
+                if (model.isArmed() || model.isSelected()) {
+                    System.out.println("isArmed " + model.isRollover());
+
+                    bgColor = model.isRollover() ? Color.YELLOW : Color.RED;
+                    fgColor = model.isRollover() ? Color.BLACK : Color.WHITE;
+                    System.out.println("bgColor " + bgColor);
+                    System.out.println("fgColor " + fgColor);
+                } else {
+                    System.out.println("isNotArmed " + model.isRollover());
+                    bgColor = model.isRollover() ? Color.LIGHT_GRAY : background;
+                    fgColor = model.isRollover() ? Color.BLACK : foreground;
+                    System.out.println("bgColor " + bgColor);
+                    System.out.println("fgColor " + fgColor);
+                }
+
+                g.setColor(bgColor);
+                g.fillRect(0, 0, c.getWidth(), c.getHeight());
+
+                super.paintMenuItem(g, c, checkIcon, arrowIcon, bgColor, fgColor, defaultTextIconGap);
+            }
+        });
+
+        System.out.println(checkBoxMenuItemMusic.getForeground());
+        System.out.println(menu_items[0].getForeground());
+
+         */
+
         menu.add(checkBoxMenuItemMusic);
 
         sauvegarder.addActionListener(e -> ActionBoutonSauvegarder());
@@ -420,6 +465,15 @@ class VueJeu extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
         c.gridy = 0;
+    }
+
+    private static JSeparator createCustomSeparator(Color color) {
+        JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
+        //separator.setForeground(color);
+        separator.setBackground(color);
+        separator.setPreferredSize(new Dimension(1, 5)); // Définir la taille du séparateur
+        separator.setMaximumSize(new Dimension(Integer.MAX_VALUE, 10)); // Définir la taille maximale
+        return separator;
     }
 
     private void addMain(JPanel contenu) {
