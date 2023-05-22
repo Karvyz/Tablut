@@ -12,36 +12,23 @@ import static java.util.Objects.requireNonNull;
 
 public class Jeu extends Observable implements Serializable {
     private static final long serialVersionUID = 1L; //déclare une constante de sérialisation
-
     public Niveau n;
-
     public Joueurs[] joueurs = new Joueurs[2];
-
     private Joueurs vainqueur;
     private int joueurCourant;
     private boolean enCours;
     public Pile coup_annule;
     public Pile coup_a_refaire;
-
     public Stack<Coup> pileIA_annule ;
     public Stack<Coup> pileIA_refaire ;
-
-
-
     public boolean test_annuler_refaire = false;
     private Coordonne DepartIA;
     private Coordonne ArriveIA;
-
     private Coup aideIA;
-
     private boolean debutPartie;
-
-    private GestionnaireDeCoup gestionnaireDeCoup;
-
+    private final GestionnaireDeCoup gestionnaireDeCoup;
     private boolean coup_joue;
-
     private boolean consulter;
-
 
     public Jeu() {
         setEnCours(false);
@@ -49,7 +36,6 @@ public class Jeu extends Observable implements Serializable {
         joueurs[1] = null;
         gestionnaireDeCoup = new GestionnaireDeCoup();
     }
-
 
     /**
      * Méthode permettant d'initialiser une partie
@@ -81,6 +67,21 @@ public class Jeu extends Observable implements Serializable {
         this.pileIA_refaire =  new Stack<>();
         setDebutPartie(true);
         setEnCours(true);
+    }
+
+    public void reset() {
+        //this.n = new Niveau(config);
+        this.coup_annule = new Pile();
+        this.coup_a_refaire = new Pile();
+        this.pileIA_annule =  new Stack<>();
+        this.pileIA_refaire =  new Stack<>();
+        this.joueurCourant = 0;
+        this.joueurs[0] = null;
+        this.joueurs[1] = null;
+        this.vainqueur = null;
+        this.enCours = false;
+        setAideIA(null);
+        setCoordooneJouerIA(null,null);
     }
 
     /**
@@ -146,32 +147,10 @@ public class Jeu extends Observable implements Serializable {
         }
     }
 
-    public Coup getAideIA() {
-        return aideIA;
-    }
-
-    public void setAideIA(Coup aideIA) {
-        this.aideIA = aideIA;
-    }
-
     public void solution() {
         Coup aide = new IA_DifficileTemps("", TypePion.ATTAQUANT, this, new HeuristiqueLeRoiCCiao(), 50).meilleurCoup();
         setAideIA(aide);
         metAJour();
-    }
-
-    public void setCoordooneJouerIA(Coordonne depart, Coordonne arrive) {
-        this.DepartIA = depart;
-        this.ArriveIA = arrive;
-    }
-
-    public Coordonne getCoordooneDepartIA() {
-        return this.DepartIA;
-    }
-
-
-    public Coordonne getCoordooneArriveIA() {
-        return this.ArriveIA;
     }
 
     public boolean peutAnnuler() {
@@ -276,32 +255,27 @@ public class Jeu extends Observable implements Serializable {
             return joueurs[0];
     }
 
-    public void reset() {
-        //this.n = new Niveau(config);
-        this.coup_annule = new Pile();
-        this.coup_a_refaire = new Pile();
-        this.pileIA_annule =  new Stack<>();
-        this.pileIA_refaire =  new Stack<>();
-        this.joueurCourant = 0;
-        this.joueurs[0] = null;//TODO a revoir, on doit pas tout le temps mettre a null
-        this.joueurs[1] = null;
-        this.vainqueur = null;
-        this.enCours = false;
-        setAideIA(null);
-        setCoordooneJouerIA(null,null);
+    public void setCoordooneJouerIA(Coordonne depart, Coordonne arrive) {
+        this.DepartIA = depart;
+        this.ArriveIA = arrive;
     }
 
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Jeu \n{");
-        sb.append(", enCours: ").append(enCours);
-        sb.append("niveau: ").append(n);
-        sb.append(", joueurs: [");
-        sb.append(joueurs[0]).append(", ");
-        sb.append(joueurs[1]);
-        sb.append(", joueurCourant: ").append(joueurCourant);
-        sb.append("}");
-        return sb.toString();
+    public Coordonne getCoordooneDepartIA() {
+        return this.DepartIA;
+    }
+
+
+    public Coordonne getCoordooneArriveIA() {
+        return this.ArriveIA;
+    }
+
+
+    public Coup getAideIA() {
+        return aideIA;
+    }
+
+    public void setAideIA(Coup aideIA) {
+        this.aideIA = aideIA;
     }
 
     public int[] info_pion(Joueurs j) {
@@ -340,6 +314,19 @@ public class Jeu extends Observable implements Serializable {
     public boolean getConsulter() {return consulter;}
 
     public void setConsulter(boolean consulter) {this.consulter = consulter;}
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Jeu \n{");
+        sb.append(", enCours: ").append(enCours);
+        sb.append("niveau: ").append(n);
+        sb.append(", joueurs: [");
+        sb.append(joueurs[0]).append(", ");
+        sb.append(joueurs[1]);
+        sb.append(", joueurCourant: ").append(joueurCourant);
+        sb.append("}");
+        return sb.toString();
+    }
 
 
 }

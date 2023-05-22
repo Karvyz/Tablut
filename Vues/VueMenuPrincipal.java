@@ -20,15 +20,10 @@ class VueMenuPrincipal extends JPanel {
 
 
         JButton nouvellePartie = new CButton("Nouvelle Partie").big();
-        nouvellePartie.addActionListener((e) -> {
-            c.afficherMenuNouvellePartie();
-        });
+        nouvellePartie.addActionListener((e) -> c.afficherMenuNouvellePartie());
 
         JButton chargerPartie = new CButton("Charger Partie").big();
-        chargerPartie.addActionListener((e) -> {
-            c.afficherMenuChargerPartie();
-
-        });
+        chargerPartie.addActionListener((e) -> c.afficherMenuChargerPartie());
 
         JButton QuickPlay = new CButton("Partie Rapide").big();
         QuickPlay.addActionListener((e) -> {
@@ -37,15 +32,11 @@ class VueMenuPrincipal extends JPanel {
         });
 
         JButton regles = new CButton("Règles").big();
-        regles.addActionListener((e) -> {
-            c.afficherRegles();
-        });
+        regles.addActionListener((e) -> c.afficherRegles());
         //JButton didacticiel = new CButton("Didacticiel");
 
         JButton quitter = new CButton("Quitter").big();
-        quitter.addActionListener((e) -> {
-            c.toClose();
-        });
+        quitter.addActionListener((e) -> c.toClose());
 
         Component[] components = {
                 nouvellePartie,
@@ -113,16 +104,11 @@ class VueMenuPrincipal extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         // Affichage de l'image d'arrière plan
         g.drawImage(background, 0, 0, getWidth(), getHeight(), this);
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        //Color color2 = new Color(255, 140, 85);
-        //Color color1 = new Color(255, 120, 105);
-        //GradientPaint gp = new GradientPaint(0, 0, color1, w, h, color2);
-        //g2d.setPaint(gp);
-        //g2d.fillRect(0, 0, w, h);
+
     }
 }

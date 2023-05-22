@@ -30,7 +30,7 @@ public class GestionnaireDeCoup implements Serializable {
         Joueurs j2 = jeu.getJoueur2();
 
         if (coup_annule.estVide()) {//On test dans tous les cas si c'est possible d'annuler au moins un coup ou non
-            System.out.println("Aucun coup a annuler"); //TODO ajouter un feedforback sur le bouton ou forward (vert si annuler possible rouge sinon)
+            System.out.println("Aucun coup a annuler");
             return;
         }
 
