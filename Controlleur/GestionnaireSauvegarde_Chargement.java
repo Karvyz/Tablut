@@ -23,13 +23,17 @@ public class GestionnaireSauvegarde_Chargement {
 
             fileName = fileName.trim();
             if (fileName.isEmpty()) {
-                handleSaveError("Le nom de fichier ne peut pas être vide");
-                continue;
+                boolean retry = handleSaveError("Le nom de fichier ne peut pas être vide");
+                if (!retry){
+                    return ;
+                }
             }
 
             if (fileName.length() > 18) {
-                handleSaveError("Le nom de fichier ne peut pas dépasser 18 caractères");
-                continue;
+                boolean retry = handleSaveError("Le nom de fichier ne peut pas dépasser 18 caractères");
+                if (!retry){
+                    return ;
+                }
             }
 
             break;
@@ -39,29 +43,37 @@ public class GestionnaireSauvegarde_Chargement {
         File directory = new File(directoryPath);
         if (!directory.exists()) { //Verifie si le dossier existe ou le crée
             if (!directory.mkdirs()) {
-                handleSaveError("Échec de la création du dossier de sauvegarde");
-                return;
+                boolean retry = handleSaveError("Échec de la création du dossier de sauvegarde");
+                if (!retry){
+                    return;
+                }
             }
         } else if (!directory.isDirectory() || !directory.canWrite()) {
-            handleSaveError("Impossible d'écrire dans le dossier de sauvegarde");
-            return;
+            boolean retry = handleSaveError("Impossible d'écrire dans le dossier de sauvegarde");
+            if (!retry){
+                return ;
+            }
         }
         fileName = directoryPath + fileName + ".save";
         File file = new File(fileName);
 
         while (file.exists()) {
-            handleSaveError("Ce nom de fichier existe déjà. Veuillez en choisir un autre.");
-            return;
+            boolean retry = handleSaveError("Ce nom de fichier existe déjà. Veuillez en choisir un autre.");
+            if (!retry){
+                return ;
+            }
         }
 
         if (sauvegarderPartie(fileName)) {
             JOptionPane.showMessageDialog(null, "Sauvegarde réussie", "Sauvegarde", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            handleSaveError("Échec de la sauvegarde");
+            boolean retry = handleSaveError("Échec de la sauvegarde");
+            if (!retry){
+            }
         }
     }
 
-    private void handleSaveError(String msg) {
+    private boolean handleSaveError(String msg) {
         JButton retryButton = new JButton("Recommencer");
         JButton cancelButton = new JButton("Annuler");
 
@@ -84,9 +96,7 @@ public class GestionnaireSauvegarde_Chargement {
                 new Object[]{retryButton, cancelButton},
                 retryButton);
 
-        if (option == JOptionPane.YES_OPTION) {
-            saveGame();
-        }
+        return option == JOptionPane.YES_OPTION;
     }
 
     public boolean sauvegarderPartie(String fichier) {
