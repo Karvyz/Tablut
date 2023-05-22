@@ -48,8 +48,10 @@ public class Vues {
     private void afficher(String nom) {
         if (nom.equals(MENU_PARTIES) && vueMenuParties != null) {
             vueMenuParties.refreshFileList();
-            frame.setMinimumSize(DIMENSION_MENU_PARTIES);
-            frame.setSize(DIMENSION_MENU_PARTIES);
+            vueMenuParties.refresh();
+            //frame.setMinimumSize(DIMENSION_MENU_PARTIES);
+            //frame.setSize(DIMENSION_MENU_PARTIES);
+            frame.setMinimumSize(DIMENSION_DEFAUT);
         } else {
             frame.setMinimumSize(DIMENSION_DEFAUT);
             //frame.setSize(DIMENSION_DEFAUT);

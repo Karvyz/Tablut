@@ -7,6 +7,7 @@ import Vues.JComposants.CLabel;
 import Vues.JComposants.CListCellRenderer;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
@@ -69,7 +70,6 @@ public class VueMenuParties2 extends JPanel {
         fileList.setFont(new Font("Courier", Font.PLAIN, 15)); // Changez la taille du texte des fichiers ici
         fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fileList.setVisibleRowCount(5);
-        fileList.setBackground(new Color(0x99000000, true));
         fileList.setOpaque(false);
         // Ajout de l'écouteur de double-clic ici
         fileList.addMouseListener(new MouseAdapter() {
@@ -99,7 +99,65 @@ public class VueMenuParties2 extends JPanel {
             }
         });
 
+        JScrollPane scrollPane = new JScrollPane(fileList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setOpaque(true);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+        // Custom JScrollBar
+        scrollPane.setVerticalScrollBar(new CJScrollBar());
+        scrollPane.setPreferredSize(new Dimension(430, 100));
+        scrollPane.setMaximumSize(new Dimension(450, -1));
+
+        // Définition de l'espacement entre les lignes
+        int lineSpace = 10;
+
+        // Création d'un EmptyBorder pour l'espacement entre les lignes
+        Border lineBorder = new EmptyBorder(lineSpace, 0, 0, 0);
+
+        // Création d'un MatteBorder pour le bord supérieur distinct
+        Color borderColor = Color.WHITE; // Couleur du bord supérieur
+        int topBorderThickness = 1; // Épaisseur du bord supérieur en pixels
+        Border topBorder = BorderFactory.createMatteBorder(topBorderThickness, 0, 0, 0, borderColor);
+
+        // Combinaison des bordures
+        Border compoundBorder = BorderFactory.createCompoundBorder(topBorder, lineBorder);
+
+        // Définition du Border pour le JScrollPane
+        scrollPane.setBorder(compoundBorder);
+
+        // Ajouter le scrollPane dans un JPanel transparent avec le titre
+        JPanel scrollPanePanel = new JPanel();
+        scrollPanePanel.setLayout(new GridBagLayout());
+        scrollPanePanel.setPreferredSize(new Dimension(430, 80));
+        scrollPanePanel.setMaximumSize(new Dimension(450, 1000));
+        scrollPanePanel.setBackground(new Color(0x99000000, true));
+        //scrollPanePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
         GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.weighty = 0.2;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.CENTER;
+        CLabel title = new CLabel("Parties sauvegardées");
+        title.setFont(new Font("Poppins", Font.BOLD, 20));
+        title.setForeground(new Color(0xFFFFFF));
+        scrollPanePanel.add(title, gbc);
+
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        gbc.weighty = 0.8;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.anchor = GridBagConstraints.CENTER;
+
+        scrollPane.setOpaque(false);
+
+        scrollPanePanel.add(scrollPane, gbc);
+
+        gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 2;
@@ -107,16 +165,8 @@ public class VueMenuParties2 extends JPanel {
         gbc.weightx = 0.5;
         gbc.fill = GridBagConstraints.VERTICAL;
         gbc.anchor = GridBagConstraints.CENTER;
-
-        JScrollPane scrollPane = new JScrollPane(fileList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
-        scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-        // Custom JScrollBar
-        scrollPane.setVerticalScrollBar(new CJScrollBar());
-        scrollPane.setPreferredSize(new Dimension(400, 100));
-        scrollPane.setMaximumSize(new Dimension(400, -1));
-        add(scrollPane, gbc);
+        //add(scrollPane, gbc);
+        add(scrollPanePanel, gbc);
 
         // Colonne vide
         Box verticalSpace1 = Box.createVerticalBox();
@@ -134,12 +184,12 @@ public class VueMenuParties2 extends JPanel {
         // JPanel contenant les infos de la partie selectionnée
         infoPanel = new JPanel();
         infoPanel.setLayout(new GridBagLayout());
-        infoPanel.setMinimumSize(new Dimension(300, 100));
-        infoPanel.setPreferredSize(new Dimension(300, 100));
-        infoPanel.setMaximumSize(new Dimension(300, 100));
+        infoPanel.setMinimumSize(new Dimension(350, 100));
+        infoPanel.setPreferredSize(new Dimension(350, 100));
+        infoPanel.setMaximumSize(new Dimension(350, 100));
         infoPanel.setBackground(new Color(0x99000000, true));
         infoPanel.setVisible(true);
-        infoPanel.setOpaque(false);
+        //infoPanel.setOpaque(false);
 
         // Nom de la partie (label1)
         GridBagConstraints gbc1 = new GridBagConstraints();
@@ -147,9 +197,10 @@ public class VueMenuParties2 extends JPanel {
         gbc1.gridy = 0;
         gbc1.gridwidth = 1;
         gbc1.gridheight = 1;
-        gbc1.fill = GridBagConstraints.HORIZONTAL;
-        gbc1.anchor = GridBagConstraints.WEST;
-        label1 = new CLabel("");
+        gbc1.fill = GridBagConstraints.NONE;
+        gbc1.anchor = GridBagConstraints.CENTER;
+        label1 = new CLabel("Aucune partie selectionnée").jaune();
+        label1.setOpaque(false);
         infoPanel.add(label1, gbc1);
 
         // Date de la partie
@@ -158,9 +209,10 @@ public class VueMenuParties2 extends JPanel {
         gbc2.gridy = 1;
         gbc2.gridwidth = 1;
         gbc2.gridheight = 1;
-        gbc2.fill = GridBagConstraints.HORIZONTAL;
-        gbc2.anchor = GridBagConstraints.WEST;
-        label2 = new CLabel("");
+        gbc2.fill = GridBagConstraints.NONE;
+        gbc2.anchor = GridBagConstraints.CENTER;
+        label2 = new CLabel("").jaune();
+        label2.setOpaque(false);
         infoPanel.add(label2, gbc2);
 
         // Nom de l'attaquant
@@ -171,9 +223,10 @@ public class VueMenuParties2 extends JPanel {
         gbc3.gridheight = 1;
         gbc3.fill = GridBagConstraints.HORIZONTAL;
         gbc3.anchor = GridBagConstraints.WEST;
-        label3 = new CLabel("");
+        label3 = new CLabel("").jaune();
         attaquant = "";
         label3.setText(attaquant);
+        label3.setOpaque(false);
         infoPanel.add(label3, gbc3);
 
         // Nom du défenseur
@@ -184,9 +237,10 @@ public class VueMenuParties2 extends JPanel {
         gbc4.gridheight = 1;
         gbc4.fill = GridBagConstraints.HORIZONTAL;
         gbc4.anchor = GridBagConstraints.WEST;
-        label4 = new CLabel("");
+        label4 = new CLabel("").jaune();
         defenseur = "";
         label4.setText(defenseur);
+        label4.setOpaque(false);
         infoPanel.add(label4, gbc4);
 
         // Ajout du JPanel infoPanel
@@ -209,12 +263,15 @@ public class VueMenuParties2 extends JPanel {
         gbc6.gridheight = 1;
         gbc6.fill = GridBagConstraints.NONE;
         gbc6.anchor = GridBagConstraints.CENTER;
-        gbc6.insets = new Insets(5, 0, 5, 0);
+        gbc6.insets = new Insets(10, 0, 5, 0);
 
         loadButton.setFocusable(true);
         loadButton.setHideActionText(false);
         loadButton.setHorizontalTextPosition(SwingConstants.LEFT);
         loadButton.setText("Charger Partie");
+        loadButton.setMinimumSize(new Dimension(250, 37));
+        loadButton.setPreferredSize(new Dimension(250, 37));
+        loadButton.setMaximumSize(new Dimension(250, 37));
 
         loadButton.addActionListener(new ActionListener() {
             @Override
@@ -248,6 +305,9 @@ public class VueMenuParties2 extends JPanel {
         deleteButton.setHideActionText(false);
         deleteButton.setHorizontalTextPosition(SwingConstants.LEFT);
         deleteButton.setText("Supprimer Partie");
+        deleteButton.setPreferredSize(new Dimension(250, 37));
+        deleteButton.setMinimumSize(new Dimension(250, 37));
+        deleteButton.setMaximumSize(new Dimension(250, 37));
 
         deleteButton.addActionListener(new ActionListener() {
             @Override
@@ -304,6 +364,10 @@ public class VueMenuParties2 extends JPanel {
         gbc9.anchor = GridBagConstraints.CENTER;
         gbc9.insets = new Insets(0, 0, 10, 0);
         menuPrincipalButton.setText("Menu Principal");
+        menuPrincipalButton.setPreferredSize(new Dimension(250, 37));
+        menuPrincipalButton.setMinimumSize(new Dimension(250, 37));
+        menuPrincipalButton.setMaximumSize(new Dimension(250, 37));
+
         menuPrincipalButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -349,10 +413,13 @@ public class VueMenuParties2 extends JPanel {
 
     public void refresh() {
         if (fileList.getSelectedValue() == null) {
-            infoPanel.setVisible(false);
             loadButton.setEnabled(false);
+            label1.setText("Aucune partie selectionnée");
+            label2.setText("");
+            label3.setText("");
+            label4.setText("");
         } else {
-            infoPanel.setVisible(true);
+            infoPanel.setBackground(new Color(0x99000000, true));
             loadButton.setEnabled(true);
             // Récupération partie selectionnée
             String selectedText = fileList.getSelectedValue();
@@ -370,8 +437,8 @@ public class VueMenuParties2 extends JPanel {
                 ObjectInputStream objectIn = new ObjectInputStream(fileIn);
 
                 data_niveau = (Data_Niveau) objectIn.readObject();
-                attaquant = data_niveau.attaquant.nom();
-                defenseur = data_niveau.defenseur.nom();
+                attaquant = "Attaquant : " + data_niveau.attaquant.nom();
+                defenseur = "Défenseur : " + data_niveau.defenseur.nom();
 
                 objectIn.close();
                 fileIn.close();
@@ -390,9 +457,14 @@ public class VueMenuParties2 extends JPanel {
                 return;
             }
 
-            label3.setText("Attaquant : " + attaquant);
-            label4.setText("Défenseur : " + defenseur);
+            label3.setText(attaquant);
+            label4.setText(defenseur);
         }
+
+        infoPanel.revalidate();
+        infoPanel.repaint();
+
+        repaint();
 
     }
 
