@@ -20,9 +20,11 @@ public class ControlleurMediateur implements CollecteurEvenements {
     int decompte;
     public boolean Stop;
 
+    private GestionnaireSauvegarde_Chargement Gest_save;
+
 
     public ControlleurMediateur() {
-        //on utilise fixeJeu
+        Gest_save = new GestionnaireSauvegarde_Chargement(this);
     }
 
     public void fixeJeu(Jeu j) {
@@ -94,150 +96,20 @@ public class ControlleurMediateur implements CollecteurEvenements {
 
     }
 
+    /**
+     * Méthode de sauvegarde et de chargement
+     */
     public void saveGame() {
-        String fileName = null;
-        while (true) {
-            fileName = JOptionPane.showInputDialog(null, "Entrez le nom du fichier de sauvegarde (max 18 caractères) :", "Sauvegarde", JOptionPane.PLAIN_MESSAGE);
-
-            if (fileName == null) {
-                // L'utilisateur a appuyé sur Annuler, sortir de la méthode
-                return;
-            }
-
-            fileName = fileName.trim();
-            if (fileName.isEmpty()) {
-                handleSaveError("Le nom de fichier ne peut pas être vide");
-                continue;
-            }
-
-            if (fileName.length() > 18) {
-                handleSaveError("Le nom de fichier ne peut pas dépasser 18 caractères");
-                continue;
-            }
-
-            break;
-        }
-
-        String directoryPath = "Resources/save/";
-        File directory = new File(directoryPath);
-        if (!directory.exists()) { //Verifie si le dossier existe ou le crée
-            if (!directory.mkdirs()) {
-                handleSaveError("Échec de la création du dossier de sauvegarde");
-                return;
-            }
-        } else if (!directory.isDirectory() || !directory.canWrite()) {
-            handleSaveError("Impossible d'écrire dans le dossier de sauvegarde");
-            return;
-        }
-        fileName = directoryPath + fileName + ".save";
-        File file = new File(fileName);
-
-        while (file.exists()) {
-            handleSaveError("Ce nom de fichier existe déjà. Veuillez en choisir un autre.");
-            return;
-        }
-
-        if (sauvegarderPartie(fileName)) {
-            JOptionPane.showMessageDialog(null, "Sauvegarde réussie", "Sauvegarde", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            handleSaveError("Échec de la sauvegarde");
-        }
-    }
-
-    private void handleSaveError(String msg) {
-        JButton retryButton = new JButton("Recommencer");
-        JButton cancelButton = new JButton("Annuler");
-
-
-        retryButton.addActionListener(e -> {
-            JOptionPane.getRootFrame().dispose(); // Ferme la boîte de dialogue d'erreur
-            saveGame();
-        });
-
-        cancelButton.addActionListener(e -> {
-            JOptionPane.getRootFrame().dispose(); // Ferme la boîte de dialogue d'erreur
-        });
-
-        int option = JOptionPane.showOptionDialog(null,
-                msg,
-                "Erreur",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.ERROR_MESSAGE,
-                null,
-                new Object[]{retryButton, cancelButton},
-                retryButton);
-
-        if (option == JOptionPane.YES_OPTION) {
-            saveGame();
-        }
-    }
-
-    public boolean sauvegarderPartie(String fichier) {
-        try {
-            FileOutputStream fileOut = new FileOutputStream(fichier);
-            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-            System.out.println("Sauvegarde du jeu dans le fichier: " + fichier);
-            Data_Niveau data_niveau = new Data_Niveau(jeu.config, jeu.n, jeu.coup_annule, jeu.coup_a_refaire, jeu.pileIA_annule, jeu.pileIA_refaire, jeu.get_num_JoueurCourant(), jeu.joueurs[0], jeu.joueurs[1], jeu.enCours());
-
-            objectOut.writeObject(data_niveau);
-            objectOut.close();
-            fileOut.close();
-
-            return true;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
+        Gest_save.saveGame();
     }
 
     public boolean chargerPartie(String fichier) {
-        Data_Niveau data_niveau;
-
-        try {
-            FileInputStream fileIn = new FileInputStream(fichier);
-            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-
-            data_niveau = (Data_Niveau) objectIn.readObject();
-            jeu.n = data_niveau.niveau;
-            jeu.coup_annule = data_niveau.coup_annule;
-            jeu.coup_a_refaire = data_niveau.coup_a_refaire;
-            jeu.pileIA_annule = data_niveau.pileIA_annule;
-            jeu.pileIA_refaire = data_niveau.pileIA_refaire;
-            jeu.set_num_JoueurCourant(data_niveau.get_JC());
-            jeu.joueurs[0] = data_niveau.attaquant;
-            jeu.joueurs[1] = data_niveau.defenseur;
-            jeu.config = data_niveau.config;
-            jeu.setEnCours(data_niveau.enCours);
-            jeu.setDebutPartie(true);
-            jeu.joueurs[0].fixeJeuJoueur(jeu);
-            jeu.joueurs[1].fixeJeuJoueur(jeu);
-
-            objectIn.close();
-            fileIn.close();
-
-            System.out.println("Le jeu a été chargé.");
-
-        } catch (FileNotFoundException e) {
-            System.err.println("Fichier non trouvé : " + fichier);
-            return false;
-        } catch (EOFException | InvalidClassException e) {
-            System.err.println("Erreur lors de la lecture du fichier : " + fichier);
-            return false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        } catch (ClassNotFoundException e) {
-            System.err.println("Classe Data_Niveau introuvable");
-            return false;
-        }
-        return true;
+        return Gest_save.chargerPartie(fichier);
     }
+
 
     /**
      * Méthode en rapport avec l'interaction HommeMachine
-     *
-     * @return
      */
     @Override//Deplacement en Drag&Drop
     public boolean dragANDdrop(Coordonne src, Coordonne dst) {
@@ -311,10 +183,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
                 }
                 changeJoueur();
             } else if (decompte == 0) {
-                if (jeu.joueurs[jeu.get_num_JoueurCourant()].estHumain() && jeu.joueurs[jeu.get_num_JoueurCourant()].aPionsNoirs())
-                    System.out.println("C'est a vous de jouer : L'ATTAQUANT ");
-                else
-                    System.out.println("C'est a vous de jouer : LE DEFENSEUR");
                 decompte = lenteurAttente;
             } else {
                 decompte--;
@@ -325,7 +193,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
     void changeJoueur() {
         decompte = lenteurAttente;
     }
-
 
     /**
      * Méthode en rapport avec l'IHM
@@ -392,7 +259,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
         return Stop;
     }
 
-
     public String toString() {
         if (jeu == null)
             return "";
@@ -403,5 +269,4 @@ public class ControlleurMediateur implements CollecteurEvenements {
                 "\n jeu().enCours() +\n";
 
     }
-
 }

@@ -332,19 +332,20 @@ class VueJeu extends JPanel {
         menuBar.setMargin(new Insets(10, 10, 2, 14));
         buttonsPanel.add(menuBar);
 
-        JMenu menu = new JMenu();
+        JMenu menu = new JMenu("Menu");
         menu.setBorderPainted(false);
         menu.setBorder(new MatteBorder(0, 0, 1, 0, Color.red));
         menu.setCursor(new Cursor(Cursor.HAND_CURSOR));
         menu.setUI(new CMenuUI());
-        menu.setIcon(new ImageIcon(Imager.getScaledImage("assets/white_burger.png", 32, 32)));
+        menu.setIcon(new ImageIcon(Imager.getScaledImage("assets/white_burger.png", 35, 35)));
+        menu.setForeground(Color.white);
+        menu.setFont(new Font("Arial", Font.BOLD, 20));
         menuBar.add(menu);
 
         JMenuItem[] menu_items = {
                 new JMenuItem("Nouvelle Partie"),
                 new JMenuItem("Charger Partie"),
                 new JMenuItem("Menu principal"),
-                new JMenuItem("Quitter"),
         };
 
         menu_items[0].addActionListener((e) -> {
@@ -371,20 +372,19 @@ class VueJeu extends JPanel {
             controleur.jeu().reset();
             controleur.afficherMenuPrincipal();
         });
-        menu_items[3].addActionListener(e -> controleur.toClose());
 
         JCheckBoxMenuItem checkBoxMenuItemMusic = new JCheckBoxMenuItem("Musique");
         checkBoxMenuItemMusic.setSelected(false);
         checkBoxMenuItemMusic.addActionListener(new Music());
 
         for (JMenuItem menu_item : menu_items) {
-            menu_item.setFont(new Font("Arial", Font.PLAIN, 14));
+            menu_item.setFont(new Font("Arial", Font.PLAIN, 16));
             menu_item.setBorderPainted(false);
             menu_item.setUI(new CMenuItemUI(true));
             menu.add(menu_item);
         }
 
-        checkBoxMenuItemMusic.setFont(new Font("Arial", Font.PLAIN, 14));
+        checkBoxMenuItemMusic.setFont(new Font("Arial", Font.PLAIN, 16));
         checkBoxMenuItemMusic.setBorderPainted(false);
         menu.add(checkBoxMenuItemMusic);
 
@@ -472,9 +472,9 @@ class VueJeu extends JPanel {
         controlsPanel.setOpaque(false);
 
         controls = new JButton[]{
-                new CButton(new ImageIcon(Imager.getScaledImage("assets/undo.png", 18, 18))).blanc(),
-                new CButton(new ImageIcon(Imager.getScaledImage("assets/solution.png", 40, 40))).solution(),
-                new CButton(new ImageIcon(Imager.getScaledImage("assets/redo.png", 18, 18))).blanc(),
+                new CButton(new ImageIcon(Imager.getScaledImage("assets/undo.png", 25, 25))).blanc(),
+                new CButton(new ImageIcon(Imager.getScaledImage("assets/solution.png", 50, 50))).solution(),
+                new CButton(new ImageIcon(Imager.getScaledImage("assets/redo.png", 25, 25))).blanc(),
         };
 
         controls[0].setEnabled(false);
@@ -578,7 +578,12 @@ class VueJeu extends JPanel {
         // Initialisation du niveau
         String s1 = "";
         if (!controleur.jeu().getJoueur1().estHumain()) {
-            s1 = "IA";
+            if(!controleur.jeu().getJoueur1().nom().equals("Attaquant")){
+                s1 = controleur.jeu().getJoueur1().nom() +": IA";
+            }
+            else{
+                s1 = "IA";
+            }
             switch (controleur.jeu().getJoueur1().type()) {
                 case IA_FACILE:
                     s1 += " Facile";
@@ -598,7 +603,12 @@ class VueJeu extends JPanel {
 
         String s2 = "";
         if (!controleur.jeu().getJoueur2().estHumain()) {
-            s2 = "IA";
+            if(!controleur.jeu().getJoueur2().nom().equals("Défenseur")){
+                s2 = controleur.jeu().getJoueur2().nom() +": IA";
+            }
+            else{
+                s2 = "IA";
+            }
             switch (controleur.jeu().getJoueur2().type()) {
                 case IA_FACILE:
                     s2 += " Facile";
