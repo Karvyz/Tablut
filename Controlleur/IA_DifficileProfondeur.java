@@ -58,7 +58,7 @@ public class IA_DifficileProfondeur extends IA {
                             return Integer.MAX_VALUE - depth;
                         return Integer.MIN_VALUE + depth;
                     }
-                    if (depth == max_depth - 1) {
+                    if (depth == max_depth) {
                         nevaluation++;
                         return heuristique.evaluation(clone, current_type);
                     } else {
