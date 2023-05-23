@@ -397,43 +397,6 @@ class VueJeu extends JPanel {
         checkBoxMenuItemMusic.setBackground(new Color(85, 91, 97, 119));
         checkBoxMenuItemMusic.setForeground(new Color(0, 34, 45));
 
-        /*
-        // Personnaliser le rendu du JCheckBoxMenuItem
-        checkBoxMenuItemMusic.setUI(new BasicCheckBoxMenuItemUI() {
-            @Override
-            protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon,
-                                         Color background, Color foreground, int defaultTextIconGap) {
-                ButtonModel model = ((JMenuItem) c).getModel();
-                Color bgColor;
-                Color fgColor;
-
-                if (model.isArmed() || model.isSelected()) {
-                    System.out.println("isArmed " + model.isRollover());
-
-                    bgColor = model.isRollover() ? Color.YELLOW : Color.RED;
-                    fgColor = model.isRollover() ? Color.BLACK : Color.WHITE;
-                    System.out.println("bgColor " + bgColor);
-                    System.out.println("fgColor " + fgColor);
-                } else {
-                    System.out.println("isNotArmed " + model.isRollover());
-                    bgColor = model.isRollover() ? Color.LIGHT_GRAY : background;
-                    fgColor = model.isRollover() ? Color.BLACK : foreground;
-                    System.out.println("bgColor " + bgColor);
-                    System.out.println("fgColor " + fgColor);
-                }
-
-                g.setColor(bgColor);
-                g.fillRect(0, 0, c.getWidth(), c.getHeight());
-
-                super.paintMenuItem(g, c, checkIcon, arrowIcon, bgColor, fgColor, defaultTextIconGap);
-            }
-        });
-
-        System.out.println(checkBoxMenuItemMusic.getForeground());
-        System.out.println(menu_items[0].getForeground());
-
-         */
-
         menu.add(checkBoxMenuItemMusic);
 
         sauvegarder.addActionListener(e -> ActionBoutonSauvegarder());
@@ -614,7 +577,6 @@ class VueJeu extends JPanel {
         controls[1].setEnabled(true);
 
         topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        System.out.println(topFrame);
 
         topFrame.addKeyListener(new AdaptateurClavier(controleur));
         topFrame.setFocusable(true);
@@ -631,7 +593,6 @@ class VueJeu extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
         mainPanel.add(vueNiveau, c);
 
-        System.out.println(j1);
         // Initialisation du niveau
         String s1 = "";
         if (!controleur.jeu().getJoueur1().estHumain()) {

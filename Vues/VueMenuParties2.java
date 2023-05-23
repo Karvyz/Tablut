@@ -279,9 +279,8 @@ public class VueMenuParties2 extends JPanel {
                 String selectedFile = fileList.getSelectedValue();
                 selectedFile = selectedFile.substring(0, selectedFile.lastIndexOf("e") + 1);
                 if (selectedFile != null) {
-                    //System.out.println(controleur);
                     if (controleur.chargerPartie("Resources/save/" + selectedFile) == false) {
-                        System.out.println("Ligne 177 de VueMenuParties ");
+                        System.out.println("Ligne 283 de VueMenuParties ");
                     }
                     controleur.fixeJeu(controleur.jeu().getJeu());
                     controleur.afficherJeu();
