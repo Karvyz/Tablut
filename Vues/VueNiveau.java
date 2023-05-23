@@ -93,7 +93,7 @@ class VueNiveau extends JPanel implements Observateur {
             j2.n.setForeground(Color.WHITE);
             j1.p.setBorder(border);
             // Si une IA, on rajoute en cours
-            if(!controleur.jeu().getJoueur1().estHumain()) {
+            if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getConsulter()) {
                 String old = j1.n.getText();
                 // On enlève le </html>
                 old = old.substring(0, old.length() - 7);
@@ -115,7 +115,7 @@ class VueNiveau extends JPanel implements Observateur {
             j1.n.setForeground(Color.WHITE);
             j2.p.setBorder(border);
             // Si une IA, on rajoute en cours
-            if(!controleur.jeu().getJoueur2().estHumain()) {
+            if(!controleur.jeu().getJoueur2().estHumain() && !controleur.jeu().getConsulter()) {
                 String old = j2.n.getText();
                 // On enlève le </html>
                 old = old.substring(0, old.length() - 7);
