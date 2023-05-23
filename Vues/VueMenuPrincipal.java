@@ -109,10 +109,8 @@ class VueMenuPrincipal extends JPanel {
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.LINE_END;
         buttonsPanel.setBounds(buttonsPanel.getX() - (dm.getWidth() / 64 * 10), buttonsPanel.getY(), buttonsPanel.getWidth(), buttonsPanel.getHeight());
-        //buttonsPanel.setBounds(buttonsPanel.getX(), buttonsPanel.getY(), buttonsPanel.getWidth(), buttonsPanel.getHeight());
         centerPanel.add(buttonsPanel, gbc);
         centerPanel.setBounds(centerPanel.getX() - (dm.getWidth() / 128 * 10), centerPanel.getY(), centerPanel.getWidth(), centerPanel.getHeight());
-        //centerPanel.setBounds(centerPanel.getX(), centerPanel.getY(), centerPanel.getWidth(), centerPanel.getHeight());
     }
 
     @Override
