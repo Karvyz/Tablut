@@ -33,6 +33,8 @@ public class Jeu extends Observable implements Serializable {
     private final GestionnaireDeCoup gestionnaireDeCoup;
     private boolean consulter;
 
+    private boolean jeu_boucle = false;
+
     public Jeu() {
         setEnCours(false);
         joueurs[0] = null; //Pour être sure, peut être inutile
@@ -101,7 +103,7 @@ public class Jeu extends Observable implements Serializable {
         } else {
             setCoordooneJouerIA(null, null);
         }
-                checkvictoire(i);
+        checkvictoire(i);
 
         //Si l'IA joue, on ne dépile pas a refaire
         if (getJoueurCourant().estHumain()) {
@@ -125,6 +127,7 @@ public class Jeu extends Observable implements Serializable {
                 System.out.println("Victoire des Défenseurs");
             } else {
                 vainqueur = getAttaquant(); // pourquoi ???
+                setAboucle(true);
                 System.out.println("Bah normalement il y a égalité");
             }
             setEnCours(false);
@@ -314,6 +317,13 @@ public class Jeu extends Observable implements Serializable {
     public boolean getConsulter() {return consulter;}
 
     public void setConsulter(boolean consulter) {this.consulter = consulter;}
+
+    public void setAboucle(boolean b){
+        jeu_boucle = b;
+    }
+    public boolean aBoucle(){
+        return jeu_boucle;
+    }
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
