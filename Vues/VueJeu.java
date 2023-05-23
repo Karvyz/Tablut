@@ -62,7 +62,8 @@ class VueJeu extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Traitement à effectuer lorsque Ctrl + S est enfoncé
-                ActionBoutonSauvegarder();
+                if(!controleur.jeu().getConsulter())
+                    ActionBoutonSauvegarder();
             }
         };
         // Liaison de l'action à l'InputMap et au KeyStroke correspondant
