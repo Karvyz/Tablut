@@ -62,10 +62,10 @@ public class HeuristiqueLeRoiCCiao extends Heuristique {
         }
         if (typePion == TypePion.ATTAQUANT) { // attaquant
             if (peut_tuer_roi(x, y, n)) {
-                return 10000;
+                return 1000;
             }
             if (attaquants < 3 || (d < 1 || g < 1 || b < 1 || h < 1)) {
-                return -10000;
+                return -1000;
             } else {
                 return 8-defenseurs-(16-attaquants);
             }

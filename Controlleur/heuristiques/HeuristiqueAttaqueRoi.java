@@ -53,13 +53,13 @@ public class HeuristiqueAttaqueRoi extends Heuristique {
         }
         if (typePion == TypePion.ATTAQUANT) { // attaquant
             if (countbd < 2 && counthd < 2 || countbg < 2 && counthg < 2 || countbd < 2 && countbg < 2 || counthd < 2 && counthg < 2 || attaquants < 3) {
-                return -10000;
+                return -1000;
             } else {
                 return attaquants - defenseurs * 2;
             }
         } else { // defenseur
             if (countbd < 2 && counthd < 2 || countbg < 2 && counthg < 2 || countbd < 2 && countbg < 2 || counthd < 2 && counthg < 2) {
-                return 10000;
+                return 1000;
             } else {
                 return defenseurs - attaquants - Math.min(Math.min(counthg + countbg, counthd + countbd), Math.min(counthg + counthd, countbg + countbd)); // on retourne le nombre de defenseurs - le nombre d'attaquants - le nombre minimum de pions d'un coté du roi
             }
