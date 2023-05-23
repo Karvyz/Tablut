@@ -36,6 +36,10 @@ class VueJeu extends JPanel {
 
     JButton sauvegarder = new CButton(new ImageIcon(Imager.getScaledImage("assets/Disquette.png", 20, 20))).blanc();
 
+    JButton suivant = new CButton("IA Suivante").blanc();
+
+    JPanel endButtons = new JPanel();
+
     VueJeu(CollecteurEvenements c) {
         controleur = c;
 
@@ -119,12 +123,10 @@ class VueJeu extends JPanel {
         gbc2.gridy = 1;
         gbc2.anchor = CENTER;
         gbc2.insets = new Insets(20, 0, 0, 0);
-        JPanel endButtons = new JPanel();
         endButtons.setOpaque(false);
         JButton menu = new CButton("Menu principal");
         JButton retry = new CButton("Rejouer ?").blanc();
         JButton consulter = new CButton("Consulter");
-        JButton suivant = new CButton("IA Suivante").blanc();
         endButtons.add(menu);
         endButtons.add(Box.createRigidArea(new Dimension(5, 0)));
         endButtons.add(retry);
@@ -273,6 +275,7 @@ class VueJeu extends JPanel {
                 endGameText.setText("<html>" + svainqueur + " a gagné !<br>" + sperdant + " a perdu.</html>");
             }
         } else {
+            suivant.setEnabled(false);
             endGameDialog.getComponent(0).setBackground(new Color(201, 67, 67));
             endGamePanel.setBackground(new Color(85, 91, 97));
             String typeIA = "";
