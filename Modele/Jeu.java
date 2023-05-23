@@ -8,6 +8,7 @@ import Structures.Pile;
 import java.io.*;
 import java.util.Stack;
 
+import static java.lang.Thread.sleep;
 import static java.util.Objects.requireNonNull;
 
 public class Jeu extends Observable implements Serializable {

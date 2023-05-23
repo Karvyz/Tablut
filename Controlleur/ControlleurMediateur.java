@@ -19,6 +19,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
     private GestionnaireSauvegarde_Chargement Gest_save;
 
 
+
     public ControlleurMediateur() {
         Gest_save = new GestionnaireSauvegarde_Chargement(this);
     }
@@ -32,7 +33,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
         verifierJeu("Impossible de renvoyer un jeu");
         return jeu;
     }
-
     /**
      * Méthode en rapport avec le lancement d'une partie
      */
@@ -254,6 +254,10 @@ public class ControlleurMediateur implements CollecteurEvenements {
 
     public boolean getStop() {
         return Stop;
+    }
+
+    public void setStop(boolean b){
+        Stop = b;
     }
 
     public String toString() {

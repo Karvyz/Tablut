@@ -373,6 +373,15 @@ public class VueMenuSaisies extends JPanel {
         String nom2 = this.nomJ2.getText().equals("Nom du défenseur") ? "Défenseur" : this.nomJ2.getText();
         c.nouvellePartie(nom1, types[0], TypePion.ATTAQUANT, nom2, types[1], TypePion.DEFENSEUR);
         c.afficherJeu();
+        /*try {
+            // Mettez votre programme en pause pendant 2 secondes (2000 millisecondes)
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            // Gérez les exceptions ici si nécessaire
+            e.printStackTrace();
+        }*/
+        //c.jeu().setEnCours(true);
+
     }
 
     @Override
