@@ -46,6 +46,8 @@ public interface CollecteurEvenements {
 
     boolean getStop();
 
+    void setStop(boolean b);
+
     void saveGame();
 }
 

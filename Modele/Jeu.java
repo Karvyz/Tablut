@@ -1,6 +1,8 @@
 package Modele;
 
+import Controlleur.IA_DifficileProfondeur;
 import Controlleur.IA_DifficileTemps;
+import Controlleur.heuristiques.HeuristiqueFusion;
 import Controlleur.heuristiques.HeuristiqueLeRoiCCiao;
 import Patterns.Observable;
 import Structures.Pile;
@@ -8,6 +10,7 @@ import Structures.Pile;
 import java.io.*;
 import java.util.Stack;
 
+import static java.lang.Thread.sleep;
 import static java.util.Objects.requireNonNull;
 
 public class Jeu extends Observable implements Serializable {
@@ -129,7 +132,7 @@ public class Jeu extends Observable implements Serializable {
     }
 
     public void solution() {
-        Coup aide = new IA_DifficileTemps("", TypePion.ATTAQUANT, this, new HeuristiqueLeRoiCCiao(), 50).meilleurCoup();
+        Coup aide = new IA_DifficileProfondeur("", TypePion.ATTAQUANT, this, new HeuristiqueFusion(0.4668334F, 0.33374965F,0.9967921F, 0.5499482F), 3).meilleurCoup();
         setAideIA(aide);
         metAJour();
     }

@@ -376,6 +376,7 @@ class VueJeu extends JPanel {
         });
         menu_items[2].addActionListener((e) -> { //On clique sur menu principal
             sauvegarder.setEnabled(true);
+            controleur.setStop(true);
             controleur.jeu().reset();
             controleur.afficherMenuPrincipal();
 
