@@ -81,14 +81,48 @@ class VueNiveau extends JPanel implements Observateur {
         if (controleur.jeu().getJoueurCourant() == controleur.jeu().getJoueur1()) {
             j2.p.setBorder(null);
             j2.p.setBorder(border2);
+            if(!controleur.jeu().getJoueur2().estHumain()) {
+                String old2 = j2.n.getText();
+                // On enlève le  en cours...</html>
+                if(!(old2.lastIndexOf("en cours") == -1)) {
+                    old2 = old2.substring(0, old2.lastIndexOf("en cours") - 1);
+                    old2 += "</html>";
+                }
+                j2.n.setText(old2);
+            }
             j2.n.setForeground(Color.WHITE);
             j1.p.setBorder(border);
+            // Si une IA, on rajoute en cours
+            if(!controleur.jeu().getJoueur1().estHumain()) {
+                String old = j1.n.getText();
+                // On enlève le </html>
+                old = old.substring(0, old.length() - 7);
+                System.out.println(old);
+                j1.n.setText(old + " en cours...</html>");
+            }
             j1.n.setForeground(color);
         } else {
             j1.p.setBorder(null);
             j1.p.setBorder(border2);
+            if(!controleur.jeu().getJoueur1().estHumain()) {
+                String old = j1.n.getText();
+                // On enlève le  en cours...</html>
+                if(!(old.lastIndexOf("en cours") == -1)) {
+                    old = old.substring(0, old.lastIndexOf("en cours") - 1);
+                    old += "</html>";
+                }
+                j1.n.setText(old);
+            }
             j1.n.setForeground(Color.WHITE);
             j2.p.setBorder(border);
+            // Si une IA, on rajoute en cours
+            if(!controleur.jeu().getJoueur2().estHumain()) {
+                String old = j2.n.getText();
+                // On enlève le </html>
+                old = old.substring(0, old.length() - 7);
+                System.out.println(old);
+                j2.n.setText(old + " en cours...</html>");
+            }
             j2.n.setForeground(color);
         }
     }
