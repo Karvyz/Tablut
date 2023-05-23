@@ -8,13 +8,11 @@ public interface CollecteurEvenements {
 
     void tictac2();
 
-
     boolean clicSouris(Pion selec, int l, int c);
 
     boolean dragANDdrop(Coordonne coordonne, Coordonne coordonne2);
 
     void fixerMediateurVues(Vues v);
-
 
     void afficherMenuPrincipal();
 
