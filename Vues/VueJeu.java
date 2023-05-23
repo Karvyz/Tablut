@@ -660,7 +660,7 @@ class VueJeu extends JPanel {
                     break;
             }
         } else {
-            s1 = "<html>" + controleur.jeu().getJoueur1().nom() + "<br></html>";
+            s1 = "<html>" + controleur.jeu().getJoueur1().nom() + "<br>(Humain)</html>";
         }
         j1.setName(s1);
         j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
@@ -693,7 +693,7 @@ class VueJeu extends JPanel {
                     break;
             }
         } else {
-            s2 = "<html>" + controleur.jeu().getJoueur2().nom() + "<br></html>";
+            s2 = "<html>" + controleur.jeu().getJoueur2().nom() + "<br>(Humain)</html>";
         }
         j2.setName(s2);
         j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);

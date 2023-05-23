@@ -27,7 +27,7 @@ public class CButton extends JButton {
         // Customise le style du bouton
         setBackground(normalBackgroundColor);
         setForeground(Color.white);
-        setFont(new Font("Arial", Font.BOLD, 14));
+        setFont(new Font("Arial", Font.BOLD, 15));
         setBorder(new EmptyBorder(10, 25, 10, 25));
         setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
