@@ -41,15 +41,12 @@ class VueMenuPrincipal extends JPanel {
         JButton quitter = new CButton("Quitter").big();
         quitter.addActionListener((e) -> c.toClose());
 
-        // Affichage de la taille de la frame
-        // On récupère des informations sur l'écran
+        // On récupère la taille de l'écran
         GraphicsEnvironment env;
         GraphicsDevice device;
         env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         device = env.getDefaultScreenDevice();
         DisplayMode dm = device.getDisplayMode();
-
-        System.out.println("Taille de la fenêtre : " + dm.getWidth() + "x" + dm.getHeight());
 
         // Ajout des composants
         Component[] components = {
