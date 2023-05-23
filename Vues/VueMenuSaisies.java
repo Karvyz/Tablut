@@ -381,7 +381,6 @@ public class VueMenuSaisies extends JPanel {
             e.printStackTrace();
         }*/
         //c.jeu().setEnCours(true);
-
     }
 
     @Override

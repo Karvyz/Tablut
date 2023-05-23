@@ -24,6 +24,9 @@ public class CComboxBox extends JComboBox {
                 return b;
             }
         });
+        setMinimumSize(new Dimension(130, 28));
+        setPreferredSize(new Dimension(130, 28));
+        setMaximumSize(new Dimension(130, 28));
     }
 
     @Override
