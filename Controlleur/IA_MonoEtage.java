@@ -67,7 +67,7 @@ public class IA_MonoEtage extends IA {
                 threads.get(i).join();
                 int valeur_deplacement = threadies.get(i).valeur_deplacement;
                 if (valeur_deplacement == 1 || valeur_deplacement == 2) {
-                    res_eval = Integer.MAX_VALUE;
+                    res_eval = 10000;
                     max = threadies.get(i).coup;
                 }
                 else {
@@ -82,7 +82,7 @@ public class IA_MonoEtage extends IA {
                 throw new RuntimeException(e);
             }
         }
-        System.out.println("max : " + res_eval);
+//        System.out.println("max : " + res_eval);
         return max;
     }
 }

@@ -23,7 +23,7 @@ public class IA_DifficileProfondeur extends IA {
 
     class MyRunable implements Runnable {
         int game_status;
-        double return_value;
+        double return_value = 0;
         Jeu jeu;
         Pion pion;
         Coordonne deplacement;
@@ -38,7 +38,8 @@ public class IA_DifficileProfondeur extends IA {
         public void run() {
             Niveau clone = jeu.n.clone();
             game_status = clone.deplace_pion(new Coup(pion.getCoordonne(), deplacement));
-            return_value = analyse_recursive(clone, 1, Integer.MAX_VALUE);
+            if (game_status == 0)
+                return_value = analyse_recursive(clone, 1, Double.MAX_VALUE);
 //            System.out.println(new Coup(pion.getCoordonne(), deplacement) + " deplacement " + game_status + " valeur " + return_value);
         }
 
@@ -46,9 +47,9 @@ public class IA_DifficileProfondeur extends IA {
             TypePion current_type = (depth % 2 == 0) ? monType : typeAdversaire;
             ArrayList<Pion> pions = n.getPions(current_type);
 
-            double valeur_retour = Integer.MAX_VALUE;
+            double valeur_retour = Double.MAX_VALUE;
             if (depth % 2 == 0)
-                valeur_retour = Integer.MIN_VALUE;
+                valeur_retour = Double.MIN_VALUE;
             for (Pion pion : pions) {
                 ArrayList<Coordonne> deplacements = pion.getDeplacement(n.plateau);
                 for (Coordonne deplacement : deplacements) {
@@ -56,8 +57,8 @@ public class IA_DifficileProfondeur extends IA {
                     int valeur_deplacement = clone.deplace_pion(new Coup(pion.getCoordonne(), deplacement));
                     if (valeur_deplacement != 0) {
                         if (depth % 2 == 0)
-                            return Integer.MAX_VALUE - depth;
-                        return Integer.MIN_VALUE + depth;
+                            return 10000 - depth;
+                        return -10000 + depth;
                     }
                     if (depth == max_depth) {
                         nevaluation++;
@@ -65,18 +66,18 @@ public class IA_DifficileProfondeur extends IA {
                     } else {
                         double tmp = analyse_recursive(clone, depth + 1, valeur_retour);
                         if (depth % 2 == 0) {
-//                            if (tmp < alphaBetaLimit) {
-//                                bypass1++;
-//                                return tmp;
-//                            }
+                            if (tmp < alphaBetaLimit) {
+                                bypass1++;
+                                return tmp;
+                            }
                             if (tmp > valeur_retour) {
                                 valeur_retour = tmp;
                             }
                         } else {
-//                            if (tmp > alphaBetaLimit) {
-//                                bypass2++;
-//                                return tmp;
-//                            }
+                            if (tmp > alphaBetaLimit) {
+                                bypass2++;
+                                return tmp;
+                            }
                             if (tmp < valeur_retour) {
                                 valeur_retour = tmp;
                             }
@@ -124,7 +125,7 @@ public class IA_DifficileProfondeur extends IA {
         for (int i = 0; i < threads.size(); i++) {
             try {
                 threads.get(i).join();
-                double tmp = myRunables.get(i).return_value;
+                double tmp = myRunables.get(i).return_value + ((myRunables.get(i).pion.getType() == TypePion.ROI) ? 0.01 : 0);
                 if (myRunables.get(i).game_status != 0)
                     tmp = Double.MAX_VALUE;
                 if (tmp >= valeur_retour) {

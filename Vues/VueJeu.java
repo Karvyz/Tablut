@@ -232,6 +232,7 @@ class VueJeu extends JPanel {
 
         // Fin partie
         if (endGameDialog == null) {
+
             endGameDialog = EndGameDialog();
         }
 

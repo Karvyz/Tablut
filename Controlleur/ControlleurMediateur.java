@@ -57,10 +57,10 @@ public class ControlleurMediateur implements CollecteurEvenements {
         int randomValue = rand.nextInt(2);
         if (randomValue == 0) {
             jeu.nouveauJoueur("Vous", TypeJoueur.HUMAIN, TypePion.ATTAQUANT);
-            jeu.nouveauJoueur("", TypeJoueur.IA_DIFFICILE, TypePion.DEFENSEUR);
+            jeu.nouveauJoueur("Défenseur", TypeJoueur.IA_MOYEN, TypePion.DEFENSEUR);
         } else {
             jeu.nouveauJoueur("Vous", TypeJoueur.HUMAIN, TypePion.DEFENSEUR);
-            jeu.nouveauJoueur("", TypeJoueur.IA_DIFFICILE, TypePion.ATTAQUANT);
+            jeu.nouveauJoueur("Attaquant", TypeJoueur.IA_MOYEN, TypePion.ATTAQUANT);
 
         }
         jeu.nouvellePartie();
