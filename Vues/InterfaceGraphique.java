@@ -43,7 +43,6 @@ public class InterfaceGraphique implements Runnable {
         // Ajout de nos vues dans la fenêtre
         vues = new Vues(frame);
 
-        ajouterVue(Vues.DEMARRAGE);
         ajouterVue(Vues.MENU_SAISIES);
         ajouterVue(Vues.MENU_PRINCIPAL);
         ajouterVue(Vues.MENU_PARTIES);
@@ -69,9 +68,6 @@ public class InterfaceGraphique implements Runnable {
         JPanel vue;
 
         switch (nom) {
-            case Vues.DEMARRAGE:
-                vue = new VueDemarrage();
-                break;
             case Vues.MENU_PRINCIPAL:
                 vue = new VueMenuPrincipal(control);
                 break;
