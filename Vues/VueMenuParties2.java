@@ -9,6 +9,8 @@ import Vues.JComposants.CListCellRenderer;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -412,6 +414,7 @@ public class VueMenuParties2 extends JPanel {
     public void refresh() {
         if (fileList.getSelectedValue() == null) {
             loadButton.setEnabled(false);
+            deleteButton.setEnabled(false);
             label1.setText("Aucune partie selectionnée");
             label2.setText("");
             label3.setText("");
@@ -419,6 +422,8 @@ public class VueMenuParties2 extends JPanel {
         } else {
             infoPanel.setBackground(new Color(0x99000000, true));
             loadButton.setEnabled(true);
+            deleteButton.setEnabled(true);
+
             // Récupération partie selectionnée
             String selectedText = fileList.getSelectedValue();
             String name = selectedText.substring(0, selectedText.lastIndexOf("-") - 1);
