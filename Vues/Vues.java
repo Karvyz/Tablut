@@ -14,7 +14,6 @@ public class Vues {
 
     VueMenuParties2 vueMenuParties;
 
-    final static String DEMARRAGE = "Démarrage";
     final static String MENU_PRINCIPAL = "Menu Principal";
     final static String MENU_SAISIES = "Nouvelle Partie";
     final static String MENU_PARTIES = "Charger Partie";
