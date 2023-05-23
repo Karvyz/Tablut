@@ -640,23 +640,20 @@ class VueJeu extends JPanel {
                 s1 = "<html>" + controleur.jeu().getJoueur1().nom() + "<br>(IA";
             }
             else{
-                s1 = "IA";
+                s1 = "<html>Attaquant<br>(IA";
             }
             switch (controleur.jeu().getJoueur1().type()) {
                 case IA_FACILE:
                     s1 += " Facile";
-                    if(nom1)
-                        s1 +=  ")</html>";
+                    s1 +=  ")</html>";
                     break;
                 case IA_MOYEN:
                     s1 += " Moyen";
-                    if(nom1)
-                        s1 +=  ")</html>";
+                    s1 +=  ")</html>";
                     break;
                 case IA_DIFFICILE:
                     s1 += " Difficile";
-                    if(nom1)
-                        s1 +=  ")</html>";
+                    s1 +=  ")</html>";
                     break;
             }
         } else {
@@ -673,23 +670,20 @@ class VueJeu extends JPanel {
                 nom2 = true;
             }
             else{
-                s2 = "IA";
+                s2 = "<html>Défenseur<br>(IA";
             }
             switch (controleur.jeu().getJoueur2().type()) {
                 case IA_FACILE:
                     s2 += " Facile";
-                    if(nom2)
-                        s2 += ")</html>";
+                    s2 += ")</html>";
                     break;
                 case IA_MOYEN:
                     s2 += " Moyen";
-                    if(nom2)
-                        s2 += ")</html>";
+                    s2 += ")</html>";
                     break;
                 case IA_DIFFICILE:
                     s2 += " Difficile";
-                    if(nom2)
-                        s2 += ")</html>";
+                    s2 += ")</html>";
                     break;
             }
         } else {
