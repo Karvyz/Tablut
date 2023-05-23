@@ -369,6 +369,10 @@ public class VueMenuSaisies extends JPanel {
             default:
                 break;
         }
+        // Si une IA difficile affichage d'un message d'alerte
+        if (types[0] == TypeJoueur.IA_DIFFICILE || types[1] == TypeJoueur.IA_DIFFICILE) {
+            JOptionPane.showMessageDialog(this, "Attention, une IA difficile peut prendre 15 à 80 secondes pour jouer un coup !", "Attention", JOptionPane.WARNING_MESSAGE);
+        }
         String nom1 = this.nomJ1.getText().equals("Nom de l'attaquant") ? "Attaquant" : this.nomJ1.getText();
         String nom2 = this.nomJ2.getText().equals("Nom du défenseur") ? "Défenseur" : this.nomJ2.getText();
         c.nouvellePartie(nom1, types[0], TypePion.ATTAQUANT, nom2, types[1], TypePion.DEFENSEUR);

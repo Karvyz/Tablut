@@ -82,7 +82,7 @@ public class IA_MonoEtage extends IA {
                 throw new RuntimeException(e);
             }
         }
-        System.out.println("max : " + res_eval);
+//        System.out.println("max : " + res_eval);
         return max;
     }
 }

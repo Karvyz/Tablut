@@ -23,7 +23,7 @@ public class TournoisControlleur {
     public void tournois() {
         for (int i = 0; i < ias.size(); i++) {
             for (int j = 0; j < ias.size(); j++) {
-                match(ias.get(i), ias.get(j), i, j);
+                match(ias.get(i), ias.get(j), i);
             }
         }
         ias.forEach(System.out::println);
@@ -79,7 +79,7 @@ public class TournoisControlleur {
         }
     }
 
-    public void match(IA ia1, IA ia2, int k, int l){
+    public void match(IA ia1, IA ia2, int k){
 
         int nbVictoireJ1 = 0;
         int nbVictoireJ2 = 0;
