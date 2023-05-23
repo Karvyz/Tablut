@@ -56,7 +56,6 @@ public class Vues {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //System.out.println("Screen size: " + screenSize.width + "x" + screenSize.height);
         DIMENSION_DEFAUT = new Dimension(screenSize.width / 6 * 5, screenSize.height / 6 * 5);
-        System.out.println("Dimension par défaut: " + DIMENSION_DEFAUT);
         if (nom.equals(MENU_PARTIES) && vueMenuParties != null) {
             vueMenuParties.refreshFileList();
             vueMenuParties.refresh();
