@@ -153,6 +153,7 @@ class VueJeu extends JPanel {
                 // Action personnalisée
                 controleur.jeu().setVainqueur(null); //permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
                 controleur.jeu().setConsulter(true);
+                sauvegarder.setEnabled(false);
                 // Disposer le JDialog
                 endGameDialog.dispose();
             }
@@ -691,6 +692,11 @@ class VueJeu extends JPanel {
         }
         j2.setName(s2);
         j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);
+
+        // Désactiver suggestion si IA vs IA :
+        if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain()) {
+            controls[1].setEnabled(false);
+        }
 
         vueNiveau.miseAJour();
     }
