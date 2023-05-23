@@ -1,6 +1,5 @@
 package Controlleur.heuristiques;
 
-import Modele.Jeu;
 import Modele.Niveau;
 import Modele.TypePion;
 
@@ -9,19 +8,11 @@ public class HeuristiqueLongLiveTheKing extends Heuristique {
     @Override
     public double evaluation(Niveau n, TypePion typePion) {
         int x = 0, y = 0;
-        int attaquants = 0, defenseurs = 0, eval = 0, check = 0, check2 = 0;
+        int eval = 0, check = 0, check2 = 0;
         for (int i = 0; i < n.getTaille(); i++) {
             for (int j = 0; j < n.getTaille(); j++) {
                 if (!n.estVide(i, j)) {
-                    switch (n.typePion(i, j)) {
-                        case ATTAQUANT:
-                            attaquants++;
-                            break;
-                        case DEFENSEUR:
-                            defenseurs++;
-                            break;
-                        case ROI:
-                            defenseurs++;
+                    if (n.estRoi(i, j)) {
                             x = i;
                             y = j;
                             break;
