@@ -39,8 +39,8 @@ public class IA_DifficileProfondeur extends IA {
             Niveau clone = jeu.n.clone();
             game_status = clone.deplace_pion(new Coup(pion.getCoordonne(), deplacement));
             if (game_status == 0)
-                return_value = analyse_recursive(clone, 1, Double.MAX_VALUE);
-//            System.out.println(new Coup(pion.getCoordonne(), deplacement) + " deplacement " + game_status + " valeur " + return_value);
+                return_value = analyse_recursive(clone, 1, Double.MIN_VALUE);
+            System.out.println(new Coup(pion.getCoordonne(), deplacement) + " deplacement " + game_status + " valeur " + return_value);
         }
 
         private double analyse_recursive(Niveau n, int depth, double alphaBetaLimit) {
@@ -66,7 +66,7 @@ public class IA_DifficileProfondeur extends IA {
                     } else {
                         double tmp = analyse_recursive(clone, depth + 1, valeur_retour);
                         if (depth % 2 == 0) {
-                            if (tmp < alphaBetaLimit) {
+                            if (tmp > alphaBetaLimit) {
                                 bypass1++;
                                 return tmp;
                             }
@@ -74,7 +74,7 @@ public class IA_DifficileProfondeur extends IA {
                                 valeur_retour = tmp;
                             }
                         } else {
-                            if (tmp > alphaBetaLimit) {
+                            if (tmp < alphaBetaLimit) {
                                 bypass2++;
                                 return tmp;
                             }

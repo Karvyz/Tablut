@@ -49,14 +49,14 @@ public class Niveau implements Serializable, Cloneable {
     public void init_Niveau() {
         //Cette méthode de création permet de créer des configurations initiale de test plus simplement
         String[] tab = {"   AAA   ",
-                "    A    ",
-                "    D    ",
-                "A   D   A",
-                "AADDRDDAA",
-                "A   D   A",
-                "    D    ",
-                "    A    ",
-                "   AAA   "};
+                        "    A    ",
+                        "    D    ",
+                        "A   D   A",
+                        "AADDRDDAA",
+                        "A   D   A",
+                        "    D    ",
+                        "    A    ",
+                        "   AAA   "};
         for (int i = 0; i < taille; i++) {
             for (int j = 0; j < taille; j++) {
                 switch (tab[i].charAt(j)) {
