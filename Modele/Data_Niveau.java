@@ -12,12 +12,11 @@ public class Data_Niveau implements Serializable {
     public Stack<Coup> pileIA_annule;
     public Stack<Coup> pileIA_refaire;
     private int joueurC;
-
     public Joueurs attaquant;
     public Joueurs defenseur;
-
     public boolean enCours;
 
+    /**Classe permettant de stocker un objet de la classe pour la sauvegarde*/
     public Data_Niveau( Niveau niveau, Pile coup_annule, Pile coup_a_refaire, Stack<Coup> pileIA_annule, Stack<Coup> pileIA_refaire, int JC, Joueurs attaque, Joueurs defense, boolean enCours) {
         this.niveau = niveau;
         this.coup_annule = coup_annule;

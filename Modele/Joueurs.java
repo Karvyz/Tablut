@@ -53,11 +53,9 @@ public class Joueurs implements Serializable, Cloneable {
     public boolean estHumain() {
         return type == TypeJoueur.HUMAIN;
     }
-
     public TypeJoueur type() {
         return type;
     }
-
 
     public void fixeJeuJoueur(Jeu j){
         this.jeu = j;

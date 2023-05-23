@@ -24,7 +24,6 @@ public class GestionnaireDeCoup implements Serializable {
         this.pileIA_refaire = pileIA_refaire;
     }
 
-
     public void annuler() {
         Joueurs j1 = jeu.getJoueur1();
         Joueurs j2 = jeu.getJoueur2();
@@ -121,8 +120,6 @@ public class GestionnaireDeCoup implements Serializable {
             Coup sommet = pileIA_annule.peek(); //On récupère le coup a affiche
             jeu.setCoordooneJouerIA(sommet.depart, sommet.arrivee);
         }
-
-
     }
 
     public void annuler_IAvH(){
@@ -142,8 +139,6 @@ public class GestionnaireDeCoup implements Serializable {
             Coup sommet = pileIA_annule.peek(); //On récupère le coup a affiche
             jeu.setCoordooneJouerIA(sommet.depart, sommet.arrivee);
         }
-
-
     }
 
     public void annuler_IAvIA(){
@@ -181,7 +176,6 @@ public class GestionnaireDeCoup implements Serializable {
             pileIA_annule.push(sommet);
             jeu.setCoordooneJouerIA(sommet.depart, sommet.arrivee);
         }
-
     }
 
     public void refaire_IAvH(){
@@ -189,7 +183,6 @@ public class GestionnaireDeCoup implements Serializable {
             jeu.setCoordooneJouerIA(null, null);
             return;
         }
-
         refaire_HvIA();
     }
 
