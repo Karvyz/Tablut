@@ -16,7 +16,7 @@ public class IA_DifficileProfondeur extends IA {
     TypePion typeAdversaire;
 
     public IA_DifficileProfondeur(String nom, TypePion roleJ, Jeu j, Heuristique heuristique, int max_depth) {
-        super(nom, TypeJoueur.IA_DIFFICILE, roleJ, j);
+        super(nom, max_depth < 4 ? TypeJoueur.IA_MOYEN : TypeJoueur.IA_DIFFICILE, roleJ, j);
         this.heuristique = heuristique;
         this.max_depth = max_depth;
     }

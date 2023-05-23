@@ -14,7 +14,7 @@ public class IA_MonoEtage extends IA {
     Heuristique heuristique;
 
     public IA_MonoEtage(String nom, TypePion roleJ, Jeu j, Heuristique heuristique) {
-        super(nom, TypeJoueur.IA_MOYEN, roleJ, j);
+        super(nom, TypeJoueur.IA_FACILE, roleJ, j);
         this.heuristique = heuristique;
     }
 
