@@ -24,6 +24,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         this.plateau = plateau;
     }
 
+    /**Définis les actions lors du clic sur le plateau*/
     @Override
     public void mousePressed(MouseEvent e) { // Méthode executée lors d'un clic
 
@@ -112,6 +113,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
     }
 
 
+    /**Définis les actions effectuées lorsque l'utilisateur relache le clic*/
     @Override
     public void mouseReleased(MouseEvent e) {
         if (dragStart != null && plateau.getPionSelec() != null) {
@@ -167,6 +169,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         }
     }
 
+    /**Définition des actions pendant le drag&drop*/
     @Override
     public void mouseDragged(MouseEvent e) {
         Point pionEnDeplacement = plateau.getPionEnDeplacement();
@@ -183,6 +186,7 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         }
     }
 
+    /**Définition des actions lors du mouvement de la souris sur le plateau*/
     @Override
     public void mouseMoved(MouseEvent e) {
 
@@ -214,17 +218,18 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         }
     }
 
-
+    /**Renvoi l'image actuellement sélectionné*/
     private void setImage(Pion p) {
-        if (ctrl.jeu().n.estAttaquant(p)) {
+        if (ctrl.jeu().n.estAttaquant(p.getX(), p.getY())) {
             plateau.setImage(0);
-        } else if (ctrl.jeu().n.estDefenseur(p)) {
+        } else if (ctrl.jeu().n.estDefenseur(p.getX(), p.getY())) {
             plateau.setImage(1);
         } else {
             plateau.setImage(2);
         }
     }
 
+    /**Permet de définir les destinations du pion sélectionné*/
     private void affiche_destination(Pion pionSelec) {//Permet l'affichage des destinations données pour un Pion donné
         if (pionSelec == null) {
             plateau.setDestinationsPossibles(null);

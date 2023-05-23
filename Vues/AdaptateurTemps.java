@@ -12,7 +12,7 @@ public class AdaptateurTemps implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(control.getStop() == true){
+        if(control.getStop()){
             return;
         }
         else if (control.jeu() != null && control.jeu().n != null)
