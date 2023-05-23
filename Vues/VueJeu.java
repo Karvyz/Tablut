@@ -119,7 +119,7 @@ class VueJeu extends JPanel {
         gbc2.anchor = CENTER;
         gbc2.insets = new Insets(20, 0, 0, 0);
         endButtons.setOpaque(false);
-        endButtons.removeAll();  // Ajouter cette ligne
+        endButtons.removeAll();
         JButton menu = new CButton("Menu principal");
         JButton retry = new CButton("Rejouer ?").blanc();
         JButton consulter = new CButton("Consulter");
