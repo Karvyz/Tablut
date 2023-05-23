@@ -386,7 +386,7 @@ class VueJeu extends JPanel {
             menu_item.setBorderPainted(false);
             menu_item.setUI(new CMenuItemUI(true));
             menu_item.setBackground(new Color(85, 91, 97, 119));
-            menu_item.setForeground(new Color(32, 74, 82));
+            menu_item.setForeground(new Color(0, 34, 45));
             menu.add(menu_item);
             //menu.add(createCustomSeparator(Color.LIGHT_GRAY));
             menu.add(createCustomSeparator(new Color(85, 91, 97, 119)));
@@ -395,7 +395,7 @@ class VueJeu extends JPanel {
         checkBoxMenuItemMusic.setFont(new Font("Arial", Font.BOLD, 16));
         checkBoxMenuItemMusic.setBorderPainted(false);
         checkBoxMenuItemMusic.setBackground(new Color(85, 91, 97, 119));
-        checkBoxMenuItemMusic.setForeground(new Color(32, 74, 82));
+        checkBoxMenuItemMusic.setForeground(new Color(0, 34, 45));
 
         /*
         // Personnaliser le rendu du JCheckBoxMenuItem
