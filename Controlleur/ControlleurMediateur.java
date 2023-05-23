@@ -10,17 +10,14 @@ import java.io.*;
 import java.util.Random;
 
 public class ControlleurMediateur implements CollecteurEvenements {
-
+    private Jeu jeu;
     Vues vues;
-
     Animation animDemarrage;
-
-    public Jeu jeu;
     final int lenteurAttente = 50;
     int decompte;
     public boolean Stop;
-
     private GestionnaireSauvegarde_Chargement Gest_save;
+
 
 
     public ControlleurMediateur() {
@@ -36,7 +33,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
         verifierJeu("Impossible de renvoyer un jeu");
         return jeu;
     }
-
     /**
      * Méthode en rapport avec le lancement d'une partie
      */
@@ -83,6 +79,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
         jeu.setConsulter(false);
     }
 
+    @Override
     public void restaurePartie() {
         jeu.setDebutPartie(true); //Pour éviter l'affichage de la fleche du coup de l'IA si une partie IA vs humain a ete joue
         jeu.setEnCours(true);
@@ -257,6 +254,10 @@ public class ControlleurMediateur implements CollecteurEvenements {
 
     public boolean getStop() {
         return Stop;
+    }
+
+    public void setStop(boolean b){
+        Stop = b;
     }
 
     public String toString() {

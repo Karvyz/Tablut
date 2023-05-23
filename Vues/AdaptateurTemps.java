@@ -1,29 +1,3 @@
-/*
- * Morpion pédagogique
-
- * Copyright (C) 2016 Guillaume Huard
-
- * Ce programme est libre, vous pouvez le redistribuer et/ou le
- * modifier selon les termes de la Licence Publique Générale GNU publiée par la
- * Free Software Foundation (version 2 ou bien toute autre version ultérieure
- * choisie par vous).
-
- * Ce programme est distribué car potentiellement utile, mais SANS
- * AUCUNE GARANTIE, ni explicite ni implicite, y compris les garanties de
- * commercialisation ou d'adaptation dans un but spécifique. Reportez-vous à la
- * Licence Publique Générale GNU pour plus de détails.
-
- * Vous devez avoir reçu une copie de la Licence Publique Générale
- * GNU en même temps que ce programme ; si ce n'est pas le cas, écrivez à la Free
- * Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307,
- * États-Unis.
-
- * Contact: Guillaume.Huard@imag.fr
- *          Laboratoire LIG
- *          700 avenue centrale
- *          Domaine universitaire
- *          38401 Saint Martin d'Hères
- */
 package Vues;
 
 import java.awt.event.ActionEvent;
@@ -32,14 +6,19 @@ import java.awt.event.ActionListener;
 public class AdaptateurTemps implements ActionListener {
     CollecteurEvenements control;
 
+    int decompte_start=0; //Permet a l'IA d'attendre que le plateau soit affiché avant de jouer
+
     AdaptateurTemps(CollecteurEvenements c) {
         control = c;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(control.getStop() == true){
+        if(control.getStop()){
+            decompte_start = 0;
             return;
+        }else if(control.jeu().enCours() && !control.jeu().getJoueur1().estHumain() && decompte_start != 20){ //Permet de laisser le temps de voir le plateau avant que l'IA joue
+            decompte_start +=1;
         }
         else if (control.jeu() != null && control.jeu().n != null)
             control.tictac();

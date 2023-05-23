@@ -14,12 +14,11 @@ public class Vues {
 
     VueMenuParties2 vueMenuParties;
 
-    final static String DEMARRAGE = "Démarrage";
     final static String MENU_PRINCIPAL = "Menu Principal";
     final static String MENU_SAISIES = "Nouvelle Partie";
     final static String MENU_PARTIES = "Charger Partie";
     final static String JEU = "Jeu";
-    final static Dimension DIMENSION_DEFAUT = new Dimension(1511, 850);
+    final static Dimension DIMENSION_DEFAUT = new Dimension(1599, 900);
     final static Dimension DIMENSION_MENU_PARTIES = new Dimension(1020, 600);
 
     Vues(JFrame f) {

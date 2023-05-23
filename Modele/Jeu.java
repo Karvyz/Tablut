@@ -10,15 +10,17 @@ import Structures.Pile;
 import java.io.*;
 import java.util.Stack;
 
+import static java.lang.Thread.sleep;
 import static java.util.Objects.requireNonNull;
 
 public class Jeu extends Observable implements Serializable {
     private static final long serialVersionUID = 1L; //déclare une constante de sérialisation
     public Niveau n;
     public Joueurs[] joueurs = new Joueurs[2];
-    private Joueurs vainqueur;
-    private int joueurCourant;
+    private boolean debutPartie;
     private boolean enCours;
+    private int joueurCourant;
+    private Joueurs vainqueur;
     public Pile coup_annule;
     public Pile coup_a_refaire;
     public Stack<Coup> pileIA_annule ;
@@ -27,9 +29,8 @@ public class Jeu extends Observable implements Serializable {
     private Coordonne DepartIA;
     private Coordonne ArriveIA;
     private Coup aideIA;
-    private boolean debutPartie;
-    private final GestionnaireDeCoup gestionnaireDeCoup;
     private boolean coup_joue;
+    private final GestionnaireDeCoup gestionnaireDeCoup;
     private boolean consulter;
 
     public Jeu() {
@@ -85,25 +86,6 @@ public class Jeu extends Observable implements Serializable {
         setAideIA(null);
         setCoordooneJouerIA(null,null);
     }
-
-    /**
-     * Méthode utile en fin de partie
-     */
-    public Joueurs vainqueur() {
-        if (!partieTerminee()) {
-            return null;
-        }
-        return vainqueur;
-    }
-
-    public void setVainqueur(Joueurs vainqueur) {
-        this.vainqueur = vainqueur;
-    }
-
-    public boolean partieTerminee() {
-        return !enCours();
-    }
-
 
     /**
      * Méthode en rapport avec les possibilités de jeu
@@ -181,11 +163,27 @@ public class Jeu extends Observable implements Serializable {
         joueurCourant = (joueurCourant + 1) % 2;
     }
 
+    /**
+     * Méthode utile en fin de partie
+     */
+    public Joueurs vainqueur() {
+        if (!partieTerminee()) {
+            return null;
+        }
+        return vainqueur;
+    }
+
+    public void setVainqueur(Joueurs vainqueur) {
+        this.vainqueur = vainqueur;
+    }
+
+    public boolean partieTerminee() {
+        return !enCours();
+    }
 
     /**
      * Méthode getter et setter pour les joueurs
      */
-
 
     public boolean enCours() {
         return enCours;

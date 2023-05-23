@@ -35,7 +35,6 @@ class VueJeu extends JPanel {
     JButton[] controls = new JButton[3];
 
     JButton sauvegarder = new CButton(new ImageIcon(Imager.getScaledImage("assets/Disquette.png", 20, 20))).blanc();
-    ;
 
     VueJeu(CollecteurEvenements c) {
         controleur = c;
@@ -58,14 +57,15 @@ class VueJeu extends JPanel {
 
         add(contenu);
 
+        // Traitement du CTRL + S
         Action saveAction = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Traitement à effectuer lorsque Ctrl + S est enfoncé
-                ActionBoutonSauvegarder();
+                if(!controleur.jeu().getConsulter())
+                    ActionBoutonSauvegarder();
             }
         };
-
         // Liaison de l'action à l'InputMap et au KeyStroke correspondant
         InputMap inputMap = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), "saveAction");
@@ -147,18 +147,19 @@ class VueJeu extends JPanel {
 
         endGameDialog.pack();
 
+        // Action à effectuer lorsque la fenêtre est fermée
         endGameDialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 // Action personnalisée
-                controleur.jeu().setVainqueur(null); //permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
+                controleur.jeu().setVainqueur(null); // permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
                 controleur.jeu().setConsulter(true);
                 sauvegarder.setEnabled(false);
-                // Disposer le JDialog
                 endGameDialog.dispose();
             }
         });
 
+        // Action des boutons
         menu.addActionListener((e) -> {
             endGameDialog.setVisible(false);
             controls[0].setEnabled(false);
@@ -234,6 +235,7 @@ class VueJeu extends JPanel {
 
         endGamePanel = new JPanel();
 
+        // Texte de fin
         if (vainqueur.estHumain()) {
             endGamePanel.setBackground(new Color(100, 183, 68));
             endGameDialog.setTitle("Victoire !");
@@ -345,12 +347,14 @@ class VueJeu extends JPanel {
         menu.setFont(new Font("Arial", Font.BOLD, 20));
         menuBar.add(menu);
 
+        // Menu items
         JMenuItem[] menu_items = {
                 new JMenuItem("Nouvelle Partie"),
                 new JMenuItem("Charger Partie"),
                 new JMenuItem("Menu principal"),
         };
 
+        // Action des items
         menu_items[0].addActionListener((e) -> {
             Joueurs[] joueurs = new Joueurs[2];
             joueurs[0] = controleur.jeu().getJoueur1();
@@ -372,6 +376,7 @@ class VueJeu extends JPanel {
         });
         menu_items[2].addActionListener((e) -> { //On clique sur menu principal
             sauvegarder.setEnabled(true);
+            controleur.setStop(true);
             controleur.jeu().reset();
             controleur.afficherMenuPrincipal();
 
@@ -388,7 +393,6 @@ class VueJeu extends JPanel {
             menu_item.setBackground(new Color(85, 91, 97, 119));
             menu_item.setForeground(new Color(0, 34, 45));
             menu.add(menu_item);
-            //menu.add(createCustomSeparator(Color.LIGHT_GRAY));
             menu.add(createCustomSeparator(new Color(85, 91, 97, 119)));
         }
 
@@ -407,10 +411,8 @@ class VueJeu extends JPanel {
         menuBar.add(Box.createRigidArea(new Dimension(10, 0)));
         menuBar.add(sauvegarder);
 
-
         menuBar.add(Box.createRigidArea(new Dimension(10, 0)));
         menuBar.add(regles);
-
 
         c.fill = GridBagConstraints.VERTICAL;
         c.anchor = GridBagConstraints.LINE_START;
@@ -434,7 +436,6 @@ class VueJeu extends JPanel {
 
     private static JSeparator createCustomSeparator(Color color) {
         JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
-        //separator.setForeground(color);
         separator.setBackground(color);
         separator.setPreferredSize(new Dimension(1, 5)); // Définir la taille du séparateur
         separator.setMaximumSize(new Dimension(Integer.MAX_VALUE, 10)); // Définir la taille maximale
@@ -457,17 +458,13 @@ class VueJeu extends JPanel {
         mainPanel.setLayout(new GridBagLayout());
         contenu.add(mainPanel, c);
 
-
         c.fill = VERTICAL;
-
-
         c.gridx = 0;
         c.gridy = 0;
         c.weightx = 0.2;
         c.weighty = 1;
         c.anchor = CENTER;
         mainPanel.add(j1, c);
-
 
         c.gridx = 2;
         c.gridy = 0;
@@ -487,7 +484,6 @@ class VueJeu extends JPanel {
         bottomPanel.setLayout(new GridBagLayout());
         contenu.add(bottomPanel, c);
 
-
         JPanel controlsPanel = new JPanel();
         controlsPanel.setOpaque(false);
 
@@ -500,13 +496,13 @@ class VueJeu extends JPanel {
         controls[0].setEnabled(false);
         controls[2].setEnabled(false);
 
+        // -- Actions des boutons
         controls[0].addActionListener((e) -> {
             controleur.jeu().annuler();
             ModifBoutonUndo();
             ModifBoutonRedo();
 
         });
-
         controls[1].addActionListener((e) -> {
             if (!controleur.jeu().partieTerminee()) {
                 controleur.jeu().solution();
@@ -658,7 +654,6 @@ class VueJeu extends JPanel {
         if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain()) {
             controls[1].setEnabled(false);
         }
-
         vueNiveau.miseAJour();
     }
 

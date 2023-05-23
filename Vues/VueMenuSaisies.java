@@ -41,28 +41,26 @@ public class VueMenuSaisies extends JPanel {
     int called = 0;
 
     public VueMenuSaisies(CollecteurEvenements c) {
+        controleur = c;
         // Chargement des assets
         background = Imager.getImageBuffer("assets/logo.png");
         title = Imager.getImageBuffer("tablut.png");
 
-        controleur = c;
-
+        // Création des composants
         typeJ1 = new CComboxBox();
         typeJ2 = new CComboxBox();
         menuPrincipalButton = new CButton("Menu Principal");
         jouerButton = new CButton("Jouer").blanc();
         comboBox1 = new CComboxBox();
         nomJ1 = new CTextField("Mur.png");
-        //nomJ1 = new CTextField();
         nomJ2 = new CTextField("Mur.png");
-        //nomJ2 = new CTextField();
 
+        // Création des panels de boutons
         Boutons = new JPanel();
         Boutons.setOpaque(false);
         BoutonsQuitter = new JPanel();
         BoutonsQuitter.setOpaque(false);
 
-        setBackground(Color.PINK);
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
 
@@ -83,11 +81,13 @@ public class VueMenuSaisies extends JPanel {
             }
         }
 
+        // Action lors du clic sur le bouton menu principal
         menuPrincipalButton.addActionListener((e) -> controleur.afficherMenuPrincipal());
 
-        //Action lors du clic sur le bouton jouer
+        // Action lors du clic sur le bouton jouer
         jouerButton.addActionListener((e) -> actionBoutonJouer(controleur));
 
+        // Personnalisations des champs de saisies des noms des joueurs
         nomJ1.addFocusListener(new FocusAdapter() {
             final String s = nomJ1.getText();
 
@@ -195,30 +195,29 @@ public class VueMenuSaisies extends JPanel {
 
         add(Joueur2, constraints);
 
-        add(Box.createVerticalStrut(5)); // Espace vertical
+        // Espace vertical
+        add(Box.createVerticalStrut(5));
 
-        Boutons.add(jouerButton);
-        Boutons.add(menuPrincipalButton);
-
+        // JPanel Boutons
         Boutons.setMaximumSize(new Dimension(441, 30));
 
-        // Boutons
         constraints.gridy = 2;
         add(Boutons, constraints);
 
-        add(Box.createVerticalStrut(80)); // Espace vertical
+        // Bouton Jouer et menu Principal
+        Boutons.add(jouerButton);
+        Boutons.add(menuPrincipalButton);
+
+        // Espace vertical
+        add(Box.createVerticalStrut(80));
 
         // Quitter
         quitter = new CButton("Quitter");
         quitter.addActionListener((e) -> {
             controleur.toClose();
-            // Créer une nouvelle fenêtre pour tester le texte d'un jlabel
-
         });
 
-        //BoutonsQuitter.add(quitter);
         BoutonsQuitter.setMaximumSize(new Dimension(441, 30));
-
 
         // Bouton Quitter
         constraints.gridy = 3;
@@ -279,7 +278,7 @@ public class VueMenuSaisies extends JPanel {
         return panel;
     }
 
-    private void actionBoutonInverser(){
+    private void actionBoutonInverser() {
         String nom1 = this.nomJ1.getText().equals("Nom de l'attaquant") ? "Nom du défenseur" : this.nomJ1.getText();
         String nom2 = this.nomJ2.getText().equals("Nom du défenseur") ? "Nom de l'attaquant" : this.nomJ2.getText();
         nomJ1.setText(nom2);
@@ -334,6 +333,7 @@ public class VueMenuSaisies extends JPanel {
         typeJ1.setModel(defaultComboBoxModel);
         typeJ2.setModel(defaultComboBoxModel3);
     }
+
     private void actionBoutonJouer(CollecteurEvenements c) {
         TypeJoueur[] types = new TypeJoueur[2];
         switch (typeJ1.getSelectedIndex()) {
@@ -373,6 +373,15 @@ public class VueMenuSaisies extends JPanel {
         String nom2 = this.nomJ2.getText().equals("Nom du défenseur") ? "Défenseur" : this.nomJ2.getText();
         c.nouvellePartie(nom1, types[0], TypePion.ATTAQUANT, nom2, types[1], TypePion.DEFENSEUR);
         c.afficherJeu();
+        /*try {
+            // Mettez votre programme en pause pendant 2 secondes (2000 millisecondes)
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            // Gérez les exceptions ici si nécessaire
+            e.printStackTrace();
+        }*/
+        //c.jeu().setEnCours(true);
+
     }
 
     @Override
