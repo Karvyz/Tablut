@@ -41,14 +41,24 @@ class VueMenuPrincipal extends JPanel {
         JButton quitter = new CButton("Quitter").big();
         quitter.addActionListener((e) -> c.toClose());
 
+        // Affichage de la taille de la frame
+        // On récupère des informations sur l'écran
+        GraphicsEnvironment env;
+        GraphicsDevice device;
+        env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        device = env.getDefaultScreenDevice();
+        DisplayMode dm = device.getDisplayMode();
+
+        System.out.println("Taille de la fenêtre : " + dm.getWidth() + "x" + dm.getHeight());
+
         // Ajout des composants
         Component[] components = {
                 nouvellePartie,
                 chargerPartie,
                 QuickPlay,
-                Box.createRigidArea(new Dimension(10, 30)),
+                Box.createRigidArea(new Dimension((dm.getWidth() / 192), (dm.getHeight() / 36))),
                 regles,
-                Box.createRigidArea(new Dimension(10, 30)),
+                Box.createRigidArea(new Dimension((dm.getWidth() / 192), (dm.getHeight() / 36))),
                 quitter
         };
 
@@ -60,7 +70,7 @@ class VueMenuPrincipal extends JPanel {
         // Création des panels
         JPanel leftPanel = new JPanel();
         leftPanel.setOpaque(false);
-        leftPanel.add(new JLabel(new ImageIcon(Imager.getScaledImage(logo, 675, 300))));
+        leftPanel.add(new JLabel(new ImageIcon(Imager.getScaledImage(logo, (dm.getWidth() / 284 * 100), (dm.getWidth() / 64 * 10)))));
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setOpaque(false);
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.Y_AXIS));
@@ -81,7 +91,7 @@ class VueMenuPrincipal extends JPanel {
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.NONE;
-        gbc.insets = new Insets(0, 0, 80, 0);
+        gbc.insets = new Insets(0, 0, dm.getHeight() / 24, 0);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0;
@@ -90,7 +100,7 @@ class VueMenuPrincipal extends JPanel {
         add(centerPanel, gbc);
 
         gbc.fill = GridBagConstraints.NONE;
-        gbc.insets = new Insets(0, 0, 100, 0);
+        gbc.insets = new Insets(0, 0, dm.getHeight() / 192, 0);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -101,9 +111,9 @@ class VueMenuPrincipal extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.LINE_END;
-        buttonsPanel.setBounds(buttonsPanel.getX() - 300, buttonsPanel.getY(), buttonsPanel.getWidth(), buttonsPanel.getHeight());
+        buttonsPanel.setBounds(buttonsPanel.getX() - (dm.getWidth() / 64 * 10), buttonsPanel.getY(), buttonsPanel.getWidth(), buttonsPanel.getHeight());
         centerPanel.add(buttonsPanel, gbc);
-        centerPanel.setBounds(centerPanel.getX() - 150, centerPanel.getY(), centerPanel.getWidth(), centerPanel.getHeight());
+        centerPanel.setBounds(centerPanel.getX() - (dm.getWidth() / 128 * 10), centerPanel.getY(), centerPanel.getWidth(), centerPanel.getHeight());
     }
 
     @Override
