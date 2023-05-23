@@ -153,6 +153,7 @@ class VueJeu extends JPanel {
                 // Action personnalisée
                 controleur.jeu().setVainqueur(null); //permet de ne plus rouvrir apres avoir fais la croix, au moins on peut consulter
                 controleur.jeu().setConsulter(true);
+                sauvegarder.setEnabled(false);
                 // Disposer le JDialog
                 endGameDialog.dispose();
             }
@@ -385,7 +386,7 @@ class VueJeu extends JPanel {
             menu_item.setBorderPainted(false);
             menu_item.setUI(new CMenuItemUI(true));
             menu_item.setBackground(new Color(85, 91, 97, 119));
-            menu_item.setForeground(new Color(32, 74, 82));
+            menu_item.setForeground(new Color(0, 34, 45));
             menu.add(menu_item);
             //menu.add(createCustomSeparator(Color.LIGHT_GRAY));
             menu.add(createCustomSeparator(new Color(85, 91, 97, 119)));
@@ -394,44 +395,7 @@ class VueJeu extends JPanel {
         checkBoxMenuItemMusic.setFont(new Font("Arial", Font.BOLD, 16));
         checkBoxMenuItemMusic.setBorderPainted(false);
         checkBoxMenuItemMusic.setBackground(new Color(85, 91, 97, 119));
-        checkBoxMenuItemMusic.setForeground(new Color(32, 74, 82));
-
-        /*
-        // Personnaliser le rendu du JCheckBoxMenuItem
-        checkBoxMenuItemMusic.setUI(new BasicCheckBoxMenuItemUI() {
-            @Override
-            protected void paintMenuItem(Graphics g, JComponent c, Icon checkIcon, Icon arrowIcon,
-                                         Color background, Color foreground, int defaultTextIconGap) {
-                ButtonModel model = ((JMenuItem) c).getModel();
-                Color bgColor;
-                Color fgColor;
-
-                if (model.isArmed() || model.isSelected()) {
-                    System.out.println("isArmed " + model.isRollover());
-
-                    bgColor = model.isRollover() ? Color.YELLOW : Color.RED;
-                    fgColor = model.isRollover() ? Color.BLACK : Color.WHITE;
-                    System.out.println("bgColor " + bgColor);
-                    System.out.println("fgColor " + fgColor);
-                } else {
-                    System.out.println("isNotArmed " + model.isRollover());
-                    bgColor = model.isRollover() ? Color.LIGHT_GRAY : background;
-                    fgColor = model.isRollover() ? Color.BLACK : foreground;
-                    System.out.println("bgColor " + bgColor);
-                    System.out.println("fgColor " + fgColor);
-                }
-
-                g.setColor(bgColor);
-                g.fillRect(0, 0, c.getWidth(), c.getHeight());
-
-                super.paintMenuItem(g, c, checkIcon, arrowIcon, bgColor, fgColor, defaultTextIconGap);
-            }
-        });
-
-        System.out.println(checkBoxMenuItemMusic.getForeground());
-        System.out.println(menu_items[0].getForeground());
-
-         */
+        checkBoxMenuItemMusic.setForeground(new Color(0, 34, 45));
 
         menu.add(checkBoxMenuItemMusic);
 
@@ -613,7 +577,6 @@ class VueJeu extends JPanel {
         controls[1].setEnabled(true);
 
         topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        System.out.println(topFrame);
 
         topFrame.addKeyListener(new AdaptateurClavier(controleur));
         topFrame.setFocusable(true);
@@ -630,7 +593,6 @@ class VueJeu extends JPanel {
         c.anchor = GridBagConstraints.CENTER;
         mainPanel.add(vueNiveau, c);
 
-        System.out.println(j1);
         // Initialisation du niveau
         String s1 = "";
         if (!controleur.jeu().getJoueur1().estHumain()) {
@@ -640,23 +602,20 @@ class VueJeu extends JPanel {
                 s1 = "<html>" + controleur.jeu().getJoueur1().nom() + "<br>(IA";
             }
             else{
-                s1 = "IA";
+                s1 = "<html>Attaquant<br>(IA";
             }
             switch (controleur.jeu().getJoueur1().type()) {
                 case IA_FACILE:
                     s1 += " Facile";
-                    if(nom1)
-                        s1 +=  ")</html>";
+                    s1 +=  ")</html>";
                     break;
                 case IA_MOYEN:
                     s1 += " Moyen";
-                    if(nom1)
-                        s1 +=  ")</html>";
+                    s1 +=  ")</html>";
                     break;
                 case IA_DIFFICILE:
                     s1 += " Difficile";
-                    if(nom1)
-                        s1 +=  ")</html>";
+                    s1 +=  ")</html>";
                     break;
             }
         } else {
@@ -673,23 +632,20 @@ class VueJeu extends JPanel {
                 nom2 = true;
             }
             else{
-                s2 = "IA";
+                s2 = "<html>Défenseur<br>(IA";
             }
             switch (controleur.jeu().getJoueur2().type()) {
                 case IA_FACILE:
                     s2 += " Facile";
-                    if(nom2)
-                        s2 += ")</html>";
+                    s2 += ")</html>";
                     break;
                 case IA_MOYEN:
                     s2 += " Moyen";
-                    if(nom2)
-                        s2 += ")</html>";
+                    s2 += ")</html>";
                     break;
                 case IA_DIFFICILE:
                     s2 += " Difficile";
-                    if(nom2)
-                        s2 += ")</html>";
+                    s2 += ")</html>";
                     break;
             }
         } else {
@@ -697,6 +653,11 @@ class VueJeu extends JPanel {
         }
         j2.setName(s2);
         j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);
+
+        // Désactiver suggestion si IA vs IA :
+        if(!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain()) {
+            controls[1].setEnabled(false);
+        }
 
         vueNiveau.miseAJour();
     }
