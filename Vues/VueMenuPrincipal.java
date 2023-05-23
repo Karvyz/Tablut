@@ -91,7 +91,7 @@ class VueMenuPrincipal extends JPanel {
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.NONE;
-        gbc.insets = new Insets(0, 0, dm.getHeight() / 24, 0);
+        gbc.insets = new Insets(0, (dm.getWidth() / 384 * 10), (dm.getHeight() / 27 * 2), 0);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 0;
@@ -100,7 +100,7 @@ class VueMenuPrincipal extends JPanel {
         add(centerPanel, gbc);
 
         gbc.fill = GridBagConstraints.NONE;
-        gbc.insets = new Insets(0, 0, dm.getHeight() / 192, 0);
+        gbc.insets = new Insets(0, 0, dm.getHeight() / 108, 0);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.weightx = 1;
@@ -112,8 +112,10 @@ class VueMenuPrincipal extends JPanel {
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.LINE_END;
         buttonsPanel.setBounds(buttonsPanel.getX() - (dm.getWidth() / 64 * 10), buttonsPanel.getY(), buttonsPanel.getWidth(), buttonsPanel.getHeight());
+        //buttonsPanel.setBounds(buttonsPanel.getX(), buttonsPanel.getY(), buttonsPanel.getWidth(), buttonsPanel.getHeight());
         centerPanel.add(buttonsPanel, gbc);
         centerPanel.setBounds(centerPanel.getX() - (dm.getWidth() / 128 * 10), centerPanel.getY(), centerPanel.getWidth(), centerPanel.getHeight());
+        //centerPanel.setBounds(centerPanel.getX(), centerPanel.getY(), centerPanel.getWidth(), centerPanel.getHeight());
     }
 
     @Override
