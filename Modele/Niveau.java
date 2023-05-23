@@ -230,7 +230,7 @@ public class Niveau implements Serializable, Cloneable {
         String key = this.toString();
         if (this.data.containsKey(key)) {
             int val = this.data.get(key);
-            if (val == 2) // si on a déjà fait 2 fois le même coup
+            if (val == 1) // si on a déjà fait 3 fois le même coup
                 return true;
             else
                 this.data.put(this.toString(), val + 1); // on incrémente le nombre de fois qu'on a fait le même coup

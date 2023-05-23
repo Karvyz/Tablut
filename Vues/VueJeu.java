@@ -1,16 +1,11 @@
 package Vues;
-
-import Controlleur.IA_facile;
-import Controlleur.IA_moyen;
 import Modele.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
-import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 
 import static Modele.TypeJoueur.*;
 import static java.awt.GridBagConstraints.*;
@@ -124,6 +119,7 @@ class VueJeu extends JPanel {
         gbc2.anchor = CENTER;
         gbc2.insets = new Insets(20, 0, 0, 0);
         endButtons.setOpaque(false);
+        endButtons.removeAll();
         JButton menu = new CButton("Menu principal");
         JButton retry = new CButton("Rejouer ?").blanc();
         JButton consulter = new CButton("Consulter");
@@ -238,80 +234,88 @@ class VueJeu extends JPanel {
         endGamePanel = new JPanel();
 
         // Texte de fin
-        if (vainqueur.estHumain()) {
-            endGamePanel.setBackground(new Color(100, 183, 68));
-            endGameDialog.setTitle("Victoire !");
-            if (!perdant.estHumain()) {
-                suivant.setEnabled(true);
-                switch (perdant.type()) {
-                    case IA_FACILE:
-                        endGameText.setText("<html>Tu as gagné contre l'IA facile !<br>Essaye l'IA moyenne.</html>");
-                        break;
-                    case IA_MOYEN:
-                        endGameText.setText("<html>Tu as gagné contre l'IA moyenne !<br>Essaye l'IA difficile !</html>");
-                        break;
-                    case IA_DIFFICILE:
-                        endGameText.setText("Tu as gagné contre l'IA difficile, bravo !!");
-                        break;
-                    default:
-                        endGameText.setText("Tu as gagné contre... un alien ?");
-                        break;
+        if (controleur.jeu().aBoucle()){
+            endGamePanel.setBackground(new Color(85, 91, 97));
+            endGameDialog.setTitle("Egalité !");
+            endGameText.setText("Partie interrompue, ce plateau est apparu 3 fois");
+            controleur.jeu().setAboucle(false);
+        }
+        else{
+            if (vainqueur.estHumain()) {
+                endGamePanel.setBackground(new Color(100, 183, 68));
+                endGameDialog.setTitle("Victoire !");
+                if (!perdant.estHumain()) {
+                    suivant.setEnabled(true);
+                    switch (perdant.type()) {
+                        case IA_FACILE:
+                            endGameText.setText("<html>Tu as gagné contre l'IA facile !<br>Essaye l'IA moyenne.</html>");
+                            break;
+                        case IA_MOYEN:
+                            endGameText.setText("<html>Tu as gagné contre l'IA moyenne !<br>Essaye l'IA difficile !</html>");
+                            break;
+                        case IA_DIFFICILE:
+                            endGameText.setText("Tu as gagné contre l'IA difficile, bravo !!");
+                            break;
+                        default:
+                            endGameText.setText("Tu as gagné contre... un alien ?");
+                            break;
+                    }
+                } else {
+                    suivant.setEnabled(false);
+                    endGamePanel.setBackground(new Color(85, 91, 97));
+                    String svainqueur;
+                    if (vainqueur.nom().equals("Attaquant"))
+                        svainqueur = "L'attaquant";
+                    else if (vainqueur.nom().equals("Défenseur"))
+                        svainqueur = "Le défenseur";
+                    else
+                        svainqueur = vainqueur.nom();
+                    String sperdant ;
+                    if (perdant.nom().equals("Attaquant"))
+                        sperdant = "L'attaquant";
+                    else if (perdant.nom().equals("Défenseur"))
+                        sperdant = "Le défenseur";
+                    else
+                        sperdant = perdant.nom();
+                    endGameText.setText("<html>" + svainqueur + " a gagné !<br>" + sperdant + " a perdu.</html>");
                 }
             } else {
                 suivant.setEnabled(false);
+                endGameDialog.getComponent(0).setBackground(new Color(201, 67, 67));
                 endGamePanel.setBackground(new Color(85, 91, 97));
-                String svainqueur = "";
-                if (vainqueur.nom().equals("Attaquant"))
-                    svainqueur = "L'attaquant";
-                else if (vainqueur.nom().equals("Défenseur"))
-                    svainqueur = "Le défenseur";
-                else
-                    svainqueur = vainqueur.nom();
-                String sperdant = "";
-                if (perdant.nom().equals("Attaquant"))
-                    sperdant = "L'attaquant";
-                else if (perdant.nom().equals("Défenseur"))
-                    sperdant = "Le défenseur";
-                else
-                    sperdant = perdant.nom();
-                endGameText.setText("<html>" + svainqueur + " a gagné !<br>" + sperdant + " a perdu.</html>");
-            }
-        } else {
-            suivant.setEnabled(false);
-            endGameDialog.getComponent(0).setBackground(new Color(201, 67, 67));
-            endGamePanel.setBackground(new Color(85, 91, 97));
-            String typeIA = "";
-            switch (vainqueur.type()) {
-                case IA_FACILE:
-                    typeIA = "facile";
-                    break;
-                case IA_MOYEN:
-                    typeIA = "moyenne";
-                    break;
-                case IA_DIFFICILE:
-                    typeIA = "difficile";
-                    break;
-                default:
-                    typeIA = "alien";
-                    break;
-            }
-            if (perdant.estHumain()) {
-                endGamePanel.setBackground(new Color(201, 67, 67));
-                endGameDialog.setTitle("Défaite !");
-                endGameText.setText("Dommage ! Tu as perdu contre l'IA " + typeIA + ".");
-            } else {
-                endGameDialog.getComponent(0).setBackground(new Color(85, 91, 97));
-                if (vainqueur.aPionsBlancs()) {
-                    if (vainqueur.nom().equals("Défenseur"))
-                        endGameText.setText("Le défenseur, IA " + typeIA + " a gagné !");
-                    else
-                        endGameText.setText("Le défenseur, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
+                String typeIA ;
+                switch (vainqueur.type()) {
+                    case IA_FACILE:
+                        typeIA = "facile";
+                        break;
+                    case IA_MOYEN:
+                        typeIA = "moyenne";
+                        break;
+                    case IA_DIFFICILE:
+                        typeIA = "difficile";
+                        break;
+                    default:
+                        typeIA = "alien";
+                        break;
+                }
+                if (perdant.estHumain()) {
+                    endGamePanel.setBackground(new Color(201, 67, 67));
+                    endGameDialog.setTitle("Défaite !");
+                    endGameText.setText("Dommage ! Tu as perdu contre l'IA " + typeIA + ".");
                 } else {
                     endGameDialog.getComponent(0).setBackground(new Color(85, 91, 97));
-                    if (vainqueur.nom().equals("Attaquant"))
-                        endGameText.setText("L'attaquant, IA " + typeIA + " a gagné !");
-                    else
-                        endGameText.setText("L'attaquant, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
+                    if (vainqueur.aPionsBlancs()) {
+                        if (vainqueur.nom().equals("Défenseur"))
+                            endGameText.setText("Le défenseur, IA " + typeIA + " a gagné !");
+                        else
+                            endGameText.setText("Le défenseur, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
+                    } else {
+                        endGameDialog.getComponent(0).setBackground(new Color(85, 91, 97));
+                        if (vainqueur.nom().equals("Attaquant"))
+                            endGameText.setText("L'attaquant, IA " + typeIA + " a gagné !");
+                        else
+                            endGameText.setText("L'attaquant, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
+                    }
                 }
             }
         }
@@ -449,7 +453,6 @@ class VueJeu extends JPanel {
 
     private void addMain(JPanel contenu) {
         GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
         c.gridy = 1;
         c.weightx = 1;
@@ -536,10 +539,7 @@ class VueJeu extends JPanel {
     void ModifBoutonUndo() {
         controleur.jeu().setAideIA(null);
         if (controleur.jeu().peutAnnuler()) {
-            if (!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
-                controls[0].setEnabled(false);
-            else
-                controls[0].setEnabled(true);
+            controls[0].setEnabled(controleur.jeu().getJoueur1().estHumain() || controleur.jeu().getJoueur2().estHumain());
         } else {
             controls[0].setEnabled(false);
         }
@@ -595,7 +595,7 @@ class VueJeu extends JPanel {
         mainPanel.add(vueNiveau, c);
 
         // Initialisation du niveau
-        String s1 = "";
+        String s1;
         if (!controleur.jeu().getJoueur1().estHumain()) {
             boolean nom1 = false;
             if(!controleur.jeu().getJoueur1().nom().equals("Attaquant") && !controleur.jeu().getJoueur1().nom().equals("")){
@@ -684,10 +684,10 @@ class VueJeu extends JPanel {
         mainPanel.add(vueNiveau, c);
 
         // Initialisation du niveau
-        j1.setName((!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueur1().nom());
+        j1.setName("<html>" + controleur.jeu().getJoueur1().nom() + "<br>(" + (controleur.jeu().getJoueur1().estHumain() ? "Humain" : controleur.jeu().getJoueur1().type().toString()) + ")</html>");
         j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
 
-        j2.setName((!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueur2().nom());
+        j2.setName("<html>" + controleur.jeu().getJoueur2().nom() + "<br>(" + (controleur.jeu().getJoueur2().estHumain() ? "Humain" : controleur.jeu().getJoueur2().type().toString()) + ")</html>");
         j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);
 
         vueNiveau.miseAJour();
