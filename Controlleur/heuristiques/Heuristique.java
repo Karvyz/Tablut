@@ -6,7 +6,7 @@ import Modele.TypePion;
 import java.io.Serializable;
 
 public abstract class Heuristique implements Serializable {
-    public abstract float evaluation(Niveau n, TypePion typePion);
+    public abstract double evaluation(Niveau n, TypePion typePion);
     @Override
     public abstract String toString();
 }

@@ -6,7 +6,7 @@ import Modele.TypePion;
 
 public class HeuristiqueExpert extends Heuristique {
     @Override
-    public float evaluation(Niveau n, TypePion typePion) {
+    public double evaluation(Niveau n, TypePion typePion) {
         int eval = 0, attaquants = 16, defenseurs = 8;
         if (typePion == TypePion.ATTAQUANT) { // attaquant
             //on regarde les contours de la map et s'il y a deux attaquants collés ou un attaquant collé à une Forteresse ou des defenseurs sur cette ligne/colonne on baisse l'evaluation

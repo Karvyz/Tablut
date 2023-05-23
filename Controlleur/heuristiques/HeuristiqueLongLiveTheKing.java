@@ -7,7 +7,7 @@ import Modele.TypePion;
 public class HeuristiqueLongLiveTheKing extends Heuristique {
 
     @Override
-    public float evaluation(Niveau n, TypePion typePion) {
+    public double evaluation(Niveau n, TypePion typePion) {
         int x = 0, y = 0;
         int attaquants = 0, defenseurs = 0, eval = 0, check = 0, check2 = 0;
         for (int i = 0; i < n.getTaille(); i++) {

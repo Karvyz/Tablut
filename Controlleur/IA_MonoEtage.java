@@ -20,7 +20,7 @@ public class IA_MonoEtage extends IA {
 
     class Thready implements Runnable {
         int valeur_deplacement;
-        float return_value;
+        double return_value;
         Coup coup;
 
         Thready(Coup coup) {
@@ -71,7 +71,7 @@ public class IA_MonoEtage extends IA {
                     max = threadies.get(i).coup;
                 }
                 else {
-                    float return_value = threadies.get(i).return_value;
+                    double return_value = threadies.get(i).return_value;
                     if (return_value > res_eval) {
                         max = threadies.get(i).coup;
                         res_eval = return_value;
