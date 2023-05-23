@@ -21,13 +21,16 @@ public class RulesCardLayout extends JFrame {
     private JButton previousButton;
     private JButton nextButton;
 
-    private static int width = 1000;
-    private static int height = 1412;
+    private static int width;
+    private static int height;
 
     public RulesCardLayout() {
         setTitle("Rules Card Layout");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Ouvrir au centre de la fenêtre en calculant la position
+        height = Toolkit.getDefaultToolkit().getScreenSize().height;
+        width = height * 1000 / 1412;
+        System.out.println(width + " " + height);
         setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - width) / 2,
                 (Toolkit.getDefaultToolkit().getScreenSize().height - height) / 2);
         setSize(width, height);
