@@ -1,16 +1,11 @@
 package Vues;
-
-import Controlleur.IA_facile;
-import Controlleur.IA_moyen;
 import Modele.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
-import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 
 import static Modele.TypeJoueur.*;
 import static java.awt.GridBagConstraints.*;
@@ -261,14 +256,14 @@ class VueJeu extends JPanel {
             } else {
                 suivant.setEnabled(false);
                 endGamePanel.setBackground(new Color(85, 91, 97));
-                String svainqueur = "";
+                String svainqueur;
                 if (vainqueur.nom().equals("Attaquant"))
                     svainqueur = "L'attaquant";
                 else if (vainqueur.nom().equals("Défenseur"))
                     svainqueur = "Le défenseur";
                 else
                     svainqueur = vainqueur.nom();
-                String sperdant = "";
+                String sperdant ;
                 if (perdant.nom().equals("Attaquant"))
                     sperdant = "L'attaquant";
                 else if (perdant.nom().equals("Défenseur"))
@@ -281,7 +276,7 @@ class VueJeu extends JPanel {
             suivant.setEnabled(false);
             endGameDialog.getComponent(0).setBackground(new Color(201, 67, 67));
             endGamePanel.setBackground(new Color(85, 91, 97));
-            String typeIA = "";
+            String typeIA ;
             switch (vainqueur.type()) {
                 case IA_FACILE:
                     typeIA = "facile";
@@ -450,7 +445,6 @@ class VueJeu extends JPanel {
 
     private void addMain(JPanel contenu) {
         GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;
         c.gridy = 1;
         c.weightx = 1;
@@ -537,10 +531,7 @@ class VueJeu extends JPanel {
     void ModifBoutonUndo() {
         controleur.jeu().setAideIA(null);
         if (controleur.jeu().peutAnnuler()) {
-            if (!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
-                controls[0].setEnabled(false);
-            else
-                controls[0].setEnabled(true);
+            controls[0].setEnabled(controleur.jeu().getJoueur1().estHumain() || controleur.jeu().getJoueur2().estHumain());
         } else {
             controls[0].setEnabled(false);
         }
@@ -596,7 +587,7 @@ class VueJeu extends JPanel {
         mainPanel.add(vueNiveau, c);
 
         // Initialisation du niveau
-        String s1 = "";
+        String s1;
         if (!controleur.jeu().getJoueur1().estHumain()) {
             boolean nom1 = false;
             if(!controleur.jeu().getJoueur1().nom().equals("Attaquant") && !controleur.jeu().getJoueur1().nom().equals("")){
