@@ -16,7 +16,7 @@ public class Music implements ActionListener {
     public Music() {
         try {
             // Charger le fichier audio
-            BufferedInputStream myStream = new BufferedInputStream(getClass().getResourceAsStream("/Resources/Narnia.wav"));
+            BufferedInputStream myStream = new BufferedInputStream(getClass().getResourceAsStream("/Resources/Celtic-Ritual.wav"));
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(myStream);
 
             // Créer un Clip à partir du flux audio
