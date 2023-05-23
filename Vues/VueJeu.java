@@ -685,10 +685,10 @@ class VueJeu extends JPanel {
         mainPanel.add(vueNiveau, c);
 
         // Initialisation du niveau
-        j1.setName((!controleur.jeu().getJoueurCourant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueur1().nom());
+        j1.setName("<html>" + controleur.jeu().getJoueur1().nom() + "<br>(" + controleur.jeu().getJoueur1().type().toString() + ")</html>");
         j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
 
-        j2.setName((!controleur.jeu().getJoueurSuivant().estHumain() ? "(IA) " : "") + controleur.jeu().getJoueur2().nom());
+        j1.setName("<html>" + controleur.jeu().getJoueur2().nom() + "<br>(" + controleur.jeu().getJoueur2().type().toString() + ")</html>");
         j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);
 
         vueNiveau.miseAJour();

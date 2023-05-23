@@ -61,7 +61,6 @@ public class ControlleurMediateur implements CollecteurEvenements {
         } else {
             jeu.nouveauJoueur("Vous", TypeJoueur.HUMAIN, TypePion.DEFENSEUR);
             jeu.nouveauJoueur("Attaquant", TypeJoueur.IA_MOYEN, TypePion.ATTAQUANT);
-
         }
         jeu.nouvellePartie();
         vues.nouvellePartie();
