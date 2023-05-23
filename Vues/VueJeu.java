@@ -242,6 +242,7 @@ class VueJeu extends JPanel {
             endGamePanel.setBackground(new Color(100, 183, 68));
             endGameDialog.setTitle("Victoire !");
             if (!perdant.estHumain()) {
+                suivant.setEnabled(true);
                 switch (perdant.type()) {
                     case IA_FACILE:
                         endGameText.setText("<html>Tu as gagné contre l'IA facile !<br>Essaye l'IA moyenne.</html>");
@@ -257,6 +258,7 @@ class VueJeu extends JPanel {
                         break;
                 }
             } else {
+                suivant.setEnabled(false);
                 endGamePanel.setBackground(new Color(85, 91, 97));
                 String svainqueur = "";
                 if (vainqueur.nom().equals("Attaquant"))
