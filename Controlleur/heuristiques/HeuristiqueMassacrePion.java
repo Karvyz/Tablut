@@ -5,7 +5,7 @@ import Modele.*;
 public class HeuristiqueMassacrePion extends Heuristique {
 
     @Override
-    public float evaluation(Niveau n, TypePion typePion) {
+    public double evaluation(Niveau n, TypePion typePion) {
         int attaquants = 16;
         int defenseurs = 8;
         for (int i = 0; i < n.getTaille(); i++) {

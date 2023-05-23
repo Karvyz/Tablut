@@ -60,11 +60,11 @@ public class IA_DifficileTemps extends IA{
 
     class Etat implements Comparable<Etat>, Serializable {
         Niveau niveau;
-        float evaluation;
+        double evaluation;
         Coup coupAJouer;
         int depth;
 
-        Etat(Niveau niveau, float evaluation, Coup coupAJouer, int depth) {
+        Etat(Niveau niveau, double evaluation, Coup coupAJouer, int depth) {
             this.niveau = niveau;
             this.evaluation = evaluation;
             this.coupAJouer = coupAJouer;
@@ -72,7 +72,7 @@ public class IA_DifficileTemps extends IA{
         }
         @Override
         public int compareTo(Etat o) {
-            float result = o.evaluation - evaluation;
+            double result = o.evaluation - evaluation;
             if (result > 0)
                 return 1;
             if (result == 0)
@@ -114,7 +114,7 @@ public class IA_DifficileTemps extends IA{
             ArrayList<Coordonne> deplacements = pion.getDeplacement(niveau.plateau);
             for (int i = 0; i < deplacements.size(); i++) {
                 Niveau clone = niveau.clone();
-                float eval = 0;
+                double eval = 0;
                 int valeur = clone.deplace_pion(new Coup(pion.getCoordonne(), deplacements.get(i)));
                 if (valeur == 1 || valeur == 2) {
                     etats.add(new Etat(clone, Integer.MIN_VALUE + depth, coupAJouer, depth));

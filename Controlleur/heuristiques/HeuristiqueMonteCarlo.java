@@ -11,7 +11,7 @@ public class HeuristiqueMonteCarlo extends Heuristique{
         this.nbSimulations = nbSimulations;
     }
     @Override
-    public float evaluation(Niveau n, TypePion typePion) {
+    public double evaluation(Niveau n, TypePion typePion) {
         int scoreTotal = 0;
         int res = 0;
 
