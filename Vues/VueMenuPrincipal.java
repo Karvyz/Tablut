@@ -46,6 +46,7 @@ class VueMenuPrincipal extends JPanel {
                 nouvellePartie,
                 chargerPartie,
                 QuickPlay,
+                Box.createRigidArea(new Dimension(10, 30)),
                 regles,
                 Box.createRigidArea(new Dimension(10, 30)),
                 quitter
