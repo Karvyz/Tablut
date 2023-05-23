@@ -49,30 +49,29 @@ class VueNiveau extends JPanel implements Observateur {
                 plateauPanel.revalidate();
             }
         });
-
-        top = BorderFactory.createMatteBorder(10, 0, 0, 0, Color.WHITE);
-        bottom = BorderFactory.createMatteBorder(0, 0, 10, 0, Color.BLACK);
     }
 
     @Override
     public void miseAJour() {
-        if (controleur.jeu().getCoupJoue()){
+        // Coup effectué
+        if (controleur.jeu().getCoupJoue()) {
             parent.ModifBoutonUndo();
             parent.ModifBoutonRedo();
             controleur.jeu().setCoupJoue(false);
         }
 
+        // Partie terminée
         if (controleur.jeu().partieTerminee() && controleur.jeu().getConsulter() == false) {
             parent.showEnd();
             return;
         }
 
-
+        // Modif des infos des joueurs
         j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
         j2.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1]);
         texteJeu.set(controleur.jeu().info_pion(controleur.jeu().getJoueur2())[1], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
 
-
+        // Modif du joueur courant
         Color color = new Color(0xE5E21A);
 
         Border border = BorderFactory.createLineBorder(color, 8);
