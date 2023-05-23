@@ -234,80 +234,88 @@ class VueJeu extends JPanel {
         endGamePanel = new JPanel();
 
         // Texte de fin
-        if (vainqueur.estHumain()) {
-            endGamePanel.setBackground(new Color(100, 183, 68));
-            endGameDialog.setTitle("Victoire !");
-            if (!perdant.estHumain()) {
-                suivant.setEnabled(true);
-                switch (perdant.type()) {
-                    case IA_FACILE:
-                        endGameText.setText("<html>Tu as gagné contre l'IA facile !<br>Essaye l'IA moyenne.</html>");
-                        break;
-                    case IA_MOYEN:
-                        endGameText.setText("<html>Tu as gagné contre l'IA moyenne !<br>Essaye l'IA difficile !</html>");
-                        break;
-                    case IA_DIFFICILE:
-                        endGameText.setText("Tu as gagné contre l'IA difficile, bravo !!");
-                        break;
-                    default:
-                        endGameText.setText("Tu as gagné contre... un alien ?");
-                        break;
+        if (controleur.jeu().aBoucle()){
+            endGamePanel.setBackground(new Color(85, 91, 97));
+            endGameDialog.setTitle("Egalité !");
+            endGameText.setText("Partie interrompue, ce plateau est apparu 3 fois");
+            controleur.jeu().setAboucle(false);
+        }
+        else{
+            if (vainqueur.estHumain()) {
+                endGamePanel.setBackground(new Color(100, 183, 68));
+                endGameDialog.setTitle("Victoire !");
+                if (!perdant.estHumain()) {
+                    suivant.setEnabled(true);
+                    switch (perdant.type()) {
+                        case IA_FACILE:
+                            endGameText.setText("<html>Tu as gagné contre l'IA facile !<br>Essaye l'IA moyenne.</html>");
+                            break;
+                        case IA_MOYEN:
+                            endGameText.setText("<html>Tu as gagné contre l'IA moyenne !<br>Essaye l'IA difficile !</html>");
+                            break;
+                        case IA_DIFFICILE:
+                            endGameText.setText("Tu as gagné contre l'IA difficile, bravo !!");
+                            break;
+                        default:
+                            endGameText.setText("Tu as gagné contre... un alien ?");
+                            break;
+                    }
+                } else {
+                    suivant.setEnabled(false);
+                    endGamePanel.setBackground(new Color(85, 91, 97));
+                    String svainqueur;
+                    if (vainqueur.nom().equals("Attaquant"))
+                        svainqueur = "L'attaquant";
+                    else if (vainqueur.nom().equals("Défenseur"))
+                        svainqueur = "Le défenseur";
+                    else
+                        svainqueur = vainqueur.nom();
+                    String sperdant ;
+                    if (perdant.nom().equals("Attaquant"))
+                        sperdant = "L'attaquant";
+                    else if (perdant.nom().equals("Défenseur"))
+                        sperdant = "Le défenseur";
+                    else
+                        sperdant = perdant.nom();
+                    endGameText.setText("<html>" + svainqueur + " a gagné !<br>" + sperdant + " a perdu.</html>");
                 }
             } else {
                 suivant.setEnabled(false);
+                endGameDialog.getComponent(0).setBackground(new Color(201, 67, 67));
                 endGamePanel.setBackground(new Color(85, 91, 97));
-                String svainqueur;
-                if (vainqueur.nom().equals("Attaquant"))
-                    svainqueur = "L'attaquant";
-                else if (vainqueur.nom().equals("Défenseur"))
-                    svainqueur = "Le défenseur";
-                else
-                    svainqueur = vainqueur.nom();
-                String sperdant ;
-                if (perdant.nom().equals("Attaquant"))
-                    sperdant = "L'attaquant";
-                else if (perdant.nom().equals("Défenseur"))
-                    sperdant = "Le défenseur";
-                else
-                    sperdant = perdant.nom();
-                endGameText.setText("<html>" + svainqueur + " a gagné !<br>" + sperdant + " a perdu.</html>");
-            }
-        } else {
-            suivant.setEnabled(false);
-            endGameDialog.getComponent(0).setBackground(new Color(201, 67, 67));
-            endGamePanel.setBackground(new Color(85, 91, 97));
-            String typeIA ;
-            switch (vainqueur.type()) {
-                case IA_FACILE:
-                    typeIA = "facile";
-                    break;
-                case IA_MOYEN:
-                    typeIA = "moyenne";
-                    break;
-                case IA_DIFFICILE:
-                    typeIA = "difficile";
-                    break;
-                default:
-                    typeIA = "alien";
-                    break;
-            }
-            if (perdant.estHumain()) {
-                endGamePanel.setBackground(new Color(201, 67, 67));
-                endGameDialog.setTitle("Défaite !");
-                endGameText.setText("Dommage ! Tu as perdu contre l'IA " + typeIA + ".");
-            } else {
-                endGameDialog.getComponent(0).setBackground(new Color(85, 91, 97));
-                if (vainqueur.aPionsBlancs()) {
-                    if (vainqueur.nom().equals("Défenseur"))
-                        endGameText.setText("Le défenseur, IA " + typeIA + " a gagné !");
-                    else
-                        endGameText.setText("Le défenseur, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
+                String typeIA ;
+                switch (vainqueur.type()) {
+                    case IA_FACILE:
+                        typeIA = "facile";
+                        break;
+                    case IA_MOYEN:
+                        typeIA = "moyenne";
+                        break;
+                    case IA_DIFFICILE:
+                        typeIA = "difficile";
+                        break;
+                    default:
+                        typeIA = "alien";
+                        break;
+                }
+                if (perdant.estHumain()) {
+                    endGamePanel.setBackground(new Color(201, 67, 67));
+                    endGameDialog.setTitle("Défaite !");
+                    endGameText.setText("Dommage ! Tu as perdu contre l'IA " + typeIA + ".");
                 } else {
                     endGameDialog.getComponent(0).setBackground(new Color(85, 91, 97));
-                    if (vainqueur.nom().equals("Attaquant"))
-                        endGameText.setText("L'attaquant, IA " + typeIA + " a gagné !");
-                    else
-                        endGameText.setText("L'attaquant, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
+                    if (vainqueur.aPionsBlancs()) {
+                        if (vainqueur.nom().equals("Défenseur"))
+                            endGameText.setText("Le défenseur, IA " + typeIA + " a gagné !");
+                        else
+                            endGameText.setText("Le défenseur, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
+                    } else {
+                        endGameDialog.getComponent(0).setBackground(new Color(85, 91, 97));
+                        if (vainqueur.nom().equals("Attaquant"))
+                            endGameText.setText("L'attaquant, IA " + typeIA + " a gagné !");
+                        else
+                            endGameText.setText("L'attaquant, IA " + typeIA + " " + vainqueur.nom() + " a gagné !");
+                    }
                 }
             }
         }
