@@ -1,5 +1,7 @@
 package Vues;
 
+import Vues.JComposants.RulesCardLayout;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -7,6 +9,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+
+import static Vues.JComposants.RulesCardLayout.getImages;
 
 public class Vues {
     JFrame frame;
@@ -21,8 +25,12 @@ public class Vues {
     final static Dimension DIMENSION_DEFAUT = new Dimension(1599, 900);
     final static Dimension DIMENSION_MENU_PARTIES = new Dimension(1020, 600);
 
+    RulesCardLayout rulesCardLayout;
+
     Vues(JFrame f) {
         frame = f;
+        rulesCardLayout = new RulesCardLayout();
+        rulesCardLayout.addRulesCards(getImages());
     }
 
     void fixerVueJeu(VueJeu vue) {
@@ -80,16 +88,6 @@ public class Vues {
     }
 
     public void afficherR() {
-        try {
-            String inputPdf = "regles_du_jeu_Tablut.pdf";
-            Path tempOutput = Files.createTempFile("TempManual", ".pdf");
-            tempOutput.toFile().deleteOnExit();
-            try (InputStream is = getClass().getClassLoader().getResourceAsStream(inputPdf)) {
-                Files.copy(is, tempOutput, StandardCopyOption.REPLACE_EXISTING);
-            }
-            Desktop.getDesktop().open(tempOutput.toFile());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        rulesCardLayout.setVisible(true);
     }
 }
