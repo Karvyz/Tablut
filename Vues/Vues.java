@@ -22,8 +22,7 @@ public class Vues {
     final static String MENU_SAISIES = "Nouvelle Partie";
     final static String MENU_PARTIES = "Charger Partie";
     final static String JEU = "Jeu";
-    final static Dimension DIMENSION_DEFAUT = new Dimension(1599, 900);
-    final static Dimension DIMENSION_MENU_PARTIES = new Dimension(1020, 600);
+    static Dimension DIMENSION_DEFAUT;
 
     RulesCardLayout rulesCardLayout;
 
@@ -53,14 +52,16 @@ public class Vues {
     }
 
     private void afficher(String nom) {
+        // Affichage de la taille de l'écran
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        //System.out.println("Screen size: " + screenSize.width + "x" + screenSize.height);
+        DIMENSION_DEFAUT = new Dimension(screenSize.width / 6 * 5, screenSize.height / 6 * 5);
+        System.out.println("Dimension par défaut: " + DIMENSION_DEFAUT);
         if (nom.equals(MENU_PARTIES) && vueMenuParties != null) {
             vueMenuParties.refreshFileList();
             vueMenuParties.refresh();
-
-            frame.setMinimumSize(DIMENSION_DEFAUT);
-        } else {
-            frame.setMinimumSize(DIMENSION_DEFAUT);
         }
+        frame.setMinimumSize(DIMENSION_DEFAUT);
         CardLayout layout = (CardLayout) frame.getContentPane().getLayout();
         layout.show(frame.getContentPane(), nom);
     }
