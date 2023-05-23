@@ -36,6 +36,7 @@ public class VueMenuParties2 extends JPanel {
     public VueMenuParties2(CollecteurEvenements controleur) {
         this.controleur = controleur;
 
+        // Création des boutons
         menuPrincipalButton = new CButton().blanc();
         menuPrincipalButton.setBackground(new Color(0xD9D9D9));
         loadButton = new CButton().vert();
@@ -66,7 +67,6 @@ public class VueMenuParties2 extends JPanel {
         fileListModel = new DefaultListModel<>();
         fileList = new JList<>(fileListModel);
         fileList.setCellRenderer(new CListCellRenderer());
-        //fileList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         fileList.setFont(new Font("Courier", Font.PLAIN, 15)); // Changez la taille du texte des fichiers ici
         fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fileList.setVisibleRowCount(5);
@@ -86,7 +86,7 @@ public class VueMenuParties2 extends JPanel {
             }
         });
 
-        // Permet de selectionné/supprimé grace au clavier
+        // Permet de selectionner/supprimer grace au clavier
         fileList.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent evt) {
                 if (evt.getKeyCode() == KeyEvent.VK_DELETE) {  // Touche Suppr
@@ -165,7 +165,6 @@ public class VueMenuParties2 extends JPanel {
         gbc.weightx = 0.5;
         gbc.fill = GridBagConstraints.VERTICAL;
         gbc.anchor = GridBagConstraints.CENTER;
-        //add(scrollPane, gbc);
         add(scrollPanePanel, gbc);
 
         // Colonne vide
@@ -189,7 +188,6 @@ public class VueMenuParties2 extends JPanel {
         infoPanel.setMaximumSize(new Dimension(350, 100));
         infoPanel.setBackground(new Color(0x99000000, true));
         infoPanel.setVisible(true);
-        //infoPanel.setOpaque(false);
 
         // Nom de la partie (label1)
         GridBagConstraints gbc1 = new GridBagConstraints();
