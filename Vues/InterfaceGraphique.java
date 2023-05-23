@@ -19,7 +19,6 @@ public class InterfaceGraphique implements Runnable {
     }
 
     public static void demarrer(CollecteurEvenements control) {
-        //SwingUtilities.invokeLater(new InterfaceGraphique(j, control));
         SwingUtilities.invokeLater(new InterfaceGraphique(control));
     }
 
@@ -33,7 +32,6 @@ public class InterfaceGraphique implements Runnable {
         device = env.getDefaultScreenDevice();
         DisplayMode dm = device.getDisplayMode();
 
-        // TODO: Gérer la taille de la fenêtre dans default.cfg
         int width = dm.getWidth() / 4 * 3;
         int height = dm.getHeight() / 4 * 3;
 
@@ -73,12 +71,10 @@ public class InterfaceGraphique implements Runnable {
                 break;
             case Vues.MENU_SAISIES:
                 vue = new VueMenuSaisies(control);
-                //vue.resetTexte();
                 break;
             case Vues.JEU:
                 vue = new VueJeu(control);
                 vues.fixerVueJeu((VueJeu) vue);
-                //vue = new PlateauGraphique();
                 break;
             case Vues.MENU_PARTIES:
                 vue = new VueMenuParties2(control);
