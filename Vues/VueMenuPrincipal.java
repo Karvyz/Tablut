@@ -18,26 +18,30 @@ class VueMenuPrincipal extends JPanel {
         setLayout(new GridBagLayout());
         setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-
+        // Bouton nouvelle partie
         JButton nouvellePartie = new CButton("Nouvelle Partie").big();
         nouvellePartie.addActionListener((e) -> c.afficherMenuNouvellePartie());
 
+        // Bouton charger partie
         JButton chargerPartie = new CButton("Charger Partie").big();
         chargerPartie.addActionListener((e) -> c.afficherMenuChargerPartie());
 
+        // Bouton partie rapide
         JButton QuickPlay = new CButton("Partie Rapide").big();
         QuickPlay.addActionListener((e) -> {
             c.nouvelleQuickPartie();
             c.afficherQuickPartie();
         });
 
+        // Bouton règles
         JButton regles = new CButton("Règles").big();
         regles.addActionListener((e) -> c.afficherRegles());
-        //JButton didacticiel = new CButton("Didacticiel");
 
+        // Bouton quitter
         JButton quitter = new CButton("Quitter").big();
         quitter.addActionListener((e) -> c.toClose());
 
+        // Ajout des composants
         Component[] components = {
                 nouvellePartie,
                 chargerPartie,
@@ -47,10 +51,12 @@ class VueMenuPrincipal extends JPanel {
                 quitter
         };
 
-        for(Component component : components) {
+        // Changement de la police des boutons
+        for (Component component : components) {
             component.setFont(new Font("Arial", Font.BOLD, 16));
         }
 
+        // Création des panels
         JPanel leftPanel = new JPanel();
         leftPanel.setOpaque(false);
         leftPanel.add(new JLabel(new ImageIcon(Imager.getScaledImage(logo, 675, 300))));
@@ -90,15 +96,13 @@ class VueMenuPrincipal extends JPanel {
         gbc.weighty = 1;
         gbc.anchor = GridBagConstraints.CENTER;
         centerPanel.add(leftPanel, gbc);
-        // TODO : Le mettre au bon endroit suivant la taille de la fenêtre
-        //gbc.insets = new Insets(0, 80, 80, 40);
+
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.LINE_END;
         buttonsPanel.setBounds(buttonsPanel.getX() - 300, buttonsPanel.getY(), buttonsPanel.getWidth(), buttonsPanel.getHeight());
         centerPanel.add(buttonsPanel, gbc);
         centerPanel.setBounds(centerPanel.getX() - 150, centerPanel.getY(), centerPanel.getWidth(), centerPanel.getHeight());
-
     }
 
     @Override
@@ -109,6 +113,5 @@ class VueMenuPrincipal extends JPanel {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-
     }
 }
