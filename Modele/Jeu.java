@@ -1,16 +1,11 @@
 package Modele;
 
 import Controlleur.IA_DifficileProfondeur;
-import Controlleur.IA_DifficileTemps;
 import Controlleur.heuristiques.HeuristiqueFusion;
-import Controlleur.heuristiques.HeuristiqueLeRoiCCiao;
 import Patterns.Observable;
 import Structures.Pile;
-
 import java.io.*;
 import java.util.Stack;
-
-import static java.lang.Thread.sleep;
 import static java.util.Objects.requireNonNull;
 
 public class Jeu extends Observable implements Serializable {
@@ -135,7 +130,7 @@ public class Jeu extends Observable implements Serializable {
     }
 
     public void solution() {
-        Coup aide = new IA_DifficileProfondeur("", TypePion.ATTAQUANT, this, new HeuristiqueFusion(0.4668334F, 0.33374965F,0.9967921F, 0.5499482F), 3).meilleurCoup();
+        Coup aide = new IA_DifficileProfondeur("", TypePion.ATTAQUANT, this, new HeuristiqueFusion(0.4668334F, 0.33374965F,0.9967921F, 0.5499482F), 4).meilleurCoup();
         setAideIA(aide);
         metAJour();
     }
@@ -229,17 +224,6 @@ public class Jeu extends Observable implements Serializable {
         }
     }
 
-    public Joueurs getJoueurSuivant() {
-        switch (joueurCourant) {
-            case 0:
-                return joueurs[1];
-            case 1:
-                return joueurs[0];
-            default:
-                return null;
-        }
-    }
-
     public Niveau getNiveau() {
         return n;
     }
@@ -326,16 +310,14 @@ public class Jeu extends Observable implements Serializable {
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Jeu \n{");
-        sb.append(", enCours: ").append(enCours);
-        sb.append("niveau: ").append(n);
-        sb.append(", joueurs: [");
-        sb.append(joueurs[0]).append(", ");
-        sb.append(joueurs[1]);
-        sb.append(", joueurCourant: ").append(joueurCourant);
-        sb.append("}");
-        return sb.toString();
+        return "Jeu \n{" +
+                ", enCours: " + enCours +
+                "niveau: " + n +
+                ", joueurs: [" +
+                joueurs[0] + ", " +
+                joueurs[1] +
+                ", joueurCourant: " + joueurCourant +
+                "}";
     }
 
 

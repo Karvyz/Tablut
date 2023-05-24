@@ -9,33 +9,27 @@ import Vues.JComposants.CListCellRenderer;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.SimpleFormatter;
 
-public class VueMenuParties2 extends JPanel {
+public class VueMenuParties extends JPanel {
     private JList<String> fileList;
     private DefaultListModel<String> fileListModel;
-    private JButton menuPrincipalButton;
-    private JButton loadButton;
-    private JButton backButton;
-    private JButton deleteButton;
-    private CollecteurEvenements controleur;
+    private final JButton menuPrincipalButton;
+    private final JButton loadButton;
+    private final JButton deleteButton;
+    private final CollecteurEvenements controleur;
 
     JPanel infoPanel;
     CLabel label1, label2, label3, label4;
     String attaquant, defenseur;
-
     Image background;
 
-    Vues vues;
 
-    public VueMenuParties2(CollecteurEvenements controleur) {
+    public VueMenuParties(CollecteurEvenements controleur) {
         this.controleur = controleur;
 
         // Création des boutons
@@ -273,20 +267,15 @@ public class VueMenuParties2 extends JPanel {
         loadButton.setPreferredSize(new Dimension(250, 37));
         loadButton.setMaximumSize(new Dimension(250, 37));
 
-        loadButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedFile = fileList.getSelectedValue();
-                selectedFile = selectedFile.substring(0, selectedFile.lastIndexOf("e") + 1);
-                if (selectedFile != null) {
-                    if (controleur.chargerPartie("Resources/save/" + selectedFile) == false) {
-                        System.out.println("Ligne 283 de VueMenuParties ");
-                    }
-                    controleur.fixeJeu(controleur.jeu().getJeu());
-                    controleur.afficherJeu();
-                    controleur.restaurePartie();
-                }
+        loadButton.addActionListener(e -> {
+            String selectedFile = fileList.getSelectedValue();
+            selectedFile = selectedFile.substring(0, selectedFile.lastIndexOf("e") + 1);
+            if (!controleur.chargerPartie("Resources/save/" + selectedFile)) {
+                System.out.println("Ligne 283 de VueMenuParties ");
             }
+            controleur.fixeJeu(controleur.jeu().getJeu());
+            controleur.afficherJeu();
+            controleur.restaurePartie();
         });
 
         add(loadButton, gbc6);
@@ -308,36 +297,31 @@ public class VueMenuParties2 extends JPanel {
         deleteButton.setMinimumSize(new Dimension(250, 37));
         deleteButton.setMaximumSize(new Dimension(250, 37));
 
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String selectedFile = fileList.getSelectedValue();
-                selectedFile = selectedFile.substring(0, selectedFile.lastIndexOf("e") + 1);
-                if (selectedFile != null) {
-                    // Affiche une boîte de dialogue de confirmation
-                    int response = JOptionPane.showConfirmDialog(null,
-                            "Êtes-vous sûr de vouloir supprimer " + selectedFile + " ?",
-                            "Confirmer la suppression",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.QUESTION_MESSAGE);
-                    if (response == JOptionPane.YES_OPTION) {
-                        // Si l'utilisateur clique sur Oui, supprime le fichier
-                        File file = new File("Resources/save/" + selectedFile);
-                        if (file.exists() && file.isFile()) {
-                            if (file.delete()) {
-                                // Le fichier a été supprimé avec succès, rafraîchir la liste
-                                refreshFileList();
-                            } else {
-                                // Une erreur s'est produite lors de la suppression du fichier
-                                System.out.println("Une erreur s'est produite lors de la suppression du fichier.");
-                            }
-                        } else {
-                            System.out.println("Le fichier à supprimer n'existe pas ou n'est pas un fichier.");
-                        }
+        deleteButton.addActionListener(e -> {
+            String selectedFile = fileList.getSelectedValue();
+            selectedFile = selectedFile.substring(0, selectedFile.lastIndexOf("e") + 1);
+            // Affiche une boîte de dialogue de confirmation
+            int response = JOptionPane.showConfirmDialog(null,
+                    "Êtes-vous sûr de vouloir supprimer " + selectedFile + " ?",
+                    "Confirmer la suppression",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+            if (response == JOptionPane.YES_OPTION) {
+                // Si l'utilisateur clique sur Oui, supprime le fichier
+                File file = new File("Resources/save/" + selectedFile);
+                if (file.exists() && file.isFile()) {
+                    if (file.delete()) {
+                        // Le fichier a été supprimé avec succès, rafraîchir la liste
+                        refreshFileList();
+                    } else {
+                        // Une erreur s'est produite lors de la suppression du fichier
+                        System.out.println("Une erreur s'est produite lors de la suppression du fichier.");
                     }
-                    refresh();
+                } else {
+                    System.out.println("Le fichier à supprimer n'existe pas ou n'est pas un fichier.");
                 }
             }
+            refresh();
         });
 
         add(deleteButton, gbc7);
@@ -368,12 +352,7 @@ public class VueMenuParties2 extends JPanel {
         menuPrincipalButton.setMinimumSize(new Dimension(250, 37));
         menuPrincipalButton.setMaximumSize(new Dimension(250, 37));
 
-        menuPrincipalButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controleur.afficherMenuPrincipal();
-            }
-        });
+        menuPrincipalButton.addActionListener(e -> controleur.afficherMenuPrincipal());
         add(menuPrincipalButton, gbc9);
 
         // Espaces vertical
@@ -394,12 +373,7 @@ public class VueMenuParties2 extends JPanel {
     public void refreshFileList() {
         File saveDir = new File("Resources/save/");
         if (saveDir.exists() && saveDir.isDirectory()) {
-            File[] saveFiles = saveDir.listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File dir, String name) {
-                    return name.toLowerCase().endsWith(".save");
-                }
-            });
+            File[] saveFiles = saveDir.listFiles((dir, name) -> name.toLowerCase().endsWith(".save"));
 
             fileListModel.clear();
             if (saveFiles != null) {

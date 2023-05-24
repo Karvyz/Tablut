@@ -2,8 +2,6 @@ package Vues;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class InterfaceGraphique implements Runnable {
 
@@ -12,7 +10,6 @@ public class InterfaceGraphique implements Runnable {
     JFrame frame;
     GraphicsEnvironment env;
     GraphicsDevice device;
-    boolean maximized;
 
     InterfaceGraphique(CollecteurEvenements c) {
         control = c;
@@ -77,8 +74,8 @@ public class InterfaceGraphique implements Runnable {
                 vues.fixerVueJeu((VueJeu) vue);
                 break;
             case Vues.MENU_PARTIES:
-                vue = new VueMenuParties2(control);
-                vues.fixerVueMenuParties((VueMenuParties2) vue);
+                vue = new VueMenuParties(control);
+                vues.fixerVueMenuParties((VueMenuParties) vue);
                 break;
             default:
                 throw new IllegalArgumentException("Nom de vue incorrect : " + nom);

@@ -5,36 +5,24 @@ import Modele.TypePion;
 import Vues.JComposants.CButton;
 import Vues.JComposants.CComboxBox;
 import Vues.JComposants.CTextField;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.AbstractDocument;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.lang.reflect.Type;
-
-import static Vues.Imager.getImageIcon;
 
 public class VueMenuSaisies extends JPanel {
 
     CollecteurEvenements controleur;
-    private JPanel MenuSaisies;
-    private JTextField nomJ1;
-    private JComboBox typeJ1;
-    private JButton jouerButton;
-    private JButton menuPrincipalButton;
-    private JButton quitter;
-    private JPanel Boutons;
-    private JPanel BoutonsQuitter;
-    private JPanel Joueur2;
-    private JPanel Joueur1;
-    private JTextField nomJ2;
-    private JComboBox typeJ2;
-    private JComboBox comboBox1;
+    private final JPanel MenuSaisies;
+    private final JTextField nomJ1;
+    private final JComboBox typeJ1;
+    private final JButton jouerButton;
+    private final JButton menuPrincipalButton;
+    private final JPanel Boutons;
+    private final JPanel BoutonsQuitter;
+    private final JTextField nomJ2;
+    private final JComboBox typeJ2;
     int logoHeight;
     Image background;
     Image title;
@@ -51,7 +39,6 @@ public class VueMenuSaisies extends JPanel {
         typeJ2 = new CComboxBox();
         menuPrincipalButton = new CButton("Menu Principal");
         jouerButton = new CButton("Jouer").blanc();
-        comboBox1 = new CComboxBox();
         nomJ1 = new CTextField("Mur.png");
         nomJ2 = new CTextField("Mur.png");
 
@@ -153,9 +140,9 @@ public class VueMenuSaisies extends JPanel {
         defaultComboBoxModel1.addElement("IA Difficile");
         typeJ1.setModel(defaultComboBoxModel1);
 
-        Joueur1 = createJoueurPanel(true, "Attaquant", nomJ1, typeJ1);
+        JPanel joueur1 = createJoueurPanel(true, nomJ1, typeJ1);
 
-        add(Joueur1, constraints);
+        add(joueur1, constraints);
 
         // Ajout d'un bouton inverser
         constraints.gridy = 1;
@@ -191,9 +178,9 @@ public class VueMenuSaisies extends JPanel {
         defaultComboBoxModel3.setSelectedItem("IA Facile");// Sélectionner "IA Facile" comme valeur par défaut
         typeJ2.setModel(defaultComboBoxModel3);
 
-        Joueur2 = createJoueurPanel(false, "Défenseur", nomJ2, typeJ2);
+        JPanel joueur2 = createJoueurPanel(false, nomJ2, typeJ2);
 
-        add(Joueur2, constraints);
+        add(joueur2, constraints);
 
         // Espace vertical
         add(Box.createVerticalStrut(5));
@@ -212,10 +199,8 @@ public class VueMenuSaisies extends JPanel {
         add(Box.createVerticalStrut(80));
 
         // Quitter
-        quitter = new CButton("Quitter");
-        quitter.addActionListener((e) -> {
-            controleur.toClose();
-        });
+        JButton quitter = new CButton("Quitter");
+        quitter.addActionListener((e) -> controleur.toClose());
 
         BoutonsQuitter.setMaximumSize(new Dimension(441, 30));
 
@@ -226,7 +211,7 @@ public class VueMenuSaisies extends JPanel {
         add(Box.createVerticalStrut(20)); // Espace vertical
     }
 
-    private JPanel createJoueurPanel(boolean reverse, String label, JTextField nomJoueur, JComboBox typeJoueur) {
+    private JPanel createJoueurPanel(boolean reverse, JTextField nomJoueur, JComboBox typeJoueur) {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);
 

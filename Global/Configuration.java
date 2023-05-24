@@ -50,11 +50,6 @@ public class Configuration {
         return valeur;
     }
 
-    //Delete
-    public void ecrirePropriete(String nomPropriete, String valeurPropriete) {
-        p.setProperty(nomPropriete, valeurPropriete);
-    }
-
     public Logger logger() {
         if (l == null) {
             System.setProperty("java.util.logging.SimpleFormatter.format", "%4$s : %5$s%n");

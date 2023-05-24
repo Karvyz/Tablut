@@ -8,12 +8,8 @@ public class Joueurs implements Serializable, Cloneable {
     private static final long serialVersionUID = 1L;//déclare une constante de sérialisation
     private final String nom;
     private final TypeJoueur type;
-    private final TypePion roleJ;
-
     private TypePion pions;
     private int nombrePionsManges;
-    static int HANDICAP_MAX = 3;
-
     public Jeu jeu;
 
     public Joueurs(String nom, TypeJoueur type, TypePion roleJ, Jeu j) {
@@ -24,7 +20,6 @@ public class Joueurs implements Serializable, Cloneable {
         this.type = type;
         this.jeu = j;
         this.nom = nom;
-        this.roleJ = roleJ;
         initialiserJoueur(roleJ);
     }
 

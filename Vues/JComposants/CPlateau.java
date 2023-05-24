@@ -12,23 +12,15 @@ import java.util.ArrayList;
 
 public class CPlateau extends JPanel implements Observateur {
     CollecteurEvenements controleur;
-
-    private Point pionEnDeplacement;
-
-    private Pion pionSelec;
+    final private AdaptateurSouris adaptateurSouris;
     int bordureHaut, bordureGauche, hauteurCase, largeurCase;
-
+    private Point pionEnDeplacement;
     private ArrayList<Coordonne> destinationsPossibles = new ArrayList<>();
-    private Image image;
-
-    private boolean drawFleche = true;
-
+    private Pion pionSelec;
     private Point dessineCroix;
-
-    private AdaptateurSouris adaptateurSouris;
+    private Image image;
+    private boolean drawFleche = true;
     int compteur;
-
-
 
     public CPlateau(CollecteurEvenements c) {
         controleur = c;
@@ -62,6 +54,7 @@ public class CPlateau extends JPanel implements Observateur {
 
     }
 
+    //Permet de reset pratiquement tous
     private void verif_debut_partie() {
         if(controleur.jeu().debutPartie()) {
             setPionEnDeplacement(null);
@@ -70,15 +63,13 @@ public class CPlateau extends JPanel implements Observateur {
                 setDrawFleche1(false);
             }
             setPionSelec(null);
-            setSurvole(null);
-            setPointSelec(null);
             miseAJour();
         }
     }
 
+    //Permet de reset si jamais on a annuler ou refait un coup
     private void test_annuler_refaire() {
-        if (controleur.jeu().test_annuler_refaire == true) {
-            setPointSelec(null);
+        if (controleur.jeu().test_annuler_refaire) {
             setPionSelec(null);
             setDestinationsPossibles(null);
             setPionEnDeplacement(null);
@@ -94,6 +85,8 @@ public class CPlateau extends JPanel implements Observateur {
         g.drawImage(current, 0, 0, getWidth(), getHeight(), null);
     }
 
+
+    //Permet de dessiner les pions
     private void drawContenu(Graphics2D g) {
         Jeu j = controleur.jeu();
         Niveau n = j.getNiveau();
@@ -145,7 +138,7 @@ public class CPlateau extends JPanel implements Observateur {
         }
     }
 
-
+    //Permet de dessiner le pion en déplacement pendant le drag&drop
     private void drawDeplacement(Graphics2D g2d) {
         if (getPionEnDeplacement() != null) {
             int x = bordureGauche;
@@ -187,6 +180,7 @@ public class CPlateau extends JPanel implements Observateur {
         }
     }
 
+    //Permet d'afficher les destinations possibles pour un pion
     private void drawDestination(Graphics2D g) {
         if (destinationsPossibles == null) {
             return;
@@ -214,20 +208,19 @@ public class CPlateau extends JPanel implements Observateur {
         }
     }
 
+    //Permet d'afficher le mouvement qu'à fait l'IA
     private void drawMouvIA(Graphics2D g2d) {
 
         if (controleur.jeu().getJoueur1().estHumain() || controleur.jeu().getJoueur2().estHumain()) {
             drawDestination(g2d);
             drawDeplacement(g2d);
 
-            if ((controleur.jeu().getCoordooneDepartIA() != null && getDrawFleche() == true)) {
+            if ((controleur.jeu().getCoordooneDepartIA() != null && getDrawFleche())) {
                 Coordonne depart = controleur.jeu().getCoordooneDepartIA();
                 if (depart == null){return;}
                 int l = depart.getX();
                 int c = depart.getY();
-                if (controleur.jeu().n.estKonakis(l,c)){
-                    //on ne dessine pas la fleche sur le konaki. on comprend que le roi est parti de son trone
-                }else {
+                if (!controleur.jeu().n.estKonakis(l,c)){//on ne dessine pas la fleche sur le konaki. on comprend que le roi est parti de son trone
                     int tfl = largeurCase / 2;
                     int tfh = hauteurCase / 2;
                     switch (calcul_dir(depart, controleur.jeu().getCoordooneArriveIA())) {
@@ -259,7 +252,6 @@ public class CPlateau extends JPanel implements Observateur {
 
         }
     }
-
     private void drawAideIA(Graphics2D g2d) {
         if(controleur.jeu().getAideIA() != null){
             Coup aide = controleur.jeu().getAideIA();
@@ -276,6 +268,7 @@ public class CPlateau extends JPanel implements Observateur {
         }
     }
 
+    //Dessine la croix rouge en cas d'erreur
     private void drawCroixRouge(Graphics2D g2d) {
         if(dessineCroix != null){
             int x = bordureGauche;
@@ -299,6 +292,7 @@ public class CPlateau extends JPanel implements Observateur {
         }
     }
 
+    //Permet de calculer les directions prises par l'IA
     public int calcul_dir(Coordonne depart, Coordonne coordonneArriveIA) {
         int deltaX = coordonneArriveIA.getX() - depart.getX();
         int deltaY = coordonneArriveIA.getY() - depart.getY();
@@ -319,11 +313,6 @@ public class CPlateau extends JPanel implements Observateur {
             // Aucune direction valide trouvée
             return -1;
         }
-    }
-
-
-    public void updateBrillanceSelection(int l, int c) {
-        repaint();
     }
 
     private void calculerDimensions() {
@@ -360,9 +349,6 @@ public class CPlateau extends JPanel implements Observateur {
         miseAJour(); // Ajoutez cette ligne pour actualiser le plateau
     }
 
-    public void setPointSelec(Point point) {
-    }
-
     public void setPionSelec(Pion pion) {
         this.pionSelec = pion;
     }
@@ -389,10 +375,6 @@ public class CPlateau extends JPanel implements Observateur {
 
     public Image getImage() {
         return image;
-    }
-
-    public void setSurvole(Pion caseSurvole) {
-        miseAJour();
     }
 
     public void setDessineCroix(Point point) {

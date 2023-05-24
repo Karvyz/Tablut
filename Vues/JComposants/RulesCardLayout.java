@@ -4,32 +4,24 @@ import Vues.Imager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import static Vues.Imager.getImageBuffer;
-import static Vues.Imager.getImageIcon;
-
 public class RulesCardLayout extends JFrame {
 
-    private CardLayout cardLayout;
-    private JPanel cards;
+    final private CardLayout cardLayout;
+    final private JPanel cards;
     private int currentImageIndex = 0;
-    private JButton previousButton;
-    private JButton nextButton;
 
-    private static int width;
-    private static int height;
+    private final JButton previousButton;
+    private final JButton nextButton;
 
     public RulesCardLayout() {
         setTitle("Rules Card Layout");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Ouvrir au centre de la fenêtre en calculant la position
-        height = Toolkit.getDefaultToolkit().getScreenSize().height;
-        width = height * 1000 / 1412;
+        int height = Toolkit.getDefaultToolkit().getScreenSize().height;
+        int width = height * 1000 / 1412;
         System.out.println(width + " " + height);
         setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - width) / 2,
                 (Toolkit.getDefaultToolkit().getScreenSize().height - height) / 2);
@@ -41,19 +33,9 @@ public class RulesCardLayout extends JFrame {
         previousButton = new CButton("Précédent");
         nextButton = new CButton("Suivant");
 
-        previousButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showPreviousCard();
-            }
-        });
+        previousButton.addActionListener(e -> showPreviousCard());
 
-        nextButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showNextCard();
-            }
-        });
+        nextButton.addActionListener(e -> showNextCard());
 
         JPanel buttonPanel = new JPanel(new FlowLayout());
         buttonPanel.add(previousButton);
@@ -61,6 +43,8 @@ public class RulesCardLayout extends JFrame {
 
         getContentPane().add(cards, BorderLayout.CENTER);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+
+        updateButtonStates(); // Met a jour l'état des boutons
 
         // Si on ferme la fenêtre, on ferme uniquement la fenêtre et non l'application
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -93,6 +77,7 @@ public class RulesCardLayout extends JFrame {
             currentImageIndex--;
             cardLayout.previous(cards);
         }
+        updateButtonStates();
     }
 
     private void showNextCard() {
@@ -100,6 +85,15 @@ public class RulesCardLayout extends JFrame {
             currentImageIndex++;
             cardLayout.next(cards);
         }
+        updateButtonStates();
+    }
+
+    private void updateButtonStates() {
+        int numCards = cards.getComponentCount();
+        // Vérifier si le bouton précédent doit être verrouillé
+        previousButton.setEnabled(currentImageIndex != 0);
+        // Vérifier si le bouton suivant doit être verrouillé
+        nextButton.setEnabled(currentImageIndex != numCards - 1);
     }
 
     public static List<ImageIcon> getImages() {

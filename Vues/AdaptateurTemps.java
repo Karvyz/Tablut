@@ -16,7 +16,6 @@ public class AdaptateurTemps implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(control.getStop()){
             decompte_start = 0;
-            return;
         }else if(control.jeu().enCours() && !control.jeu().getJoueur1().estHumain() && decompte_start != 20){ //Permet de laisser le temps de voir le plateau avant que l'IA joue
             decompte_start +=1;
         }

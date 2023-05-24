@@ -1,7 +1,5 @@
 package Vues;
 
-import Global.Configuration;
-
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,14 +11,15 @@ import static Global.Configuration.chargerFichier;
 public class Theme {
     private static Theme instance;
     private int hauteurPlateau, largeurPlateau;
-    private int bordureHaut, bordureGauche, bordureBas, bordureDroite;
+    private int bordureHaut;
+    private int bordureGauche;
     private int hauteurCase, largeurCase;
     private Image plateau;
     private Image blanc_inactif;
 
     private Image noir_inactif;
 
-    private Image point_interrogation, err;
+    private Image point_interrogation;
 
     private Image roi;
 
@@ -53,8 +52,8 @@ public class Theme {
         largeurPlateau = Integer.parseInt(p.getProperty("Largeur_plateau"));
         bordureHaut = Integer.parseInt(p.getProperty("Bordure_haut"));
         bordureGauche = Integer.parseInt(p.getProperty("Bordure_gauche"));
-        bordureBas = Integer.parseInt(p.getProperty("Bordure_bas"));
-        bordureDroite = Integer.parseInt(p.getProperty("Bordure_droite"));
+        int bordureBas = Integer.parseInt(p.getProperty("Bordure_bas"));
+        int bordureDroite = Integer.parseInt(p.getProperty("Bordure_droite"));
         hauteurCase = (hauteurPlateau - bordureHaut - bordureBas) / 9;
         largeurCase = (largeurPlateau - bordureGauche - bordureDroite) / 9;
     }
@@ -64,13 +63,10 @@ public class Theme {
         chargerDimensions(theme);
 
         plateau = Imager.getImageBuffer(theme + "Plateau3.png");
-
         blanc_inactif = Imager.getImageBuffer(theme + "PB.png");
-
         noir_inactif = Imager.getImageBuffer(theme + "PN.png");
         roi = Imager.getImageBuffer(theme + "Roi.png");
         point_interrogation = Imager.getImageBuffer(theme + "Point.png");
-        err = Imager.getImageBuffer(theme + "err.png");
         fleche_bas = Imager.getImageBuffer(theme + "fleche_bas.png");
         fleche_droite = Imager.getImageBuffer(theme + "fleche_droite.png");
         fleche_gauche = Imager.getImageBuffer(theme + "fleche_gauche.png");
@@ -92,14 +88,6 @@ public class Theme {
 
     public int bordureGauche() {
         return bordureGauche;
-    }
-
-    public int bordureBas() {
-        return bordureBas;
-    }
-
-    public int bordureDroite() {
-        return bordureDroite;
     }
 
     public int hauteurCase() {

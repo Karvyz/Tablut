@@ -4,11 +4,6 @@ import Vues.JComposants.RulesCardLayout;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 
 import static Vues.JComposants.RulesCardLayout.getImages;
 
@@ -16,7 +11,7 @@ public class Vues {
     JFrame frame;
     VueJeu vueJeu;
 
-    VueMenuParties2 vueMenuParties;
+    VueMenuParties vueMenuParties;
 
     final static String MENU_PRINCIPAL = "Menu Principal";
     final static String MENU_SAISIES = "Nouvelle Partie";
@@ -36,7 +31,7 @@ public class Vues {
         vueJeu = vue;
     }
 
-    void fixerVueMenuParties(VueMenuParties2 vue) {
+    void fixerVueMenuParties(VueMenuParties vue) {
         vueMenuParties = vue;
     }
 

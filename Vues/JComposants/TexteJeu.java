@@ -35,21 +35,16 @@ public class TexteJeu extends JPanel {
         backgroundimage = getImageIcon("fond_pierre.png");
 
         // - Chargements des images
-        ImageIcon fois = new ImageIcon(Imager.getScaledImage("fois.png", 20, 24));
         ImageIcon PB = new ImageIcon(Imager.getScaledImage("PB_barre.png", 25, 30));
         ImageIcon PN = new ImageIcon(Imager.getScaledImage("PN_barre.png", 25, 30));
 
         add(new JLabel(PN));
-        add(Box.createRigidArea(new Dimension(15, 0)));
-        add(new JLabel(fois));
         add(Box.createRigidArea(new Dimension(15, 0)));
         add(nombre1);
 
         add(Box.createRigidArea(new Dimension(20, 0)));
 
         add(new JLabel(PB));
-        add(Box.createRigidArea(new Dimension(15, 0)));
-        add(new JLabel(fois));
         add(Box.createRigidArea(new Dimension(15, 0)));
         add(nombre2);
 
@@ -76,7 +71,7 @@ public class TexteJeu extends JPanel {
 
         g2.setColor(getBackground());
         int radius = 35;
-        g2.fillRoundRect(0, 0, radius > 0 ? getWidth() - 1 : getWidth(), radius > 0 ? getHeight() - 1 : getHeight(), radius, radius);
+        g2.fillRoundRect(0, 0, getWidth() - 1, getHeight() - 1, radius, radius);
 
         this.backgroundimage.paintIcon(null, g, 0, 0);
 

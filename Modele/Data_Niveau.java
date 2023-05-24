@@ -11,7 +11,7 @@ public class Data_Niveau implements Serializable {
     public Pile coup_a_refaire;
     public Stack<Coup> pileIA_annule;
     public Stack<Coup> pileIA_refaire;
-    private int joueurC;
+    private final int joueurC;
     public Joueurs attaquant;
     public Joueurs defenseur;
     public boolean enCours;
