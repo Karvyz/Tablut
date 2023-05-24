@@ -33,7 +33,7 @@ public class RulesCardLayout extends JFrame {
         System.out.println(width + " " + height);
         setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - width) / 2,
                 (Toolkit.getDefaultToolkit().getScreenSize().height - height) / 2);
-        setSize(width, height);
+        setSize(width, height - 150);
 
         cardLayout = new CardLayout();
         cards = new JPanel(cardLayout);
@@ -109,10 +109,10 @@ public class RulesCardLayout extends JFrame {
         regle2 = Imager.getImageIcon("regles2.png");
         regle3 = Imager.getImageIcon("regles3.png");
         regle4 = Imager.getImageIcon("regles4.png");
-        regle1 = resizeImage(regle1, new Dimension(700, 989));
-        regle2 = resizeImage(regle2, new Dimension(700, 989));
-        regle3 = resizeImage(regle3, new Dimension(700, 989));
-        regle4 = resizeImage(regle4, new Dimension(700, 989));
+        regle1 = resizeImage(regle1, new Dimension(637, 900));
+        regle2 = resizeImage(regle2, new Dimension(637, 900));
+        regle3 = resizeImage(regle3, new Dimension(637, 900));
+        regle4 = resizeImage(regle4, new Dimension(637, 900));
         images.add(regle1);
         images.add(regle2);
         images.add(regle3);
