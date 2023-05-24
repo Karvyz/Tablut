@@ -200,12 +200,12 @@ class VueJeu extends JPanel {
             }
             controleur.nouvellePartie(joueurs[0].nom(), joueurs[0].type(), TypePion.ATTAQUANT, joueurs[1].nom(), joueurs[1].type(), TypePion.DEFENSEUR);
             texteJeu = new TexteJeu(0, 0);
-            controleur.afficherJeu();
             controls[0].setEnabled(false);
             controls[1].setEnabled(true);
             controls[2].setEnabled(false);
             sauvegarder.setEnabled(true);
             endGameDialog.dispose();
+            controleur.afficherJeu();
         });
     }
 
