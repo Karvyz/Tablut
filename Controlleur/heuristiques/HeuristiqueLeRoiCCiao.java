@@ -13,7 +13,7 @@ public class HeuristiqueLeRoiCCiao extends Heuristique {
         int g = 0, d = 0, h = 0, b = 0, counthg = 0, countbg = 0, counthd = 0, countbd = 0;
         for (int i = 0; i < n.getTaille(); i++) {
             for (int j = 0; j < n.getTaille(); j++) {
-                if (!n.estVide(i, j)) {
+                if (n.estVide(i, j)) {
                     switch (n.typePion(i, j)) {
                         case ATTAQUANT:
                             attaquants++;
@@ -32,7 +32,7 @@ public class HeuristiqueLeRoiCCiao extends Heuristique {
         }
         for (int i = 0; i < n.getTaille(); i++) {
             for (int j = 0; j < n.getTaille(); j++) {
-                if (!n.estVide(i, j)) {
+                if (n.estVide(i, j)) {
                     if (n.typePion(i, j) == TypePion.ATTAQUANT) {
                         if (i < x) { //si la case est en haut du roi
                             if (j < y) // si la case est a gauche du roi

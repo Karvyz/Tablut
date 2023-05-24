@@ -1,6 +1,5 @@
 package Controlleur.heuristiques;
 
-import Modele.Jeu;
 import Modele.Niveau;
 import Modele.TypePion;
 

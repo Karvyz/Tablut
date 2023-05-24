@@ -2,8 +2,6 @@ package Controlleur;
 
 import Modele.*;
 
-import static Modele.TypeJoueur.HUMAIN;
-
 public class Humain extends Joueurs {
 
     public Humain(String nom, TypePion roleJ, Jeu j) {

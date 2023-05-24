@@ -118,7 +118,7 @@ public class Niveau implements Serializable, Cloneable {
     }
 
     public boolean estCorrect(int x, int y) {
-        return x >= 0 && x < 9 && y >= 0 && y < 9;
+        return x < 0 || x >= 9 || y < 0 || y >= 9;
     }
 
     /**
@@ -130,7 +130,7 @@ public class Niveau implements Serializable, Cloneable {
 
     //On regarde si la case est noire
     public boolean estAttaquant(int x, int y) {
-        if (!estCorrect(x, y) || plateau[x][y] == null) {
+        if (estCorrect(x, y) || plateau[x][y] == null) {
             return false;
         }
         return plateau[x][y].getType() == TypePion.ATTAQUANT;
@@ -138,7 +138,7 @@ public class Niveau implements Serializable, Cloneable {
 
     //On regarde si la case est blanche
     public boolean estDefenseur(int x, int y) {
-        if (!estCorrect(x, y) || plateau[x][y] == null) {
+        if (estCorrect(x, y) || plateau[x][y] == null) {
             return false;
         }
         return plateau[x][y].getType() == TypePion.DEFENSEUR;
@@ -146,7 +146,7 @@ public class Niveau implements Serializable, Cloneable {
 
     //On regarde si la case est le roi
     public boolean estRoi(int x, int y) {
-        if (!estCorrect(x, y) || plateau[x][y] == null) {
+        if (estCorrect(x, y) || plateau[x][y] == null) {
             return false;
         }
         return plateau[x][y].getType() == TypePion.ROI;
@@ -166,7 +166,7 @@ public class Niveau implements Serializable, Cloneable {
     }
     //On regarde si la case est vide
     public boolean estVide(int x, int y) {
-        return plateau[x][y] == null;
+        return plateau[x][y] != null;
     }
 
     /**Calcul du nombre de pion de chaque joueur*/

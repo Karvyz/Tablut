@@ -8,13 +8,10 @@ import java.awt.geom.RoundRectangle2D;
 import static Vues.Imager.getImageIcon;
 
 public class CPions extends JPanel {
-    private final int hgap = 5;
-    private boolean reverse = false;
     ImageIcon backgroundimage;
     private Shape shape;
 
-    public CPions(boolean reverse) {
-        this.reverse = reverse;
+    public CPions() {
         setOpaque(false);
         backgroundimage = getImageIcon("fond_pierre.png");
         setBorder(new EmptyBorder(5, 5, 5, 5));

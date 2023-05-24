@@ -33,7 +33,7 @@ public class GestionnaireDeCoup implements Serializable {
             return;
         }
 
-        if(jeu.getConsulter() == true){
+        if(jeu.getConsulter()){
             annuler_HvH();
             jeu.metAJour();
             jeu.test_annuler_refaire = true;
@@ -65,7 +65,7 @@ public class GestionnaireDeCoup implements Serializable {
         Joueurs j1 = jeu.getJoueur1();
         Joueurs j2 = jeu.getJoueur2();
 
-        if(jeu.getConsulter() == true){
+        if(jeu.getConsulter()){
             refaire_HvH();
             return;
         }

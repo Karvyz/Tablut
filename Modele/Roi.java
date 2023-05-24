@@ -8,7 +8,7 @@ public class Roi extends Pion {
         super(x, y, TypePion.ROI);
     }
 
-    private ArrayList<Coordonne> getDeplacementVerticaList(Pion[][] plateau, ArrayList<Coordonne> deplacement) {
+    private void getDeplacementVerticaList(Pion[][] plateau, ArrayList<Coordonne> deplacement) {
         int x = getX();
         int y = getY();
         int i = 1;
@@ -23,10 +23,9 @@ public class Roi extends Pion {
             deplacement.add(new Coordonne(x + i, y));
             i++;
         }
-        return deplacement;
     }
 
-    private ArrayList<Coordonne> getDeplacementHorizontaleList(Pion[][] plateau, ArrayList<Coordonne> deplacement) {
+    private void getDeplacementHorizontaleList(Pion[][] plateau, ArrayList<Coordonne> deplacement) {
         int x = getX();
         int y = getY();
         int i = 1;
@@ -41,7 +40,6 @@ public class Roi extends Pion {
             deplacement.add(new Coordonne(x, y + i));
             i++;
         }
-        return deplacement;
     }
 
     @Override

@@ -94,7 +94,7 @@ public class Pion implements Cloneable, Serializable {
     }
 
     public ArrayList<Coordonne> getDeplacement(Pion[][] plateau) {
-        ArrayList<Coordonne> deplacement = new ArrayList<Coordonne>();
+        ArrayList<Coordonne> deplacement = new ArrayList<>();
         getDeplacementVerticaList(plateau, deplacement);
         getDeplacementHorizontaleList(plateau, deplacement);
         return deplacement;

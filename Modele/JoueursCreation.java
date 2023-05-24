@@ -2,7 +2,6 @@ package Modele;
 
 import Controlleur.IA_MonoEtage;
 import Controlleur.heuristiques.HeuristiqueFusion;
-import Controlleur.heuristiques.HeuristiqueLongLiveTheKing;
 import Controlleur.heuristiques.HeuristiqueMonteCarlo;
 
 public class JoueursCreation {

@@ -8,14 +8,10 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
-
-import static Vues.Imager.getImageBuffer;
 import static Vues.Imager.getImageIcon;
 
 public class CTextField extends JTextField {
 
-    private int radius = 0;
-    boolean background = false;
     ImageIcon backgroundimage;
     private Shape shape;
 
@@ -32,11 +28,12 @@ public class CTextField extends JTextField {
         setCaretColor(Color.WHITE);
 
         ((AbstractDocument) getDocument()).setDocumentFilter(new DocumentFilter() {
-            private int maxLength = 13; // Nombre maximum de caractères
 
             @Override
             public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
                 // Vérifie si la longueur du texte après remplacement dépasse la limite
+                // Nombre maximum de caractères
+                int maxLength = 13;
                 if ((fb.getDocument().getLength() + text.length() - length) <= maxLength || text.equals("Nom de l'attaquant") || text.equals("Nom du défenseur")) {
                     super.replace(fb, offset, length, text, attrs);
                 }
@@ -60,6 +57,7 @@ public class CTextField extends JTextField {
         g2.setRenderingHints(qualityHints);
 
         g2.setColor(getBackground());
+        int radius = 0;
         g2.fillRoundRect(0, 0, getSize().width - 1, getSize().height - 1, radius, radius);
 
         this.backgroundimage.paintIcon(null, g, 0, 0);

@@ -11,7 +11,7 @@ public class HeuristiqueLongLiveTheKing extends Heuristique {
         int eval = 0, check = 0, check2 = 0;
         for (int i = 0; i < n.getTaille(); i++) {
             for (int j = 0; j < n.getTaille(); j++) {
-                if (!n.estVide(i, j)) {
+                if (n.estVide(i, j)) {
                     if (n.estRoi(i, j)) {
                             x = i;
                             y = j;

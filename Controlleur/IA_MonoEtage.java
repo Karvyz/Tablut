@@ -52,8 +52,8 @@ public class IA_MonoEtage extends IA {
         ArrayList<Thready> threadies = new ArrayList<>();
         for (Pion pion : pions) {
             ArrayList<Coordonne> deplacements = pion.getDeplacement(jeu.n.plateau);
-            for (int i = 0; i < deplacements.size(); i++) {
-                temp = new Coup(pion.getCoordonne(), deplacements.get(i));
+            for (Coordonne deplacement : deplacements) {
+                temp = new Coup(pion.getCoordonne(), deplacement);
                 Thready thready = new Thready(temp);
                 threadies.add(thready);
                 Thread thread = new Thread(thready);

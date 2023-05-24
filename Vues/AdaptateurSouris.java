@@ -181,8 +181,6 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
             }
             pionEnDeplacement.setLocation(l, c); // Modifie les coordonne du Point pionEnDeplacement
             plateau.setPionEnDeplacement(pionEnDeplacement);
-        } else {
-            plateau.setPointSelec(null);
         }
     }
 
@@ -197,7 +195,6 @@ public class AdaptateurSouris extends MouseAdapter implements MouseMotionListene
         }
         // Obtener les informations de la case survolée
         Pion caseSurvole = ctrl.jeu().n.getPion(l, c);
-        plateau.setSurvole(caseSurvole);
 
         if (plateau.getPionSelec() == null) {
             // Permet d'afficher lorsqu'on survole

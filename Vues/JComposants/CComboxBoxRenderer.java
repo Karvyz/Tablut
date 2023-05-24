@@ -5,11 +5,11 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class CComboxBoxRenderer extends JPanel implements ListCellRenderer {
-    private JLabel labelItem = new JLabel();
-    private Color itemBackground = new Color(255, 255, 255);
-    private Color itemSelectedBackground = new Color(0, 0, 0);
-    private Color itemSelectedForeground = new Color(255, 255, 255);
-    private Color itemForeground = new Color(0, 0, 0);
+    private final JLabel labelItem = new JLabel();
+    private final Color itemBackground = new Color(255, 255, 255);
+    private final Color itemSelectedBackground = new Color(0, 0, 0);
+    private final Color itemSelectedForeground = new Color(255, 255, 255);
+    private final Color itemForeground = new Color(0, 0, 0);
 
     public CComboxBoxRenderer() {
         setLayout(new GridBagLayout());

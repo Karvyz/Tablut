@@ -22,8 +22,8 @@ public class TournoisControlleur {
 
     public void tournois() {
         for (int i = 0; i < ias.size(); i++) {
-            for (int j = 0; j < ias.size(); j++) {
-                match(ias.get(i), ias.get(j), i);
+            for (IA ia : ias) {
+                match(ias.get(i), ia, i);
             }
         }
         ias.forEach(System.out::println);
@@ -63,7 +63,7 @@ public class TournoisControlleur {
         }
 
         private int play(){
-            int valeur_fin = 0;
+            int valeur_fin;
             int nb_coups = 0;
             while ((valeur_fin = ((IA)jeu.getJoueurCourant()).joue()) == 0) {
                 if (jeu.n.PlusdePion(jeu.get_num_JoueurCourant())) {

@@ -4,9 +4,6 @@ import Global.Configuration;
 import Modele.*;
 import Vues.*;
 import Vues.CollecteurEvenements;
-
-import javax.swing.*;
-import java.io.*;
 import java.util.Random;
 
 public class ControlleurMediateur implements CollecteurEvenements {
@@ -16,7 +13,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
     final int lenteurAttente = 50;
     int decompte;
     public boolean Stop;
-    private GestionnaireSauvegarde_Chargement Gest_save;
+    private final GestionnaireSauvegarde_Chargement Gest_save;
 
 
 
@@ -174,7 +171,7 @@ public class ControlleurMediateur implements CollecteurEvenements {
                 System.out.println("Le joueur blanc a gagné car l'attaquant n'a plus de pion");
             }
             else if (jeu.joueurs[jeu.get_num_JoueurCourant()].tempsEcoule()) { //Un humain renvoi tjr false, une IA renvoi vrai lorsquelle a joué(jeu effectué dans tempsEcoule())
-                if (Stop == true) {
+                if (Stop) {
                     return;
                 }
                 changeJoueur();

@@ -1,23 +1,16 @@
 package Vues.JComposants;
 
-//import Vues.Imager;
-
 import Vues.Imager;
-import Vues.JComposants.CPions;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-
-import static Vues.Imager.getImageIcon;
 
 public class InfoJoueur extends JPanel {
 
     public final JLabel n;
     public final JPanel p;
     private ImageIcon pawn;
-    private final int hgap = 20;
-    private boolean reverse;
+    final private boolean reverse;
 
     public InfoJoueur(boolean reverse) {
         this.reverse = reverse;
@@ -38,7 +31,7 @@ public class InfoJoueur extends JPanel {
 
 
         pawn = new ImageIcon(Imager.getScaledImage(reverse ? "PN.png" : "PB.png", 60, 60));
-        p = new CPions(reverse);
+        p = new CPions();
 
         p.setMinimumSize(new Dimension(250, 400));
         p.setPreferredSize(new Dimension(250, 400));

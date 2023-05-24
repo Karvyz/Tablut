@@ -16,14 +16,15 @@ class VueJeu extends JPanel {
 
     CollecteurEvenements controleur;
     VueNiveau vueNiveau;
-    private InfoJoueur j1;
-    private InfoJoueur j2;
+    final private InfoJoueur j1;
+    final private InfoJoueur j2;
 
     private JLabel endGameText;
     private TexteJeu texteJeu;
     private JFrame topFrame;
 
-    private JPanel mainPanel, topPanel, endGamePanel;
+    private JPanel mainPanel;
+    private JPanel endGamePanel;
     private JDialog endGameDialog;
     Image background;
 
@@ -331,7 +332,7 @@ class VueJeu extends JPanel {
         c.anchor = GridBagConstraints.PAGE_START;
         c.insets = new Insets(5, 5, 5, 5);
 
-        topPanel = new JPanel();
+        JPanel topPanel = new JPanel();
         topPanel.setOpaque(false);
         topPanel.setLayout(new GridBagLayout());
         contenu.add(topPanel, c);
@@ -552,10 +553,7 @@ class VueJeu extends JPanel {
     void ModifBoutonRedo() {
         controleur.jeu().setAideIA(null);
         if (controleur.jeu().peutRefaire()) {
-            if (!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
-                controls[2].setEnabled(false);
-            else
-                controls[2].setEnabled(true);
+            controls[2].setEnabled(controleur.jeu().getJoueur1().estHumain() || controleur.jeu().getJoueur2().estHumain());
         } else {
             controls[2].setEnabled(false);
         }
@@ -563,12 +561,6 @@ class VueJeu extends JPanel {
             controls[2].setEnabled(true);
         } else if (!controleur.jeu().getJoueur1().estHumain() && !controleur.jeu().getJoueur2().estHumain())
             controls[2].setEnabled(false);
-    }
-
-    private JPanel addUserActions() {
-        JPanel userActions = new JPanel();
-        userActions.setOpaque(false);
-        return userActions;
     }
 
     void nouvellePartie() {
@@ -597,9 +589,7 @@ class VueJeu extends JPanel {
         // Initialisation du niveau
         String s1;
         if (!controleur.jeu().getJoueur1().estHumain()) {
-            boolean nom1 = false;
             if(!controleur.jeu().getJoueur1().nom().equals("Attaquant") && !controleur.jeu().getJoueur1().nom().equals("")){
-                nom1 = true;
                 s1 = "<html>" + controleur.jeu().getJoueur1().nom() + "<br>(IA";
             }
             else{
@@ -625,12 +615,10 @@ class VueJeu extends JPanel {
         j1.setName(s1);
         j1.setPions(controleur.jeu().info_pion(controleur.jeu().getJoueur1())[0], controleur.jeu().info_pion(controleur.jeu().getJoueur1())[1]);
 
-        String s2 = "";
+        String s2 ;
         if (!controleur.jeu().getJoueur2().estHumain()) {
-            boolean nom2 = false;
             if(!controleur.jeu().getJoueur2().nom().equals("Défenseur") && !controleur.jeu().getJoueur2().nom().equals("")){
                 s2 = "<html>" + controleur.jeu().getJoueur2().nom() + "<br>(IA";
-                nom2 = true;
             }
             else{
                 s2 = "<html>Défenseur<br>(IA";

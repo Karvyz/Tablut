@@ -31,7 +31,6 @@ public class IA_DifficileTemps extends IA{
 
     public Coup meilleurCoup() {
         long endtime = System.currentTimeMillis() + timeLimitMs;
-        int nb_evals = 0;
         etats = new PriorityQueue<>();
         if (((jeu.get_num_JoueurCourant()) % 2 ) == 0) {
             monType = TypePion.ATTAQUANT;
@@ -46,7 +45,6 @@ public class IA_DifficileTemps extends IA{
         do {
             Etat e = etats.poll();
             Coup overide = coups(e);
-            nb_evals++;
             if (overide != null) {
 
                 return overide;
@@ -90,12 +88,12 @@ public class IA_DifficileTemps extends IA{
         ArrayList<Pion> pions = e.niveau.getPions(monType);
         for (Pion pion : pions) {
             ArrayList<Coordonne> deplacements = pion.getDeplacement(e.niveau.plateau);
-            for (int i = 0; i < deplacements.size(); i++) {
+            for (Coordonne deplacement : deplacements) {
                 Coup coupAJouer = e.coupAJouer;
                 if (coupAJouer == null)
-                    coupAJouer = new Coup(pion.getCoordonne(), deplacements.get(i));
+                    coupAJouer = new Coup(pion.getCoordonne(), deplacement);
                 Niveau clone = e.niveau.clone();
-                int val_depl = clone.deplace_pion(new Coup(pion.getCoordonne(), deplacements.get(i)));
+                int val_depl = clone.deplace_pion(new Coup(pion.getCoordonne(), deplacement));
                 if (val_depl > 0) {
                     if (val_depl < 3)
                         return coupAJouer;
@@ -112,10 +110,10 @@ public class IA_DifficileTemps extends IA{
         Etat reponseMinimale = new Etat(null, Integer.MAX_VALUE, null, depth);
         for (Pion pion : pions) {
             ArrayList<Coordonne> deplacements = pion.getDeplacement(niveau.plateau);
-            for (int i = 0; i < deplacements.size(); i++) {
+            for (Coordonne deplacement : deplacements) {
                 Niveau clone = niveau.clone();
                 double eval = 0;
-                int valeur = clone.deplace_pion(new Coup(pion.getCoordonne(), deplacements.get(i)));
+                int valeur = clone.deplace_pion(new Coup(pion.getCoordonne(), deplacement));
                 if (valeur == 1 || valeur == 2) {
                     etats.add(new Etat(clone, Integer.MIN_VALUE + depth, coupAJouer, depth));
                     return;

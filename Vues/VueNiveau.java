@@ -14,7 +14,6 @@ import java.awt.event.ComponentEvent;
 class VueNiveau extends JPanel implements Observateur {
     CollecteurEvenements controleur;
     CPlateau plateau;
-    MatteBorder top, bottom;
     InfoJoueur j1, j2;
     TexteJeu texteJeu;
     VueJeu parent;
@@ -61,7 +60,7 @@ class VueNiveau extends JPanel implements Observateur {
         }
 
         // Partie terminée
-        if (controleur.jeu().partieTerminee() && controleur.jeu().getConsulter() == false) {
+        if (controleur.jeu().partieTerminee() && !controleur.jeu().getConsulter()) {
             parent.showEnd();
             return;
         }

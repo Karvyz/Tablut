@@ -111,9 +111,9 @@ public class IA_DifficileProfondeur extends IA {
         int nb_branches = 0;
         for (Pion pion : pions) {
             ArrayList<Coordonne> deplacements = pion.getDeplacement(jeu.n.plateau);
-            for (int i = 0; i < deplacements.size(); i++) {
+            for (Coordonne deplacement : deplacements) {
                 nb_branches++;
-                MyRunable myRunable = new MyRunable(jeu, pion, deplacements.get(i));
+                MyRunable myRunable = new MyRunable(jeu, pion, deplacement);
                 myRunables.add(myRunable);
                 Thread thread = new Thread(myRunable);
                 thread.start();

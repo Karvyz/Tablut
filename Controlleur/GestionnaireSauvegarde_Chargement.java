@@ -6,14 +6,14 @@ import javax.swing.*;
 import java.io.*;
 
 public class GestionnaireSauvegarde_Chargement {
-    private ControlleurMediateur cm;
+    private final ControlleurMediateur cm;
 
     public GestionnaireSauvegarde_Chargement(ControlleurMediateur controleurMediateur) {
         this.cm = controleurMediateur;
     }
     /**Méthode pour l'ouverture du Jdialog de sauvegarde*/
     public void saveGame() {
-        String fileName = null;
+        String fileName ;
         while (true) {
             fileName = JOptionPane.showInputDialog(null, "Entrez le nom du fichier de sauvegarde (max 18 caractères) :", "Sauvegarde", JOptionPane.PLAIN_MESSAGE);
 
@@ -68,9 +68,7 @@ public class GestionnaireSauvegarde_Chargement {
         if (sauvegarderPartie(fileName)) {
             JOptionPane.showMessageDialog(null, "Sauvegarde réussie", "Sauvegarde", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            boolean retry = handleSaveError("Échec de la sauvegarde");
-            if (!retry){
-            }
+            handleSaveError("Échec de la sauvegarde");
         }
     }
 

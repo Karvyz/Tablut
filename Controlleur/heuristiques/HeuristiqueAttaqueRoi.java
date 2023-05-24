@@ -16,7 +16,7 @@ public class HeuristiqueAttaqueRoi extends Heuristique {
         int countbd = 0;
         for (int i = 0; i < n.getTaille(); i++) {
             for (int j = 0; j < n.getTaille(); j++) {
-                if (!n.estVide(i, j)) {
+                if (n.estVide(i, j)) {
                     switch (n.typePion(i, j)) {
                         case ATTAQUANT:
                             attaquants++;
@@ -34,7 +34,7 @@ public class HeuristiqueAttaqueRoi extends Heuristique {
         }
         for (int i = 0; i < n.getTaille(); i++) {
             for (int j = 0; j < n.getTaille(); j++) {
-                if (!n.estVide(i, j)) {
+                if (n.estVide(i, j)) {
                     if (n.typePion(i, j) == TypePion.ATTAQUANT) {
                         if (i < x) {
                             if (j < y)
