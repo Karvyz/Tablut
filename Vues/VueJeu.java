@@ -237,7 +237,7 @@ class VueJeu extends JPanel {
         if (controleur.jeu().aBoucle()){
             endGamePanel.setBackground(new Color(85, 91, 97));
             endGameDialog.setTitle("Egalité !");
-            endGameText.setText("Partie interrompue, ce plateau est apparu 3 fois");
+            endGameText.setText("Partie interrompue, cette configuration est apparue 3 fois");
             controleur.jeu().setAboucle(false);
         }
         else{
