@@ -45,7 +45,7 @@ public class InfoJoueur extends JPanel {
         p.setMaximumSize(new Dimension(250, 400));
 
 
-        add(n, BorderLayout.CENTER);
+        add(n, BorderLayout.WEST);
         add(Box.createRigidArea(new Dimension(0, 50)));
         add(p, reverse ? BorderLayout.EAST : BorderLayout.WEST);
         add(Box.createVerticalGlue());
