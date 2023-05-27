@@ -335,6 +335,7 @@ class VueJeu extends JPanel {
         JPanel topPanel = new JPanel();
         topPanel.setOpaque(false);
         topPanel.setLayout(new GridBagLayout());
+        topPanel.setBackground(new Color(0, 0, 0, 0));
         contenu.add(topPanel, c);
         // -----------
 
