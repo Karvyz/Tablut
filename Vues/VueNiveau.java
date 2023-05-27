@@ -96,6 +96,9 @@ class VueNiveau extends JPanel implements Observateur {
                 String old = j1.n.getText();
                 // On enlève le </html>
                 old = old.substring(0, old.length() - 7);
+                if(!(old.lastIndexOf("en réflexion") == -1)) {
+                    old = old.substring(0, old.lastIndexOf("en réflexion") - 1);
+                }
                 j1.n.setText(old + " en réflexion...</html>");
             }
             j1.n.setForeground(color);
@@ -118,6 +121,9 @@ class VueNiveau extends JPanel implements Observateur {
                 String old = j2.n.getText();
                 // On enlève le </html>
                 old = old.substring(0, old.length() - 7);
+                if(!(old.lastIndexOf("en réflexion") == -1)) {
+                    old = old.substring(0, old.lastIndexOf("en réflexion") - 1);
+                }
                 j2.n.setText(old + " en réflexion...</html>");
             }
             j2.n.setForeground(color);

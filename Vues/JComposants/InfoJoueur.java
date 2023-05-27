@@ -26,8 +26,8 @@ public class InfoJoueur extends JPanel {
         n = new JLabel();
         n.setForeground(Color.WHITE);
         n.setFont(new Font("Arial", Font.BOLD, 18));
-        n.setMinimumSize(new Dimension(150, 44));
-        n.setPreferredSize(new Dimension(150, 44));
+        n.setMinimumSize(new Dimension(200, 100));
+        n.setPreferredSize(new Dimension(2500, 100));
 
 
         pawn = new ImageIcon(Imager.getScaledImage(reverse ? "PN.png" : "PB.png", 60, 60));
